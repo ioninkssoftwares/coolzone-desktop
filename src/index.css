@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0.5rem; /* Adjust the width as needed */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .body::-webkit-scrollbar {
+    width: 0.5rem; /* Adjust the width as needed */
+  }
+
+  .bod::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+  
