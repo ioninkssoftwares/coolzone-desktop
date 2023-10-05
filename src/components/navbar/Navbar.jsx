@@ -11,10 +11,10 @@ import ProductSelect from '../features/ProductSelect';
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Products', href: '#', current: true },
+  { name: 'Profile', href: '#', current: false },
+  { name: 'Cart', href: '#', current: false },
+  { name: 'Favourite', href: '#', current: false },
 ]
 
 function classNames(...classes) {
