@@ -3,7 +3,7 @@ import { AiOutlineTags, AiOutlineArrowRight, AiFillStar } from 'react-icons/ai';
 
 const TopRatedCategoryCard = ({ categoryData }) => {
     return (
-        <div style={{ width: "375px", height: "150px"}} className=' rounded-lg bg-white font-semibold flex items-center justify-start p-4 gap-8 '>
+        <div key={categoryData.id} style={{ width: "375px", height: "150px"}} className=' rounded-lg bg-white font-semibold flex items-center justify-start p-4 gap-8 '>
             <div  className="relative my-4 w-[100px] h-[100px] ml-4  ">
                 <img
                     // src={images.length > 0 ? images[0] : null }

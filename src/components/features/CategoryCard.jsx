@@ -3,7 +3,7 @@ import { AiOutlineTags, AiOutlineArrowRight } from 'react-icons/ai';
 
 const CategoryCard = ({categoryData}) => {
   return (
-    <div style={{width:"275px", height:"280px"}} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 '>
+    <div key={categoryData.id} style={{width:"275px", height:"280px"}} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 '>
     <p>{categoryData?.name}</p>
     <div   className="relative my-4 w-[180px] h-[150px]">
     <img
