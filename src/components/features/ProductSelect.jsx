@@ -1,19 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { fetchProductsByNavbarAsync } from '../product/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProductSelect = ({ products, onSelectChange, defaultValue, productsPage }) => {
+  let location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(defaultValue);
 
+  if(location){
+    console.log(location,"loca")
+  }
   // Update the selected value if the default value changes
   useEffect(() => {
     setSelectedValue(defaultValue);
   }, [defaultValue]);
 
   const handleSelectChange = (e) => {
+    e.preventDefault();
     const selectedProduct = e.target.value;
+    if(location.pathname === '/'){
+      navigate("/products");
+      dispatch(fetchProductsByNavbarAsync(selectedProduct))
+    } else if(location.pathname === '/products'){
+      dispatch(fetchProductsByNavbarAsync(selectedProduct))
+    }
+    console.log(selectedProduct,"fkdjkf")
+
+
     setSelectedValue(selectedProduct);
-    onSelectChange(selectedProduct);
+    // onSelectChange(selectedProduct);
+   
   };
 
+
+  
+  
   return (
     <div style={{borderRight:"1px solid gray",paddingRight:"25px"}} className={`${productsPage ? "w-full" : "w-fit"}`}>
       <select

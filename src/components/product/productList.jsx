@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 // import { XMarkIcon } from '@heroicons/react/24/outline'
@@ -16,6 +16,9 @@ import { data } from '../../test';
 import CardCarousel from '../features/CardCarousel';
 import { BsBagFill } from "react-icons/bs";
 import Pagination from '../features/Pagination';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllProductsAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus } from './productSlice';
+import { CastForEducation } from '@mui/icons-material';
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -34,11 +37,26 @@ const subCategories = [
     { name: 'Show More', href: '#' },
 ]
 const filters = [
+
+    {
+        id: 'category',
+        name: 'Category',
+        options: [
+            { value: 'Smartphones', label: 'Smartphones', checked: false },
+            { value: 'TV & Audio', label: 'TV & Audio', checked: false },
+            { value: 'Laptop', label: 'Laptops & PCs', checked: false },
+            { value: 'Gadgets', label: 'Gadgets', checked: false },
+            { value: 'Shoes', label: 'Shoes', checked: false },
+            { value: 'Gifts', label: 'Gifts', checked: false },
+            { value: 'Books', label: 'Books', checked: false },
+            { value: 'Toys', label: 'Toys', checked: false },
+        ],
+    },
     {
         id: 'brand',
         name: 'Brands',
         options: [
-            { value: 'apple', label: 'Apple', checked: false },
+            { value: 'Nike', label: 'Nike', checked: false },
             { value: 'samsung', label: 'Samsung', checked: false },
             { value: 'dell', label: 'Dell', checked: true },
             { value: 'asus', label: 'Asus', checked: false },
@@ -47,17 +65,7 @@ const filters = [
             // { value: 'showMore', label: 'Show More', checked: false },
         ],
     },
-    // {
-    //     id: 'category',
-    //     name: 'Category',
-    //     options: [
-    //         { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-    //         { value: 'sale', label: 'Sale', checked: false },
-    //         { value: 'travel', label: 'Travel', checked: true },
-    //         { value: 'organization', label: 'Organization', checked: false },
-    //         { value: 'accessories', label: 'Accessories', checked: false },
-    //     ],
-    // },
+
     {
         id: 'priceRange',
         name: 'Price Range',
@@ -77,7 +85,71 @@ function classNames(...classes) {
 }
 
 const ProductList = () => {
+    const dispatch = useDispatch();
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+    const productss = useSelector(selectAllProducts);
+    const categories = useSelector(selectCategories);
+    const isPending = useSelector(selectProductListStatus);
+
+    // const filters = [
+    //     {
+    //       id: 'category',
+    //       name: 'Category',
+    //       options: categories,
+    //     },
+    //     {
+    //       id: 'brand',
+    //       name: 'Brands',
+    //       options: brands,
+    //     },
+    //   ];
+
+    if (isPending) {
+        console.log(isPending, "prkjf")
+    }
+    const [filter, setFilter] = useState({});
+
+
+    const handleFilter = (e, section, option) => {
+        console.log(section.id, option.value, "handleFilter");
+        const newFilter = { ...filter, [section.id]: option.value };
+        setFilter(newFilter)
+
+        dispatch(fetchProductsByFiltersAsync(newFilter))
+        // const newFilter = { ...filter };
+        // if (e.target.checked) {
+        //   if (newFilter[section.id]) {
+        //     newFilter[section.id].push(option.value);
+        //   } else {
+        //     newFilter[section.id] = [option.value];
+        //   }
+        // } else {
+        //   const index = newFilter[section.id].findIndex(
+        //     (el) => el === option.value
+        //   );
+        //   newFilter[section.id].splice(index, 1);
+        // }
+        // console.log({ newFilter });
+
+        // setFilter(newFilter);
+    };
+
+    //   useEffect(() => {
+    //     // const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    //     dispatch(fetchProductsByFiltersAsync({ filter }));
+    //   }, [dispatch, filter]);
+
+
+    useEffect(() => {
+        // dispatch(fetchBrandsAsync());
+        dispatch(fetchCategoriesAsync());
+        // dispatch(fetchAllProductsAsync())
+    }, []);
+    //   useEffect(() => {
+    //     // dispatch(fetchBrandsAsync());
+    //     dispatch(fetchCategoriesAsync());
+    //   }, []);
+
     const products = [
         {
             id: 1,
@@ -142,7 +214,9 @@ const ProductList = () => {
         { id: 1, title: 'Back End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
         { id: 2, title: 'Front End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
         { id: 3, title: 'User Interface Designer', department: 'Design', type: 'Full-time', location: 'Remote' },
-      ]
+    ]
+
+
     return (
 
         <div className="bg-white">
@@ -187,7 +261,7 @@ const ProductList = () => {
 
                                     {/* Mobile Filters */}
                                     <form style={{ border: "2px solid black" }} className="mt-4 border-t border-gray-200">
-                                        <div className='w-full p-4 rounded-lg' style={{ border: "2px solid gray" }}>
+                                        {/* <div className='w-full p-4 rounded-lg' style={{ border: "2px solid gray" }}>
                                             <h2 className="font-bold my-4">Categories</h2>
 
                                             <ProductSelect products={sampleProducts} defaultValue="Laptops & PCs" productsPage={true} />
@@ -201,7 +275,7 @@ const ProductList = () => {
                                                 ))}
                                             </ul>
 
-                                        </div>
+                                        </div> */}
 
                                         {filters.map((section) => (
                                             <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
@@ -220,20 +294,21 @@ const ProductList = () => {
                                                             </Disclosure.Button>
                                                         </h3>
                                                         <Disclosure.Panel className="pt-6">
-                                                            <div className="space-y-6">
+                                                            <div className="space-y-4">
                                                                 {section.options.map((option, optionIdx) => (
                                                                     <div key={option.value} className="flex items-center">
                                                                         <input
-                                                                            id={`filter-mobile-${section.id}-${optionIdx}`}
+                                                                            id={`filter-${section.id}-${optionIdx}`}
                                                                             name={`${section.id}[]`}
                                                                             defaultValue={option.value}
-                                                                            type="checkbox"
+                                                                            type="radio"
                                                                             defaultChecked={option.checked}
+                                                                            onChange={(e) => handleFilter(e, section, option)}
                                                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                                         />
                                                                         <label
-                                                                            htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
-                                                                            className="ml-3 min-w-0 flex-1 text-gray-500"
+                                                                            htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                                            className="ml-3 text-sm text-gray-600"
                                                                         >
                                                                             {option.label}
                                                                         </label>
@@ -323,7 +398,7 @@ const ProductList = () => {
                         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                             {/* Filters */}
                             <form className="hidden lg:block">
-                                <div className='w-full p-4 rounded-lg' style={{ border: "2px solid gray" }}>
+                                {/* <div className='w-full p-4 rounded-lg' style={{ border: "2px solid gray" }}>
                                     <h2 className="font-bold my-4">Categories</h2>
 
                                     <ProductSelect products={sampleProducts} defaultValue="Laptops & PCs" productsPage={true} />
@@ -332,12 +407,12 @@ const ProductList = () => {
                                     <ul role="list" className="space-y-4  text-sm font-medium text-gray-900 my-4">
                                         {subCategories.map((category) => (
                                             <li key={category.name}>
-                                                <a href={category.href}>{category.name}</a>
+                                                <a onClick={() => handleFilter(category)} href={category.href}>{category.name}</a>
                                             </li>
                                         ))}
                                     </ul>
 
-                                </div>
+                                </div> */}
 
                                 {filters.map((section) => (
                                     <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
@@ -356,6 +431,28 @@ const ProductList = () => {
                                                     </Disclosure.Button>
                                                 </h3>
                                                 <Disclosure.Panel className="pt-6">
+                                                    {/* <div className="space-y-4">
+                                                        {section.options.map((option, optionIdx) => (
+                                                            <div key={option.value} className="flex items-center">
+                                                                <input
+                                                                    id={`filter-${section.id}-${optionIdx}`}
+                                                                    name={`${section.id}[]`}
+                                                                    defaultValue={option.value}
+                                                                    type="radio"
+                                                                    defaultChecked={option.checked}
+                                                                    onChange={(e) => handleFilter(e, section, option)}
+                                                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                                />
+                                                                <label
+                                                                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                                    className="ml-3 text-sm text-gray-600"
+                                                                >
+                                                                    {option.label}
+                                                                </label>
+                                                            </div>
+                                                        ))}
+                                                    </div> */}
+
                                                     <div className="space-y-4">
                                                         {section.options.map((option, optionIdx) => (
                                                             <div key={option.value} className="flex items-center">
@@ -365,6 +462,9 @@ const ProductList = () => {
                                                                     defaultValue={option.value}
                                                                     type="checkbox"
                                                                     defaultChecked={option.checked}
+                                                                    onChange={(e) =>
+                                                                        handleFilter(e, section, option)
+                                                                    }
                                                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                                 />
                                                                 <label
@@ -388,16 +488,16 @@ const ProductList = () => {
                                 {/* Your content */}
                                 <div className="bg-white">
                                     <div className="mx-auto max-w-2xl px-4 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
-                                        <h2 className="text-3xl font-semibold tracking-tight text-primary-blue">Laptops</h2>
+                                        <h2 className="text-3xl font-semibold tracking-tight text-primary-blue">Products</h2>
 
-                                        <div  className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                                            {data.map((product) => (
-                                                <div style={{border:"2px solid GRAY"}}  key={product.id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
+                                        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                                            { isPending === 'idle' ? productss.map((product) => (
+                                                <div style={{ border: "2px solid GRAY" }} key={product.id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
                                                     <p className="text-md font-semibold text-black mb-4">{product.category}</p>
                                                     <h1 className="text-xl font-semibold text-primary-blue my-4">{product.title}</h1>
                                                     <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 w-[200px] h-[150px]">
                                                         <img
-                                                            src={product?.images.length > 0 ? product.images[0] : null}
+                                                            src={product?.images.length > 0 ? product.images[0].url : null}
                                                             // alt={product.imageAlt}
                                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                                         />
@@ -406,9 +506,9 @@ const ProductList = () => {
                                                         <p className="text-xl font-semibold">${product.price}</p>
                                                         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
                                                     </div>
-                                                
+
                                                 </div>
-                                            ))}
+                                            )) : <p>Loading...</p>}
 
                                             <section className=" mb-5">
 
@@ -422,8 +522,9 @@ const ProductList = () => {
                         </div>
                     </section>
 
-{/* Pagination component start here */}
-<Pagination/>
+                    {/* Pagination component start here */}
+
+                    <Pagination />
 
 
                 </main>

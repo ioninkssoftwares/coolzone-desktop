@@ -3,7 +3,7 @@ import { AiOutlineDown, AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineR
 
 const Pagination = () => {
   return (
-    <div className="flex items-center justify-between border-2 border-gray-400 rounded-lg bg-white px-4 py-3 sm:px-6 mb-4">
+    <div className="flex items-center justify-between border-2 border-gray-400 rounded-lg bg-white px-4 py-3 sm:px-6 my-8">
       <div className="flex flex-1 justify-between sm:hidden">
         <a
           href="#"
