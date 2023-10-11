@@ -1,7 +1,7 @@
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch('/products/' + id);
+    const response = await fetch('https://coolzonebackend.onrender.com/api/v1/product/' + id);
     const data = await response.json();
     resolve({ data });
   });

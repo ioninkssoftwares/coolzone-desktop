@@ -9,10 +9,23 @@ const ProductSelect = ({ products, onSelectChange, defaultValue, productsPage })
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState(defaultValue);
+  const [productPath, setProductPath] = useState("")
 
-  if(location){
-    console.log(location,"loca")
-  }
+
+
+useEffect(() => {
+  if (location) {
+    const match = location.pathname.match(/\/product\b/);
+
+    if (match) {
+        const newProductPath = match[0];
+        setProductPath(newProductPath)
+        console.log(productPath,"dkfjdlk");
+    }
+}
+
+}, [location.pathname])
+
   // Update the selected value if the default value changes
   useEffect(() => {
     setSelectedValue(defaultValue);
@@ -26,7 +39,11 @@ const ProductSelect = ({ products, onSelectChange, defaultValue, productsPage })
       dispatch(fetchProductsByNavbarAsync(selectedProduct))
     } else if(location.pathname === '/products'){
       dispatch(fetchProductsByNavbarAsync(selectedProduct))
-    }
+    } else if (productPath === "/product") {
+        navigate("/products");
+        // console.log(productPath,"fdjkfjd")
+        dispatch(fetchProductsByNavbarAsync(selectedProduct))
+      }
     console.log(selectedProduct,"fkdjkf")
 
 

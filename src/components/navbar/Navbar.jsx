@@ -41,6 +41,9 @@ export default function Navbar() {
     'Toys',
   ];
 
+
+
+
   const handleProducts = (e) => {
     e.preventDefault();
     navigate('/products')
@@ -56,6 +59,12 @@ export default function Navbar() {
     } else if (location.pathname === '/products') {
       dispatch(fetchProductsByNavbarAsync(term))
     }
+    //  else if (location.pathname === productPath) {
+    //   navigate("/products");
+    //   dispatch(fetchProductsByNavbarAsync(term))
+    // }
+
+    setTerm("")
 
   }
 

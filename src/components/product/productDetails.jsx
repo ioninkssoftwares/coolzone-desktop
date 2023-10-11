@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { GrDeliver } from "react-icons/gr";
 import CardCarousel from '../features/CardCarousel';
@@ -6,51 +6,79 @@ import MediumHouseCard from '../features/MediumHomeCard';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import HomeSectionTitle from '../features/HomeSectionTittle';
 import { data } from '../../test';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductByIdAsync, selectProductById } from './productSlice';
 
 const ProductDetails = () => {
     const params = useParams()
-    const images = [
-        "https://cdn.pixabay.com/photo/2017/09/07/08/57/drone-2724257_1280.jpg",
-        "https://cdn.pixabay.com/photo/2015/06/25/17/21/smart-watch-821557_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/11/29/12/39/blur-1869564_1280.jpg",
-        "https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg",
-        "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849822_1280.jpg",
-    ]
-    const [selectedImage, setSelectedImage] = useState(images[0]);
+    const dispatch = useDispatch();
+    const product = useSelector(selectProductById)
+
+
+    // const images = [
+    //     "https://cdn.pixabay.com/photo/2017/09/07/08/57/drone-2724257_1280.jpg",
+    //     "https://cdn.pixabay.com/photo/2015/06/25/17/21/smart-watch-821557_1280.jpg",
+    //     "https://cdn.pixabay.com/photo/2016/11/29/12/39/blur-1869564_1280.jpg",
+    //     "https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg",
+    //     "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849822_1280.jpg",
+    // ]
+
+
+    const [selectedImage, setSelectedImage] = useState("");
+
+
+    // if(selectProduct?.product){
+    //     setSelectedImage(selectProduct?.product?.images[0].url) 
+    // }
+
+    useEffect(() => {
+        if (product && product.product && product.product.images && product.product.images.length > 0) {
+            setSelectedImage(product.product.images[0].url);
+        } else {
+            setSelectedImage("");
+        }
+    }, [product]);
+
+    useEffect(() => {
+        dispatch(fetchProductByIdAsync(params.id))
+    }, [dispatch, params.id])
 
 
 
+    // if (product) {
+    //     console.log(product, "selefh")
+    // }
 
     const handleImageClick = (image) => {
         setSelectedImage(image);
     };
 
     return <>
-        <section  className="text-gray-700 body-font overflow-hidden bg-white">
+        <section className="text-gray-700 body-font overflow-hidden bg-white">
             <div className="container px-5 py-8 mx-auto">
-                <div  className="w-full mx-auto flex flex-wrap md:px-32 px-0 flex-col md:flex-row">
+                <div className="w-full mx-auto flex flex-wrap md:px-32 px-0 flex-col md:flex-row">
 
-                    <div  className='md:w-[30%] w-full md:p-0 p-4 '>
+                    <div className='md:w-[30%] w-full md:p-0 p-4 '>
                         <div className='w-full h-1/3 rounded-lg'>
                             <img
-                                
+
                                 alt="ecommerce"
                                 className="w-full h-full object-cover object-center rounded-lg border border-gray-200"
                                 src={selectedImage}
                             />
                         </div>
                         <div className='w-full flex flex-wrap items-center justify-center my-4 gap-3'>
-                            {images.map((image, index) => (
+                            {product?.product && product?.product.images.map((image, index) => (
                                 <div
                                     key={index}
                                     className={`w-[60px] h-[60px] border-2 rounded-md cursor-pointer ${selectedImage === image
                                             ? 'border-gray-500 ring-2 ring-green-200'
                                             : 'border-gray-200'
                                         }`}
-                                    onClick={() => handleImageClick(image)}
+                                    onClick={() => handleImageClick(image.url)}
                                 >
                                     <img
-                                        src={image}
+                                        src={image.url}
                                         alt={`Thumbnail ${index}`}
                                         className='w-full h-full object-cover object-center rounded'
                                     />
@@ -63,16 +91,16 @@ const ProductDetails = () => {
                         </div>
                     </div>
                     <div className=" md:w-[70%] w-full lg:pl-10 lg:py-0 mt-0 lg:mt-0">
-                        <h2 className="text-sm title-font text-gray-500 tracking-widest">Air Condition, Split AC</h2>
-                        <h1 className="text-primary-blue text-2xl title-font font-medium my-8">VOLTAS Vectra 4 in 1 Convertible 1.5 Ton 3 Star Inverter Split AC with Anti Dust Filter (2023 Model, Copper Condenser, 183V Vectra Platina)</h1>
+                        <h2 className="text-sm title-font text-gray-500 tracking-widest">{product?.product.category}</h2>
+                        <h1 className="text-primary-blue text-2xl title-font font-medium my-8">{product?.product.name}</h1>
                         <div className='flex gap-8'>
                             <div className='flex flex-col gap-2'>
                                 <p className="text-primary-blue text-2xl title-font font-medium">CZ's</p>
-                                <p className="text-primary-blue text-2xl title-font font-medium">₹42,689.00</p>
+                                <p className="text-primary-blue text-2xl title-font font-medium">₹{product?.product.price}</p>
                             </div>
                             <div className='flex flex-col gap-2'>
                                 <p className="text-gray-500 text-2xl title-font font-medium">MRP</p>
-                                <p className="text-gray-500 text-2xl title-font font-medium">₹67,200.00</p>
+                                <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.price}</p>
                             </div>
                         </div>
                         <p className='my-4 text-xl '>Standard EMI starting from ₹2,192/month <span className='ml-4 text-sm font-semibold text-primary-blue'>View Plans</span></p>
@@ -93,7 +121,7 @@ const ProductDetails = () => {
                                 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                                 </svg>
-                                <span className="text-gray-600 ml-3">4 Reviews</span>
+                                <span className="text-gray-600 ml-3">{product?.product?.ratings} Reviews</span>
                             </span>
                             <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
                                 <a className="text-gray-500">
@@ -113,17 +141,17 @@ const ProductDetails = () => {
                                 </a>
                             </span>
                         </div>
-                        <h2 className='mb-2'>Key Features</h2>
-                        <ul className='list-disc list-inside ml-8 mb-4'>
+                        {product?.product.category === "Ac" ? <>           <h2 className='mb-2'>Key Features</h2>
+                            <ul className='list-disc list-inside ml-8 mb-4'>
 
-                            <li>1.5 Ton Inverter Split AC, 3 Star Rating</li>
-                            <li>Copper Condenser</li>
-                            <li>1 Year Comprehensive Warranty, 10 Years Compressor Warranty</li>
-                            <li>For Rooms up to 180 sq ft</li>
-                            <li>Power Consumption:1615W</li>
-                            <li>Refrigerant: R32</li>
-                            <li>Anti Microbial Air Filtration</li>
-                        </ul>
+                                <li>1.5 Ton Inverter Split AC, 3 Star Rating</li>
+                                <li>Copper Condenser</li>
+                                <li>1 Year Comprehensive Warranty, 10 Years Compressor Warranty</li>
+                                <li>For Rooms up to 180 sq ft</li>
+                                <li>Power Consumption:1615W</li>
+                                <li>Refrigerant: R32</li>
+                                <li>Anti Microbial Air Filtration</li>
+                            </ul> 
 
                         <p className='text-xl font-bold mb-4'>Energy Efficiency <span>(Star Rating)</span></p>
                         <div className='flex gap-4 mb-4'>
@@ -136,8 +164,8 @@ const ProductDetails = () => {
                             <button className='px-4 py-2 text-gray-500 border-2 border-gray-500 bg-white rounded-md'> 1.5</button>
                             <button className='px-4 py-2 text-gray-500 border-2 border-gray-500 bg-white rounded-md'> 2.0</button>
                         </div>
-
-                        <p className="leading-relaxed">Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan.</p>
+                        </> : ""}
+                        <p className="leading-relaxed">{product?.product?.description}</p>
                         <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
                             <div className="flex">
                                 <span className="mr-3">Color</span>
@@ -192,35 +220,35 @@ const ProductDetails = () => {
         </section>
 
         <section className="pt-5 mb-5">
-        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
-        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-between">
-            <HomeSectionTitle text="Featured Products" />
-            {/* Buttons container */}
-            <div className="flex space-x-4  md:mt-0">
-              <button
-                onClick={() => scrollLeft("feat")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronLeft />
-              </button>
-              <button
-                onClick={() => scrollRight("feat")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronRight />
-              </button>
+            {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+            {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+                <div className="w-full flex items-center justify-between">
+                    <HomeSectionTitle text="Featured Products" />
+                    {/* Buttons container */}
+                    <div className="flex space-x-4  md:mt-0">
+                        <button
+                            onClick={() => scrollLeft("feat")}
+                            className="p-2 m-2 rounded-full bg-white"
+                        >
+                            <FiChevronLeft />
+                        </button>
+                        <button
+                            onClick={() => scrollRight("feat")}
+                            className="p-2 m-2 rounded-full bg-white"
+                        >
+                            <FiChevronRight />
+                        </button>
+                    </div>
+                </div>
+                {data && (
+                    <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+                        <CardCarousel id="feat" data={data} Card={MediumHouseCard} />
+                    </div>
+                )}
             </div>
-          </div>
-          {data && (
-            <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="feat" data={data} Card={MediumHouseCard} />
-            </div>
-          )}
-        </div>
-      </section>
-        </>
+        </section>
+    </>
 }
 
 export default ProductDetails

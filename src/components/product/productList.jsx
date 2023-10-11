@@ -19,6 +19,7 @@ import Pagination from '../features/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductsAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus } from './productSlice';
 import { CastForEducation } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -86,6 +87,7 @@ function classNames(...classes) {
 
 const ProductList = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const productss = useSelector(selectAllProducts);
     const categories = useSelector(selectCategories);
@@ -492,7 +494,7 @@ const ProductList = () => {
 
                                         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                                             { isPending === 'idle' ? productss.map((product) => (
-                                                <div style={{ border: "2px solid GRAY" }} key={product.id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
+                                                <div onClick={() => navigate(`/product/${product._id}`)} style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
                                                     <p className="text-md font-semibold text-black mb-4">{product.category}</p>
                                                     <h1 className="text-xl font-semibold text-primary-blue my-4">{product.title}</h1>
                                                     <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 w-[200px] h-[150px]">
