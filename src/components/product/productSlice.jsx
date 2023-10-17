@@ -10,6 +10,7 @@ import {
   fetchAllProducts,
   fetchProductsByFilters,
   fetchProductsByNavbar,
+  fetchBanners,
 } from './productAPI';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   status: 'idle',
   totalItems: 0,
   selectedProduct: null,
+  banners: [],
 };
 
 
@@ -35,7 +37,6 @@ export const fetchAllProductsAsync = createAsyncThunk(
   'product/fetchProducts',
   async () => {
     const response = await fetchAllProducts();
-    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
@@ -80,6 +81,15 @@ export const fetchCategoriesAsync = createAsyncThunk(
   'product/fetchCategories',
   async () => {
     const response = await fetchCategories();
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
+
+export const fetchBannerAsync = createAsyncThunk(
+  'product/fetchBanners',
+  async (userToken) => {
+    const response = await fetchBanners(userToken);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -149,6 +159,13 @@ export const productSlice = createSlice({
         state.status = 'idle';
         state.categories = action.payload;
       })
+      .addCase(fetchBannerAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchBannerAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.banners = action.payload;
+      })
       .addCase(fetchProductByIdAsync.pending, (state) => {
         state.status = 'loading';
       })
@@ -185,6 +202,7 @@ export const selectBrands = (state) => state.product.brands;
 export const selectCategories = (state) => state.product.categories;
 export const selectProductById = (state) => state.product.selectedProduct;
 export const selectProductListStatus = (state) => state.product.status;
+export const selectBanners = (state) => state.product.banners;
 
 export const selectTotalItems = (state) => state.product.totalItems;
 

@@ -1,11 +1,41 @@
 
-export function fetchProductById(id) {
-  return new Promise(async (resolve) => {
-    const response = await fetch('https://coolzonebackend.onrender.com/api/v1/product/' + id);
-    const data = await response.json();
-    resolve({ data });
-  });
-}
+import { useAxios } from "../../utils/axios";
+import { useCookies } from "react-cookie";
+
+// const [cookies] = useCookies(["jwtToken"]);
+
+// const axiosInstance = useAxios(cookies);
+// const instance = useAxios()
+
+
+
+
+
+export const fetchBanners = async (userToken) => {
+  console.log(userToken,"djsfkdsjflds")
+  const instance = useAxios(userToken);
+  try {
+    const response = await instance.get('/banners');
+    return { data: response.data };
+  } catch (error) {
+    console.error('Error fetching banners:', error);
+    throw error;
+  }
+};
+
+
+export const fetchProductById = async (id) => {
+
+  try {
+    const response = await instance.get(`/product/${id}`);
+    return { data: response.data };
+  } catch (error) {
+    console.error(`Error fetching product with ID ${id}:`, error);
+    throw error;
+  }
+};
+
+
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
@@ -34,40 +64,51 @@ export function updateProduct(update) {
   });
 }
 
-export function fetchProductsByFilters(filter) {
-  console.log(filter,"querry" )
-  let queryString = '';
-  for (let key in filter) {
-    // const categoryValues = filter[key];
-    // if (categoryValues.length) {
-      queryString += `${key}=${filter[key]}&`;
-    // }
-  }
-  console.log(queryString,"querry")
-  return new Promise(async (resolve) => {
-    const response = await fetch(
-      'https://coolzonebackend.onrender.com/api/v1/products?' + queryString
-    );
-    const data = await response.json();
-    // const totalItems = await response.headers.get('X-Total-Count');
-    // resolve({ data: { products: data, totalItems: +totalItems } });
-    resolve({ data })
-  });
-}
+export const fetchProductsByFilters = async (filter) => {
+  try {
+    console.log(filter, "query");
+    let queryString = '';
 
-export function fetchProductsByNavbar(filter) {
-  let navQuery = filter
-  console.log(navQuery,"navq")
-  return new Promise(async (resolve) => {
-    const response = await fetch(
-      "https://coolzonebackend.onrender.com/api/v1/products?category=" + navQuery
+    for (let key in filter) {
+      // const categoryValues = filter[key];
+      // if (categoryValues.length) {
+      queryString += `${key}=${filter[key]}&`;
+      // }
+    }
+
+    console.log(queryString, "query");
+
+    const response = await instance.get(
+      `/products?${queryString}`
     );
-    const data = await response.json();
+
+    return { data: response.data };
+  } catch (error) {
+    console.error('Error fetching products by filters:', error);
+    throw error;
+  }
+};
+
+
+
+export const fetchProductsByNavbar = async (filter) => {
+  try {
+    let navQuery = filter;
+    console.log(navQuery, "navq");
+
+    const response = await instance.get(
+      `/products?category=${navQuery}`
+    );
+
     // const totalItems = await response.headers.get('X-Total-Count');
-    // resolve({ data: { products: data, totalItems: +totalItems } });
-    resolve({ data })
-  });
-}
+    // return { products: data, totalItems: +totalItems };
+    return { data: response.data };
+  } catch (error) {
+    console.error('Error fetching products by navbar:', error);
+    throw error;
+  }
+};
+
 
 // export function fetchProductsByFilters(filter, sort, pagination, admin) {
 //   // filter = {"category":["smartphone","laptops"]}
@@ -101,28 +142,46 @@ export function fetchProductsByNavbar(filter) {
 //   });
 // }
 
-export function fetchAllProducts() {
-  return new Promise(async (resolve) => {
-    const response = await fetch('https://coolzonebackend.onrender.com/api/v1/products');
-    const data = await response.json();
-    resolve({ data });
-  });
-}
+export const fetchAllProducts = async () => {
+  try {
+    const response = await instance.get("/products");
+    return { data: response.data };
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
+};
+
+
+export const fetchCategories = async () => {
+  try {
+    const response = await instance.get('/productcategoryList');
+    return { data: response.data };
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    throw error;
+  }
+};
+
+export const fetchBrands = async () => {
+  try {
+    const response = await instance.get('/brands');
+    return { data: response.data };
+  } catch (error) {
+    console.error('Error fetching brands:', error);
+    throw error;
+  }
+};
 
 
 
-export function fetchCategories() {
-  return new Promise(async (resolve) => {
-    const response = await fetch('https://coolzonebackend.onrender.com/api/v1/productcategoryList');
-    const data = await response.json();
-    resolve({ data });
-  });
-}
+// how to make the function using promise
 
-export function fetchBrands() {
-  return new Promise(async (resolve) => {
-    const response = await fetch('/brands');
-    const data = await response.json();
-    resolve({ data });
-  });
-}
+// export function fetchAllProducts() {
+//   return new Promise(async (resolve) => {
+//     const response = await fetch(`https://coolzonebackend.onrender.com/api/v1/products`);
+//     const data = await response.json();
+//     resolve({ data });
+//   });
+// }
+

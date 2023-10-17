@@ -17,7 +17,7 @@ import CardCarousel from '../features/CardCarousel';
 import { BsBagFill } from "react-icons/bs";
 import Pagination from '../features/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllProductsAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus } from './productSlice';
+import { fetchAllProductsAsync, fetchBannerAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus } from './productSlice';
 import { CastForEducation } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -145,6 +145,7 @@ const ProductList = () => {
     useEffect(() => {
         // dispatch(fetchBrandsAsync());
         dispatch(fetchCategoriesAsync());
+        // dispatch(fetchBannerAsync())
         // dispatch(fetchAllProductsAsync())
     }, []);
     //   useEffect(() => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import CorouselSlider from '../components/features/CorouselSlider';
 import { BsTicketPerforatedFill, BsBagFill, BsSendFill } from 'react-icons/bs';
@@ -14,6 +14,9 @@ import CardCarousel from '../components/features/CardCarousel';
 import CategoryCard from '../components/features/CategoryCard';
 import TopRatedCategoryCard from '../components/features/TopRatedCategoryCard';
 import Footer from '../components/footer/Footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBannerAsync, selectBanners } from '../components/product/productSlice';
+import { useCookies } from 'react-cookie';
 
 export const scrollLeft = (id) => {
   const ele = document.getElementById(id);
@@ -29,7 +32,53 @@ export const scrollRight = (id) => {
 };
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const [bannersData, setBannersData] = useState([]);
+  const [fasionBanner, setFasionBanner] = useState(null)
+  const banners = useSelector(selectBanners);
+  const [cookies, setCookies] = useCookies(["jwtToken"]);
+  const [token, setToken] = useState("");
 
+  console.log(banners, 'Banners from selector');
+  // if(banners){
+  //   console.log(banners.banners,"dfjdk")
+  // }
+
+useEffect(() => {
+  // setBannersData(data.banners);
+  if (banners.banners && banners.banners.length > 0) {
+    setBannersData(banners.banners)
+    // console.log(banners.banners,"dfjdk")
+
+  }
+
+}, [banners.banners])
+
+
+useEffect(() => {
+const filterBanner = () => {
+  const fashionBanners = bannersData?.filter(banner => banner.category === "Fasion");
+  const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
+    const categoryKey = curBanner.category;
+    acc[categoryKey] = curBanner;
+    return acc;
+  }, {});
+  console.log(fashionBannerObject.Fasion,"fjdfkj")
+  setFasionBanner(fashionBannerObject.Fasion)
+
+}
+
+filterBanner()
+
+}, [bannersData])
+
+
+
+useEffect(() => {
+  if (cookies && cookies.jwtToken) {
+    setToken(cookies.jwtToken);
+  }
+}, [cookies]);
 
   const productSamples = [
     { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
@@ -47,12 +96,21 @@ const Home = () => {
     { name: 'Laptops & PCs', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
   ];
 
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchBannerAsync({ token }));
+    }
+  }, [token, dispatch]);
+
+if(fasionBanner){
+  console.log(fasionBanner,"fdkjfkd")
+}
 
   return <>
     <Navbar />
     <div className='hide-scrollbar overflow-y-hidden'>
       <section>
-        <CorouselSlider />
+        <CorouselSlider bannerCategory={fasionBanner} />
       </section>
       <section className='flex items-center justify-center my-5'>
         <div style={{ border: "2px solid gray" }} className='rounded-lg flex items-center justify-center w-[79%] p-5'>
@@ -299,7 +357,7 @@ const Home = () => {
       <section className='bg-[#3b4758]'>
         <div className="max-w-7xl mx-auto px-5 md:px-10  flex space-x-6 p-6 items-center justify-between ">
           <p className=' text-white '><span className='text-base font-bold text-white '>Subscribe to Our Newsletter</span> - get a <span className=' text-white text-base font-bold underline'>₹500 Coupon</span> for your first order!</p>
-          <div style={{ width: "500px"}} className="flex ">
+          <div style={{ width: "500px" }} className="flex ">
             <div style={{ width: "85%", height: "100%" }}>
               <input type="text"
                 placeholder="Enter your email address"
@@ -316,7 +374,7 @@ const Home = () => {
         </div>
       </section>
     </div>
-    <Footer/>
+    <Footer />
   </>
 }
 
