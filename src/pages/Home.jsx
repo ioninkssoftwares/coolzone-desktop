@@ -17,6 +17,8 @@ import Footer from '../components/footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBannerAsync, selectBanners } from '../components/product/productSlice';
 import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export const scrollLeft = (id) => {
   const ele = document.getElementById(id);
@@ -33,10 +35,11 @@ export const scrollRight = (id) => {
 
 const Home = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [bannersData, setBannersData] = useState([]);
   const [fasionBanner, setFasionBanner] = useState(null)
   const banners = useSelector(selectBanners);
-  const [cookies, setCookies] = useCookies(["jwtToken"]);
+  const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
 
   console.log(banners, 'Banners from selector');
@@ -75,11 +78,26 @@ filterBanner()
 
 
 useEffect(() => {
-  if (cookies && cookies.jwtToken) {
-    setToken(cookies.jwtToken);
+  if (cookies && cookies.token) {
+    console.log(cookies.token,"dslfjadslk")
+    setToken(cookies.token);
   }
 }, [cookies]);
 
+useEffect(() => {
+  if (token) {
+    dispatch(fetchBannerAsync( token ));
+  }
+}, [token, dispatch]);
+
+
+
+ useEffect(() => {
+        if (cookies.token === undefined) {
+          toast.error("Please Login")
+          navigate('/login')
+        }
+      }, [])
   const productSamples = [
     { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
     { name: 'TV & Audio', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
@@ -96,11 +114,7 @@ useEffect(() => {
     { name: 'Laptops & PCs', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
   ];
 
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchBannerAsync({ token }));
-    }
-  }, [token, dispatch]);
+
 
 if(fasionBanner){
   console.log(fasionBanner,"fdkjfkd")

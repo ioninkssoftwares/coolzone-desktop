@@ -22,29 +22,30 @@ export const loginUser = async (loginInfo) => {
     }
   };
   
+export const createUser = async (userData) => {
+  
+    try {
+      const response = await instance.post('/register', userData);
+      return { data: response.data };
+    } catch (error) {
+      console.error('Error in login:', error);
+      throw error;
+    }
+  };
+  
 
-// export const loginUser = async (loginInfo) => {
-//     const token = loginInfo.token
-//   try {
-//     const response = await instance.post('/login', loginInfo.userInfo);
-//     return { data: response.data };
-//   } catch (error) {
-//     console.error('Error in login:', error);
-//     throw error;
-//   }
-// };
 
-  export function createUser(userData) {
-    return new Promise(async (resolve) => {
-      const response = await fetch('https://coolzonebackend.onrender.com/api/v1/register', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-        headers: { 'content-type': 'application/json' },
-      });
-      const data = await response.json();
-      resolve({ data });
-    });
-  }
+  // export function createUser(userData) {
+  //   return new Promise(async (resolve) => {
+  //     const response = await fetch('https://coolzonebackend.onrender.com/api/v1/register', {
+  //       method: 'POST',
+  //       body: JSON.stringify(userData),
+  //       headers: { 'content-type': 'application/json' },
+  //     });
+  //     const data = await response.json();
+  //     resolve({ data });
+  //   });
+  // }
 
   
   export function checkAuth() {

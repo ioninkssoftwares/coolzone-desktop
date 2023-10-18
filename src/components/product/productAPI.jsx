@@ -2,13 +2,6 @@
 import { useAxios } from "../../utils/axios";
 import { useCookies } from "react-cookie";
 
-// const [cookies] = useCookies(["jwtToken"]);
-
-// const axiosInstance = useAxios(cookies);
-// const instance = useAxios()
-
-
-
 
 
 export const fetchBanners = async (userToken) => {
@@ -25,7 +18,7 @@ export const fetchBanners = async (userToken) => {
 
 
 export const fetchProductById = async (id) => {
-
+  const instance = useAxios();
   try {
     const response = await instance.get(`/product/${id}`);
     return { data: response.data };
@@ -65,6 +58,7 @@ export function updateProduct(update) {
 }
 
 export const fetchProductsByFilters = async (filter) => {
+  const instance = useAxios();
   try {
     console.log(filter, "query");
     let queryString = '';
@@ -92,6 +86,7 @@ export const fetchProductsByFilters = async (filter) => {
 
 
 export const fetchProductsByNavbar = async (filter) => {
+  const instance = useAxios();
   try {
     let navQuery = filter;
     console.log(navQuery, "navq");
@@ -143,6 +138,7 @@ export const fetchProductsByNavbar = async (filter) => {
 // }
 
 export const fetchAllProducts = async () => {
+  const instance = useAxios();
   try {
     const response = await instance.get("/products");
     return { data: response.data };
@@ -154,6 +150,7 @@ export const fetchAllProducts = async () => {
 
 
 export const fetchCategories = async () => {
+  const instance = useAxios();
   try {
     const response = await instance.get('/productcategoryList');
     return { data: response.data };
@@ -164,6 +161,7 @@ export const fetchCategories = async () => {
 };
 
 export const fetchBrands = async () => {
+  const instance = useAxios();
   try {
     const response = await instance.get('/brands');
     return { data: response.data };

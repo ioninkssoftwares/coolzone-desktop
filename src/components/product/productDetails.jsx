@@ -9,8 +9,9 @@ import { data } from '../../test';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductByIdAsync, selectProductById, selectProductListStatus } from './productSlice';
 import { toast } from 'react-toastify';
-import { addToCartAsync, selectItems } from '../cart/cartSlice';
+import { addToCartAsync, fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
 import { Grid } from 'react-loader-spinner';
+import { useCookies } from 'react-cookie';
 
 const ProductDetails = () => {
     const params = useParams()
@@ -18,10 +19,12 @@ const ProductDetails = () => {
     const product = useSelector(selectProductById)
     const items = useSelector(selectItems);
     const status = useSelector(selectProductListStatus);
+    const [cookies, setCookies] = useCookies(["token"]);
+    const [token, setToken] = useState("");
 
-if(product){
-    console.log(product.product,"jfhdjshfjk")
-}
+    if (items) {
+        console.log(items, "jfhdjshfjk")
+    }
     // const images = [
     //     "https://cdn.pixabay.com/photo/2017/09/07/08/57/drone-2724257_1280.jpg",
     //     "https://cdn.pixabay.com/photo/2015/06/25/17/21/smart-watch-821557_1280.jpg",
@@ -63,23 +66,28 @@ if(product){
 
     const handleCart = (e) => {
         e.preventDefault();
-        if (items.findIndex((item) => item.product.id === product.product._id) < 0) {
-          console.log({ items, product });
-          const newItem = {
-            _id: product.product._id,
-            quantity: 1,
-          };
-        //   if (selectedColor) {
-        //     newItem.color = selectedColor;
-        //   }
-        //   if (selectedSize) {
-        //     newItem.size = selectedSize;
-        //   }
-          dispatch(addToCartAsync({item:newItem}));
+        if (items.products.findIndex((item) => item.product.id === product.product._id) < 0) {
+            // console.log({ items, product });
+            const newItem = {
+                _id: product.product._id,
+                quantity: 1,
+            };
+            if (token) {
+                const latestItem = { cartItem: newItem, jwtToken: token }
+                dispatch(addToCartAsync({ item: latestItem }));
+                toast("Item is added")
+            }
+
+
         } else {
-          toast('Item Already added');
+            toast('Item Already added');
         }
-      };
+    };
+
+
+
+
+
 
     // const handleCart = (e) => {
     //     e.preventDefault();
@@ -87,6 +95,15 @@ if(product){
     //     toast("fjdsfksdhfdskjhfdsjk")
 
     // }
+
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            console.log(cookies.token, "dslfjadslk")
+            setToken(cookies.token);
+        }
+    }, [cookies]);
+
+
 
 
     return <>

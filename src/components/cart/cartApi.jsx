@@ -1,11 +1,14 @@
 import { useAxios } from "../../utils/axios";
 
-const instance = useAxios();
+
 
 
 export const addToCart = async (item) => {
+  const {cartItem,jwtToken} = item
+  console.log(cartItem,jwtToken,"sdkjfksldjfl")
+  const instance = useAxios(jwtToken);
     try {
-      const response = await instance.post('/addtomycart', item);
+      const response = await instance.post('/addtomycart', cartItem);
     //   const data = response.data;
     //   return { data };
       return { data: response.data };
@@ -15,20 +18,13 @@ export const addToCart = async (item) => {
     }
   };
 
-  
-  // export function fetchItemsByUserId() {
-  //   return new Promise(async (resolve) => {
-  //     const response = await fetch('/cart');
-  //     const data = await response.json();
-  //     resolve({ data });
-  //   });
-  // }
 
-  export async function fetchItemsByUserId() {
+  export async function fetchItemsByUserId(token) {
+    const instance = useAxios(token);
     try {
-      const response = await fetch('/cart');
-      const data = await response.json();
-      return { data };
+      const response = await instance.get('/mycart');
+      // const data = await response.json();
+      return { data: response.data };
     } catch (error) {
       console.error('Error fetching items by user ID:', error);
       throw error;

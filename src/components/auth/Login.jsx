@@ -16,7 +16,7 @@ export default function Login() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const [cookies, setCookies] = useCookies(["jwtToken"]);
+    const [cookies, setCookies] = useCookies(["token"]);
     const error = useSelector(selectError);
     const user = useSelector(selectLoggedInUser);
     const {
@@ -28,7 +28,7 @@ export default function Login() {
     useEffect(() => {
         if (user?.success) {
             console.log(user, "hjfdsfsj")
-            setCookies("jwtToken", user.token);
+            setCookies("token", user.token);
             localStorage.setItem("isAdmin", false);
             localStorage.setItem("userId", user.user._id);
             localStorage.setItem("token", user.token);
@@ -38,12 +38,7 @@ export default function Login() {
     }, [user])
 
 
-    // useEffect(() => {
-    //     if (cookies.jwtToken === undefined) {
-    //       toast.error("Please Login")
-    //       navigate('/login')
-    //     }
-    //   }, [])
+   
 
     return (
         <>

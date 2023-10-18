@@ -11,17 +11,14 @@ export const addToCartAsync = createAsyncThunk(
   'cart/addToCart',
   async ({item}) => {
     const response = await addToCart(item);
-    // alert.success('Item Added to Cart');
-
-    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
 
 export const fetchItemsByUserIdAsync = createAsyncThunk(
   'cart/fetchItemsByUserId',
-  async () => {
-    const response = await fetchItemsByUserId();
+  async (token) => {
+    const response = await fetchItemsByUserId(token);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -66,8 +63,8 @@ export const cartSlice = createSlice({
       })
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        // console.log(action,"jhfsdjkhfd")
-        state.items.push(action.payload);
+        console.log(action,"jhfsdjkhfd")
+        // state.items.push(action.payload);
       })
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
