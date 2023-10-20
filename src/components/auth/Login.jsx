@@ -3,9 +3,10 @@ import { selectError, selectLoggedInUser } from './authSlice';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { loginUserAsync } from './authSlice';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
+import { CircularProgress } from '@mui/material';
 
 
 
@@ -19,11 +20,14 @@ export default function Login() {
     const [cookies, setCookies] = useCookies(["token"]);
     const error = useSelector(selectError);
     const user = useSelector(selectLoggedInUser);
+    const [loading, setLoading] = useState(false)
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
+
+
 
     useEffect(() => {
         if (user?.success) {
@@ -37,6 +41,11 @@ export default function Login() {
         }
     }, [user])
 
+useEffect(() => {
+    if(error){
+            setLoading(false)
+    }
+}, [error])
 
    
 
@@ -59,9 +68,14 @@ export default function Login() {
                     <form
                         noValidate
                         onSubmit={handleSubmit((data) => {
+                            if(user === null){
+                                setLoading(true)
+                            }      
                             dispatch(
-                                loginUserAsync({ email: data.email, password: data.password, token:"djkfsdlfkjdksjaflkjdfklsajdflak" })
+                                loginUserAsync({ email: data.email, password: data.password })
                             );
+                 
+                            // setLoading(false)
                         })}
                         className="space-y-6"
                     >
@@ -125,12 +139,12 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <button
+                     {loading === false ?       <button
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Log in
-                            </button>
+                            </button> : <div className='flex items-center justify-center'><CircularProgress/></div> }
                         </div>
                     </form>
 

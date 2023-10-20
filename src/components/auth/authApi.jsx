@@ -10,8 +10,8 @@ const instance = useAxios();
 
 
 export const loginUser = async (loginInfo) => {
-    const { email, password, token } = loginInfo;
-    const instance = useAxios(token);
+    const { email, password,  } = loginInfo;
+    const instance = useAxios();
   
     try {
       const response = await instance.post('/login', { email, password });

@@ -126,10 +126,10 @@ if(fasionBanner){
       <section>
         <CorouselSlider bannerCategory={fasionBanner} />
       </section>
-      <section className='flex items-center justify-center my-5'>
-        <div style={{ border: "2px solid gray" }} className='rounded-lg flex items-center justify-center w-[79%] p-5'>
+      <section  className='flex  items-center  justify-center my-5'>
+        <div style={{ border: "2px solid gray" }} className='rounded-lg flex md:flex-row flex-col md:items-center md:justify-center justify-start  w-[79%] p-5'>
           {/* <div style={{ border: "2px solid gray" }} className="max-w-7xl mx-auto p-5 md:px-10 rounded-lg flex items-center justify-center "> */}
-          <div style={{ borderRight: "2px solid black" }} className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
+          <div  className='w-fit md:border-r-4  flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <SiAdguard className='w-full h-full text-blue-950 ' />
             </div>
@@ -138,7 +138,7 @@ if(fasionBanner){
               <p className='text-xs'>24 Months</p>
             </div>
           </div>
-          <div style={{ borderRight: "2px solid black" }} className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
+          <div  className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <BsTicketPerforatedFill className='w-full h-full text-orange-400' />
             </div>
@@ -147,7 +147,7 @@ if(fasionBanner){
               <p className='text-xs'>4-12 Months</p>
             </div>
           </div>
-          <div style={{ borderRight: "2px solid black" }} className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
+          <div  className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <MdOutlineSecurity className='w-full h-full text-primary-blue' />
             </div>
@@ -156,7 +156,7 @@ if(fasionBanner){
               <p className='text-xs'>Secured</p>
             </div>
           </div>
-          <div style={{ borderRight: "2px solid black" }} className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
+          <div  className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <TbTruckDelivery className='w-full h-full text-green-500' />
             </div>
@@ -208,17 +208,17 @@ if(fasionBanner){
         </div>
       </section>
       {/* Categories Section */}
-      <section className='bg-gray-100 mb-5'>
+      <section  className='bg-gray-100 mb-5'>
         <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 ">
           <HomeSectionTitle text="Categories" />
-          <div className='flex items-start justify-between flex-wrap mt-7 gap-8'>
+          <div  className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-8'>
             {productSamples?.map((curElem) => (<CategoryCard categoryData={curElem} />))}
           </div>
         </div>
       </section>
       {/* Offers Section */}
       <section className=' mb-5'>
-        <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 flex gap-8 ">
+        <div  className="max-w-7xl mx-auto px-5 md:px-10 py-8 flex gap-8 overflow-x-auto ">
           <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
@@ -343,32 +343,39 @@ if(fasionBanner){
       </section>
 
       {/*Top Rated/Mega Offers Categories Section */}
-      <section className='bg-gray-100  h-[635px]'>
+      <section className='bg-gray-100  md:h-[635px] '>
         <div className="max-w-7xl mx-auto px-5 md:px-10 pt-4 flex  ">
           <h1 className={`font-semibold w-fit text-3xl font-manrope  border-b-2 border-b-black `}>
             Top Rated
           </h1>
-          <h1 className={`font-semibold w-fit text-3xl font-manrope  border-b-2 border-b-black ml-[265px] `}>
+          <h1 className={`font-semibold w-fit text-3xl font-manrope md:block hidden  border-b-2 border-b-black ml-[265px] `}>
             Bestsellers
           </h1>
-          <h1 className={`font-semibold w-fit text-3xl font-manrope  border-b-2 border-b-black ml-[265px]  `}>
+          <h1 className={`font-semibold w-fit text-3xl font-manrope md:block hidden  border-b-2 border-b-black ml-[265px]  `}>
             Mega Offers
           </h1>
         </div>
-        <div className="max-w-7xl mx-auto px-5 md:px-10  flex space-x-6 ">
-          <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
+        <div className="max-w-7xl mx-auto  flex md:flex-row flex-col items-center space-x-6  ">
+          <div   className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>
-          <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
+          <h1  className={`font-semibold w-fit text-3xl font-manrope md:hidden block  border-b-2 border-b-black relative right-28 py-4 `}>
+            Bestsellers
+          </h1>
+          <div  className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8 pr-6 md:pr-0'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>
-          <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
+          <h1  className={`font-semibold w-fit text-3xl font-manrope md:hidden block  border-b-2 border-b-black relative right-28 py-4 `}>
+          Mega Offers
+          </h1>
+          <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8 pr-6 md:pr-0'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>
         </div>
       </section>
+      {/* <div className=' bg-[#3b4758] w-full h-24'></div> */}
       {/* Newsletter Section */}
-      <section className='bg-[#3b4758]'>
+      <section  className='bg-[#3b4758] '>
         <div className="max-w-7xl mx-auto px-5 md:px-10  flex space-x-6 p-6 items-center justify-between ">
           <p className=' text-white '><span className='text-base font-bold text-white '>Subscribe to Our Newsletter</span> - get a <span className=' text-white text-base font-bold underline'>₹500 Coupon</span> for your first order!</p>
           <div style={{ width: "500px" }} className="flex ">

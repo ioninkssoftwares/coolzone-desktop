@@ -250,7 +250,7 @@ const ProductList = () => {
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-                                    <div className="flex items-center justify-between px-4">
+                                    <div  className="flex items-center justify-between px-4 mt-[100px]">
                                         <h2 className="text-lg font-medium text-gray-900">Filters</h2>
                                         <button
                                             type="button"
@@ -263,7 +263,7 @@ const ProductList = () => {
                                     </div>
 
                                     {/* Mobile Filters */}
-                                    <form style={{ border: "2px solid black" }} className="mt-4 border-t border-gray-200">
+                                    <form className="mt-4 border-t border-gray-200">
                                         {/* <div className='w-full p-4 rounded-lg' style={{ border: "2px solid gray" }}>
                                             <h2 className="font-bold my-4">Categories</h2>
 
@@ -498,8 +498,8 @@ const ProductList = () => {
                                                 <div onClick={() => navigate(`/product/${product._id}`)} style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
                                                     <p className="text-md font-semibold text-black mb-4">{product.category}</p>
                                                     <h1 className="text-xl font-semibold text-primary-blue my-4">{product.title}</h1>
-                                                    <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 w-[200px] h-[150px]">
-                                                        <img
+                                                    <div   className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 mx-auto w-[200px] h-[150px]">
+                                                        <img 
                                                             src={product?.images.length > 0 ? product.images[0].url : null}
                                                             // alt={product.imageAlt}
                                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"

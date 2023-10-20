@@ -66,7 +66,7 @@ const ProductDetails = () => {
 
     const handleCart = (e) => {
         e.preventDefault();
-        if (items.products.findIndex((item) => item.product.id === product.product._id) < 0) {
+        // if (items.products.findIndex((item) => item.product.id === product.product._id) < 0) {
             // console.log({ items, product });
             const newItem = {
                 _id: product.product._id,
@@ -79,9 +79,9 @@ const ProductDetails = () => {
             }
 
 
-        } else {
-            toast('Item Already added');
-        }
+        // } else {
+        //     toast('Item Already added');
+        // }
     };
 
 

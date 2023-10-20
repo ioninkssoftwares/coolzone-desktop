@@ -2,11 +2,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 import { selectLoggedInUser, createUserAsync } from './authSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
 
 export default function Signup() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
+  const [cookies, setCookies] = useCookies(["token"]);
   const user = useSelector(selectLoggedInUser);
 
   const {
@@ -14,6 +19,21 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+
+
+  useEffect(() => {
+    if (user?.success) {
+        console.log(user, "hjfdsfsj")
+        setCookies("token", user.token);
+        localStorage.setItem("isAdmin", false);
+        localStorage.setItem("userId", user.user._id);
+        localStorage.setItem("token", user.token);
+        toast(" User Signup Successful")
+        navigate("/")
+    }
+}, [user])
+
 
 
   return (
@@ -38,11 +58,11 @@ export default function Signup() {
             onSubmit={handleSubmit((data) => {
               dispatch(
                 createUserAsync({
-                  name:data.name,
-                  email: data.email,
-                  password: data.password,
-                //   addresses: [],
-                //   role:'user'
+                  userData: {
+                    name: data.name,
+                    email: data.email,
+                    password: data.password,
+                  },
                 })
               );
               console.log(data);

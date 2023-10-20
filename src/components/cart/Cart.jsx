@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import { fetchItemsByUserIdAsync, selectCartLoaded, selectCartStatus, selectItems } from './cartSlice';
 import { Grid } from 'react-loader-spinner';
+import { useAxios } from '../../utils/axios';
+import { CircularProgress } from '@mui/material';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -12,6 +14,8 @@ const Cart = () => {
   const items = useSelector(selectItems);
   const status = useSelector(selectCartStatus);
   const cartLoaded = useSelector(selectCartLoaded)
+  const [coupons, setCoupons] = useState("")
+  const [loading, setLoading] = useState(false)
 
 
 useEffect(() => {
@@ -36,6 +40,25 @@ useEffect(() => {
     }
 
   }, [dispatch, token])
+
+// TODO:Redux is not implemented
+  const handleCoupon = async () => {
+    setLoading(true)
+    const instance = useAxios(token);
+
+    try {
+      const newCoupon = {coupon:coupons}
+      const response = await instance.post('/applycoupon', newCoupon);
+      // return { data: response.data };
+      dispatch(fetchItemsByUserIdAsync(token))
+      setLoading(false)
+      
+      console.log(response,"fdlshjs")
+    } catch (error) {
+      console.error('Error in login:', error);
+      throw error;
+    }
+  }
 
   return (
     <>
@@ -105,7 +128,7 @@ useEffect(() => {
             <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
             <div className="flex justify-between mt-10 mb-5">
               <span className="font-semibold text-sm uppercase">Subtotal</span>
-              <span className="font-semibold text-sm">${items.cartTotal}</span>
+              <span className="font-semibold text-sm">  {items ? `$${items.cartTotal}` : ""}</span>
             </div>
             <div>
               <label className="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
@@ -115,13 +138,13 @@ useEffect(() => {
             </div>
             <div className="py-10">
               <label for="promo" className="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
-              <input type="text" id="promo" placeholder="Enter your code" className="p-2 text-sm w-full" />
+              <input type="text" id="promo" onChange={(e) => setCoupons(e.target.value)} placeholder="Enter your code" className="p-2 text-sm w-full" />
             </div>
-            <button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+  {loading === false ? <button onClick={handleCoupon} className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> : <CircularProgress/>}
             <div className="border-t mt-8">
               <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                 <span>Total cost</span>
-                <span>${items.cartTotal}</span>
+                <span>  {items ? `$${items.totalAfterDiscount}` : ""}</span>
               </div>
               <Link to="/checkout"> <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button> </Link>
             </div>

@@ -50,6 +50,10 @@ export default function Navbar() {
     dispatch(fetchAllProductsAsync())
 
   }
+  const handleCart = (e) => {
+    e.preventDefault();
+    navigate('/cart')
+  }
 
   const searchSubmitHandler = (e) => {
     e.preventDefault();
@@ -90,7 +94,7 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex md:flex-1 ml-20 md:ml-0 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
@@ -103,7 +107,7 @@ export default function Navbar() {
               </div>
 
               {/* <div style={{border:"2px solid green"}} > */}
-              <div style={{ width: "700px", marginRight: "50px" }} className="flex ">
+              <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 ">
                 <form onSubmit={searchSubmitHandler} className='flex' style={{ width: "85%", height: "100%" }}>
                   <div style={{ width: "100%", height: "100%" }}>
                     <input type="text"
@@ -112,9 +116,9 @@ export default function Navbar() {
                       onChange={(e) => setTerm(e.target.value)}
                       className="w-full p-2 pl-8 border border-primary-blue rounded-l-full focus:outline-none focus:border-blue-500" />
                   </div>
-                  <div className='rounded-r-full' style={{ width: "12%", height: "42px" }}>
+                  <div  className='rounded-r-full md:w-[12%] md:h-[42px] '>
                     <button className='w-full h-full flex items-center rounded-r-full bg-primary-blue '>
-                      <AiOutlineSearch className='ml-6 text-white' />
+                      <AiOutlineSearch className='md:ml-6 ml-3  mr-5 md:mr-0 text-white' />
                     </button>
                   </div>
                 </form>
@@ -123,12 +127,12 @@ export default function Navbar() {
               </div>
               {/* </div> */}
 
-              <div className="absolute inset-y-0 space-x-8 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="absolute inset-y-0 space-x-8 right-0 md:flex hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <BiSolidUser className='w-full h-full' />
                 </div>
-                <div style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <TbBrandStackshare onClick={handleProducts} className='w-full h-full cursor-pointer' />
+                <div style={{ width: "28px", height: "28px", borderRadius: "50%",marginRight:"25px" }}>
+                  <p onClick={handleProducts} className='w-full h-full cursor-pointer font-bold text-sm text-primary-blue ' > Products</p>
                 </div>
                 <div style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <BsFillHeartFill className='w-full h-full' />
@@ -141,7 +145,7 @@ export default function Navbar() {
             </div>
 
           </div>
-          <section className='w-full flex items-center justify-center bg-primary-blue mt-4'>
+          <section className='w-full md:flex items-center justify-center bg-primary-blue mt-4 hidden'>
             <div style={{ width: "70%" }} className='flex items-center justify-center  gap-1 '>
 
               <ProductSelect products={sampleProducts} defaultValue="Smartphones" />
@@ -165,7 +169,7 @@ export default function Navbar() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  // onClick={item.name === 'Cart' ? handleCartClick : undefined}
+                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : null}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'
