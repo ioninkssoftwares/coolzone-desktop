@@ -11,12 +11,9 @@ const MembershipPage = () => {
                 <div className="max-w-7xl mx-auto px-5 md:px-10 ">
                     <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Membership Section</p>
                     <div className='flex justify-center items-center my-8'>
-                        <div className='flex gap-6 justify-center items-center border-2 p-4 rounded-lg ' >
-                            <p className='font-bold text-3xl'>Membership Type -</p>
-                            <div className='flex gap-4 b bg-[#fff9d6] justify-center items-center px-12 py-2 rounded-lg'>
-                                <BiMedal className='text-[#ffd700] text-3xl' />
-                                <p className='text-xl font-bold text-[#ffd700]'>Gold</p>
-                            </div>
+                        <div className='flex bg-[#ffd700] gap-2 flex-col justify-center items-center border-2 py-4 px-10 rounded-lg ' >
+                            <p className='font-bold text-3xl text-white'>Gold Membership  </p>
+                            <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
                         </div>
                     </div>
 
