@@ -17,10 +17,11 @@ const MembershipPage = () => {
     const [productFlag, setProductFlag] = useState(false)
     const [productName, setProductName] = useState("")
     const [productSku, setProductSku] = useState("")
+    const [matchedMembership, setMatchedMembership] = useState(null);
 
 
-    if(membershipOffers){
-        console.log(membershipOffers,"sdahjfaksj")
+    if(matchedMembership){
+        console.log(matchedMembership,"sdahjfaksfgdfdgdffdj")
     }
 
     const getMembershipOffers = async () => {
@@ -120,10 +121,22 @@ const MembershipPage = () => {
         }
 
     }
-    if (userMembership) {
-        console.log(userMembership, "jfsdhfskjd")
-    }
 
+
+
+    useEffect(() => {
+        // if(membershipOffers){
+        //     console.log(membershipOffers,"sdjfksdlfjk")
+        // }
+        // Compare user's membership ID with all memberships and store the matching membership in state
+        if (userMembership && membershipOffers?.length > 0) {
+            console.log("yehhhhhhhhhhh")
+          const matchedMembership = membershipOffers?.find(
+            (membership) => membership._id === userMembership?.user_Membership[0]
+          );
+          setMatchedMembership(matchedMembership);
+        }
+      }, [userMembership, membershipOffers]);
     return (
         <div>
             <Navbar />
@@ -145,7 +158,8 @@ const MembershipPage = () => {
                     <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Membership Section</p>
                     <div className='flex justify-center items-center my-8'>
                         <div className='flex bg-[#ffd700] gap-2 flex-col justify-center items-center border-2 py-4 px-10 rounded-lg ' >
-                            <p className='font-bold text-3xl text-white'>{userMembership?.memb_name} Membership  </p>
+                            <p className='font-bold text-3xl text-white'>{matchedMembership?.memb_name} Membership  </p>
+                            <p className='font-bold text-3xl text-white'>{matchedMembership?.description}   </p>
                             <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
                         </div>
                     </div>
