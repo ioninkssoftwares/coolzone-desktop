@@ -15,10 +15,11 @@ import CategoryCard from '../components/features/CategoryCard';
 import TopRatedCategoryCard from '../components/features/TopRatedCategoryCard';
 import Footer from '../components/footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBannerAsync, selectBanners } from '../components/product/productSlice';
+import { fetchAllProductsAsync, fetchBannerAsync, selectAllProducts, selectBanners, selectProductListStatus } from '../components/product/productSlice';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { getCurrentUserAsync, selectCurrentUserDetails } from '../components/auth/authSlice';
 
 export const scrollLeft = (id) => {
   const ele = document.getElementById(id);
@@ -39,13 +40,11 @@ const Home = () => {
   const [bannersData, setBannersData] = useState([]);
   const [fasionBanner, setFasionBanner] = useState(null)
   const banners = useSelector(selectBanners);
+  const userDetails = useSelector(selectCurrentUserDetails);
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
-
-  console.log(banners, 'Banners from selector');
-  // if(banners){
-  //   console.log(banners.banners,"dfjdk")
-  // }
+  const productss = useSelector(selectAllProducts);
+  const isPending = useSelector(selectProductListStatus);
 
 useEffect(() => {
   // setBannersData(data.banners);
@@ -87,6 +86,7 @@ useEffect(() => {
 useEffect(() => {
   if (token) {
     dispatch(fetchBannerAsync( token ));
+    dispatch(fetchAllProductsAsync(token))
   }
 }, [token, dispatch]);
 
@@ -98,6 +98,17 @@ useEffect(() => {
           navigate('/login')
         }
       }, [])
+      
+// TODO:Add the token to the redux state so dont need to use state everywhere
+    useEffect(() => {
+        if (token) {
+            dispatch(getCurrentUserAsync(token))
+        }
+
+    }, [token])
+
+    
+
   const productSamples = [
     { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
     { name: 'TV & Audio', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
@@ -116,8 +127,8 @@ useEffect(() => {
 
 
 
-if(fasionBanner){
-  console.log(fasionBanner,"fdkjfkd")
+if(userDetails){
+  console.log(userDetails,"dsfafadfafddfsasdfdfs")
 }
 
   return <>
@@ -200,9 +211,9 @@ if(fasionBanner){
               </button>
             </div>
           </div>
-          {data && (
+          {productss && (
             <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="feat" data={data} Card={MediumHouseCard} />
+              <CardCarousel id="feat" data={productss} Card={MediumHouseCard} />
             </div>
           )}
         </div>
@@ -282,35 +293,35 @@ if(fasionBanner){
         </div>
       </section>
       {/* Best Sellers section */}
-      <section className="pt-5 mb-5">
-        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
-        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-between">
-            <HomeSectionTitle text="Best Sellers" />
-            {/* Buttons container */}
-            <div className="flex space-x-4  md:mt-0">
-              <button
-                onClick={() => scrollLeft("feat")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronLeft />
-              </button>
-              <button
-                onClick={() => scrollRight("feat")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronRight />
-              </button>
+        <section className="pt-5 mb-5">
+          {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+          {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+          <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+            <div className="w-full flex items-center justify-between">
+              <HomeSectionTitle text="Best Sellers" />
+              {/* Buttons container */}
+              <div className="flex space-x-4  md:mt-0">
+                <button
+                  onClick={() => scrollLeft("best")}
+                  className="p-2 m-2 rounded-full bg-white"
+                >
+                  <FiChevronLeft />
+                </button>
+                <button
+                  onClick={() => scrollRight("best")}
+                  className="p-2 m-2 rounded-full bg-white"
+                >
+                  <FiChevronRight />
+                </button>
+              </div>
             </div>
+            {productss && (
+              <div id="best" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+                <CardCarousel id="best" data={productss} Card={MediumHouseCard} />
+              </div>
+            )}
           </div>
-          {data && (
-            <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="feat" data={data} Card={MediumHouseCard} />
-            </div>
-          )}
-        </div>
-      </section>
+        </section>
       {/* Big Deals section */}
       <section className="pt-5 mb-5">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
@@ -321,22 +332,22 @@ if(fasionBanner){
             {/* Buttons container */}
             <div className="flex space-x-4  md:mt-0">
               <button
-                onClick={() => scrollLeft("feat")}
+                onClick={() => scrollLeft("big")}
                 className="p-2 m-2 rounded-full bg-white"
               >
                 <FiChevronLeft />
               </button>
               <button
-                onClick={() => scrollRight("feat")}
+                onClick={() => scrollRight("big")}
                 className="p-2 m-2 rounded-full bg-white"
               >
                 <FiChevronRight />
               </button>
             </div>
           </div>
-          {data && (
-            <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="feat" data={data} Card={MediumHouseCard} />
+          {productss && (
+            <div id="big" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+              <CardCarousel id="big" data={productss} Card={MediumHouseCard} />
             </div>
           )}
         </div>

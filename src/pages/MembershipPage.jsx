@@ -20,8 +20,8 @@ const MembershipPage = () => {
     const [matchedMembership, setMatchedMembership] = useState(null);
 
 
-    if(matchedMembership){
-        console.log(matchedMembership,"sdahjfaksfgdfdgdffdj")
+    if (matchedMembership) {
+        console.log(matchedMembership, "sdahjfaksfgdfdgdffdj")
     }
 
     const getMembershipOffers = async () => {
@@ -94,6 +94,7 @@ const MembershipPage = () => {
             const response = await instances.put(`/membership/addmembership/${e._id}`)
             console.log(response.data)
             setMembership(true)
+            window.location.reload();
         } catch (error) {
             console.log(error)
 
@@ -124,19 +125,34 @@ const MembershipPage = () => {
 
 
 
+    // useEffect(() => {
+    //     if (userMembership && membershipOffers?.length > 0) {
+    //         console.log("yehhhhhhhhhhh")
+    //       const matchedMembership = membershipOffers?.find(
+    //         (membership) => membership._id === userMembership?.user_Membership[0]
+    //       );
+    //       setMatchedMembership(matchedMembership);
+    //     }
+    //   }, [userMembership, membershipOffers]);
+
     useEffect(() => {
-        // if(membershipOffers){
-        //     console.log(membershipOffers,"sdjfksdlfjk")
-        // }
-        // Compare user's membership ID with all memberships and store the matching membership in state
-        if (userMembership && membershipOffers?.length > 0) {
-            console.log("yehhhhhhhhhhh")
-          const matchedMembership = membershipOffers?.find(
-            (membership) => membership._id === userMembership?.user_Membership[0]
-          );
-          setMatchedMembership(matchedMembership);
+        if (userMembership && userMembership.user_Membership && membershipOffers?.length > 0) {
+            console.log("yehhhhhhhhhhh");
+            const userMembershipId = userMembership.user_Membership[0];
+
+            // Check if the userMembershipId is defined before attempting to find it in membershipOffers
+            if (userMembershipId !== undefined) {
+                const matchedMembership = membershipOffers.find((membership) => membership._id === userMembershipId);
+
+                // Check if the matchedMembership is not undefined before setting the state
+                if (matchedMembership !== undefined) {
+                    setMatchedMembership(matchedMembership);
+                }
+            }
         }
-      }, [userMembership, membershipOffers]);
+    }, [userMembership, membershipOffers]);
+
+
     return (
         <div>
             <Navbar />
@@ -159,13 +175,13 @@ const MembershipPage = () => {
                     <div className='flex justify-center items-center my-8'>
                         <div className='flex bg-[#ffd700] gap-2 flex-col justify-center items-center border-2 py-4 px-10 rounded-lg ' >
                             <p className='font-bold text-3xl text-white'>{matchedMembership?.memb_name} Membership  </p>
-                            <p className='font-bold text-3xl text-white'>{matchedMembership?.description}   </p>
+                            <p className='font-bold text-3xl text-center text-white'>{matchedMembership?.description}   </p>
                             <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
                         </div>
                     </div>
 
                     {<div>
-                        <div className='flex justify-center items-center gap-4'>
+                        <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
                             <input onChange={(e) => setProductName(e.target.value)} type="text" placeholder='Product Name' />
                             <input onChange={(e) => setProductSku(e.target.value)} type="text" placeholder='SKU No' />
                             <button onClick={handleProductIntoMembership} className='bg-primary-blue text-white px-8 py-2 rounded-lg'>Add Product</button>
@@ -197,7 +213,7 @@ const MembershipPage = () => {
                                                         <p className='font-semibold'>SKU No</p>
                                                         <p>{curElem?.skuid}</p>
                                                     </div>
-                                                    <div className='flex flex-col gap-6'>
+                                                    <div className=' flex-col gap-6 hidden md:flex'>
                                                         <p className='font-semibold'>View Details</p>
                                                         <button className='p-2 rounded-lg bg-primary-blue text-white'>View Details</button>
                                                     </div>

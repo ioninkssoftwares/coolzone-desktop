@@ -15,6 +15,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import WishListPage from './pages/WishListPage';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <SignupPage></SignupPage>,
+  },
+  {
+    path: '/wishlist',
+    element: <WishListPage></WishListPage>,
   },
 ]);
 

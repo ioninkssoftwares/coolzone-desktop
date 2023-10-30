@@ -33,6 +33,17 @@ export const createUser = async (userData) => {
     }
   };
   
+export const getCurrentUser = async (userToken) => {
+  const instance = useAxios(userToken);
+    try {
+      const response = await instance.get('/me');
+      return { data: response.data };
+    } catch (error) {
+      console.error('Error in login:', error);
+      throw error;
+    }
+  };
+  
 
 
   // export function createUser(userData) {
@@ -84,6 +95,7 @@ export const createUser = async (userData) => {
     });
   }
   
+
   
   export function resetPasswordRequest(email) {
     return new Promise(async (resolve, reject) => {

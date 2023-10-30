@@ -6,7 +6,7 @@ import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { RxCross2 } from 'react-icons/rx';
 import { MdOutlineSecurity } from 'react-icons/md';
 import { AiOutlineDown, AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
-import { BsFunnel } from 'react-icons/bs';
+import { BsFillHeartFill, BsFunnel } from 'react-icons/bs';
 import { HiMiniSquaresPlus, HiOutlineSquaresPlus } from 'react-icons/hi2';
 import ProductSelect from '../features/ProductSelect';
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -20,6 +20,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductsAsync, fetchBannerAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus } from './productSlice';
 import { CastForEducation } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useAxios } from '../../utils/axios';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -88,6 +91,8 @@ function classNames(...classes) {
 const ProductList = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies(["token"]);
+    const [token, setToken] = useState("");
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const productss = useSelector(selectAllProducts);
     const categories = useSelector(selectCategories);
@@ -105,6 +110,16 @@ const ProductList = () => {
     //       options: brands,
     //     },
     //   ];
+
+
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            console.log(cookies.token, "dslfjadslk")
+            setToken(cookies.token);
+        }
+    }, [cookies]);
+
+
 
     if (isPending) {
         console.log(isPending, "prkjf")
@@ -220,6 +235,21 @@ const ProductList = () => {
     ]
 
 
+    const handleWishlist = async (productId) => {
+
+        const instances = useAxios(token)
+        try {
+            const response = await instances.put(`/product/wishlist/${productId}`)
+            console.log(response.data)
+            toast("Product has been added to wishlist")
+            // setMembership(true)
+            // window.location.reload();
+        } catch (error) {
+            console.log(error)
+
+        }
+    }
+
     return (
 
         <div className="bg-white">
@@ -250,7 +280,7 @@ const ProductList = () => {
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
-                                    <div  className="flex items-center justify-between px-4 mt-[100px]">
+                                    <div className="flex items-center justify-between px-4 mt-[100px]">
                                         <h2 className="text-lg font-medium text-gray-900">Filters</h2>
                                         <button
                                             type="button"
@@ -494,12 +524,21 @@ const ProductList = () => {
                                         <h2 className="text-3xl font-semibold tracking-tight text-primary-blue">Products</h2>
 
                                         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                                            { isPending === 'idle' ? productss.map((product) => (
-                                                <div onClick={() => navigate(`/product/${product._id}`)} style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
+                                            {isPending === 'idle' ? productss.map((product) => (
+                                                <div style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
                                                     <p className="text-md font-semibold text-black mb-4">{product.category}</p>
-                                                    <h1 className="text-xl font-semibold text-primary-blue my-4">{product.title}</h1>
-                                                    <div   className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 mx-auto w-[200px] h-[150px]">
-                                                        <img 
+                                                    <div className='flex items-center justify-between'>
+                                                        <h1 className="text-xl font-semibold text-primary-blue my-4">{product.name}</h1>
+                                                        <div
+                                                            onClick={() => handleWishlist(product._id)}
+                                                            className="p-1.5 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer"
+                                                        >
+                                                            <BsFillHeartFill className="text-sm text-white" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 mx-auto w-[200px] h-[150px]">
+                                                        <img
                                                             src={product?.images.length > 0 ? product.images[0].url : null}
                                                             // alt={product.imageAlt}
                                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"

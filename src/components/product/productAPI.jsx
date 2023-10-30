@@ -137,8 +137,8 @@ export const fetchProductsByNavbar = async (filter) => {
 //   });
 // }
 
-export const fetchAllProducts = async () => {
-  const instance = useAxios();
+export const fetchAllProducts = async (userToken) => {
+  const instance = useAxios(userToken);
   try {
     const response = await instance.get("/products");
     return { data: response.data };

@@ -6,6 +6,7 @@ import {
   checkAuth,
   resetPasswordRequest,
   resetPassword,
+  getCurrentUser,
 } from '../auth/authApi';
 // import { updateUser } from './authApi';
 
@@ -13,6 +14,7 @@ import {
 
 const initialState = {
   loggedInUserToken: null, // this should only contain user identity => 'id'/'role'
+  currentUser:{},
   status: 'idle',
   error: null,
   userChecked: false,
@@ -91,6 +93,14 @@ export const signOutAsync = createAsyncThunk(
     return response.data;
   }
 );
+export const getCurrentUserAsync = createAsyncThunk(
+  'user/getCurrentUser',
+  async (userToken) => {
+    const response = await getCurrentUser(userToken);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
 
 export const authSlice = createSlice({
   name: 'user',
@@ -154,10 +164,23 @@ export const authSlice = createSlice({
         state.status = 'idle';
         state.error = action.payload
       })
+      .addCase(getCurrentUserAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
+        console.log(action.payload,"kgjfkk")
+        state.status = 'idle';
+        state.currentUser = action.payload.user;
+      })
+      .addCase(getCurrentUserAsync.rejected, (state, action) => {
+        state.status = 'idle';
+        state.error = action.payload
+      })
   },
 });
 
 export const selectLoggedInUser = (state) => state.auth.loggedInUserToken;
+export const selectCurrentUserDetails = (state) => state.auth.currentUser;
 export const selectError = (state) => state.auth.error;
 export const selectUserChecked = (state) => state.auth.userChecked;
 export const selectMailSent = (state) => state.auth.mailSent;

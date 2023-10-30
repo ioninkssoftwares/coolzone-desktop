@@ -54,6 +54,14 @@ export default function Navbar() {
     e.preventDefault();
     navigate('/cart')
   }
+  const handleProfile = (e) => {
+    e.preventDefault();
+    navigate('/membership')
+  }
+  const handleFavourite = (e) => {
+    e.preventDefault();
+    navigate('/wishlist')
+  }
 
   const searchSubmitHandler = (e) => {
     e.preventDefault();
@@ -129,16 +137,16 @@ export default function Navbar() {
 
               <div className="absolute inset-y-0 space-x-8 right-0 md:flex hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div onClick={() => navigate("/membership")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <BiSolidUser className='w-full h-full cursor-pointer' />
+                  <BiSolidUser className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
                 <div style={{ width: "28px", height: "28px", borderRadius: "50%",marginRight:"25px" }}>
-                  <p onClick={handleProducts} className='w-full h-full cursor-pointer font-bold text-sm text-primary-blue ' > Products</p>
+                  <p onClick={handleProducts} className='w-full h-full cursor-pointer font-bold text-sm hover:text-primary-blue ' > Products</p>
                 </div>
-                <div style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <BsFillHeartFill className='w-full h-full' />
+                <div onClick={() => navigate("/wishlist")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                  <BsFillHeartFill className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
                 <div onClick={() => navigate("/cart")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <FaShoppingCart className='w-full h-full cursor-pointer' />
+                  <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
 
               </div>
@@ -169,7 +177,7 @@ export default function Navbar() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : null}
+                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : item.name === "Profile" ? handleProfile : item.name === "Favourite" ? handleFavourite : null}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'
