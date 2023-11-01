@@ -9,19 +9,57 @@ import CardCarousel from '../components/features/CardCarousel'
 import { useSelector } from 'react-redux'
 import { selectAllProducts, selectProductListStatus } from '../components/product/productSlice'
 import { scrollLeft, scrollRight } from './Home'
+import { selectCurrentUserDetails } from '../components/auth/authSlice'
 // import ProductDetails from '../components/product/productDetails'
 
 const WishListPage = () => {
     const productss = useSelector(selectAllProducts);
     const isPending = useSelector(selectProductListStatus);
+    const userDetails = useSelector(selectCurrentUserDetails);
+
+    if(userDetails){
+        console.log(userDetails,"fdlsjfkds")
+    }
+
+
+    
     return (
         <div>
             <Navbar />
             <section>
-                <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+                <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
                     <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Wishlist</p>
                     <div>
                     </div>
+                    <section className="pt-5 mb-5">
+                        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+                        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+                        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+                            <div className="w-full flex items-center justify-between">
+                                <HomeSectionTitle text="Wishlist Items" />
+                                {/* Buttons container */}
+                                <div className="flex space-x-4  md:mt-0">
+                                    <button
+                                        onClick={() => scrollLeft("wishlist")}
+                                        className="p-2 m-2 rounded-full bg-white"
+                                    >
+                                        <FiChevronLeft />
+                                    </button>
+                                    <button
+                                        onClick={() => scrollRight("wishlist")}
+                                        className="p-2 m-2 rounded-full bg-white"
+                                    >
+                                        <FiChevronRight />
+                                    </button>
+                                </div>
+                            </div>
+                            {userDetails && (
+                                <div id="wishlist" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+                                    <CardCarousel id="wishlist" data={userDetails?.wishlistDetails} Card={MediumHouseCard} />
+                                </div>
+                            )}
+                        </div>
+                    </section>
                     <section className="pt-5 mb-5">
                         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
                         {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}

@@ -1,8 +1,8 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BsPencil, BsFillHeartFill } from "react-icons/bs";
 import { FaShoppingCart } from "react-icons/fa";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineOrderedList, AiOutlineSearch } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiSolidUser } from 'react-icons/bi';
@@ -13,22 +13,26 @@ import { useDispatch } from 'react-redux';
 import { fetchAllProductsAsync, fetchProductsByNavbarAsync } from '../product/productSlice';
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const navigation = [
-  { name: 'Products', href: '#', current: true },
-  { name: 'Profile', href: '#', current: false },
-  { name: 'Cart', href: '#', current: false },
-  { name: 'Favourite', href: '#', current: false },
-]
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
+
   let location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [term, setTerm] = useState("");
+
+  const navigation = [
+  { name: 'Products', href: '/products', current: location.pathname === '/products' },
+  { name: 'Profile', href: '/profile', current: location.pathname === '/membership' },
+  { name: 'Cart', href: '/cart', current: location.pathname === '/cart' },
+  { name: 'Favourite', href: '/favourite', current: location.pathname === '/wishlist' },
+  { name: 'Orders', href: '/orders', current: location.pathname === '/orders' },
+];
 
   const sampleProducts = [
     'Smartphones',
@@ -56,11 +60,15 @@ export default function Navbar() {
   }
   const handleProfile = (e) => {
     e.preventDefault();
-    navigate('/membership')
+    navigate('/myAccount')
   }
   const handleFavourite = (e) => {
     e.preventDefault();
     navigate('/wishlist')
+  }
+  const handleOrders = (e) => {
+    e.preventDefault();
+    navigate('/orders')
   }
 
   const searchSubmitHandler = (e) => {
@@ -79,8 +87,6 @@ export default function Navbar() {
     setTerm("")
 
   }
-
-
 
   return (
     <Disclosure as="nav" className="bg-white sticky top-0 z-50 ">
@@ -136,7 +142,7 @@ export default function Navbar() {
               {/* </div> */}
 
               <div className="absolute inset-y-0 space-x-8 right-0 md:flex hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div onClick={() => navigate("/membership")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                <div onClick={() => navigate("/myAccount")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <BiSolidUser className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
                 <div style={{ width: "28px", height: "28px", borderRadius: "50%",marginRight:"25px" }}>
@@ -147,6 +153,9 @@ export default function Navbar() {
                 </div>
                 <div onClick={() => navigate("/cart")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                </div>
+                <div onClick={() => navigate("/orders")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                  <AiOutlineOrderedList className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
 
               </div>
@@ -177,7 +186,7 @@ export default function Navbar() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : item.name === "Profile" ? handleProfile : item.name === "Favourite" ? handleFavourite : null}
+                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : item.name === "Profile" ? handleProfile : item.name === "Favourite" ? handleFavourite : item.name === "Orders" ? handleOrders : null}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'

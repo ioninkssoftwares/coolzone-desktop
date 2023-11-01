@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { addToCartAsync, fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
 import { Grid } from 'react-loader-spinner';
 import { useCookies } from 'react-cookie';
+import { useAxios } from '../../utils/axios';
 
 const ProductDetails = () => {
     const params = useParams()
@@ -21,6 +22,7 @@ const ProductDetails = () => {
     const status = useSelector(selectProductListStatus);
     const [cookies, setCookies] = useCookies(["token"]);
     const [token, setToken] = useState("");
+    const [review, setReview] = useState("")
 
     if (items) {
         console.log(items, "jfhdjshfjk")
@@ -67,16 +69,16 @@ const ProductDetails = () => {
     const handleCart = (e) => {
         e.preventDefault();
         // if (items.products.findIndex((item) => item.product.id === product.product._id) < 0) {
-            // console.log({ items, product });
-            const newItem = {
-                _id: product.product._id,
-                quantity: 1,
-            };
-            if (token) {
-                const latestItem = { cartItem: newItem, jwtToken: token }
-                dispatch(addToCartAsync({ item: latestItem }));
-                toast("Item is added")
-            }
+        // console.log({ items, product });
+        const newItem = {
+            _id: product.product._id,
+            quantity: 1,
+        };
+        if (token) {
+            const latestItem = { cartItem: newItem, jwtToken: token }
+            dispatch(addToCartAsync({ item: latestItem }));
+            toast("Item is added")
+        }
 
 
         // } else {
@@ -103,6 +105,25 @@ const ProductDetails = () => {
         }
     }, [cookies]);
 
+
+
+
+    const addReviews = async () => {
+        const instance = useAxios(token);
+    
+        try {
+          const newCoupon = {coupon:coupons}
+          const response = await instance.put('/review', newCoupon);
+          // return { data: response.data };
+          dispatch(fetchItemsByUserIdAsync(token))
+          setLoading(false)
+          
+          console.log(response,"fdlshjs")
+        } catch (error) {
+          console.error('Error in login:', error);
+          throw error;
+        }
+      }
 
 
 
@@ -292,6 +313,94 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 </section>
+                <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
+                    <div className='border-2 border-gray-500 my-4 p-8 rounded-lg'>
+                        <p className='text-lg font-semibold'>Rating and Review</p>
+
+                        <div className='flex items-start justify-between gap-20 '>
+                            <div className='basis-[40%]'>
+                                <p className='text-2xl font-semibold mt-4'>Customer Reviews</p>
+                                <p className='my-2 text-2xl'>Review this product</p>
+                                <p className='my-2'>Share your thoughts with other customers</p>
+                                <input onChange={(e) => setReview(e.target.value) } type="text" className='my-4 rounded-lg' placeholder='Write a product review' />
+                                <button className='rounded-lg ml-4 px-8 py-2 bg-primary-blue text-white'>Submit</button>
+                            </div>
+
+                            <div className='basis-[40%]'>
+
+                                <div className="flex items-center mb-2">
+                                    <svg className="w-4 h-4 text-primary-blue mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg className="w-4 h-4 text-primary-blue mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg className="w-4 h-4 text-primary-blue mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg className="w-4 h-4 text-primary-blue mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <svg className="w-4 h-4 text-gray-300 mr-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                    <p className="ml-2 text-sm font-medium text-gray-900 dark:text-white">4.95 out of 5</p>
+                                </div>
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">1,745 global ratings</p>
+                                <div className="flex items-center mt-4">
+                                    <a href="#" className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">5 star</a>
+                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                                        <div className="h-5 bg-primary-blue rounded" style={{ width: "70%" }}></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">70%</span>
+                                </div>
+                                <div className="flex items-center mt-4">
+                                    <a href="#" className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">4 star</a>
+                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                                        <div className="h-5 bg-primary-blue rounded" style={{ width: "17%" }}></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">17%</span>
+                                </div>
+                                <div className="flex items-center mt-4">
+                                    <a href="#" className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">3 star</a>
+                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                                        <div className="h-5 bg-primary-blue rounded" style={{ width: "8%" }}></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">8%</span>
+                                </div>
+                                <div className="flex items-center mt-4">
+                                    <a href="#" className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">2 star</a>
+                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                                        <div className="h-5 bg-primary-blue rounded" style={{ width: "4%" }}></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">4%</span>
+                                </div>
+                                <div className="flex items-center mt-4">
+                                    <a href="#" className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">1 star</a>
+                                    <div className="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                                        <div className="h-5 bg-primary-blue rounded" style={{ width: "1%" }}></div>
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400">1%</span>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div className='flex justify-center items-center flex-col my-8'>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
+                        </div>
+
+
+
+                    </div>
+                </div>
 
                 <section className="pt-5 mb-5">
                     {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
@@ -322,6 +431,8 @@ const ProductDetails = () => {
                         )}
                     </div>
                 </section>
+
+
 
 
             </>}
