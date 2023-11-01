@@ -13,6 +13,7 @@ import { addToCartAsync, fetchItemsByUserIdAsync, selectItems } from '../cart/ca
 import { Grid } from 'react-loader-spinner';
 import { useCookies } from 'react-cookie';
 import { useAxios } from '../../utils/axios';
+import { Box, Rating, Typography } from '@mui/material';
 
 const ProductDetails = () => {
     const params = useParams()
@@ -22,26 +23,15 @@ const ProductDetails = () => {
     const status = useSelector(selectProductListStatus);
     const [cookies, setCookies] = useCookies(["token"]);
     const [token, setToken] = useState("");
-    const [review, setReview] = useState("")
-
-    if (items) {
-        console.log(items, "jfhdjshfjk")
-    }
-    // const images = [
-    //     "https://cdn.pixabay.com/photo/2017/09/07/08/57/drone-2724257_1280.jpg",
-    //     "https://cdn.pixabay.com/photo/2015/06/25/17/21/smart-watch-821557_1280.jpg",
-    //     "https://cdn.pixabay.com/photo/2016/11/29/12/39/blur-1869564_1280.jpg",
-    //     "https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg",
-    //     "https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849822_1280.jpg",
-    // ]
-
-
+    const [review, setReview] = useState("");
+    const [value, setValue] = useState(4);
     const [selectedImage, setSelectedImage] = useState("");
+    const [allReviews, setAllReviews] = useState([]);
 
 
-    // if(selectProduct?.product){
-    //     setSelectedImage(selectProduct?.product?.images[0].url) 
-    // }
+    if (allReviews) {
+        console.log(allReviews, "filsjkfkl")
+    }
 
     useEffect(() => {
         if (product && product.product && product.product.images && product.product.images.length > 0) {
@@ -110,20 +100,42 @@ const ProductDetails = () => {
 
     const addReviews = async () => {
         const instance = useAxios(token);
-    
+
         try {
-          const newCoupon = {coupon:coupons}
-          const response = await instance.put('/review', newCoupon);
-          // return { data: response.data };
-          dispatch(fetchItemsByUserIdAsync(token))
-          setLoading(false)
-          
-          console.log(response,"fdlshjs")
+            const newReview = {
+                productId: params.id,
+                comment: review,
+                rating: value
+            }
+            const response = await instance.put('/review', newReview);
+            // return { data: response.data };
+            // dispatch(fetchItemsByUserIdAsync(token))
+            // setLoading(false)
+            toast("Your review has been added")
+
+            console.log(response, "fdlshjs")
         } catch (error) {
-          console.error('Error in login:', error);
-          throw error;
+            console.error('Error in login:', error);
+            throw error;
         }
-      }
+    }
+
+    const getAllrevies = async () => {
+        const instance = useAxios(token);
+        try {
+            const response = await instance.get(`/reviews?id=${params.id}`);
+            setAllReviews(response.data.reviews)
+            console.log(response, "xczvxcvczx")
+        } catch (error) {
+            console.error('Error in login:', error);
+            throw error;
+        }
+    }
+
+    useEffect(() => {
+        getAllrevies();
+    }, [])
+
 
 
 
@@ -322,8 +334,30 @@ const ProductDetails = () => {
                                 <p className='text-2xl font-semibold mt-4'>Customer Reviews</p>
                                 <p className='my-2 text-2xl'>Review this product</p>
                                 <p className='my-2'>Share your thoughts with other customers</p>
-                                <input onChange={(e) => setReview(e.target.value) } type="text" className='my-4 rounded-lg' placeholder='Write a product review' />
-                                <button className='rounded-lg ml-4 px-8 py-2 bg-primary-blue text-white'>Submit</button>
+                                <div className='flex items-center justify-center'>
+                                    <input onChange={(e) => setReview(e.target.value)} type="text" className='my-4 rounded-lg' placeholder='Write a product review' />
+                                    <Box
+                                        sx={{
+                                            '& > legend': { mt: 2 },
+                                        }}
+                                    >
+                                        {/* <Typography component="legend">Controlled</Typography> */}
+                                        <Rating
+                                            name="simple-controlled"
+                                            value={value}
+                                            sx={{
+                                                color: "#04a7ff",
+                                                marginLeft: "20px"
+                                            }}
+                                            onChange={(event, newValue) => {
+                                                setValue(newValue);
+                                            }}
+                                        />
+
+                                    </Box>
+                                    <button onClick={addReviews} className='rounded-lg ml-4 px-8 py-2 bg-primary-blue text-white'>Submit</button>
+                                </div>
+
                             </div>
 
                             <div className='basis-[40%]'>
@@ -388,17 +422,26 @@ const ProductDetails = () => {
 
                         </div>
 
+                        <div  className='flex justify-center items-start flex-col gap-6 my-8'>
+                            {allReviews && allReviews.length > 0 ? allReviews.map((curElem) => {
+                                return <div >
+                                    <p className='font-semibold text-lg'>{curElem.name}</p>
+                                    <div className='flex gap-6 items-center justify-start mt-2'>
+                                        <Rating
+                                            name="simple-controlled"
+                                            value={curElem.rating}
+                                            sx={{
+                                                color: "#04a7ff",
+                                                marginLeft: "20px"
+                                            }}
+                                        />
+                                        <p>{curElem.comment}</p>
 
-                        <div className='flex justify-center items-center flex-col my-8'>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sit ad cum. Inventore, repudiandae sequi.</p>
+                                    </div>
+                                </div>
+
+                            }) : ""}
                         </div>
-
-
-
                     </div>
                 </div>
 
