@@ -11,6 +11,7 @@ export const addToCart = async (item) => {
       const response = await instance.post('/addtomycart', cartItem);
     //   const data = response.data;
     //   return { data };
+      window.location.reload();
       return { data: response.data };
     } catch (error) {
       console.error('Error adding to cart:', error);

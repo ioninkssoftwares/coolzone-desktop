@@ -46,6 +46,10 @@ const Home = () => {
   const productss = useSelector(selectAllProducts);
   const isPending = useSelector(selectProductListStatus);
 
+  if(productss){
+    console.log(productss,"cxvvxxv")
+  }
+
 useEffect(() => {
   // setBannersData(data.banners);
   if (banners.banners && banners.banners.length > 0) {

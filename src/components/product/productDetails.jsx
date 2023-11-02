@@ -68,6 +68,7 @@ const ProductDetails = () => {
             const latestItem = { cartItem: newItem, jwtToken: token }
             dispatch(addToCartAsync({ item: latestItem }));
             toast("Item is added")
+        
         }
 
 
@@ -422,7 +423,7 @@ const ProductDetails = () => {
 
                         </div>
 
-                        <div  className='flex justify-center items-start flex-col gap-6 my-8'>
+                        <div className='flex justify-center items-start flex-col gap-6 my-8'>
                             {allReviews && allReviews.length > 0 ? allReviews.map((curElem) => {
                                 return <div >
                                     <p className='font-semibold text-lg'>{curElem.name}</p>

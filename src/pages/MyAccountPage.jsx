@@ -25,7 +25,7 @@ const MyAccountPage = () => {
             <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
                 <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit '>My Account</p>
                 <div className='flex flex-wrap md:flex-row flex-col gap-12 my-6'>
-                    <div style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer  flex rounded-lg p-4 gap-6 '>
+                    <div onClick={() => navigate("/profile")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer  flex rounded-lg p-4 gap-6 '>
                         <BiSolidUser className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
                             <p className = 'text-lg font-semibold'>My Profile</p>
@@ -46,7 +46,7 @@ const MyAccountPage = () => {
                             <p>Track your order status</p>
                         </div>
                     </div>
-                    <div style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    <div onClick={() => navigate("/address")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <FaAddressBook className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
                             <p className = 'text-lg font-semibold'>My Address</p>

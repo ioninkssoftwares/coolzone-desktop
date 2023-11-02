@@ -9,8 +9,12 @@ import { BiSolidUser } from 'react-icons/bi';
 import { TbBrandStackshare } from 'react-icons/tb';
 import ProductSelect from '../features/ProductSelect';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductsAsync, fetchProductsByNavbarAsync } from '../product/productSlice';
+import { Badge } from '@mui/material';
+import { AddShoppingCart } from '@mui/icons-material';
+import { fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
+import { useCookies } from 'react-cookie';
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 
@@ -22,17 +26,36 @@ function classNames(...classes) {
 export default function Navbar() {
 
   let location = useLocation();
+  const [cookies, setCookies] = useCookies(["token"]);
+  const [token, setToken] = useState("");
+  const cartItems = useSelector(selectItems);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [term, setTerm] = useState("");
 
+
+  useEffect(() => {
+    if (cookies && cookies.token) {
+      console.log(cookies.token, "dslfjadslk")
+      setToken(cookies.token);
+    }
+  }, [cookies]);
+
+  useEffect(() => {
+    if (token) {
+      // console.log(token,"fjkdsfjkd")
+      dispatch(fetchItemsByUserIdAsync(token))
+    }
+
+  }, [dispatch, token])
+
   const navigation = [
-  { name: 'Products', href: '/products', current: location.pathname === '/products' },
-  { name: 'Profile', href: '/profile', current: location.pathname === '/membership' },
-  { name: 'Cart', href: '/cart', current: location.pathname === '/cart' },
-  { name: 'Favourite', href: '/favourite', current: location.pathname === '/wishlist' },
-  { name: 'Orders', href: '/orders', current: location.pathname === '/orders' },
-];
+    { name: 'Products', href: '/products', current: location.pathname === '/products' },
+    { name: 'Profile', href: '/profile', current: location.pathname === '/membership' },
+    { name: 'Cart', href: '/cart', current: location.pathname === '/cart' },
+    { name: 'Favourite', href: '/favourite', current: location.pathname === '/wishlist' },
+    { name: 'Orders', href: '/orders', current: location.pathname === '/orders' },
+  ];
 
   const sampleProducts = [
     'Smartphones',
@@ -130,7 +153,7 @@ export default function Navbar() {
                       onChange={(e) => setTerm(e.target.value)}
                       className="w-full p-2 pl-8 border border-primary-blue rounded-l-full focus:outline-none focus:border-blue-500" />
                   </div>
-                  <div  className='rounded-r-full md:w-[12%] md:h-[42px] '>
+                  <div className='rounded-r-full md:w-[12%] md:h-[42px] '>
                     <button className='w-full h-full flex items-center rounded-r-full bg-primary-blue '>
                       <AiOutlineSearch className='md:ml-6 ml-3  mr-5 md:mr-0 text-white' />
                     </button>
@@ -145,14 +168,19 @@ export default function Navbar() {
                 <div onClick={() => navigate("/myAccount")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <BiSolidUser className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
-                <div style={{ width: "28px", height: "28px", borderRadius: "50%",marginRight:"25px" }}>
+                <div style={{ width: "28px", height: "28px", borderRadius: "50%", marginRight: "25px" }}>
                   <p onClick={handleProducts} className='w-full h-full cursor-pointer font-bold text-sm hover:text-primary-blue ' > Products</p>
                 </div>
                 <div onClick={() => navigate("/wishlist")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <BsFillHeartFill className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
-                <div onClick={() => navigate("/cart")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                {/* <div onClick={() => navigate("/cart")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                </div> */}
+                <div className='cursor-pointer' onClick={() => navigate("/cart")} >
+                  <Badge badgeContent={cartItems?.products?.length} color="error">
+                    <AddShoppingCart />
+                  </Badge>
                 </div>
                 <div onClick={() => navigate("/orders")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <AiOutlineOrderedList className='w-full h-full cursor-pointer hover:text-primary-blue' />

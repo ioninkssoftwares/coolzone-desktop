@@ -18,6 +18,8 @@ import SignupPage from './pages/SignupPage';
 import WishListPage from './pages/WishListPage';
 import OrdersPage from './pages/OrdersPage';
 import MyAccountPage from './pages/MyAccountPage';
+import ProfilePage from './pages/ProfilePage';
+import AddressPage from './pages/AddressPage';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +77,14 @@ const router = createBrowserRouter([
   {
     path: '/myAccount',
     element: <MyAccountPage></MyAccountPage>,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage></ProfilePage>,
+  },
+  {
+    path: '/address',
+    element: <AddressPage></AddressPage>,
   },
 ]);
 
