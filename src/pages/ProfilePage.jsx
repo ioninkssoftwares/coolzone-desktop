@@ -58,50 +58,50 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if (cookies && cookies.token) {
-          console.log(cookies.token,"dslfjadslk")
-          setToken(cookies.token);
+            console.log(cookies.token, "dslfjadslk")
+            setToken(cookies.token);
         }
-      }, [cookies]);
+    }, [cookies]);
 
-      useEffect(() => {
+    useEffect(() => {
         // Pick only the relevant fields from userDetails
         const { email, name, lastName, DOB, contactNumber, gender } = userDetails;
-      
+
         // Update userData state
         setUserData({
-          email: email || '',
-          name: name || '',
-          lastName: lastName || '',
-          DOB: DOB || '',
-          contactNumber: contactNumber || '',
-          gender: gender || '',
+            email: email || '',
+            name: name || '',
+            lastName: lastName || '',
+            DOB: DOB || '',
+            contactNumber: contactNumber || '',
+            gender: gender || '',
         });
-      }, [userDetails, dispatch]);
+    }, [userDetails, dispatch]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         // Check for empty fields
         // const emptyFields = Object.keys(userData).filter((key) => userData[key] === '');
-    
+
         // if (emptyFields.length > 0) {
         //   emptyFields.forEach((field) => {
         //     toast.error(`${field} is empty`, { position: toast.POSITION.TOP_RIGHT });
         //   });
         // } else {
-            const instance = useAxios(token)
-         try {
-            const response = await instance.put("/me/update",userData)
-            console.log(response.data,"kjdfklsjfd")
+        const instance = useAxios(token)
+        try {
+            const response = await instance.put("/me/update", userData)
+            console.log(response.data, "kjdfklsjfd")
             dispatch(getCurrentUserAsync(token))
-         } catch (error) {
+        } catch (error) {
             console.log(error)
-         }
+        }
         // }
-      };
+    };
 
 
-      useEffect(() => {
+    useEffect(() => {
         if (token) {
             dispatch(getCurrentUserAsync(token))
         }
@@ -127,7 +127,7 @@ const ProfilePage = () => {
                                         fullWidth
                                         margin="normal"
                                         value={userData?.name}
-                                        error={userData.name === ''}
+                                        required
                                         onChange={(e) =>
                                             setUserData({ ...userData, name: e.target.value })
                                         }
@@ -137,7 +137,7 @@ const ProfilePage = () => {
                                         fullWidth
                                         margin="normal"
                                         value={userData?.DOB}
-                                        error={userData.DOB === ''}
+                                        required
                                         onChange={(e) =>
                                             setUserData({ ...userData, DOB: e.target.value })
                                         }
@@ -147,7 +147,7 @@ const ProfilePage = () => {
                                         fullWidth
                                         margin="normal"
                                         value={userData?.contactNumber}
-                                        error={userData.contactNumber === ''}
+                                        required
                                         onChange={(e) =>
                                             setUserData({ ...userData, contactNumber: e.target.value })
                                         }
@@ -161,13 +161,13 @@ const ProfilePage = () => {
                                         fullWidth
                                         margin="normal"
                                         value={userData?.lastName}
-                                        error={userData.lastName === ''}
+                                        required
                                         // error={!!formErrors.lastName}
                                         onChange={(e) =>
                                             setUserData({ ...userData, lastName: e.target.value })
                                         }
                                     />
-             
+
                                     <Box
                                         sx={{
                                             display: 'flex',
@@ -222,7 +222,7 @@ const ProfilePage = () => {
                                             },
                                         }}
                                         value={userData?.email}
-                                        error={userData.email === ''} // Built-in validation for required field
+                                        required // Built-in validation for required field
                                         // helperText={userData.email === '' ? 'Email is required' : ''}
                                         onChange={(e) =>
                                             setUserData({ ...userData, email: e.target.value })
@@ -235,7 +235,7 @@ const ProfilePage = () => {
 
                             {/* Add margin-top to separate form fields and button */}
                             <Button
-                            onClick={handleSubmit}
+                                onClick={handleSubmit}
                                 variant="contained"
                                 // onClick={handleSubmit}
                                 sx={{

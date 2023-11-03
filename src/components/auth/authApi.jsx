@@ -3,9 +3,6 @@
 
 import { useAxios } from "../../utils/axios";
 
-import { useNewAxios } from "../../utils/newAxios";
-
-// const newInstance = useNewAxios();
 const instance = useAxios();
 
 
