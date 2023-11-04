@@ -53,14 +53,14 @@ const MyAccountPage = () => {
                             <p>Manage your saved address</p>
                         </div>
                     </div>
-                    <div style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    <div onClick={() => navigate("/coupon")}  style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
                             <p className = 'text-lg font-semibold'>My Coupon</p>
                             <p>Manage your discount coupon </p>
                         </div>
                     </div>
-                    <div style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    <div onClick={() => navigate("/coupon")}  style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
                             <p className = 'text-lg font-semibold'>My Coupon</p>

@@ -20,6 +20,7 @@ import OrdersPage from './pages/OrdersPage';
 import MyAccountPage from './pages/MyAccountPage';
 import ProfilePage from './pages/ProfilePage';
 import AddressPage from './pages/AddressPage';
+import CouponPage from './pages/CouponPage';
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
   {
     path: '/address',
     element: <AddressPage></AddressPage>,
+  },
+  {
+    path: '/coupon',
+    element: <CouponPage></CouponPage>,
   },
 ]);
 
