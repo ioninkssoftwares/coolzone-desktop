@@ -17,7 +17,7 @@ import CardCarousel from '../features/CardCarousel';
 import { BsBagFill } from "react-icons/bs";
 import Pagination from '../features/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllProductsAsync, fetchBannerAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus } from './productSlice';
+import { fetchAllProductsAsync, fetchBannerAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus, selectTotalItems } from './productSlice';
 import { CastForEducation } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAxios } from '../../utils/axios';
@@ -95,8 +95,10 @@ const ProductList = () => {
     const [token, setToken] = useState("");
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const productss = useSelector(selectAllProducts);
+    const totalItems = useSelector(selectTotalItems)
     const categories = useSelector(selectCategories);
     const isPending = useSelector(selectProductListStatus);
+    const [page, setPage] = useState(1)
 
     // const filters = [
     //     {
@@ -127,12 +129,25 @@ const ProductList = () => {
     const [filter, setFilter] = useState({});
 
 
+
+    const handlePage = (page) => {
+        setPage(page)
+
+    }
+
+    useEffect(() => {
+        const pagination = { page: page }
+        console.log(pagination, "kgjkjlh")
+        dispatch(fetchProductsByFiltersAsync({filter, pagination}))
+    }, [dispatch, page, filter])
+
+
     const handleFilter = (e, section, option) => {
         console.log(section.id, option.value, "handleFilter");
         const newFilter = { ...filter, [section.id]: option.value };
         setFilter(newFilter)
 
-        dispatch(fetchProductsByFiltersAsync(newFilter))
+        // dispatch(fetchProductsByFiltersAsync(newFilter))
         // const newFilter = { ...filter };
         // if (e.target.checked) {
         //   if (newFilter[section.id]) {
@@ -566,7 +581,7 @@ const ProductList = () => {
 
                     {/* Pagination component start here */}
 
-                    <Pagination />
+                    {/* <Pagination page={page} setPage={setPage} handlePage={handlePage} totalItems={totalItems} /> */}
 
 
                 </main>

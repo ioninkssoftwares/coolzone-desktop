@@ -57,7 +57,8 @@ export function updateProduct(update) {
   });
 }
 
-export const fetchProductsByFilters = async (filter) => {
+export const fetchProductsByFilters = async (filter,pagination) => {
+  console.log(filter,pagination,"ksjdfkladjsl")
   const instance = useAxios();
   try {
     console.log(filter, "query");
@@ -69,7 +70,9 @@ export const fetchProductsByFilters = async (filter) => {
       queryString += `${key}=${filter[key]}&`;
       // }
     }
-
+for(let key in pagination){
+  queryString += `${key}=${pagination[key]}`;
+}
     console.log(queryString, "query");
 
     const response = await instance.get(

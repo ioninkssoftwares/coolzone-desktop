@@ -30,7 +30,7 @@ export default function Login() {
 
 
     useEffect(() => {
-        if (user?.success) {
+        if (user?.user.role === "user") {
             console.log(user, "hjfdsfsj")
             setCookies("token", user.token);
             localStorage.setItem("isAdmin", false);
@@ -38,8 +38,27 @@ export default function Login() {
             localStorage.setItem("token", user.token);
             toast(" User Login Successful")
             navigate("/")
+        } else if( user?.user.role === "admin") {
+            console.log(user, "hjfdsfsj")
+            setCookies("adminToken", user.token);
+            localStorage.setItem("isAdmin", true);
+            localStorage.setItem("adminId", user.user._id);
+            localStorage.setItem("adminToken", user.token);
+            toast(" Admin Login Successful")
+            navigate("/admin")
         }
     }, [user])
+    // useEffect(() => {
+    //     if (user?.success) {
+    //         console.log(user, "hjfdsfsj")
+    //         setCookies("token", user.token);
+    //         localStorage.setItem("isAdmin", false);
+    //         localStorage.setItem("userId", user.user._id);
+    //         localStorage.setItem("token", user.token);
+    //         toast(" User Login Successful")
+    //         navigate("/")
+    //     }
+    // }, [user])
 
 useEffect(() => {
     if(error){

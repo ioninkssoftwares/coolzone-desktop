@@ -21,6 +21,9 @@ import MyAccountPage from './pages/MyAccountPage';
 import ProfilePage from './pages/ProfilePage';
 import AddressPage from './pages/AddressPage';
 import CouponPage from './pages/CouponPage';
+import OrdersTrackingPage from './pages/OrdersTrackingPage';
+import AdminDashboard from './pages/AdminDashboard';
+import ProductForm from './components/product/productForm';
 
 const router = createBrowserRouter([
   {
@@ -90,6 +93,18 @@ const router = createBrowserRouter([
   {
     path: '/coupon',
     element: <CouponPage></CouponPage>,
+  },
+  {
+    path: '/ordersTracking',
+    element: <OrdersTrackingPage></OrdersTrackingPage>,
+  },
+  {
+    path: '/admin',
+    element: <AdminDashboard></AdminDashboard>,
+  },
+  {
+    path: '/admin/addProduct',
+    element: <ProductForm></ProductForm>,
   },
 ]);
 
