@@ -4,12 +4,13 @@ import { addToCart, deleteItemFromCart, fetchItemsByUserId, resetCart, updateCar
 const initialState = {
   status: 'idle',
   items: [],
+  cartLength: 0,
   cartLoaded: false
 };
 
 export const addToCartAsync = createAsyncThunk(
   'cart/addToCart',
-  async ({item}) => {
+  async ({ item }) => {
     const response = await addToCart(item);
     return response.data;
   }
@@ -63,16 +64,20 @@ export const cartSlice = createSlice({
       })
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        console.log(action,"jhfsdjkhfd")
+        console.log(action, "jhfsdjkhfd")
+        state.cartLength = action.payload.products.length
         // state.items.push(action.payload);
+        
       })
       .addCase(fetchItemsByUserIdAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(fetchItemsByUserIdAsync.fulfilled, (state, action) => {
+        console.log(action,"kjkljl")
         state.status = 'idle';
         state.items = action.payload;
         state.cartLoaded = true;
+        state.cartLength = action.payload.products.length
       })
       .addCase(fetchItemsByUserIdAsync.rejected, (state, action) => {
         state.status = 'idle';
@@ -83,7 +88,7 @@ export const cartSlice = createSlice({
       })
       .addCase(updateCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index =  state.items.findIndex(item=>item.id===action.payload.id)
+        const index = state.items.findIndex(item => item.id === action.payload.id)
         state.items[index] = action.payload;
       })
       .addCase(deleteItemFromCartAsync.pending, (state) => {
@@ -91,8 +96,8 @@ export const cartSlice = createSlice({
       })
       .addCase(deleteItemFromCartAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index =  state.items.findIndex(item=>item.id===action.payload.id)
-        state.items.splice(index,1);
+        const index = state.items.findIndex(item => item.id === action.payload.id)
+        state.items.splice(index, 1);
       })
       .addCase(resetCartAsync.pending, (state) => {
         state.status = 'loading';
@@ -109,5 +114,6 @@ export const cartSlice = createSlice({
 export const selectItems = (state) => state.cart.items;
 export const selectCartStatus = (state) => state.cart.status;
 export const selectCartLoaded = (state) => state.cart.cartLoaded;
+export const cartItemsLength = (state) => state.cart.cartLength;
 
 export default cartSlice.reducer;

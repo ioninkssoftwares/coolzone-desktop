@@ -138,7 +138,7 @@ const ProductList = () => {
     useEffect(() => {
         const pagination = { page: page }
         console.log(pagination, "kgjkjlh")
-        dispatch(fetchProductsByFiltersAsync({filter, pagination}))
+        dispatch(fetchProductsByFiltersAsync({ filter, pagination }))
     }, [dispatch, page, filter])
 
 
@@ -166,10 +166,11 @@ const ProductList = () => {
         // setFilter(newFilter);
     };
 
-    //   useEffect(() => {
-    //     // const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    // useEffect(() => {
+    //     const ITEMS_PER_PAGE  = 8
+    //     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
     //     dispatch(fetchProductsByFiltersAsync({ filter }));
-    //   }, [dispatch, filter]);
+    // }, [dispatch, filter]);
 
 
     useEffect(() => {
@@ -178,10 +179,7 @@ const ProductList = () => {
         // dispatch(fetchBannerAsync())
         // dispatch(fetchAllProductsAsync())
     }, []);
-    //   useEffect(() => {
-    //     // dispatch(fetchBrandsAsync());
-    //     dispatch(fetchCategoriesAsync());
-    //   }, []);
+
 
     const products = [
         {

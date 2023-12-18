@@ -22,44 +22,44 @@ import ProfilePage from './pages/ProfilePage';
 import AddressPage from './pages/AddressPage';
 import CouponPage from './pages/CouponPage';
 import OrdersTrackingPage from './pages/OrdersTrackingPage';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import ProductForm from './components/product/productForm';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-   <Home></Home>
+      <Home></Home>
     ),
   },
   {
     path: "/products",
     element: (
-      <Products/>
+      <Products />
     ),
   },
   {
     path: "/product/:id",
     element: (
-      <ProductDetailsPage/>
+      <ProductDetailsPage />
     ),
   },
   {
     path: "/cart",
     element: (
-      <CartPage/>
+      <CartPage />
     ),
   },
   {
     path: "/checkout",
     element: (
-     <Checkout/>
+      <Checkout />
     ),
   },
   {
     path: "/membership",
     element: (
-     <MembershipPage/>
+      <MembershipPage />
     ),
   },
   {
@@ -111,10 +111,10 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-<div className='App'>
-<RouterProvider router={router} />
-<ToastContainer />
-</div>
+      <div className='App'>
+        <RouterProvider router={router} />
+        <ToastContainer />
+      </div>
     </>
   )
 }

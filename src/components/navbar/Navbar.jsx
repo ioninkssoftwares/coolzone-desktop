@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductsAsync, fetchProductsByNavbarAsync } from '../product/productSlice';
 import { Badge } from '@mui/material';
 import { AddShoppingCart } from '@mui/icons-material';
-import { fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
+import { cartItemsLength, fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
 import { useCookies } from 'react-cookie';
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -29,6 +29,7 @@ export default function Navbar() {
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
   const cartItems = useSelector(selectItems);
+  const cartItemsInLength = useSelector(cartItemsLength);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [term, setTerm] = useState("");
@@ -178,7 +179,7 @@ export default function Navbar() {
                   <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div> */}
                 <div className='cursor-pointer' onClick={() => navigate("/cart")} >
-                  <Badge badgeContent={cartItems?.products?.length} color="error">
+                  <Badge badgeContent={cartItemsInLength} color="error">
                     <AddShoppingCart />
                   </Badge>
                 </div>
