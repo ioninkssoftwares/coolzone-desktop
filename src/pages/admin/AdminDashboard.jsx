@@ -34,10 +34,10 @@ import AnalyticEcommerce from '../../components/admin/AnalyticEcommerce';
 
 // assets
 import { GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
-import avatar1 from '../../../public/assets/images/users/avatar-1.png';
-import avatar2 from '../../../public/assets/images/users/avatar-2.png';
-import avatar3 from '../../../public/assets/images/users/avatar-3.png';
-import avatar4 from '../../../public/assets/images/users/avatar-4.png';
+import avatar1 from '../../assets/images/images/users/avatar-1.png';
+import avatar2 from '../../assets/images/images/users/avatar-2.png';
+import avatar3 from '../../assets/images/images/users/avatar-3.png';
+import avatar4 from '../../assets/images/images/users/avatar-4.png';
 
 // avatar style
 const avatarSX = {
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
                     <main>
                         <div className='bg-gray-400'>
                             <AdminNavbar />
-                            <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+                            <Grid sx={{ padding: "10px 20px" }} container rowSpacing={4.5} columnSpacing={2.75}>
                                 {/* row 1 */}
                                 <Grid item xs={12} sx={{ textAlign: "center", marginTop: "10px" }}>
                                     <Typography variant="h4">Dashboard</Typography>

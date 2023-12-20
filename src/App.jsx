@@ -24,6 +24,12 @@ import CouponPage from './pages/CouponPage';
 import OrdersTrackingPage from './pages/OrdersTrackingPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ProductForm from './components/product/productForm';
+import AdminOrdersPage from './pages/admin/AdminOrdersPage';
+import UserManagement from './pages/admin/UserManagement';
+import MembershipManagement from './pages/admin/MembershipManagement';
+import InventoryManagement from './pages/admin/InventoryManagement';
+import PaymentManagement from './pages/admin/PaymentManagement';
+import ProductManagement from './pages/admin/ProductManagement';
 
 const router = createBrowserRouter([
   {
@@ -105,6 +111,30 @@ const router = createBrowserRouter([
   {
     path: '/admin/addProduct',
     element: <ProductForm></ProductForm>,
+  },
+  {
+    path: '/admin/orders',
+    element: <AdminOrdersPage></AdminOrdersPage>,
+  },
+  {
+    path: '/admin/userManagement',
+    element: <UserManagement></UserManagement>,
+  },
+  {
+    path: '/admin/membership',
+    element: <MembershipManagement></MembershipManagement>,
+  },
+  {
+    path: '/admin/inventory',
+    element: <InventoryManagement></InventoryManagement>,
+  },
+  {
+    path: '/admin/payment',
+    element: <PaymentManagement></PaymentManagement>,
+  },
+  {
+    path: '/admin/productManagement',
+    element: <ProductManagement></ProductManagement>,
   },
 ]);
 
