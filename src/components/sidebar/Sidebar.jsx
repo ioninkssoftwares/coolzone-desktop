@@ -42,7 +42,7 @@ const Sidebar = () => {
                         {isExpanded && <p>Dashboard</p>}
                     </div> */}
 
-                    <div onClick={() => navigate("/admin")} className={`flex ${location?.pathname === "/admin" ? "bg-white text-blue-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'}`}>
+                    <div onClick={() => navigate("/admin")} className={`flex ${location?.pathname === "/admin" ? "bg-white text-indigo-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'}`}>
                         <div className='p-2'>
                             <FaAddressBook className="w-auto h-6" />
                         </div>
@@ -51,28 +51,28 @@ const Sidebar = () => {
 
 
 
-                    <div onClick={() => navigate("/admin/orders")} className={`flex gap-1 ${location?.pathname === "/admin/orders" ? "bg-white text-blue-500" : "bg-primary-blue text-white"} items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
+                    <div onClick={() => navigate("/admin/orders")} className={`flex gap-1 ${location?.pathname === "/admin/orders" ? "bg-white text-indigo-500" : "bg-primary-blue text-white"} items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
                         <div className='p-2'>
                             {/* <img className="w-auto h-6" src="https://merakiui.com/images/logo.svg" alt="" /> */}
                             <AiOutlineOrderedList className="w-auto h-6 " />
                         </div>
                         {isExpanded ? <p className='' >Orders</p> : ""}
                     </div>
-                    <div onClick={() => navigate("/admin/productManagement")} className={`flex ${location?.pathname === "/admin/productManagement" ? "bg-white text-blue-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
+                    <div onClick={() => navigate("/admin/productManagement")} className={`flex ${location?.pathname === "/admin/productManagement" ? "bg-white text-indigo-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
                         <div className='p-2'>
                             {/* <img className="w-auto h-6" src="https://merakiui.com/images/logo.svg" alt="" /> */}
                             <TbBrandProducthunt className="w-auto h-6" />
                         </div>
                         {isExpanded ? <p className='' >Product</p> : ""}
                     </div>
-                    <div onClick={() => navigate("/admin/orders")} className={`flex ${location?.pathname === "/admin/userManagement" ? "bg-white text-blue-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
+                    <div onClick={() => navigate("/admin/userManagement")} className={`flex ${location?.pathname === "/admin/userManagement" ? "bg-white text-indigo-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
                         <div className='p-2'>
                             {/* <img className="w-auto h-6" src="https://merakiui.com/images/logo.svg" alt="" /> */}
                             <TbBrandProducthunt className="w-auto h-6" />
                         </div>
                         {isExpanded ? <p className='' >Customers</p> : ""}
                     </div>
-                    <div onClick={() => navigate("/admin/membership")} className={`flex ${location?.pathname === "/admin/membership" ? "bg-white text-blue-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
+                    <div onClick={() => navigate("/admin/membership")} className={`flex ${location?.pathname === "/admin/membership" ? "bg-white text-indigo-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
                         <div className='p-2'>
                             {/* <img className="w-auto h-6" src="https://merakiui.com/images/logo.svg" alt="" /> */}
                             <BiSolidCoupon className="w-auto h-6 " />
@@ -86,7 +86,7 @@ const Sidebar = () => {
                         </div>
                         {isExpanded ? <p className='' >Coupon Codes</p> : ""}
                     </div>
-                    <div onClick={() => navigate("/admin/inventory")} className={`flex ${location?.pathname === "/admin/inventory" ? "bg-white text-blue-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
+                    <div onClick={() => navigate("/admin/inventory")} className={`flex ${location?.pathname === "/admin/inventory" ? "bg-white text-indigo-500" : "bg-primary-blue text-white"} gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
                         <div className='p-2'>
                             {/* <img className="w-auto h-6" src="https://merakiui.com/images/logo.svg" alt="" /> */}
                             <MdInventory className="w-auto h-6" />

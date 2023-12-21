@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Sidebar from '../../components/sidebar/Sidebar';
-import Navbar from '../../components/navbar/Navbar';
-import AdminNavbar from '../../components/navbar/AdminNavbar';
+import Sidebar from '../../../components/sidebar/Sidebar';
+import Navbar from '../../../components/navbar/Navbar';
+import AdminNavbar from '../../../components/navbar/AdminNavbar';
 // material-ui
 import {
     Avatar,
@@ -24,20 +24,20 @@ import {
 } from '@mui/material';
 
 // project import
-import OrdersTable from '../admin/dashboard/OrdersTable';
-import IncomeAreaChart from '../admin/dashboard/IncomeAreaChart';
-import MonthlyBarChart from '../admin/dashboard/MonthlyBarChart';
-import ReportAreaChart from '../admin/dashboard/ReportAreaChart';
-import SalesColumnChart from '../admin/dashboard/SalesColumnChart';
-import MainCard from '../../components/admin/MainCard';
-import AnalyticEcommerce from '../../components/admin/AnalyticEcommerce';
+import OrdersTable from './OrdersTable';
+import IncomeAreaChart from './IncomeAreaChart';
+import MonthlyBarChart from './MonthlyBarChart';
+import ReportAreaChart from './ReportAreaChart';
+import SalesColumnChart from './SalesColumnChart';
+import MainCard from '../../../components/admin/MainCard';
+import AnalyticEcommerce from '../../../components/admin/AnalyticEcommerce';
 
 // assets
 import { GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
-import avatar1 from '../../assets/images/images/users/avatar-1.png';
-import avatar2 from '../../assets/images/images/users/avatar-2.png';
-import avatar3 from '../../assets/images/images/users/avatar-3.png';
-import avatar4 from '../../assets/images/images/users/avatar-4.png';
+import avatar1 from '../../../assets/images/images/users/avatar-1.png';
+import avatar2 from '../../../assets/images/images/users/avatar-2.png';
+import avatar3 from '../../../assets/images/images/users/avatar-3.png';
+import avatar4 from '../../../assets/images/images/users/avatar-4.png';
 
 // avatar style
 const avatarSX = {

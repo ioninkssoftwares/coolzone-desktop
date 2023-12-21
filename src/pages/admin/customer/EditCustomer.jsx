@@ -20,15 +20,16 @@ import { toast } from "react-toastify";
 // import { location, newResponse, Pagination, response, User } from "src/@types";
 // import { AdminCustomers } from "../../../componets/user/adminCustomer";
 // import AdminsideNav from "../../../componets/admin/adminDasboardnav";
-import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
+import ConfirmBox from "../../../components/admin/shared/ConfirmDialog";
 // import DashBoardLayout from "src/Layout/DasboardsLayout";
 // import { useFetch } from "src/lib/hooks/useFetch";
-import { useAxios } from "../../utils/axios";
-import { tableStyles } from "../../components/admin/shared/ConfirmDialog";
-import Sidebar from "../../components/sidebar/Sidebar";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import { useAxios } from "../../../utils/axios";
+import { tableStyles } from "../../../components/admin/shared/ConfirmDialog";
+import Sidebar from "../../../components/sidebar/Sidebar";
+import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
+import CustomerModal from "../../../components/admin/modals/CustomerModal";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -56,7 +57,7 @@ export const Button = ({
 const userTypes = ["All", "Premium"];
 
 // give main area a max widht
-const UserManagement = () => {
+const EditCustomer = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -113,37 +114,27 @@ const UserManagement = () => {
     }
 
     const all_customer_columns = [
-        {
-            flex: 0.25,
-            minWidth: 150,
+        // {
+        //     flex: 0.25,
+        //     minWidth: 150,
 
-            field: "name",
-            headerName: "Customer Name",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            renderCell: ({ row }) => (
-                <Typography variant="body1" fontWeight={500}>
-                    {row?.name}
-                </Typography>
-            ),
-        },
-        {
-            minWidth: 150,
-
-            flex: 0.25,
-            field: "email",
-            headerName: "Email",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+        //     field: "name",
+        //     headerName: "Customer Name",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     renderCell: ({ row }) => (
+        //         <Typography variant="body1" fontWeight={500}>
+        //             {row?.name}
+        //         </Typography>
+        //     ),
+        // },
         {
             minWidth: 150,
 
             flex: 0.25,
-            field: "phone",
-            headerName: "Phone",
+            field: "orderDate",
+            headerName: "Order Date",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -152,8 +143,18 @@ const UserManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "orders",
-            headerName: "Orders",
+            field: "orderType",
+            headerName: "Order Type",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 150,
+
+            flex: 0.25,
+            field: "trackingId",
+            headerName: "Tracking ID",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -168,16 +169,7 @@ const UserManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 120,
 
-            field: "customerSince",
-            headerName: "Customer Since",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
         {
             minWidth: 120,
 
@@ -239,30 +231,171 @@ const UserManagement = () => {
                     {/* <main> */}
                     <div className='bg-gray-50'>
                         <AdminNavbar />
-                        <div className="flex justify-between items-center mt-8 mb-6 px-4">
-                            <div className=" text-sm px-3">
+
+                        <div className="flex items-center m-7 ">
+                            <p className="mr-2">Customer ID</p>
+                            <span className="text-gray-400 mr-5">#CZ1235</span>
+                            <p className="mr-2">Customer Since</p>
+                            <span className="text-gray-400 mr-12"> 01-Jan-2023 - 03:21 pm</span>
+                            <div className="flex gap-12">
                                 <button
                                     // onClick={() => router.push("/admin/customers/add")}
-                                    className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+                                    className=" px-7 text-red-600 border-2 border-red-600 font-medium rounded-lg py-3  items-center transition transform active:scale-95 duration-200  "
                                 >
-                                    <span>
-                                        {/* <TbEdit /> */}
-                                    </span>
-                                    <span>Customer Summary</span>
+                                    Send Recovery Email
                                 </button>
-                            </div>
-                            <div className=" text-sm px-3">
                                 <button
                                     // onClick={() => router.push("/admin/customers/add")}
-                                    className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+                                    className=" px-7 text-red-600 border-2 border-red-600 font-medium rounded-lg py-3  items-center transition transform active:scale-95 duration-200  "
                                 >
-                                    <span>
-                                        <TbEdit />
-                                    </span>
-                                    <span>Create New Customer</span>
+                                    Reset Password
+                                </button>
+                                <button
+                                    // onClick={() => router.push("/admin/customers/add")}
+                                    className=" px-7 text-white font-medium bg-primary-blue rounded-lg py-3  items-center transition transform active:scale-95 duration-200  "
+                                >
+                                    Edit Customer
+                                </button>
+                                <button
+                                    // onClick={() => router.push("/admin/customers/add")}
+                                    className=" px-7 text-white font-medium bg-red-600 rounded-lg py-3  items-center transition transform active:scale-95 duration-200  "
+                                >
+                                    Suspend Customer
                                 </button>
                             </div>
+
                         </div>
+
+                        <div className="flex gap-10 m-7">
+                            <div className="basis-[30%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="flex gap-5">
+                                        <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                            <FiUsers />
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-400">Sravan Kumar</p>
+                                            <p>Last Order 12 Sept 2023</p>
+                                        </div>
+                                    </div>
+
+                                    <button className="flex px-3 py-2 justify-between items-center gap-3 rounded-xl bg-[#32936F29] text-gray-400">
+                                        Active
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-gray-400">
+                                            Phone
+                                        </p>
+                                        <p className=" font-bold">
+                                            +91-8888888                                      </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400">
+                                            Email
+                                        </p>
+                                        <p className=" font-bold">
+                                            ionsravan@gmail.com
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="basis-[20%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    {/* <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        This week <FaArrowDown />
+                                    </button> */}
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400">
+                                            Home Address
+                                        </p>
+                                        <p className=" font-bold">
+                                            1-2, 34, Ram Nagar, Visakhapatnam, Andhra Pradesh 530016
+                                        </p>
+                                    </div>
+                                    {/* <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Active
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            1,190 <span className="text-green-500 text-sm">+85%</span>
+
+                                        </p>
+                                    </div> */}
+                                </div>
+                            </div>
+
+                            <div className="basis-[20%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        All-time<FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400">
+                                            Total Orders
+                                        </p>
+                                        <p className=" font-bold">
+                                            ₹3,35,566.00
+                                        </p>
+                                    </div>
+                                    {/* <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Active
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            1,190 <span className="text-green-500 text-sm">+85%</span>
+
+                                        </p>
+                                    </div> */}
+                                </div>
+                            </div>
+
+                            <div className="basis-[20%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    {/* <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        This week <FaArrowDown />
+                                    </button> */}
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-red-400">
+                                            Abandoned Cart
+                                        </p>
+                                        <p className=" font-bold">
+                                            3                                        </p>
+                                    </div>
+                                    {/* <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Active
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            1,190 <span className="text-green-500 text-sm">+85%</span>
+
+                                        </p>
+                                    </div> */}
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
 
                         <div className="flex md:justify-between md:items-center md:flex-row flex-col justify-center items-center mt-8 mb-6 gap-3 px-8">
                             <div className="basis-[49%] p-4 rounded-2xl bg-white ">
@@ -277,28 +410,25 @@ const UserManagement = () => {
                                 <div className="mt-8 flex items-center justify-start gap-28 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            All Customers
+                                            All Orders
                                         </p>
                                         <p className="text-xl font-bold">
-                                            1,250 <span className="text-green-500 text-sm">+15.80%</span>
+                                            10                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Pending
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            2
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Active
+                                            Completed
                                         </p>
                                         <p className="text-xl font-bold">
-                                            1,190 <span className="text-green-500 text-sm">+85%</span>
-
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col items-start justify-center">
-                                        <p className="text-xl text-gray-400">
-                                            Inactive
-                                        </p>
-                                        <p className="text-xl font-bold">
-                                            50 <span className="text-red-600 text-sm">-10.80%</span>
-
+                                            8
                                         </p>
                                     </div>
 
@@ -316,28 +446,23 @@ const UserManagement = () => {
                                 <div className="mt-8 flex items-center justify-start gap-28 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            New Customers
-                                        </p>
+                                            Cancelled                                        </p>
                                         <p className="text-xl font-bold">
-                                            30 <span className="text-red-600 text-sm">-20.80%</span>
-
+                                            0
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Purchasing
+                                            Returned
                                         </p>
                                         <p className="text-xl font-bold">
-                                            657
-                                        </p>
+                                            0                                        </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Abandoned Carts
-                                        </p>
+                                            Damaged                                        </p>
                                         <p className="text-xl font-bold">
-                                            5
-                                        </p>
+                                            0                                        </p>
                                     </div>
 
                                 </div>
@@ -377,7 +502,7 @@ const UserManagement = () => {
 
                         <div className="flex justify-between items-center mb-8 px-4">
                             <div className="space-x-5">
-                                <p className="text-2xl ">Customers</p>
+                                <p className="text-2xl ">Sravan's Orders</p>
                             </div>
 
                             <div className="flex space-x-[12px]">
@@ -460,4 +585,4 @@ const UserManagement = () => {
     );
 };
 
-export default UserManagement;
+export default EditCustomer;

@@ -20,14 +20,15 @@ import { toast } from "react-toastify";
 // import { location, newResponse, Pagination, response, User } from "src/@types";
 // import { AdminCustomers } from "../../../componets/user/adminCustomer";
 // import AdminsideNav from "../../../componets/admin/adminDasboardnav";
-import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
+import ConfirmBox from "../../../components/admin/shared/ConfirmDialog";
 // import DashBoardLayout from "src/Layout/DasboardsLayout";
 // import { useFetch } from "src/lib/hooks/useFetch";
-import { useAxios } from "../../utils/axios";
-import { tableStyles } from "../../components/admin/shared/ConfirmDialog";
-import Sidebar from "../../components/sidebar/Sidebar";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import { useAxios } from "../../../utils/axios";
+import { tableStyles } from "../../../components/admin/shared/ConfirmDialog";
+import Sidebar from "../../../components/sidebar/Sidebar";
+import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
+import OrderModal from "../../../components/admin/modals/OrderModal";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -258,7 +259,12 @@ const AdminOrdersPage = () => {
                                     <span>
                                         <TbEdit />
                                     </span>
-                                    <span>Create New Order</span>
+                                    {/* <span>Create New Order</span> */}
+                                    <OrderModal
+                                        buttonText="Create New Order"
+                                        modalTitle="Create New Order"
+                                    // onSubmit={projectSubmit}
+                                    />
                                 </button>
                             </div>
                         </div>

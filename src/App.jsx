@@ -22,14 +22,15 @@ import ProfilePage from './pages/ProfilePage';
 import AddressPage from './pages/AddressPage';
 import CouponPage from './pages/CouponPage';
 import OrdersTrackingPage from './pages/OrdersTrackingPage';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
 import ProductForm from './components/product/productForm';
-import AdminOrdersPage from './pages/admin/AdminOrdersPage';
-import UserManagement from './pages/admin/UserManagement';
-import MembershipManagement from './pages/admin/MembershipManagement';
+import AdminOrdersPage from './pages/admin/orders/AdminOrdersPage';
+import UserManagement from './pages/admin/customer/UserManagement';
+import MembershipManagement from './pages/admin/membership/MembershipManagement';
 import InventoryManagement from './pages/admin/InventoryManagement';
 import PaymentManagement from './pages/admin/PaymentManagement';
-import ProductManagement from './pages/admin/ProductManagement';
+import ProductManagement from './pages/admin/products/ProductManagement';
+import EditCustomer from './pages/admin/customer/EditCustomer';
 
 const router = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
   {
     path: '/admin/userManagement',
     element: <UserManagement></UserManagement>,
+  },
+  {
+    path: '/admin/editCustomer',
+    element: <EditCustomer></EditCustomer>,
   },
   {
     path: '/admin/membership',
