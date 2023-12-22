@@ -28,8 +28,9 @@ import { tableStyles } from "../../../components/admin/shared/ConfirmDialog";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
-import OrderModal from "../../../components/admin/modals/OrderModal";
-import OrderDetailsModal from "../../../components/admin/modals/OrderDetailsModal";
+import { FiUsers } from "react-icons/fi";
+import CustomerModal from "../../../components/admin/modals/CustomerModal";
+import { useNavigate } from "react-router-dom";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -57,7 +58,7 @@ export const Button = ({
 const userTypes = ["All", "Premium"];
 
 // give main area a max widht
-const AdminOrdersPage = () => {
+const EditProductDetails = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -74,6 +75,7 @@ const AdminOrdersPage = () => {
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
     // const router = useRouter();
+    const navigate = useNavigate();
 
     async function getAllUsers() {
         let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
@@ -114,21 +116,21 @@ const AdminOrdersPage = () => {
     }
 
     const all_customer_columns = [
-        {
-            flex: 0.25,
-            minWidth: 150,
+        // {
+        //     flex: 0.25,
+        //     minWidth: 150,
 
-            field: "name",
-            headerName: "Customer Name",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            renderCell: ({ row }) => (
-                <Typography variant="body1" fontWeight={500}>
-                    {row?.name}
-                </Typography>
-            ),
-        },
+        //     field: "name",
+        //     headerName: "Customer Name",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     renderCell: ({ row }) => (
+        //         <Typography variant="body1" fontWeight={500}>
+        //             {row?.name}
+        //         </Typography>
+        //     ),
+        // },
         {
             minWidth: 150,
 
@@ -143,7 +145,7 @@ const AdminOrdersPage = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "Order Type",
+            field: "orderType",
             headerName: "Order Type",
             align: "left",
             headerAlign: "left",
@@ -153,8 +155,8 @@ const AdminOrdersPage = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "Order Id",
-            headerName: "Order Id",
+            field: "unitPrice",
+            headerName: "Unit Price",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -162,74 +164,85 @@ const AdminOrdersPage = () => {
         {
             minWidth: 120,
 
-            field: "Order Total",
+            field: "quantity",
+            headerName: "Qty",
+            flex: 0.2,
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 120,
+
+            field: "discount",
+            headerName: "Discount",
+            flex: 0.2,
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 120,
+
+            field: "orderTotal",
             headerName: "Order Total",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
+
         {
             minWidth: 120,
 
-            field: "Payment Status",
-            headerName: "Payment Status",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 120,
-
-            field: "Status",
+            field: "status",
             headerName: "Status",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 150,
+        // {
+        //     minWidth: 150,
 
-            field: "action",
-            headerName: "ACTION",
-            flex: 0.15,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            renderCell: ({ row }) => (
-                <Box>
-                    <Tooltip title="Edit">
-                        <IconButton
-                            // onClick={() => router.push(`/admin/customers/${row._id}`)}
-                            color="primary"
-                        >
-                            <BsEyeFill />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Edit">
-                        <IconButton
-                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
-                            color="primary"
-                        >
-                            <BsPencilFill />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                        <IconButton
-                            onClick={() => {
-                                setDeleteId(row?._id);
-                                setDeleteOpen(true);
-                            }}
-                            color="error"
-                        >
-                            <MdDeleteForever />
-                        </IconButton>
-                    </Tooltip>
-                </Box>
-            ),
-        },
+        //     field: "action",
+        //     headerName: "ACTION",
+        //     flex: 0.15,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     renderCell: ({ row }) => (
+        //         <Box>
+        //             <Tooltip title="Edit">
+        //                 <IconButton
+        //                     // onClick={() => router.push(`/admin/customers/${row._id}`)}
+        //                     color="primary"
+        //                 >
+        //                     <BsEyeFill />
+        //                 </IconButton>
+        //             </Tooltip>
+        //             <Tooltip title="Edit">
+        //                 <IconButton
+        //                     // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+        //                     color="primary"
+        //                 >
+        //                     <BsPencilFill />
+        //                 </IconButton>
+        //             </Tooltip>
+        //             <Tooltip title="Delete">
+        //                 <IconButton
+        //                     onClick={() => {
+        //                         setDeleteId(row?._id);
+        //                         setDeleteOpen(true);
+        //                     }}
+        //                     color="error"
+        //                 >
+        //                     <MdDeleteForever />
+        //                 </IconButton>
+        //             </Tooltip>
+        //         </Box>
+        //     ),
+        // },
     ];
 
     return (
@@ -240,43 +253,179 @@ const AdminOrdersPage = () => {
                     {/* <main> */}
                     <div className='bg-gray-50'>
                         <AdminNavbar />
-                        <div className="flex justify-between items-center mt-8 mb-6">
-                            <div className=" text-sm px-3">
+
+                        <div className="flex items-center m-7 ">
+                            <p className="mr-9">SAMSUNG 8 kg Fully Automatic Washing Machine</p>
+
+                            <p className="mr-2">Date Added</p>
+                            <span className="text-gray-400 mr-12"> 01-Jan-2023 - 03:21 pm</span>
+                            <p className="mr-2">Product URL</p>
+                            <span className="text-blue-600 mr-12">coolzone.in/samsung-fu..</span>
+                            <div className="flex gap-12">
+
+                                <button
+                                    onClick={() => navigate("/admin/addProduct")}
+                                    className=" px-7 text-white font-medium bg-primary-blue rounded-lg py-3  items-center transition transform active:scale-95 duration-200  "
+                                >
+                                    Edit Product
+                                </button>
                                 <button
                                     // onClick={() => router.push("/admin/customers/add")}
-                                    className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+                                    className=" px-7 text-white font-medium bg-red-600 rounded-lg py-3  items-center transition transform active:scale-95 duration-200  "
                                 >
-                                    <span>
-                                        {/* <TbEdit /> */}
-                                    </span>
-                                    {/* <span>Order Summary</span> */}
-                                    <OrderDetailsModal
-                                        buttonText="Order Summary"
-                                        modalTitle="Order Details"
-                                    // onSubmit={projectSubmit}
-                                    />
+                                    Delete Product
                                 </button>
                             </div>
-                            <div className=" text-sm px-3">
-                                <button
-                                    // onClick={() => router.push("/admin/customers/add")}
-                                    className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
-                                >
-                                    <span>
-                                        <TbEdit />
-                                    </span>
-                                    {/* <span>Create New Order</span> */}
-                                    <OrderModal
-                                        buttonText="Create New Order"
-                                        modalTitle="Create New Order"
-                                    // onSubmit={projectSubmit}
-                                    />
-                                </button>
-                            </div>
+
                         </div>
 
-                        <div className="flex md:justify-between md:items-center md:flex-row flex-col justify-center items-center mt-8 mb-6 gap-3 px-3">
-                            <div className="basis-[35%] p-4 rounded-2xl bg-white ">
+                        <div className="flex gap-10 m-7">
+
+                            <div className="basis-[20%]  h-40  p-3 bg-white rounded-lg">
+                                <div className="w-[50%] mx-auto h-full">
+                                    <img className="w-full h-full object-cover" src="https://cdn.pixabay.com/photo/2016/01/28/22/07/washing-machine-1167053_1280.jpg" alt="" />
+                                </div>
+                            </div>
+
+                            <div className="basis-[30%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="flex gap-5">
+                                        <p>Last Order 12 Sept 2023</p>
+                                        {/* <div>
+                                            <p className="text-gray-400">Sravan Kumar</p>
+                                            <p>Last Order 12 Sept 2023</p>
+                                        </div> */}
+                                    </div>
+
+                                    <button className="flex px-3 py-2 text-sm justify-between items-center gap-3 rounded-xl bg-[#32936F29] text-gray-400">
+                                        Published
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-36 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-gray-400">
+                                            Price
+                                        </p>
+                                        <p className=" font-bold">
+                                            ₹22,000.00                                   </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400">
+                                            In-Stock
+                                        </p>
+                                        <p className=" font-bold">
+                                            20
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div className="basis-[20%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        All-time<FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400">
+                                            Total Orders
+                                        </p>
+                                        <p className=" font-bold">
+                                            ₹3,35,566.00
+                                        </p>
+                                    </div>
+                                    {/* <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Active
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            1,190 <span className="text-green-500 text-sm">+85%</span>
+
+                                        </p>
+                                    </div> */}
+                                </div>
+                            </div>
+
+                            <div className="basis-[20%]  p-3 bg-white rounded-lg">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        All-time<FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400">
+                                            Views
+                                        </p>
+                                        <p className=" font-bold">
+                                            22000
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className=" text-gray-400 ">
+                                            Favourite
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            23
+
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+                        <div className="flex md:justify-between md:items-center md:flex-row flex-col justify-center items-center mt-8 mb-6 gap-3 px-8">
+                            <div className="basis-[49%] p-4 rounded-2xl bg-white ">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        This week <FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            All Orders
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            10                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Pending
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            2
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Completed
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            8
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div className="basis-[49%] p-4 rounded-2xl bg-white ">
                                 <div className="flex justify-between items-center">
                                     <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
                                         <FaCartArrowDown />
@@ -285,75 +434,34 @@ const AdminOrdersPage = () => {
                                         This week <FaArrowDown />
                                     </button>
                                 </div>
-                                <div className="mt-8 flex items-center justify-start gap-20 w-full">
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            All Orders
-                                        </p>
+                                            Cancelled                                        </p>
                                         <p className="text-xl font-bold">
-                                            960
+                                            0
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Pending
+                                            Returned
                                         </p>
                                         <p className="text-xl font-bold">
-                                            407
-                                        </p>
+                                            0                                        </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Completed
-                                        </p>
+                                            Damaged                                        </p>
                                         <p className="text-xl font-bold">
-                                            103
-                                        </p>
+                                            0                                        </p>
                                     </div>
 
                                 </div>
                             </div>
-                            <div className="basis-[35%] p-4 rounded-2xl bg-white ">
+                            {/* <div className="basis-[25%]  p-4 rounded-2xl bg-white ">
                                 <div className="flex justify-between items-center">
                                     <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
-                                        <FaCartArrowDown />
-                                    </div>
-                                    <button className="flex justify-between items-center gap-3 text-gray-400">
-                                        This week <FaArrowDown />
-                                    </button>
-                                </div>
-                                <div className="mt-8 flex items-center justify-start gap-20 w-full">
-                                    <div className="flex flex-col items-start justify-center">
-                                        <p className="text-xl text-gray-400">
-                                            All Orders
-                                        </p>
-                                        <p className="text-xl font-bold">
-                                            960
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col items-start justify-center">
-                                        <p className="text-xl text-gray-400">
-                                            Pending
-                                        </p>
-                                        <p className="text-xl font-bold">
-                                            407
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col items-start justify-center">
-                                        <p className="text-xl text-gray-400">
-                                            Completed
-                                        </p>
-                                        <p className="text-xl font-bold">
-                                            103
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className="basis-[25%]  p-4 rounded-2xl bg-white ">
-                                <div className="flex justify-between items-center">
-                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
-                                        <FaCartArrowDown />
+                                        <FiUsers />
                                     </div>
                                     <button className="flex justify-between items-center gap-3 text-gray-400">
                                         This week <FaArrowDown />
@@ -380,12 +488,12 @@ const AdminOrdersPage = () => {
 
                                 </div>
 
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="flex justify-between items-center mb-8 px-4">
                             <div className="space-x-5">
-                                <p className="text-2xl ">Customer Orders</p>
+                                <p className="text-2xl ">Purchases</p>
                             </div>
 
                             <div className="flex space-x-[12px]">
@@ -407,7 +515,7 @@ const AdminOrdersPage = () => {
                         </div>
                         {/* dashboard caerd */}
 
-                        <Grid container spacing={6} sx={{ pb: 38 }}>
+                        <Grid container spacing={6} sx={{ pb: 38, }}>
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
@@ -468,4 +576,4 @@ const AdminOrdersPage = () => {
     );
 };
 
-export default AdminOrdersPage;
+export default EditProductDetails;

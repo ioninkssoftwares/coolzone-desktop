@@ -31,6 +31,9 @@ import InventoryManagement from './pages/admin/InventoryManagement';
 import PaymentManagement from './pages/admin/PaymentManagement';
 import ProductManagement from './pages/admin/products/ProductManagement';
 import EditCustomer from './pages/admin/customer/EditCustomer';
+import AddProductByAdmin from './pages/admin/products/AddProductByAdmin';
+import EditProductDetails from './pages/admin/products/EditProductDetails';
+import CouponManagement from './pages/admin/coupon/CouponManagement';
 
 const router = createBrowserRouter([
   {
@@ -110,7 +113,7 @@ const router = createBrowserRouter([
     element: <AdminDashboard></AdminDashboard>,
   },
   {
-    path: '/admin/addProduct',
+    path: '/admin/addProducts',
     element: <ProductForm></ProductForm>,
   },
   {
@@ -140,6 +143,18 @@ const router = createBrowserRouter([
   {
     path: '/admin/productManagement',
     element: <ProductManagement></ProductManagement>,
+  },
+  {
+    path: '/admin/addProduct',
+    element: <AddProductByAdmin></AddProductByAdmin>,
+  },
+  {
+    path: '/admin/editProductDetails',
+    element: <EditProductDetails></EditProductDetails>,
+  },
+  {
+    path: '/admin/coupon',
+    element: <CouponManagement></CouponManagement>,
   },
 ]);
 

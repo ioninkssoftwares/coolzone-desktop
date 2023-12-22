@@ -79,7 +79,7 @@ const Sidebar = () => {
                         </div>
                         {isExpanded ? <p className='transition-all duration-300' >Membership Plans</p> : ""}
                     </div>
-                    <div onClick={() => navigate("/admin")} className={`flex gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
+                    <div onClick={() => navigate("/admin/coupon")} className={`flex gap-1 items-center justify-start w-full hover:bg-white hover:text-primary-blue ${isExpanded ? 'text-white' : 'text-white'} `}>
                         <div className='p-2'>
                             {/* <img className="w-auto h-6" src="https://merakiui.com/images/logo.svg" alt="" /> */}
                             <BiSolidCoupon className="w-auto h-6 " />

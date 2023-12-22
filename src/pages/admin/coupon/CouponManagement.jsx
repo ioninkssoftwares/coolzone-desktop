@@ -20,19 +20,19 @@ import { toast } from "react-toastify";
 // import { location, newResponse, Pagination, response, User } from "src/@types";
 // import { AdminCustomers } from "../../../componets/user/adminCustomer";
 // import AdminsideNav from "../../../componets/admin/adminDasboardnav";
-import ConfirmBox from "../../../components/admin/shared/ConfirmDialog";
+// import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
 // import DashBoardLayout from "src/Layout/DasboardsLayout";
 // import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "../../../utils/axios";
 import { tableStyles } from "../../../components/admin/shared/ConfirmDialog";
+// import { tableStyles } from "../../components/admin/shared/ConfirmDialog";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
+import AddCouponPartnerModal from "../../../components/admin/modals/AddCouponPartnerModal";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useNavigate } from "react-router-dom";
 
 
 export const Button = ({
@@ -56,63 +56,9 @@ export const Button = ({
 };
 
 const userTypes = ["All", "Premium"];
-const rows = [
-    { id: 1, totalOrder: 10000, name: 'Blutooth Devices', price: 14, totalSales: 123456 },
-    { id: 2, totalOrder: 10000, name: 'Airpods', price: 31, totalSales: 123456 },
-    { id: 3, totalOrder: 10000, name: 'Neck Band', price: 71, totalSales: 123456 },
-    { id: 4, totalOrder: 10000, name: 'IR Remote', price: 31, totalSales: 123456 },
-    { id: 5, totalOrder: 10000, name: 'Smart Watch', price: 40, totalSales: 123456 },
-    { id: 6, totalOrder: 10000, name: 'Power Bank', price: 150, totalSales: 123456 },
-];
-
-const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    {
-        field: 'name',
-        headerName: 'Name',
-        width: 150,
-        renderCell: (params) => (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <AccountCircleIcon style={{ marginRight: '5px' }} />
-                {params.value}
-            </div>
-        ),
-        editable: true,
-    },
-    {
-        field: 'totalOrder',
-        headerName: 'Total Order',
-        type: 'number',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'price',
-        headerName: 'Price',
-        type: 'number',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'totalSales',
-        headerName: 'Total Sales',
-        type: 'number',
-        width: 110,
-        editable: true,
-    },
-    // {
-    //     field: 'fullName',
-    //     headerName: 'Full name',
-    //     description: 'This column has a value getter and is not sortable.',
-    //     sortable: false,
-    //     width: 160,
-    //     valueGetter: (params) =>
-    //         `${params.row.firstName || ''} ${params.row.totalOrder || ''}`,
-    // },
-];
 
 // give main area a max widht
-const ProductManagement = () => {
+const CouponManagement = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -128,7 +74,7 @@ const ProductManagement = () => {
     });
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
-    const navigate = useNavigate();
+    // const router = useRouter();
 
     async function getAllUsers() {
         let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
@@ -173,8 +119,8 @@ const ProductManagement = () => {
             flex: 0.25,
             minWidth: 150,
 
-            field: "productName",
-            headerName: "Product Name",
+            field: "partnersName",
+            headerName: "Partners Name",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -188,8 +134,8 @@ const ProductManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "category",
-            headerName: "Category",
+            field: "email",
+            headerName: "Email",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -198,8 +144,8 @@ const ProductManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "unitPrice",
-            headerName: "Unit Price",
+            field: "couponSegment",
+            headerName: "Coupon Segment",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -208,8 +154,8 @@ const ProductManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "stock",
-            headerName: "In-Stock",
+            field: "orders",
+            headerName: "Orders",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -217,8 +163,8 @@ const ProductManagement = () => {
         {
             minWidth: 120,
 
-            field: "discount",
-            headerName: "Discount",
+            field: "orderTotal",
+            headerName: "Order Total",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
@@ -227,8 +173,8 @@ const ProductManagement = () => {
         {
             minWidth: 120,
 
-            field: "totalValue",
-            headerName: "Total Value",
+            field: "cashbackEarned",
+            headerName: "Cashback Earned",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
@@ -244,47 +190,47 @@ const ProductManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 150,
+        // {
+        //     minWidth: 150,
 
-            field: "action",
-            headerName: "ACTION",
-            flex: 0.15,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            renderCell: ({ row }) => (
-                <Box>
-                    <Tooltip title="Edit">
-                        <IconButton
-                            // onClick={() => router.push(`/admin/customers/${row._id}`)}
-                            color="primary"
-                        >
-                            <BsEyeFill />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Edit">
-                        <IconButton
-                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
-                            color="primary"
-                        >
-                            <BsPencilFill />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                        <IconButton
-                            onClick={() => {
-                                setDeleteId(row?._id);
-                                setDeleteOpen(true);
-                            }}
-                            color="error"
-                        >
-                            <MdDeleteForever />
-                        </IconButton>
-                    </Tooltip>
-                </Box>
-            ),
-        },
+        //     field: "action",
+        //     headerName: "ACTION",
+        //     flex: 0.15,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     renderCell: ({ row }) => (
+        //         <Box>
+        //             <Tooltip title="Edit">
+        //                 <IconButton
+        //                     // onClick={() => router.push(`/admin/customers/${row._id}`)}
+        //                     color="primary"
+        //                 >
+        //                     <BsEyeFill />
+        //                 </IconButton>
+        //             </Tooltip>
+        //             <Tooltip title="Edit">
+        //                 <IconButton
+        //                     // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+        //                     color="primary"
+        //                 >
+        //                     <BsPencilFill />
+        //                 </IconButton>
+        //             </Tooltip>
+        //             <Tooltip title="Delete">
+        //                 <IconButton
+        //                     onClick={() => {
+        //                         setDeleteId(row?._id);
+        //                         setDeleteOpen(true);
+        //                     }}
+        //                     color="error"
+        //                 >
+        //                     <MdDeleteForever />
+        //                 </IconButton>
+        //             </Tooltip>
+        //         </Box>
+        //     ),
+        // },
     ];
 
     return (
@@ -304,51 +250,140 @@ const ProductManagement = () => {
                                     <span>
                                         {/* <TbEdit /> */}
                                     </span>
-                                    <span>Product</span>
+                                    <span>Coupon Codes</span>
                                 </button>
                             </div>
                             <div className=" text-sm px-3">
                                 <button
-                                    onClick={() => navigate("/admin/addProduct")}
+                                    // onClick={() => router.push("/admin/customers/add")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
                                         <TbEdit />
                                     </span>
-                                    <span>Add Product</span>
+                                    {/* <span>Add a new Affiliated Partner</span> */}
+                                    <AddCouponPartnerModal
+                                        buttonText="Add a new Affiliated Partner"
+                                        modalTitle="Add a New Partner"
+                                    // onSubmit={projectSubmit}
+                                    />
                                 </button>
                             </div>
                         </div>
 
-                        <Box sx={{ height: 400, width: '50%', margin: "0 auto" }}>
-                            <Box sx={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: "space-between", margin: "20px 0px" }}>
-                                <Typography variant="h5" >
-                                    Top Selling Products
-                                </Typography>
-                                <Typography variant="body1" sx={{ color: "#04a7ff" }}>
-                                    See more
-                                </Typography>
-                            </Box>
+                        <div className="flex md:justify-between md:items-center md:flex-row flex-col justify-center items-center mt-8 mb-6 gap-3 px-8">
+                            <div className="basis-[49%] p-4 rounded-2xl bg-white ">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        This week <FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-36 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            All Coupons
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            25
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Active Coupons
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            21
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Inactive Coupons
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            4
 
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: {
-                                            pageSize: 5,
-                                        },
-                                    },
-                                }}
-                                pageSizeOptions={[5]}
-                                checkboxSelection
-                                disableRowSelectionOnClick
-                            />
-                        </Box>
+                                        </p>
+                                    </div>
 
-                        <div className="flex justify-between items-center mb-8 mt-12 px-4">
+                                </div>
+                            </div>
+                            <div className="basis-[49%] p-4 rounded-2xl bg-white ">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FaCartArrowDown />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        This week <FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Total Purchasing
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            6,56,567
+
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Cashback Given
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            63,500
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            No. of times Coupon Used
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            95
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {/* <div className="basis-[25%]  p-4 rounded-2xl bg-white ">
+                                <div className="flex justify-between items-center">
+                                    <div className="bg-[#04A7FF29] p-4 text-primary-blue rounded-xl text-xl">
+                                        <FiUsers />
+                                    </div>
+                                    <button className="flex justify-between items-center gap-3 text-gray-400">
+                                        This week <FaArrowDown />
+                                    </button>
+                                </div>
+                                <div className="mt-8 flex items-center justify-start gap-20 w-full">
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Abandoned Cart
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            09% <span className="text-green-400 text-sm">+0.005%</span>
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-col items-start justify-center">
+                                        <p className="text-xl text-gray-400">
+                                            Customers
+                                        </p>
+                                        <p className="text-xl font-bold">
+                                            45
+                                        </p>
+                                    </div>
+
+
+                                </div>
+
+                            </div> */}
+                        </div>
+
+                        <div className="flex justify-between items-center mb-8 px-4">
                             <div className="space-x-5">
-                                <p className="text-2xl ">Inventory Items</p>
+                                <p className="text-2xl ">Affiliated Partners</p>
                             </div>
 
                             <div className="flex space-x-[12px]">
@@ -370,7 +405,7 @@ const ProductManagement = () => {
                         </div>
                         {/* dashboard caerd */}
 
-                        <Grid container spacing={6} sx={{ pb: 38, }}>
+                        <Grid container spacing={6} >
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
@@ -431,4 +466,4 @@ const ProductManagement = () => {
     );
 };
 
-export default ProductManagement;
+export default CouponManagement;
