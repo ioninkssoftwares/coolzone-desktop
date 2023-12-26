@@ -80,13 +80,23 @@ const AdminDashboard = () => {
     const navigate = useNavigate();
     const [value, setValue] = useState('today');
     const [slot, setSlot] = useState('week');
+    const [token, setToken] = useState("");
+
+
+    useEffect(() => {
+        if (cookies.adminToken === undefined) {
+            toast.error("Please Login")
+            navigate('/admin/login')
+        }
+    }, [])
+
 
     // useEffect(() => {
-    //     if (cookies.adminToken === undefined) {
-    //       toast.error("Please Login")
-    //       navigate('/login')
+    //     if (cookies && cookies.token) {
+    //       console.log(cookies.token, "dslfjadslk")
+    //       setToken(cookies.token);
     //     }
-    //   }, [])
+    //   }, [cookies]);
 
 
     return (

@@ -30,7 +30,9 @@ import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import CustomerModal from "../../../components/admin/modals/CustomerModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { TokenRounded } from "@mui/icons-material";
+import { useCookies } from "react-cookie";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -59,11 +61,14 @@ const userTypes = ["All", "Premium"];
 
 // give main area a max widht
 const EditProductDetails = () => {
+    const { id } = useParams();
+    const [token, setToken] = useState("");
+    const [cookies, setCookies] = useCookies(["adminToken"]);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [deleteId, setDeleteId] = useState("");
-    const instance = useAxios();
+    const instance = useAxios(token);
     const [users, setUsers] = useState([]);
     const [pagination, setPagination] = useState(
         null
@@ -77,43 +82,38 @@ const EditProductDetails = () => {
     // const router = useRouter();
     const navigate = useNavigate();
 
-    async function getAllUsers() {
-        let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
-        try {
-            setLoading(true);
-            const res = await instance.get(
-                `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
-            );
-            if (res.data) {
-                setUsers(res?.data?.data);
-                setPagination(res?.data?.pagination);
-                setLoading(false);
-            }
-        } catch (e) {
-            setLoading(false);
-            // ErrorDispaly(e);
-        }
-    }
+
 
     useEffect(() => {
-        getAllUsers();
-    }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
 
-    async function deleteCustomer() {
+
+    if (id) {
+        console.log(id, "dsfhksdjf")
+    }
+
+    const getProductDetailsById = async () => {
         try {
-            setDeleteLoading(true);
-            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            const res = await instance.get("")
             if (res.data) {
-                toast.success("Customer Deleted Successfully");
-                setDeleteLoading(false);
-                setDeleteOpen(false);
-                getAllUsers();
+
             }
-        } catch (e) {
-            setDeleteLoading(false);
-            // ErrorDispaly(e);
+
+        } catch (error) {
+            console.log(error)
         }
     }
+    useEffect(() => {
+        if (id) {
+            getProductDetailsById(id)
+        }
+    }, [id])
+
+
 
     const all_customer_columns = [
         // {

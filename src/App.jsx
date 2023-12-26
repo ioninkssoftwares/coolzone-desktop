@@ -34,6 +34,8 @@ import EditCustomer from './pages/admin/customer/EditCustomer';
 import AddProductByAdmin from './pages/admin/products/AddProductByAdmin';
 import EditProductDetails from './pages/admin/products/EditProductDetails';
 import CouponManagement from './pages/admin/coupon/CouponManagement';
+import AdminLogin from './pages/admin/AdminLogin';
+import EditProductById from './pages/admin/products/EditProductById';
 
 const router = createBrowserRouter([
   {
@@ -109,6 +111,10 @@ const router = createBrowserRouter([
     element: <OrdersTrackingPage></OrdersTrackingPage>,
   },
   {
+    path: '/admin/login',
+    element: <AdminLogin></AdminLogin>,
+  },
+  {
     path: '/admin',
     element: <AdminDashboard></AdminDashboard>,
   },
@@ -149,8 +155,8 @@ const router = createBrowserRouter([
     element: <AddProductByAdmin></AddProductByAdmin>,
   },
   {
-    path: '/admin/editProductDetails',
-    element: <EditProductDetails></EditProductDetails>,
+    path: '/admin/editProductDetails/:id',
+    element: <EditProductById></EditProductById>,
   },
   {
     path: '/admin/coupon',

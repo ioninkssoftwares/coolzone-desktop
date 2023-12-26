@@ -36,7 +36,7 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import Textarea from '@mui/joy/Textarea';
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 export const Button = ({
@@ -116,8 +116,9 @@ const columns = [
 ];
 
 // give main area a max widht
-const AddProductByAdmin = () => {
+const EditProductById = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -125,6 +126,7 @@ const AddProductByAdmin = () => {
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState("");
     const [deleteId, setDeleteId] = useState("");
+    const [uploadedProductImage, setUploadedProductImages] = useState([])
     const instance = useAxios(token);
     const [users, setUsers] = useState([]);
 
@@ -135,7 +137,7 @@ const AddProductByAdmin = () => {
         page: 0,
         pageSize: 50,
     });
-    const [name, setName] = useState("");
+    // const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
     const [filesToupload, setFilesToUpload] = useState([]);
     const [product, setProduct] = useState({
@@ -154,15 +156,66 @@ const AddProductByAdmin = () => {
         costPrice: 0,
         returnPolicy: true
     })
-    const [returnSwitch, setReturnSwitch] = useState(true);
-    const [discountSwitch, setDiscountSwitch] = useState(true);
-    const [featuredSwitch, setFeaturedSwitch] = useState(true);
-    const [bestSellerSwitch, setBestSellerSwitch] = useState(true);
+    const [returnSwitch, setReturnSwitch] = useState(null);
+    const [discountSwitch, setDiscountSwitch] = useState(null);
+    const [featuredSwitch, setFeaturedSwitch] = useState(null);
+    const [bestSellerSwitch, setBestSellerSwitch] = useState(null);
+    const [productData, setProductData] = useState({});
+
+    if (uploadedProductImage) {
+        console.log(uploadedProductImage, "dsjfhakjdfh")
+    }
+
+
+    // const handleImageRemove = async (productId, index, url) => {
+
+
+
+    //     const removeImages = async () => {
+    //       try {
+    //         const productImage = {
+    //           productId: propertyId,
+    //           imageUrl: url
+    //         }
+    //         const res = await instance.post("/admin/deletePropertyImage", propertyImage);
+    //         if (res?.data) {
+    //           toast("Image Remove Successfully")
+
+    //           console.log(res.data.data, "dataimage")
+
+    //         }
+    //         const updatedImages = uploadedPropertyImages.map((property) => {
+    //           if (property.id === propertyId) {
+    //             const updatedPropertyImages = property.images[0].filter((_, i) => i !== index);
+    //             return { ...property, images: [updatedPropertyImages] };
+    //           }
+    //           return property;
+    //         });
+    //         setUploadedPropertyImages(updatedImages);
+    //       } catch (e) {
+    //         ErrorDispaly(e);
+    //       }
+    //     };
+    //     removeImages();
+    //     // const updatedImages = uploadedPropertyImages.map((item) => {
+    //     //   if (item.id === propertyId) {
+    //     //     const newImages = [...item.images];
+    //     //     newImages.splice(index, 1);
+    //     //     return { ...item, images: newImages };
+    //     //   }
+    //     //   return item;
+    //     // });
+    //     // setUploadedPropertyImages(updatedImages);
+    //   };
+
+
+
 
     // Handler function to update the switch state
+
+
     const handleReturnSwitch = (event) => {
         setReturnSwitch(event.target.checked);
-        console.log(event.target.checked, "jfhasdjkfhsdajk")
         setProduct({ ...product, returnPolicy: event.target.checked })
     };
     const handleDiscountSwitch = (event) => {
@@ -177,6 +230,89 @@ const AddProductByAdmin = () => {
         setBestSellerSwitch(event.target.checked);
         setProduct({ ...product, best_seller: event.target.checked })
     };
+
+
+
+    useEffect(() => {
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
+
+
+    if (id) {
+        console.log(id, "dsfhksdjf")
+    }
+
+    const getProductDetailsById = async (productId) => {
+        try {
+            const res = await instance.get(`/product/${productId}`)
+            if (res.data) {
+                console.log(res.data.product, "djshfkjsa")
+                setProductData(res.data.product)
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        if (id) {
+            getProductDetailsById(id)
+        }
+    }, [id])
+
+
+    // useEffect(() => {
+
+    // }, [productData])
+
+
+
+    useEffect(() => {
+        if (productData.Discount) {
+            setReturnSwitch(true);
+        } else {
+            setReturnSwitch(false)
+        }
+        if (productData.best_seller) {
+            setBestSellerSwitch(true);
+        } else {
+            setBestSellerSwitch(false)
+        }
+        if (productData.featured) {
+            setFeaturedSwitch(true);
+        } else {
+            setFeaturedSwitch(false)
+        }
+        if (productData.returnPolicy) {
+            setReturnSwitch(true);
+        } else {
+            setReturnSwitch(false)
+        }
+
+        if (productData.images) {
+            const imageUrls = productData.images.map(image => image.url);
+            setUploadedProductImages(imageUrls);
+        }
+        setProduct({
+            Discount: productData?.Discount,
+            ratings: productData?.ratings,
+            Stock: productData?.Stock,
+            name: productData?.name,
+            price: productData?.price,
+            description: productData?.description,
+            category: productData?.category,
+            brand: productData?.brand,
+            specification: productData?.specification,
+            featured: productData?.featured,
+            best_seller: productData?.best_seller,
+            shortDescription: productData?.shortDescription,
+            costPrice: productData?.costPrice,
+            returnPolicy: productData?.returnPolicy
+        })
+    }, [productData])
 
 
 
@@ -203,45 +339,6 @@ const AddProductByAdmin = () => {
         }
     }, [cookies]);
 
-    // const router = useRouter();
-
-    // async function getAllUsers() {
-    //     let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
-    //     try {
-    //         setLoading(true);
-    //         const res = await instance.get(
-    //             `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
-    //         );
-    //         if (res.data) {
-    //             setUsers(res?.data?.data);
-    //             setPagination(res?.data?.pagination);
-    //             setLoading(false);
-    //         }
-    //     } catch (e) {
-    //         setLoading(false);
-    //         // ErrorDispaly(e);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getAllUsers();
-    // }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
-
-    // async function deleteCustomer() {
-    //     try {
-    //         setDeleteLoading(true);
-    //         const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
-    //         if (res.data) {
-    //             toast.success("Customer Deleted Successfully");
-    //             setDeleteLoading(false);
-    //             setDeleteOpen(false);
-    //             getAllUsers();
-    //         }
-    //     } catch (e) {
-    //         setDeleteLoading(false);
-    //         // ErrorDispaly(e);
-    //     }
-    // }
 
 
 
@@ -278,28 +375,12 @@ const AddProductByAdmin = () => {
         ProductFormData.append('Discount', product.Discount);
 
         try {
-            const res = await instance.post("/admin/product/new", ProductFormData)
+            const res = await instance.put(`/admin/product/${id}`, ProductFormData)
             if (res.data) {
                 setLoading(false)
                 console.log(res.data, "sdfhadjkf")
-                toast("Product has been added")
+                toast("Product has been updated")
                 navigate("/admin/productManagement")
-                setProduct({
-                    Discount: false,
-                    ratings: 0,
-                    Stock: 1,
-                    name: "",
-                    price: 0,
-                    description: "",
-                    category: "",
-                    brand: "",
-                    specification: "",
-                    featured: true,
-                    best_seller: true,
-                    shortDescription: "",
-                    costPrice: 0,
-                    returnPolicy: true
-                })
             }
         } catch (error) {
             console.log(error, "skdfhsjdf")
@@ -430,7 +511,7 @@ const AddProductByAdmin = () => {
                                             label="Selling Price"
                                             fullWidth
                                             margin="normal"
-                                            value={product.sellingPrice}
+                                            value={product.price}
                                             onChange={(e) =>
                                                 setProduct({ ...product, price: e.target.value })
                                             }
@@ -511,50 +592,50 @@ const AddProductByAdmin = () => {
 
 
                                     {/* <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Type</InputLabel>
-                                            <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
-                                                value={clients}
-                                                label="Select Customer"
-                                            onChange={handleClient}
-                                            >
-                                                { clients && clients.map((name) => (
-                                            <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
-                                            style={getStyles(name, personName, theme)}
-                                            >
-                                                {name?.clientName}
-                                            </MenuItem>
-                                        ))}
-                                            </Select>
-                                        </FormControl>
-                                        <TextField
-                                            label="Value"
-                                            fullWidth
-                                            margin="normal"
-                                        value={projectData.project_name}
-                                        onChange={(e) =>
-                                            setProjectData({ ...projectData, project_name: e.target.value })
-                                        }
-                                        />
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={clients}
+                                            label="Select Customer"
+                                        onChange={handleClient}
+                                        >
+                                            { clients && clients.map((name) => (
+                                        <MenuItem
+                                            key={name?.clientName}
+                                            value={name?.clientName}
+                                        style={getStyles(name, personName, theme)}
+                                        >
+                                            {name?.clientName}
+                                        </MenuItem>
+                                    ))}
+                                        </Select>
+                                    </FormControl>
+                                    <TextField
+                                        label="Value"
+                                        fullWidth
+                                        margin="normal"
+                                    value={projectData.project_name}
+                                    onChange={(e) =>
+                                        setProjectData({ ...projectData, project_name: e.target.value })
+                                    }
+                                    />
 
-                                    </Box> */}
+                                </Box> */}
 
                                     {/* <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
-                                        <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
-                                            Expiry Date
-                                        </Typography>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                label="Add Expiry Date"
-                                                control={<Switch defaultChecked />}
+                                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                        Expiry Date
+                                    </Typography>
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            label="Add Expiry Date"
+                                            control={<Switch defaultChecked />}
 
-                                            />
-                                        </FormGroup>
-                                    </Box> */}
+                                        />
+                                    </FormGroup>
+                                </Box> */}
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['DatePicker', 'DatePicker']}>
                                             <DatePicker
@@ -570,7 +651,7 @@ const AddProductByAdmin = () => {
 
                                 </div>
                                 <div className="basis-[45%] p-10">
-                                    <Textarea onChange={(event) => setProduct({
+                                    <Textarea value={product?.shortDescription} onChange={(event) => setProduct({
                                         ...product,
                                         shortDescription: event.target.value
                                     })} placeholder="Short Description" minRows={3} />
@@ -579,7 +660,7 @@ const AddProductByAdmin = () => {
                                         Product Long Description
                                     </Typography>
 
-                                    <Textarea onChange={(event) => setProduct({ ...product, description: event.target.value })} placeholder="Your text goes here" minRows={5} />
+                                    <Textarea value={product?.description} onChange={(event) => setProduct({ ...product, description: event.target.value })} placeholder="Your text goes here" minRows={5} />
                                     <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Add a long description for your product
                                     </Typography>
@@ -634,8 +715,8 @@ const AddProductByAdmin = () => {
 
                                     <div className="mt-12">
                                         {/* <label className="inline-block mb-2 text-gray-500">
-                            Select Product Images (for Multiple images please upload one after one)
-                        </label> */}
+                        Select Product Images (for Multiple images please upload one after one)
+                    </label> */}
                                         <div className="flex items-center flex-col gap-4  w-full ">
 
                                             <label className=" pb-4 flex flex-col w-full border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
@@ -672,6 +753,60 @@ const AddProductByAdmin = () => {
                                     </div>
                                 </div>
 
+
+                                {/* <div className="m-4">
+                                    {uploadedProductImage?.map((product) => (
+                                        <div key={product}>
+                                            <label className="inline-block mb-2 text-gray-500">
+                                                Uploaded Product Images
+                                            </label>
+                                            <div className="w-full h-40">
+                                                <div className="w-full h-40 flex space-x-2 overflow-x-hidden scrollbar-hide">
+                                                    {product.images[0] ? (
+                                                        product.images[0].map((curElem, index) => (
+                                                            <div key={index} className="relative w-[150px] ">
+                                                                <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
+                                                                <button
+                                                                    onClick={() => handleImageRemove(property.id, index, curElem)}
+                                                                    className="absolute top-1 left-1 bg-red-500 text-white px-2 py-1 rounded-full"
+                                                                >
+                                                                    X
+                                                                </button>
+                                                            </div>
+                                                        ))
+                                                    ) : null}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div> */}
+
+                                <div className="m-4">
+                                    <label className="inline-block mb-2 text-gray-500">
+                                        Uploaded Product Images
+                                    </label>
+                                    <div className="w-full h-40">
+                                        <div className="w-full h-40 flex space-x-2 overflow-x-hidden scrollbar-hide">
+                                            {uploadedProductImage.map((imageUrl, index) => (
+                                                <div key={index} className="relative w-[150px]">
+                                                    <img
+                                                        style={{ width: "100%", objectFit: "cover", height: "100%" }}
+                                                        src={imageUrl}
+                                                        alt={`Product Image ${index + 1}`}
+                                                    />
+                                                    <button
+                                                        onClick={() => handleImageRemove(/* Pass necessary parameters here */)}
+                                                        className="absolute top-1 left-1 bg-red-500 text-white px-2 py-1 rounded-full"
+                                                    >
+                                                        X
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
 
@@ -686,4 +821,4 @@ const AddProductByAdmin = () => {
     );
 };
 
-export default AddProductByAdmin;
+export default EditProductById;

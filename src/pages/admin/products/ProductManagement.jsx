@@ -33,6 +33,7 @@ import { FiUsers } from "react-icons/fi";
 // import { ErrorDispaly } from "../property";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 
 export const Button = ({
@@ -116,8 +117,10 @@ const ProductManagement = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [token, setToken] = useState("");
     const [deleteId, setDeleteId] = useState("");
-    const instance = useAxios();
+    const instance = useAxios(token);
+    const [allProducts, setAllProducts] = useState([]);
     const [users, setUsers] = useState([]);
     const [pagination, setPagination] = useState(
         null
@@ -128,6 +131,7 @@ const ProductManagement = () => {
     });
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
+    const [cookies, setCookies] = useCookies(["adminToken"]);
     const navigate = useNavigate();
 
     async function getAllUsers() {
@@ -168,6 +172,46 @@ const ProductManagement = () => {
         }
     }
 
+
+    if (allProducts) {
+        console.log(allProducts, "dshfsjkdfsjk")
+    }
+
+
+    useEffect(() => {
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
+
+
+
+    const getProductsByAdmin = async () => {
+        try {
+
+            const res = await instance.get("/admin/products")
+            if (res.data) {
+                setAllProducts(res.data.products)
+            }
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    useEffect(() => {
+        if (token) {
+            getProductsByAdmin()
+        }
+    }, [token])
+
+
+
+
+
     const all_customer_columns = [
         {
             flex: 0.25,
@@ -198,7 +242,7 @@ const ProductManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "unitPrice",
+            field: "price",
             headerName: "Unit Price",
             align: "left",
             headerAlign: "left",
@@ -208,7 +252,7 @@ const ProductManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "stock",
+            field: "Stock",
             headerName: "In-Stock",
             align: "left",
             headerAlign: "left",
@@ -258,19 +302,21 @@ const ProductManagement = () => {
                     <Tooltip title="Edit">
                         <IconButton
                             // onClick={() => router.push(`/admin/customers/${row._id}`)}
-                            color="primary"
-                        >
-                            <BsEyeFill />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Edit">
-                        <IconButton
-                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+                            onClick={() => navigate(`/admin/editProductDetails/${row._id}`)}
                             color="primary"
                         >
                             <BsPencilFill />
                         </IconButton>
                     </Tooltip>
+                    {/* <Tooltip title="Edit">
+                        <IconButton
+                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+
+                            color="primary"
+                        >
+                            <BsPencilFill />
+                        </IconButton>
+                    </Tooltip> */}
                     <Tooltip title="Delete">
                         <IconButton
                             onClick={() => {
@@ -374,7 +420,7 @@ const ProductManagement = () => {
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
-                                        rows={users || []}
+                                        rows={allProducts || []}
                                         columns={all_customer_columns}
                                         getRowId={(row) => row._id}
                                         autoHeight
