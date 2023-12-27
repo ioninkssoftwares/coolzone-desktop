@@ -81,7 +81,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
-const OrderDetailsModal = ({ buttonText, modalTitle, onSubmit }) => {
+const OrderDetailsModal = ({ buttonText, modalTitle, products }) => {
     // const instance = useAxios();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(dayjs('2022-04-17'));
@@ -102,6 +102,10 @@ const OrderDetailsModal = ({ buttonText, modalTitle, onSubmit }) => {
         project_categories: '',
     });
 
+
+    if (products) {
+        console.log(products, "lkjlkjlkkl")
+    }
     const [pagination, setPagination] = useState(
         null
     );

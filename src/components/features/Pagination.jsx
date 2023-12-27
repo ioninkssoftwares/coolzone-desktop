@@ -61,3 +61,4 @@ const Pagination = ({ page, setPage, handlePage, totalItems }) => {
 }
 
 export default Pagination
+

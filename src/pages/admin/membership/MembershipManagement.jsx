@@ -29,6 +29,8 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import AddCustomerForMembershipModal from "../../../components/admin/modals/AddCustomerForMembershipModal";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -57,6 +59,7 @@ const userTypes = ["All", "Premium"];
 
 // give main area a max widht
 const MembershipManagement = () => {
+    const navigate = useNavigate();
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -253,7 +256,7 @@ const MembershipManagement = () => {
                             </div>
                             <div className=" text-sm basis-[35%] px-3 flex gap-4">
                                 <button
-                                    // onClick={() => router.push("/admin/customers/add")}
+                                    onClick={() => navigate("/admin/editMembershipPlans")}
                                     className=" px-3 font-medium  w-full border-2 border-primary-blue text-primary-blue rounded-xl py-3  transition transform active:scale-95 duration-200  "
                                 >
                                     Edit Membership Details
@@ -266,7 +269,12 @@ const MembershipManagement = () => {
                                     <span>
                                         <TbEdit />
                                     </span>
-                                    <span>Add New Customer</span>
+                                    {/* <span>Add New Customer</span> */}
+                                    <AddCustomerForMembershipModal
+                                        buttonText="Add New Customer"
+                                        modalTitle="Add New Customer"
+                                    // onSubmit={projectSubmit}
+                                    />
                                 </button>
                             </div>
                         </div>

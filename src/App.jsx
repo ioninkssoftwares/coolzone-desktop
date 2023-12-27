@@ -36,6 +36,7 @@ import EditProductDetails from './pages/admin/products/EditProductDetails';
 import CouponManagement from './pages/admin/coupon/CouponManagement';
 import AdminLogin from './pages/admin/AdminLogin';
 import EditProductById from './pages/admin/products/EditProductById';
+import EditMembershipPlans from './pages/admin/membership/EditMembershipPlans';
 
 const router = createBrowserRouter([
   {
@@ -137,6 +138,10 @@ const router = createBrowserRouter([
   {
     path: '/admin/membership',
     element: <MembershipManagement></MembershipManagement>,
+  },
+  {
+    path: '/admin/editMembershipPlans',
+    element: <EditMembershipPlans></EditMembershipPlans>,
   },
   {
     path: '/admin/inventory',

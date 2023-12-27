@@ -30,6 +30,7 @@ import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import OrderModal from "../../../components/admin/modals/OrderModal";
 import OrderDetailsModal from "../../../components/admin/modals/OrderDetailsModal";
+import { useCookies } from "react-cookie";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -62,7 +63,12 @@ const AdminOrdersPage = () => {
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [deleteId, setDeleteId] = useState("");
-    const instance = useAxios();
+    const [token, setToken] = useState("");
+    const [cookies, setCookies] = useCookies(["adminToken"]);
+    const [allProducts, setAllProducts] = useState([]);
+
+
+    const instance = useAxios(token);
     const [users, setUsers] = useState([]);
     const [pagination, setPagination] = useState(
         null
@@ -75,43 +81,42 @@ const AdminOrdersPage = () => {
     const [selected, setSelected] = useState("All");
     // const router = useRouter();
 
-    async function getAllUsers() {
-        let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
+
+    if (allProducts) {
+        console.log(allProducts, "jsdahfaksdjhf")
+    }
+
+    const getProductsByAdmin = async () => {
         try {
-            setLoading(true);
-            const res = await instance.get(
-                `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
-            );
+
+            const res = await instance.get("/admin/products")
             if (res.data) {
-                setUsers(res?.data?.data);
-                setPagination(res?.data?.pagination);
-                setLoading(false);
+                setAllProducts(res.data.products)
             }
-        } catch (e) {
-            setLoading(false);
-            // ErrorDispaly(e);
+
+
+        } catch (error) {
+            console.log(error);
         }
     }
+
 
     useEffect(() => {
-        getAllUsers();
-    }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
-
-    async function deleteCustomer() {
-        try {
-            setDeleteLoading(true);
-            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
-            if (res.data) {
-                toast.success("Customer Deleted Successfully");
-                setDeleteLoading(false);
-                setDeleteOpen(false);
-                getAllUsers();
-            }
-        } catch (e) {
-            setDeleteLoading(false);
-            // ErrorDispaly(e);
+        if (token) {
+            getProductsByAdmin()
         }
-    }
+    }, [token])
+
+
+    useEffect(() => {
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
+
+
+
 
     const all_customer_columns = [
         {
@@ -253,7 +258,7 @@ const AdminOrdersPage = () => {
                                     <OrderDetailsModal
                                         buttonText="Order Summary"
                                         modalTitle="Order Details"
-                                    // onSubmit={projectSubmit}
+
                                     />
                                 </button>
                             </div>
@@ -269,7 +274,8 @@ const AdminOrdersPage = () => {
                                     <OrderModal
                                         buttonText="Create New Order"
                                         modalTitle="Create New Order"
-                                    // onSubmit={projectSubmit}
+                                        // onSubmit={projectSubmit}
+                                        products={allProducts}
                                     />
                                 </button>
                             </div>

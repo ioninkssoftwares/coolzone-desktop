@@ -19,13 +19,80 @@ import { TimePicker } from '@mui/x-date-pickers';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-import { useCookies } from 'react-cookie';
-import { useAxios } from '../../../utils/axios';
 // import { useAxios } from '../../utills/axios';
 
 
 
 
+// function SearchDropdown({ options, onSelect, propertyData }) {
+//     const [searchQuery, setSearchQuery] = useState('');
+//     const [isOpen, setIsOpen] = useState(false);
+//     const [selectedOption, setSelectedOption] = useState(null);
+
+
+
+//     useEffect(() => {
+//       if (propertyData) {
+//         setSearchQuery(propertyData?.location.name);
+//         setSelectedOption(null);
+//       }
+//     }, [propertyData]);
+
+
+//     const filteredOptions = options?.filter((option) =>
+//       option.name.toLowerCase().includes(searchQuery.toLowerCase())
+//     );
+
+//     const handleSearchChange = (e) => {
+//       setSearchQuery(e.target.value);
+//       setSelectedOption(null);
+//     };
+
+//     const handleOptionSelect = (optionName) => {
+//       onSelect(optionName);
+//       setSelectedOption(optionName);
+//       setSearchQuery('');
+//       setIsOpen(false);
+//     };
+
+//     const placeholder = selectedOption ? selectedOption : "Search locations";
+
+
+//     return (
+
+//       <div style={{ margin: "20px 0" }} className="relative">
+//         <div
+//           className={`relative z-10 ${isOpen ? "border-blue-500" : ""
+//             } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
+//         >
+//           <input
+//             style={{ borderRadius: "18px" }}
+//             type="text"
+//             className="inputField"
+//             placeholder={placeholder}
+//             value={searchQuery}
+//             onChange={handleSearchChange}
+//             onClick={() => setIsOpen(true)}
+//           />
+//         </div>
+
+//         {isOpen && (
+//           <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
+//             {filteredOptions.map((option) => (
+//               <div
+//                 key={option._id}
+//                 className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+//                 onClick={() => handleOptionSelect(option.name)}
+//               >
+//                 {option.name}
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//       </div>
+
+//     );
+//   }
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -71,20 +138,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 
-const OrderModal = ({ buttonText, modalTitle, products }) => {
-
+const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => {
+    // const instance = useAxios();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(dayjs('2022-04-17'));
     // const theme = useTheme();
     const [status, setStatus] = useState('');
-    const [token, setToken] = useState("");
-    const [allProducts, setAllProducts] = useState([]);
     const [selectedClient, setSelectedClient] = useState('');
     const [clients, setClients] = useState(null)
-    const [cookies, setCookies] = useCookies(["adminToken"]);
     const [clientNames, setClientNames] = useState([]);
-    const [saveProduct, setSaveProduct] = useState([]);
-    const [filterSaveProduct, setFilterSaveProduct] = useState([]);
     const [projectData, setProjectData] = useState({
         project_name: '',
         status: '',
@@ -95,17 +157,11 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
         project_categories: '',
     });
 
-
-    const instance = useAxios(token);
     // const [switchState, setSwitchState] = useState(false);
 
     // const handleSwitchChange = (event) => {
     //     setSwitchState(event.target.checked);
     // };
-
-    if (allProducts) {
-        console.log(allProducts, "dskfhaj")
-    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -132,15 +188,6 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
 
     };
 
-
-    useEffect(() => {
-        if (cookies && cookies.adminToken) {
-            console.log(cookies.adminToken, "fdsfsdfsf")
-            setToken(cookies.adminToken);
-        }
-    }, [cookies]);
-
-
     const style = {
         position: 'absolute',
         display: "flex",
@@ -156,69 +203,87 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
         outline: 'none', // Remove default focus outline
     };
 
+    // MUI DropDown
 
-
-
-
-
-
-    const getProductsByAdmin = async () => {
-        try {
-
-            const res = await instance.get("/admin/products")
-            if (res.data) {
-                setAllProducts(res.data.products)
-            }
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
-    useEffect(() => {
-        if (token) {
-            getProductsByAdmin()
-        }
-    }, [token])
-
-
-
-    // Product Search FUnctionality
-
-    const [searchQuery, setSearchQuery] = useState('');
-
-    // Filter products based on the search query
-    const filteredProducts = products?.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    if (filteredProducts) {
-        console.log(filteredProducts, "ghjghjjhhjhgh")
-    }
-
-    // Handle click on "Remove" button to remove a product from saveProduct
-    const handleRemoveClick = (productId) => {
-        setSaveProduct((prevSaveProduct) => prevSaveProduct.filter((id) => id !== productId));
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
     };
 
-    // Handle click on a product to save its ID
-    const handleProductClick = (productId) => {
-        setSaveProduct((prevSaveProduct) => [...prevSaveProduct, productId]);
+    const names = [
+        'Completed',
+        "Ongoing",
+        "Onhold",
+        "Pending",
+    ];
+
+
+    // const clientNames = [
+    //     'Completed',
+    //     "Ongoing",
+    //     "Onhold",
+    //     "Pending",
+    // ];
+
+
+
+    const handleChange = (event) => {
+        console.log(event.target.value, "clieee")
+
+        setStatus(event.target.value);
+        setProjectData({
+            ...projectData,
+            status: event.target.value
+        });
     };
 
-    // now show selected products
 
-    // Filter products based on saved product IDs
-    useEffect(() => {
-        const filteredSaveProducts = products.filter((product) => saveProduct.includes(product._id));
-        setFilterSaveProduct(filteredSaveProducts);
-    }, [saveProduct, products]);
 
-    if (filterSaveProduct) {
-        console.log(filterSaveProduct, "jhjkhkjk")
-    }
+    // Get all Clients
+    const getAllClients = async () => {
+        // try {
+        //     const res = await instance.get("/client/allclientlist/admin");
+
+        //     if (res.data.TaskList) {
+        //         setClients(res?.data?.TaskList);
+
+        //         console.log(res.data.TaskList, "task")
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        // }
+    };
+
+
+    // useEffect(() => {
+    //     console.log("API call started");
+    //     getAllClients(); // Make the API call
+    // }, []);
+
+
+
+    const handleClient = (event) => {
+        console.log(event.target.value, "clieee")
+        setSelectedClient(event.target.value)
+        setProjectData({
+            ...projectData,
+            clientEmail: event.target.value.clientEmail
+        });
+    };
+
+
+
+
+    // if (projectData) {
+    //     console.log(projectData, "project")
+    // }
+
     return (
         <>
             {/* <p></p> */}
@@ -409,106 +474,81 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                     </Box>
 
                     <Box sx={{ flexBasis: "45%" }}>
-
+                        {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+                            {modalTitle}
+                        </Typography> */}
                         <Typography sx={{ mt: 5, mb: 2, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                             Items
                         </Typography>
 
+                        <Search>
+                            <SearchIconWrapper>
+                                <SearchIcon />
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Search>
+
+
+
 
                         <div className="mt-8">
-                            {/* Search Input */}
-                            <div className="mb-4 w-full">
-                                <input
-                                    type="text"
-                                    placeholder="Search..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="border border-gray-300 p-2 w-full"
-                                />
-                            </div>
-
-
-                            {/* Product List with fixed height and scrollbar */}
-                            <div className="max-h-40 overflow-y-auto">
+                            <div className="flow-root">
                                 <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                    {filteredProducts.map((product, index) => (
-                                        <li key={index} className="flex py-6" onClick={() => handleProductClick(product._id)}>
-                                            {/* Product Image */}
-                                            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                <img src={product.images && product.images.length > 0 ? product?.images[0].url : ""} className="h-full w-full object-cover object-center" />
-                                            </div>
+                                    <li className="flex py-6">
+                                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                            <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
+                                        </div>
 
-                                            {/* Product Details */}
-                                            <div className="ml-4 flex flex-1 flex-col">
-                                                <div>
-                                                    <div className="flex justify-between text-base font-medium text-gray-900">
-                                                        <h3>
-                                                            <a href="#">{product.name}</a>
-                                                        </h3>
-                                                        <p className="ml-4">${product.price.toFixed(2)}</p>
-                                                    </div>
-                                                    {/* <p className="mt-1 text-sm text-gray-500">{product.quantity > 0 ? `Qty ${product.quantity}` : 'Out of Stock'}</p> */}
+                                        <div className="ml-4 flex flex-1 flex-col">
+                                            <div>
+                                                <div className="flex justify-between text-base font-medium text-gray-900">
+                                                    <h3>
+                                                        <a href="#">Throwback Hip Bag</a>
+                                                    </h3>
+                                                    <p className="ml-4">$90.00</p>
                                                 </div>
-                                                <div className="flex flex-1 items-end justify-between text-sm">
-                                                    <p className="text-gray-500">Qty {product.Stock}</p>
-                                                    <div className="flex">
-                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                                            Remove
-                                                        </button>
-                                                    </div>
+                                                <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                                            </div>
+                                            <div className="flex flex-1 items-end justify-between text-sm">
+                                                <p className="text-gray-500">Qty 1</p>
+
+                                                <div className="flex">
+                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
                                                 </div>
                                             </div>
-                                        </li>
-                                    ))}
+                                        </div>
+                                    </li>
+
+                                    <li className="flex py-6">
+                                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                            <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg" alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch." className="h-full w-full object-cover object-center" />
+                                        </div>
+
+                                        <div className="ml-4 flex flex-1 flex-col">
+                                            <div>
+                                                <div className="flex justify-between text-base font-medium text-gray-900">
+                                                    <h3>
+                                                        <a href="#">Medium Stuff Satchel</a>
+                                                    </h3>
+                                                    <p className="ml-4">$32.00</p>
+                                                </div>
+                                                <p className="mt-1 text-sm text-gray-500">Blue</p>
+                                            </div>
+                                            <div className="flex flex-1 items-end justify-between text-sm">
+                                                <p className="text-gray-500">Qty 1</p>
+
+                                                <div className="flex">
+                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
-
-
-                        <p className='mt-4 text-xl font-semibold'>Selected Products</p>
-                        {/*----------------------------------------------------------------- FIlter save Products List----- */}
-                        <div className='mt-8'>
-
-                            {/* Product List with fixed height and scrollbar */}
-                            <div className="max-h-40 overflow-y-auto">
-                                <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                    {filterSaveProduct.map((product, index) => (
-                                        <li key={index} className="flex py-6" >
-                                            {/* Product Image */}
-                                            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                <img src={product.images && product.images.length > 0 ? product?.images[0].url : ""} className="h-full w-full object-cover object-center" />
-                                            </div>
-
-                                            {/* Product Details */}
-                                            <div className="ml-4 flex flex-1 flex-col">
-                                                <div>
-                                                    <div className="flex justify-between text-base font-medium text-gray-900">
-                                                        <h3>
-                                                            <a href="#">{product.name}</a>
-                                                        </h3>
-                                                        <p className="ml-4">${product.price.toFixed(2)}</p>
-                                                    </div>
-                                                    {/* <p className="mt-1 text-sm text-gray-500">{product.quantity > 0 ? `Qty ${product.quantity}` : 'Out of Stock'}</p> */}
-                                                </div>
-                                                <div className="flex flex-1 items-end justify-between text-sm">
-                                                    <p className="text-gray-500">Qty {product.Stock}</p>
-                                                    <div className="flex">
-                                                        <button onClick={() => handleRemoveClick(product._id)} type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                                            Remove
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-
-
-
-
                         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                             <div className="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
@@ -539,10 +579,11 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
 
 
 
+
                 </Box>
             </Modal>
         </>
     );
 };
 
-export default OrderModal;
+export default AddCustomerForMembershipModal;
