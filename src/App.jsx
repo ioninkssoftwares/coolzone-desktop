@@ -28,15 +28,18 @@ import AdminOrdersPage from './pages/admin/orders/AdminOrdersPage';
 import UserManagement from './pages/admin/customer/UserManagement';
 import MembershipManagement from './pages/admin/membership/MembershipManagement';
 import InventoryManagement from './pages/admin/InventoryManagement';
-import PaymentManagement from './pages/admin/PaymentManagement';
+import PaymentManagement from './pages/admin/payment/PaymentManagement';
 import ProductManagement from './pages/admin/products/ProductManagement';
 import EditCustomer from './pages/admin/customer/EditCustomer';
 import AddProductByAdmin from './pages/admin/products/AddProductByAdmin';
-import EditProductDetails from './pages/admin/products/EditProductDetails';
-import CouponManagement from './pages/admin/coupon/CouponManagement';
+// import EditProductDetails from './pages/admin/products/EditProductDetails';
+// import CouponManagement from './pages/admin/coupon/PartnerCouponManagement';
 import AdminLogin from './pages/admin/AdminLogin';
 import EditProductById from './pages/admin/products/EditProductById';
 import EditMembershipPlans from './pages/admin/membership/EditMembershipPlans';
+import AnalyticsAndReports from './pages/admin/analytics/AnalyticsAndReports';
+import PartnerCouponManagement from './pages/admin/coupon/PartnerCouponManagement';
+import CreateCoupon from './pages/admin/coupon/CreateCoupon';
 
 const router = createBrowserRouter([
   {
@@ -164,8 +167,16 @@ const router = createBrowserRouter([
     element: <EditProductById></EditProductById>,
   },
   {
-    path: '/admin/coupon',
-    element: <CouponManagement></CouponManagement>,
+    path: '/admin/partnerCoupon',
+    element: <PartnerCouponManagement></PartnerCouponManagement>,
+  },
+  {
+    path: '/admin/createCoupon',
+    element: <CreateCoupon></CreateCoupon>,
+  },
+  {
+    path: '/admin/siteSettings',
+    element: <AnalyticsAndReports></AnalyticsAndReports>,
   },
 ]);
 

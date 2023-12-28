@@ -8,91 +8,20 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { Checkbox, CircularProgress, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { TimePicker } from '@mui/x-date-pickers';
-// import { Search } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
-// import { useAxios } from '../../utills/axios';
+import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import { useAxios } from '../../../utils/axios';
 
-
-
-
-// function SearchDropdown({ options, onSelect, propertyData }) {
-//     const [searchQuery, setSearchQuery] = useState('');
-//     const [isOpen, setIsOpen] = useState(false);
-//     const [selectedOption, setSelectedOption] = useState(null);
-
-
-
-//     useEffect(() => {
-//       if (propertyData) {
-//         setSearchQuery(propertyData?.location.name);
-//         setSelectedOption(null);
-//       }
-//     }, [propertyData]);
-
-
-//     const filteredOptions = options?.filter((option) =>
-//       option.name.toLowerCase().includes(searchQuery.toLowerCase())
-//     );
-
-//     const handleSearchChange = (e) => {
-//       setSearchQuery(e.target.value);
-//       setSelectedOption(null);
-//     };
-
-//     const handleOptionSelect = (optionName) => {
-//       onSelect(optionName);
-//       setSelectedOption(optionName);
-//       setSearchQuery('');
-//       setIsOpen(false);
-//     };
-
-//     const placeholder = selectedOption ? selectedOption : "Search locations";
-
-
-//     return (
-
-//       <div style={{ margin: "20px 0" }} className="relative">
-//         <div
-//           className={`relative z-10 ${isOpen ? "border-blue-500" : ""
-//             } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
-//         >
-//           <input
-//             style={{ borderRadius: "18px" }}
-//             type="text"
-//             className="inputField"
-//             placeholder={placeholder}
-//             value={searchQuery}
-//             onChange={handleSearchChange}
-//             onClick={() => setIsOpen(true)}
-//           />
-//         </div>
-
-//         {isOpen && (
-//           <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
-//             {filteredOptions.map((option) => (
-//               <div
-//                 key={option._id}
-//                 className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-//                 onClick={() => handleOptionSelect(option.name)}
-//               >
-//                 {option.name}
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-
-//     );
-//   }
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -139,23 +68,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => {
-    // const instance = useAxios();
+
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(dayjs('2022-04-17'));
     // const theme = useTheme();
     const [status, setStatus] = useState('');
+    const [token, setToken] = useState("");
     const [selectedClient, setSelectedClient] = useState('');
     const [clients, setClients] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [cookies, setCookies] = useCookies(["adminToken"]);
     const [clientNames, setClientNames] = useState([]);
-    const [projectData, setProjectData] = useState({
-        project_name: '',
-        status: '',
-        clientEmail: '',
-        startDate: '',
-        endDate: '',
-        project_company: '',
+    const [service, setService] = useState([]);
+    const [customerData, setCustomerData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        serviceType: '',
         project_categories: '',
     });
+    const instance = useAxios(token);
+    const [age, setAge] = React.useState('');
+
+    const handleChangeService = (event) => {
+        setCustomerData({ ...customerData, serviceType: event.target.value })
+    };
 
     // const [switchState, setSwitchState] = useState(false);
 
@@ -172,35 +112,36 @@ const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => 
     };
 
     const handleSubmit = async () => {
-        // onSubmit(projectData);
-        // setOpen(false);
+
+        setLoading(true)
         try {
-
-            const res = await instance.post("/project/addProject/admin", projectData);
-
+            const res = await instance.post("/admin/addMember", customerData);
             if (res.data) {
+                setLoading(false)
                 console.log(res.data)
             }
 
         } catch (error) {
-            console.log(error)
+            setLoading(false)
+            console.log(error, "sadfhjfas")
+            toast.error(error.response.data.message || error.message)
         }
 
     };
 
     const style = {
         position: 'absolute',
-        display: "flex",
-        gap: 7,
         top: '50%',
+        maxHeight: '600px', // Set a maximum height for the container
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 900,
+        width: 1200,
         bgcolor: 'white', // Changed background color to white
         boxShadow: 24,
         p: 3, // Adjust padding as needed
         borderRadius: 4, // Add border radius for rounded corners
         outline: 'none', // Remove default focus outline
+        overflowY: 'auto', // or 'scroll'
     };
 
     // MUI DropDown
@@ -237,8 +178,8 @@ const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => 
         console.log(event.target.value, "clieee")
 
         setStatus(event.target.value);
-        setProjectData({
-            ...projectData,
+        setCustomerData({
+            ...customerData,
             status: event.target.value
         });
     };
@@ -247,42 +188,29 @@ const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => 
 
     // Get all Clients
     const getAllClients = async () => {
-        // try {
-        //     const res = await instance.get("/client/allclientlist/admin");
 
-        //     if (res.data.TaskList) {
-        //         setClients(res?.data?.TaskList);
-
-        //         console.log(res.data.TaskList, "task")
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
     };
-
-
-    // useEffect(() => {
-    //     console.log("API call started");
-    //     getAllClients(); // Make the API call
-    // }, []);
 
 
 
     const handleClient = (event) => {
         console.log(event.target.value, "clieee")
         setSelectedClient(event.target.value)
-        setProjectData({
-            ...projectData,
+        setCustomerData({
+            ...customerData,
             clientEmail: event.target.value.clientEmail
         });
     };
 
+    useEffect(() => {
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
 
 
 
-    // if (projectData) {
-    //     console.log(projectData, "project")
-    // }
 
     return (
         <>
@@ -300,38 +228,99 @@ const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => 
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-
-                    <Box sx={{ flexBasis: "45%" }}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {modalTitle}
-                        </Typography>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
-                            <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
-                                Customer Information
+                    <Box sx={{ display: "flex", gap: 7 }}>
+                        <Box sx={{ flexBasis: "45%" }}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                                {modalTitle}
                             </Typography>
-                            <FormGroup>
-                                <FormControlLabel
-                                    label="New Customer"
-                                    control={<Switch defaultChecked />}
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
+                                <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                    Customer Information
+                                </Typography>
+                                {/* <FormGroup>
+                                    <FormControlLabel
+                                        label="New Customer"
+                                        control={<Switch defaultChecked />}
 
+                                    />
+                                </FormGroup> */}
+                            </Box>
+
+                            <form>
+                                {/* Add margin-bottom to separate form fields */}
+
+                                <TextField
+                                    label="Enter Name"
+                                    fullWidth
+                                    margin="normal"
+                                    value={customerData.name}
+                                    onChange={(e) =>
+                                        setCustomerData({ ...customerData, name: e.target.value })
+                                    }
                                 />
-                            </FormGroup>
+                                <TextField
+                                    label="Enter Email"
+                                    fullWidth
+                                    margin="normal"
+                                    value={customerData.email}
+                                    onChange={(e) =>
+                                        setCustomerData({ ...customerData, email: e.target.value })
+                                    }
+                                />
+                                <TextField
+                                    label="Enter Mobile No."
+                                    fullWidth
+                                    margin="normal"
+                                    value={customerData.phone}
+                                    onChange={(e) =>
+                                        setCustomerData({ ...customerData, phone: e.target.value })
+                                    }
+                                />
+
+                                <FormGroup>
+                                    <FormControlLabel
+                                        label="Add Address"
+                                        control={<Switch defaultChecked />}
+
+                                    />
+                                </FormGroup>
+
+                            </form>
                         </Box>
 
-                        <form>
-                            {/* Add margin-bottom to separate form fields */}
+                        <Box sx={{ flexBasis: "45%" }}>
 
+                            <Box sx={{ marginTop: 9 }}>
+                                <TextField
+                                    label="Enter Address"
+                                    fullWidth
+                                    margin="normal"
+                                    value={customerData.address}
+                                    onChange={(e) =>
+                                        setCustomerData({ ...customerData, address: e.target.value })
+                                    }
+                                />
+                                <TextField
+                                    label="Stree no. "
+                                    fullWidth
+                                    margin="normal"
+                                    value={customerData.project_name}
+                                    onChange={(e) =>
+                                        setCustomerData({ ...customerData, project_name: e.target.value })
+                                    }
+                                />
 
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Select Customer</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    // value={clients}
-                                    label="Select Customer"
-                                // onChange={handleClient}
-                                >
-                                    {/* { clients && clients.map((name) => (
+                                <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">City</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            // value={clients}
+                                            label="Select Customer"
+                                        // onChange={handleClient}
+                                        >
+                                            {/* { clients && clients.map((name) => (
                                             <MenuItem
                                                 key={name?.clientName}
                                                 value={name?.clientName}
@@ -340,20 +329,19 @@ const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => 
                                                 {name?.clientName}
                                             </MenuItem>
                                         ))} */}
-                                </Select>
-                            </FormControl>
+                                        </Select>
+                                    </FormControl>
 
-                            <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Payment Type</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        // value={clients}
-                                        label="Select Customer"
-                                    // onChange={handleClient}
-                                    >
-                                        {/* { clients && clients.map((name) => (
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">State</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            // value={clients}
+                                            label="Select Customer"
+                                        // onChange={handleClient}
+                                        >
+                                            {/* { clients && clients.map((name) => (
                                             <MenuItem
                                                 key={name?.clientName}
                                                 value={name?.clientName}
@@ -362,224 +350,197 @@ const AddCustomerForMembershipModal = ({ buttonText, modalTitle, onSubmit }) => 
                                                 {name?.clientName}
                                             </MenuItem>
                                         ))} */}
-                                    </Select>
-                                </FormControl>
+                                        </Select>
+                                    </FormControl>
 
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Order Type</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        // value={clients}
-                                        label="Select Customer"
-                                    // onChange={handleClient}
-                                    >
-                                        {/* { clients && clients.map((name) => (
-                                            <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
-                                            // style={getStyles(name, personName, theme)}
-                                            >
-                                                {name?.clientName}
-                                            </MenuItem>
-                                        ))} */}
-                                    </Select>
-                                </FormControl>
+                                </Box>
 
-                            </Box>
-                            <Typography sx={{ marginTop: 2 }}>
-                                Order Time and Date
-                            </Typography>
-
-                            <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DatePicker', 'DatePicker']}>
-                                        <DatePicker
-                                            label="Pick a Date"
-                                            value={value}
-                                            onChange={(newValue) => setValue(newValue)}
+                                <Box sx={{ marginTop: 1, display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
+                                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                        Billing Address
+                                    </Typography>x
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            label="Same as Customer Address"
+                                            control={<Switch defaultChecked />}
                                         />
-                                    </DemoContainer>
-                                </LocalizationProvider>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['TimePicker', 'TimePicker']}>
-                                        <TimePicker
-                                            label="Pick a Time"
-                                            value={value}
-                                            onChange={(newValue) => setValue(newValue)}
-                                        />
-                                    </DemoContainer>
-                                </LocalizationProvider>
+                                    </FormGroup>
+                                </Box>
+
+
                             </Box>
 
-                            <FormControl fullWidth sx={{ marginTop: 2 }}>
-                                <InputLabel id="demo-simple-select-label">Order Status</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    // value={clients}
-                                    label="Order Status"
-                                // onChange={handleClient}
-                                >
-                                    {/* { clients && clients.map((name) => (
-                                            <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
-                                            // style={getStyles(name, personName, theme)}
-                                            >
-                                                {name?.clientName}
-                                            </MenuItem>
-                                        ))} */}
-                                </Select>
-                            </FormControl>
+                        </Box>
 
 
-
-                            <TextField
-                                label="Order Note"
-                                fullWidth
-                                margin="normal"
-                                value={projectData.project_name}
-                                onChange={(e) =>
-                                    setProjectData({ ...projectData, project_name: e.target.value })
-                                }
-                            />
-
-
-
-
-
-                            {/* Add margin-top to separate form fields and button */}
-                            <Box sx={{ display: "flex", justifyContent: "end" }}>
-                                <Button
-                                    variant="contained"
-                                    onClick={handleSubmit}
-                                    sx={{
-                                        marginTop: 2,
-                                        padding: 2,
-                                        textAlign: "end",
-                                        backgroundColor: '#04a7ff', // Set the background color
-                                        // '&:hover': {
-                                        //     backgroundColor: '#db8e57', // Set the hover background color
-                                        // },
-                                        color: 'white', // Set the text color
-                                    }}
-                                    className="bg-[#04a7ff] text-white"
-                                >
-                                    Submit
-                                </Button>
-                            </Box>
-
-                        </form>
                     </Box>
 
-                    <Box sx={{ flexBasis: "45%" }}>
-                        {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {modalTitle}
+                    <Box>
+                        {/* <Typography sx={{ mt: 5, mb: 2, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                            Select Service Type
                         </Typography> */}
-                        <Typography sx={{ mt: 5, mb: 2, color: "gray" }} id="modal-modal-title" variant="p" component="p">
-                            Items
-                        </Typography>
+                        <Box sx={{ maxWidth: 220 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label"> Select Service Type</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={service}
+                                    label="Age"
+                                    onChange={handleChangeService}
+                                >
+                                    <MenuItem value={10}>Bronze Service</MenuItem>
+                                    <MenuItem value={20}>Silver Service</MenuItem>
+                                    <MenuItem value={30}>Gold Service</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
 
-                        <Search>
-                            <SearchIconWrapper>
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Search>
+                        <p className='my-4'>Select Any 4 items</p>
+
+                        <Box sx={{ display: "flex", gap: 3 }}>
+                            <Box sx={{ display: 'inline-block', border: "2px solid gray", padding: 2, borderRadius: "15px" }}>
+                                <p className='mb-4 font-semibold'>Television</p>
+                                <p className='mb-1 font-semibold'>20” , 21” - 29” </p>
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="L.C.D" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="L.E.D" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Plasma" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Smart T.V" />
+                                    </FormGroup>
+                                </Box>
+                            </Box>
+
+                            <Box sx={{ display: 'inline-block', border: "2px solid gray", padding: 2, borderRadius: "15px" }}>
+                                <p className='mb-4 font-semibold'>Air Conditioner</p>
+                                {/* <p className='mb-1 font-semibold'>20” , 21” - 29” </p> */}
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Window A/C" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Split A/C" />
+                                    </FormGroup>
+
+                                </Box>
+                            </Box>
+                        </Box>
+
+                        <Box sx={{ marginTop: 4, display: "flex", gap: 3 }}>
+                            <Box sx={{ display: 'inline-block', border: "2px solid gray", padding: 2, borderRadius: "15px" }}>
+                                <p className='mb-4 font-semibold'>Fridge</p>
+                                <p className='mb-1 font-semibold'>Household </p>
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Classic Single door Fridge" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Top Freezer" />
+                                    </FormGroup>
+
+                                </Box>
+                                <p className='my-2 font-semibold'>Commercial </p>
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Visi Cooler" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Deep Freezer" />
+                                    </FormGroup>
+
+                                </Box>
+                            </Box>
+
+
+                            <Box sx={{ display: 'inline-block', border: "2px solid gray", padding: 2, borderRadius: "15px" }}>
+                                <p className='mb-4 font-semibold'>Microwave</p>
+                                <p className='mb-1 font-semibold'>Household </p>
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Microvave" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="O.T.G." />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Convection Oven" />
+                                    </FormGroup>
+
+                                </Box>
+                                <p className='my-2 font-semibold'>Commercial </p>
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Standard Oven" />
+                                    </FormGroup>
+                                    {/* <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="L.E.D" />
+                                    </FormGroup> */}
+
+                                </Box>
+                            </Box>
 
 
 
+                        </Box>
 
-                        <div className="mt-8">
-                            <div className="flow-root">
-                                <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                    <li className="flex py-6">
-                                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                            <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
-                                        </div>
+                        <Box sx={{ marginTop: 4, display: "flex", gap: 3 }}>
 
-                                        <div className="ml-4 flex flex-1 flex-col">
-                                            <div>
-                                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                                    <h3>
-                                                        <a href="#">Throwback Hip Bag</a>
-                                                    </h3>
-                                                    <p className="ml-4">$90.00</p>
-                                                </div>
-                                                <p className="mt-1 text-sm text-gray-500">Salmon</p>
-                                            </div>
-                                            <div className="flex flex-1 items-end justify-between text-sm">
-                                                <p className="text-gray-500">Qty 1</p>
 
-                                                <div className="flex">
-                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
+                            <Box sx={{ display: 'inline-block', border: "2px solid gray", padding: 2, borderRadius: "15px" }}>
+                                <p className='mb-4 font-semibold'>Washing Machine</p>
+                                {/* <p className='mb-1 font-semibold'>20” , 21” - 29” </p> */}
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Top Load Agitator" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Top load Impeller" />
+                                    </FormGroup>
+                                </Box>
+                            </Box>
 
-                                    <li className="flex py-6">
-                                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                            <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg" alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch." className="h-full w-full object-cover object-center" />
-                                        </div>
+                            <Box sx={{ display: 'inline-block', border: "2px solid gray", padding: 2, borderRadius: "15px" }}>
+                                <p className='mb-4 font-semibold'>Mixing</p>
+                                {/* <p className='mb-1 font-semibold'>20” , 21” - 29” </p> */}
+                                <Box sx={{ display: "flex", gap: 1 }}>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Juicer" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Mixer Grinder" />
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel control={<Checkbox defaultChecked />} label="Water Filter" />
+                                    </FormGroup>
+                                </Box>
+                            </Box>
 
-                                        <div className="ml-4 flex flex-1 flex-col">
-                                            <div>
-                                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                                    <h3>
-                                                        <a href="#">Medium Stuff Satchel</a>
-                                                    </h3>
-                                                    <p className="ml-4">$32.00</p>
-                                                </div>
-                                                <p className="mt-1 text-sm text-gray-500">Blue</p>
-                                            </div>
-                                            <div className="flex flex-1 items-end justify-between text-sm">
-                                                <p className="text-gray-500">Qty 1</p>
 
-                                                <div className="flex">
-                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                <p>Subtotal</p>
-                                <p>$262.00</p>
-                            </div>
-                            <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                        </div>
 
-                        <Button
-                            variant="contained"
-                            onClick={handleSubmit}
-                            sx={{
-                                marginTop: 2,
-                                padding: 2,
-                                backgroundColor: '#04a7ff', // Set the background color
-                                // '&:hover': {
-                                //     backgroundColor: '#db8e57', // Set the hover background color
-                                // },
-                                color: 'white', // Set the text color
-                            }}
-                            className="bg-[#04a7ff] text-white"
-                        >
-                            Create Order
-                        </Button>
+                        </Box>
+
+
 
                     </Box>
 
 
+                    <Box sx={{ display: "flex", justifyContent: "center", marginTop: "15px", gap: 4 }}>
 
+                        {/* <button className='bg-primary-blue text-white px-8 py-3 rounded-lg '>
+                            Cancel
+                        </button> */}
 
-
+                        {loading ? <CircularProgress /> : <button onClick={handleSubmit} className='bg-primary-blue text-white px-8 py-3 rounded-lg '>
+                            Add
+                        </button>}
+                    </Box>
                 </Box>
             </Modal>
         </>

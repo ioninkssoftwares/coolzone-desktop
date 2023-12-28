@@ -1,6 +1,7 @@
 import {
     Box,
     Card,
+    CircularProgress,
     Grid,
     IconButton,
     LinearProgress,
@@ -31,6 +32,9 @@ import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import AddCouponPartnerModal from "../../../components/admin/modals/AddCouponPartnerModal";
+import { useNavigate } from "react-router-dom";
+import CouponDetailsModal from "../../../components/admin/modals/CouponDetailsModal";
+import { useCookies } from "react-cookie";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -58,13 +62,14 @@ export const Button = ({
 const userTypes = ["All", "Premium"];
 
 // give main area a max widht
-const CouponManagement = () => {
+const PartnerCouponManagement = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [deleteId, setDeleteId] = useState("");
-    const instance = useAxios();
+    const [token, setToken] = useState("");
     const [users, setUsers] = useState([]);
+    const [cookies, setCookies] = useCookies(["adminToken"]);
     const [pagination, setPagination] = useState(
         null
     );
@@ -74,29 +79,39 @@ const CouponManagement = () => {
     });
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
-    // const router = useRouter();
+    const navigate = useNavigate();
+    const instance = useAxios(token);
 
-    async function getAllUsers() {
-        let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
+    async function getAllCoupons() {
+
         try {
             setLoading(true);
             const res = await instance.get(
-                `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
+                `/admin/allCoupons`
             );
             if (res.data) {
-                setUsers(res?.data?.data);
-                setPagination(res?.data?.pagination);
+                // setUsers(res?.data?.data);
+                // setPagination(res?.data?.pagination);
                 setLoading(false);
             }
-        } catch (e) {
+        } catch (error) {
             setLoading(false);
-            // ErrorDispaly(e);
+            toast.error(error.response.data.message || error.message)
         }
     }
 
     useEffect(() => {
-        getAllUsers();
-    }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
+        getAllCoupons();
+    }, [token]);
+
+
+    useEffect(() => {
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
+
 
     async function deleteCustomer() {
         try {
@@ -239,10 +254,12 @@ const CouponManagement = () => {
                 <Sidebar />
                 <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                     {/* <main> */}
-                    <div className='bg-gray-50'>
+                    {loading ? <div className="flex items-center justify-center text-3xl h-full">
+                        <CircularProgress className="text-3xl" />
+                    </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
                         <div className="flex justify-between items-center mt-8 mb-6 px-4">
-                            <div className=" text-sm px-3">
+                            <div className=" text-sm w-[30%] flex gap-2 px-3">
                                 <button
                                     // onClick={() => router.push("/admin/customers/add")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
@@ -250,7 +267,19 @@ const CouponManagement = () => {
                                     <span>
                                         {/* <TbEdit /> */}
                                     </span>
-                                    <span>Coupon Codes</span>
+                                    <span onClick={() => navigate("/admin/createCoupon")}>Coupon Codes</span>
+                                </button>
+                                <button
+                                    // onClick={() => router.push("/admin/customers/add")}
+                                    className=" px-3  text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+                                >
+                                    <span>
+                                        {/* <TbEdit /> */}
+                                    </span>
+                                    {/* <span >Coupon Codes</span> */}
+                                    <CouponDetailsModal
+                                        buttonText="Coupon Details"
+                                        modalTitle="Coupon Details " />
                                 </button>
                             </div>
                             <div className=" text-sm px-3">
@@ -456,7 +485,7 @@ const CouponManagement = () => {
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
                         /> */}
-                    </div>
+                    </div>}
                 </div>
                 {/* </main> */}
             </div>
@@ -466,4 +495,4 @@ const CouponManagement = () => {
     );
 };
 
-export default CouponManagement;
+export default PartnerCouponManagement;

@@ -8,7 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { CircularProgress, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -21,6 +21,8 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import { useCookies } from 'react-cookie';
 import { useAxios } from '../../../utils/axios';
+import { toast } from 'react-toastify';
+
 // import { useAxios } from '../../utills/axios';
 
 
@@ -75,6 +77,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(dayjs('2022-04-17'));
+    const [loading, setLoading] = useState(false)
     // const theme = useTheme();
     const [status, setStatus] = useState('');
     const [token, setToken] = useState("");
@@ -85,23 +88,38 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     const [clientNames, setClientNames] = useState([]);
     const [saveProduct, setSaveProduct] = useState([]);
     const [filterSaveProduct, setFilterSaveProduct] = useState([]);
-    const [projectData, setProjectData] = useState({
-        project_name: '',
-        status: '',
-        clientEmail: '',
-        startDate: '',
-        endDate: '',
-        project_company: '',
+    const [orderData, setOrderData] = useState({
+        cid: '',
+        paymentType: '',
+        orderType: '',
+        orderStatus: '',
+        orderNote: '',
+        orderItems: [],
         project_categories: '',
     });
 
+    if (orderData) {
+        console.log(orderData, "uoiuiio")
+    }
+
+    const paymentTypes = ["COD", "Online"];
+    const orderTypes = ["COD", "Online"];
+    const orderStatusTypes = ["Offline", "Online"];
 
     const instance = useAxios(token);
-    // const [switchState, setSwitchState] = useState(false);
 
-    // const handleSwitchChange = (event) => {
-    //     setSwitchState(event.target.checked);
-    // };
+    const handlePaymentType = (event) => {
+        setOrderData({ ...orderData, paymentType: event.target.value })
+
+    }
+    const handleOrderType = (event) => {
+        setOrderData({ ...orderData, orderType: event.target.value })
+
+    }
+    const handleOrderStatus = (event) => {
+        setOrderData({ ...orderData, orderStatus: event.target.value })
+
+    }
 
     if (allProducts) {
         console.log(allProducts, "dskfhaj")
@@ -116,18 +134,22 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     };
 
     const handleSubmit = async () => {
-        // onSubmit(projectData);
+        setLoading(true)
+        // onSubmit(orderData);
         // setOpen(false);
         try {
 
-            const res = await instance.post("/project/addProject/admin", projectData);
+            const res = await instance.post("/admin/orders", orderData);
 
             if (res.data) {
+                setLoading(false)
                 console.log(res.data)
             }
 
         } catch (error) {
-            console.log(error)
+            setLoading(false)
+            toast.error(error.response.data.message)
+            console.log(error, "dsfhajsdkaf")
         }
 
     };
@@ -286,17 +308,17 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                         id="demo-simple-select"
                                         // value={clients}
                                         label="Select Customer"
-                                    // onChange={handleClient}
+                                        onChange={handlePaymentType}
                                     >
-                                        {/* { clients && clients.map((name) => (
+                                        {paymentTypes && paymentTypes.map((name) => (
                                             <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
+                                                key={name}
+                                                value={name}
                                             // style={getStyles(name, personName, theme)}
                                             >
-                                                {name?.clientName}
+                                                {name}
                                             </MenuItem>
-                                        ))} */}
+                                        ))}
                                     </Select>
                                 </FormControl>
 
@@ -307,22 +329,22 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                         id="demo-simple-select"
                                         // value={clients}
                                         label="Select Customer"
-                                    // onChange={handleClient}
+                                        onChange={handleOrderType}
                                     >
-                                        {/* { clients && clients.map((name) => (
+                                        {orderTypes && orderTypes.map((name) => (
                                             <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
+                                                key={name}
+                                                value={name}
                                             // style={getStyles(name, personName, theme)}
                                             >
-                                                {name?.clientName}
+                                                {name}
                                             </MenuItem>
-                                        ))} */}
+                                        ))}
                                     </Select>
                                 </FormControl>
 
                             </Box>
-                            <Typography sx={{ marginTop: 2 }}>
+                            {/* <Typography sx={{ marginTop: 2 }}>
                                 Order Time and Date
                             </Typography>
 
@@ -345,7 +367,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                         />
                                     </DemoContainer>
                                 </LocalizationProvider>
-                            </Box>
+                            </Box> */}
 
                             <FormControl fullWidth sx={{ marginTop: 2 }}>
                                 <InputLabel id="demo-simple-select-label">Order Status</InputLabel>
@@ -354,17 +376,17 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                     id="demo-simple-select"
                                     // value={clients}
                                     label="Order Status"
-                                // onChange={handleClient}
+                                    onChange={handleOrderStatus}
                                 >
-                                    {/* { clients && clients.map((name) => (
-                                            <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
-                                            // style={getStyles(name, personName, theme)}
-                                            >
-                                                {name?.clientName}
-                                            </MenuItem>
-                                        ))} */}
+                                    {orderStatusTypes && orderStatusTypes.map((name) => (
+                                        <MenuItem
+                                            key={name}
+                                            value={name}
+                                        // style={getStyles(name, personName, theme)}
+                                        >
+                                            {name}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
 
@@ -374,9 +396,9 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                 label="Order Note"
                                 fullWidth
                                 margin="normal"
-                                value={projectData.project_name}
+                                value={orderData.project_name}
                                 onChange={(e) =>
-                                    setProjectData({ ...projectData, project_name: e.target.value })
+                                    setOrderData({ ...orderData, orderNote: e.target.value })
                                 }
                             />
 
@@ -385,7 +407,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
 
 
                             {/* Add margin-top to separate form fields and button */}
-                            <Box sx={{ display: "flex", justifyContent: "end" }}>
+                            {/* <Box sx={{ display: "flex", justifyContent: "end" }}>
                                 <Button
                                     variant="contained"
                                     onClick={handleSubmit}
@@ -403,7 +425,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                 >
                                     Submit
                                 </Button>
-                            </Box>
+                            </Box> */}
 
                         </form>
                     </Box>
@@ -517,7 +539,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                             <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                         </div>
 
-                        <Button
+                        {loading ? <CircularProgress /> : <Button
                             variant="contained"
                             onClick={handleSubmit}
                             sx={{
@@ -532,7 +554,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                             className="bg-[#04a7ff] text-white"
                         >
                             Create Order
-                        </Button>
+                        </Button>}
 
                     </Box>
 

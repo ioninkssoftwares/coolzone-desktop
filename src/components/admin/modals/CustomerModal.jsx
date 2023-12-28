@@ -8,7 +8,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { CircularProgress, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { useAxios } from '../../../utils/axios';
+import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 // import { useAxios } from '../../utills/axios';
 
 
@@ -93,19 +96,22 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
     const [open, setOpen] = useState(false);
     // const theme = useTheme();
     const [status, setStatus] = useState('');
+    const [loading, setLoading] = useState(false)
     const [selectedClient, setSelectedClient] = useState('');
     const [clients, setClients] = useState(null)
+    const [token, setToken] = useState("");
     const [clientNames, setClientNames] = useState([]);
-    const [projectData, setProjectData] = useState({
-        project_name: '',
-        status: '',
-        clientEmail: '',
-        startDate: '',
-        endDate: '',
-        project_company: '',
-        project_categories: '',
+    const [cookies, setCookies] = useCookies(["adminToken"]);
+    const [newCustomerData, setNewCustomerData] = useState({
+        customerName: '',
+        phone: '',
+        address: '',
+        landmark: '',
+        state: '',
+        city: '',
     });
 
+    const instance = useAxios(token);
     const [switchState, setSwitchState] = useState(false);
 
     const handleSwitchChange = (event) => {
@@ -121,21 +127,34 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
     };
 
     const handleSubmit = async () => {
-        // onSubmit(projectData);
+        setLoading(true)
+        // onSubmit(newCustomerData);
         // setOpen(false);
         try {
 
-            const res = await instance.post("/project/addProject/admin", projectData);
+            const res = await instance.post("/admin/newCustomer", newCustomerData);
 
             if (res.data) {
+                setLoading(false)
                 console.log(res.data)
             }
 
         } catch (error) {
+            setLoading(false)
             console.log(error)
+            toast.error(error.response.data.message || error.message)
         }
 
     };
+
+    useEffect(() => {
+        if (cookies && cookies.adminToken) {
+            console.log(cookies.adminToken, "fdsfsdfsf")
+            setToken(cookies.adminToken);
+        }
+    }, [cookies]);
+
+
 
     const style = {
         position: 'absolute',
@@ -184,8 +203,8 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
         console.log(event.target.value, "clieee")
 
         setStatus(event.target.value);
-        setProjectData({
-            ...projectData,
+        setNewCustomerData({
+            ...newCustomerData,
             status: event.target.value
         });
     };
@@ -218,8 +237,8 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
     const handleClient = (event) => {
         console.log(event.target.value, "clieee")
         setSelectedClient(event.target.value)
-        setProjectData({
-            ...projectData,
+        setNewCustomerData({
+            ...newCustomerData,
             clientEmail: event.target.value.clientEmail
         });
     };
@@ -227,8 +246,8 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
 
 
 
-    // if (projectData) {
-    //     console.log(projectData, "project")
+    // if (newCustomerData) {
+    //     console.log(newCustomerData, "project")
     // }
 
     return (
@@ -259,9 +278,9 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Customer Name"
                             fullWidth
                             margin="normal"
-                            value={projectData.project_name}
+                            value={newCustomerData.customerName}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, project_name: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, customerName: e.target.value })
                             }
                         />
                         {/* <div>
@@ -355,9 +374,9 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Phone Number"
                             fullWidth
                             margin="normal"
-                            value={projectData.project_categories}
+                            value={newCustomerData.phone}
                             onChange={(e) =>
-                                setProjectData({ ...projectData, project_categories: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, phone: e.target.value })
                             }
                         />
                         <FormGroup>
@@ -373,18 +392,18 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                                 label="Building No., Street Address"
                                 fullWidth
                                 margin="normal"
-                                value={projectData.project_company}
+                                value={newCustomerData.address}
                                 onChange={(e) =>
-                                    setProjectData({ ...projectData, project_company: e.target.value })
+                                    setNewCustomerData({ ...newCustomerData, address: e.target.value })
                                 }
                             />
                             <TextField
                                 label="Landmark"
                                 fullWidth
                                 margin="normal"
-                                value={projectData.startDate}
+                                value={newCustomerData.landmark}
                                 onChange={(e) =>
-                                    setProjectData({ ...projectData, startDate: e.target.value })
+                                    setNewCustomerData({ ...newCustomerData, landmark: e.target.value })
                                 }
                             />
 
@@ -393,18 +412,18 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                                     label="State"
                                     fullWidth
                                     margin="normal"
-                                    value={projectData.endDate}
+                                    value={newCustomerData.state}
                                     onChange={(e) =>
-                                        setProjectData({ ...projectData, endDate: e.target.value })
+                                        setNewCustomerData({ ...newCustomerData, state: e.target.value })
                                     }
                                 />
                                 <TextField
                                     label="City"
                                     fullWidth
                                     margin="normal"
-                                    value={projectData.endDate}
+                                    value={newCustomerData.city}
                                     onChange={(e) =>
-                                        setProjectData({ ...projectData, endDate: e.target.value })
+                                        setNewCustomerData({ ...newCustomerData, city: e.target.value })
                                     }
                                 />
                             </Box>
@@ -429,7 +448,7 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
 
 
                         {/* Add margin-top to separate form fields and button */}
-                        <Button
+                        {loading ? <CircularProgress /> : <Button
                             variant="contained"
                             onClick={handleSubmit}
                             sx={{
@@ -443,7 +462,7 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                             className="bg-[#04a7ff] text-white"
                         >
                             Submit
-                        </Button>
+                        </Button>}
                     </form>
                 </Box>
             </Modal>

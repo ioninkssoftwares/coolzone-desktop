@@ -90,7 +90,7 @@ const AdminLogin = () => {
                         noValidate
                         onSubmit={handleSubmit(async (data) => {
 
-                            // setLoading(true)\
+                            setLoading(true)
                             console.log(data, "dfkasldjfksd")
                             try {
 
@@ -103,12 +103,12 @@ const AdminLogin = () => {
                                     // localStorage.setItem("userId", res.data.userId);
                                     toast(" Admin Login Successful")
                                     navigate("/admin")
-                                    // setLoading(false)
+                                    setLoading(false)
                                 }
 
                             } catch (error) {
                                 toast.error("Invalid email or password ")
-                                //   setLoading(false)
+                                setLoading(false)
                                 console.log(error)
 
                             }

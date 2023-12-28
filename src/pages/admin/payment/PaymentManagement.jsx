@@ -30,9 +30,10 @@ import Sidebar from "../../../components/sidebar/Sidebar";
 import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 import AddCustomerForMembershipModal from "../../../components/admin/modals/AddCustomerForMembershipModal";
+import OrderPaymentAndRefundModal from "../../../components/admin/modals/OrderPaymentAndRefundModal";
 import { useCookies } from "react-cookie";
+import { Token } from "@mui/icons-material";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -60,8 +61,7 @@ export const Button = ({
 const userTypes = ["All", "Premium"];
 
 // give main area a max widht
-const MembershipManagement = () => {
-    const navigate = useNavigate();
+const PaymentManagement = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -81,29 +81,27 @@ const MembershipManagement = () => {
     const [selected, setSelected] = useState("All");
     // const router = useRouter();
 
-    const getAllMembershipOffers = async () => {
+    async function getAllPayments() {
+
         try {
-            setLoading(true)
-            const res = await instance.get("mebershipoffers")
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/allPayments`
+            );
             if (res.data) {
-                setLoading(false)
-                setAllProducts(res.data.products)
+                setLoading(false);
             }
-
-
         } catch (error) {
-            setLoading(false)
-            console.log(error);
+            setLoading(false);
             toast.error(error.response.data.message || error.message)
+            // ErrorDispaly(e);
+
         }
     }
 
-
     useEffect(() => {
-        if (token) {
-            getAllMembershipOffers()
-        }
-    }, [token])
+        getAllPayments();
+    }, [Token]);
 
 
     useEffect(() => {
@@ -115,6 +113,21 @@ const MembershipManagement = () => {
 
 
 
+    async function deleteCustomer() {
+        try {
+            setDeleteLoading(true);
+            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            if (res.data) {
+                toast.success("Customer Deleted Successfully");
+                setDeleteLoading(false);
+                setDeleteOpen(false);
+                getAllUsers();
+            }
+        } catch (e) {
+            setDeleteLoading(false);
+            // ErrorDispaly(e);
+        }
+    }
 
     const all_customer_columns = [
         {
@@ -136,8 +149,8 @@ const MembershipManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "email",
-            headerName: "Email",
+            field: "orderDate",
+            headerName: "OrderDate",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -146,8 +159,8 @@ const MembershipManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "phone",
-            headerName: "Phone",
+            field: "orderType",
+            headerName: "Order Type",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -156,8 +169,8 @@ const MembershipManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "city",
-            headerName: "City",
+            field: "orderId",
+            headerName: "Order ID",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -165,8 +178,8 @@ const MembershipManagement = () => {
         {
             minWidth: 120,
 
-            field: "membershipType",
-            headerName: "Membership Type",
+            field: "orderTotal",
+            headerName: "Order Total",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
@@ -175,8 +188,8 @@ const MembershipManagement = () => {
         {
             minWidth: 120,
 
-            field: "memberSince",
-            headerName: "Member Since",
+            field: "paymentStatus",
+            headerName: "Payment Status",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
@@ -246,7 +259,7 @@ const MembershipManagement = () => {
                     </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
                         <div className="flex justify-between items-center mt-8 mb-6 px-4">
-                            <div className=" text-sm px-3 ">
+                            <div className=" text-sm px-3 basis-[18%]">
                                 <button
                                     // onClick={() => router.push("/admin/customers/add")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
@@ -254,28 +267,10 @@ const MembershipManagement = () => {
                                     <span>
                                         {/* <TbEdit /> */}
                                     </span>
-                                    <span>Membership Management</span>
-                                </button>
-                            </div>
-                            <div className="  basis-[60%] text-sm px-3 flex justify-end gap-4">
-                                <button
-                                    onClick={() => navigate("/admin/editMembershipPlans")}
-                                    className=" px-3 font-medium   border-2 border-primary-blue text-primary-blue rounded-xl py-3  transition transform active:scale-95 duration-200  "
-                                >
-                                    Edit Membership Details
-                                </button>
-
-                                <button
-                                    // onClick={() => router.push("/admin/customers/add")}
-                                    className=" px-3 text-white font-medium justify-start  bg-primary-blue rounded-lg py-3 flex items-center transition transform active:scale-95 duration-200  "
-                                >
-                                    <span>
-                                        <TbEdit />
-                                    </span>
-                                    {/* <span>Add New Customer</span> */}
-                                    <AddCustomerForMembershipModal
-                                        buttonText="Add New Customer"
-                                        modalTitle="Add New Customer"
+                                    {/* <span>Payment Summary</span> */}
+                                    <OrderPaymentAndRefundModal
+                                        buttonText="Payment Summary"
+                                        modalTitle="Order & Transaction Details"
                                     // onSubmit={projectSubmit}
                                     />
                                 </button>
@@ -295,27 +290,26 @@ const MembershipManagement = () => {
                                 <div className="mt-8 flex items-center justify-start gap-28 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            All Membership
+                                            All Orders
                                         </p>
                                         <p className="text-xl font-bold">
-                                            1,250 <span className="text-green-500 text-sm">+15.80%</span>
+                                            960
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Active
+                                            Refund Requested
                                         </p>
                                         <p className="text-xl font-bold">
-                                            1,190 <span className="text-green-500 text-sm">+85%</span>
-
+                                            29
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Inactive
+                                            Completed
                                         </p>
                                         <p className="text-xl font-bold">
-                                            50 <span className="text-red-600 text-sm">-10.80%</span>
+                                            437
 
                                         </p>
                                     </div>
@@ -331,10 +325,10 @@ const MembershipManagement = () => {
                                         This week <FaArrowDown />
                                     </button>
                                 </div>
-                                <div className="mt-8 flex items-center justify-start gap-9 w-full">
+                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            New Membership
+                                            Cancelled
                                         </p>
                                         <p className="text-xl font-bold">
                                             30 <span className="text-red-600 text-sm">-20.80%</span>
@@ -343,18 +337,18 @@ const MembershipManagement = () => {
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Cancelled Membership
+                                            Refunded
                                         </p>
                                         <p className="text-xl font-bold">
-                                            10
+                                            20
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Suspended Membership
+                                            In Process
                                         </p>
                                         <p className="text-xl font-bold">
-                                            5
+                                            9
                                         </p>
                                     </div>
 
@@ -395,7 +389,7 @@ const MembershipManagement = () => {
 
                         <div className="flex justify-between items-center mb-8 px-4">
                             <div className="space-x-5">
-                                <p className="text-2xl ">Member's List</p>
+                                <p className="text-2xl ">Customer Orders</p>
                             </div>
 
                             <div className="flex space-x-[12px]">
@@ -478,4 +472,4 @@ const MembershipManagement = () => {
     );
 };
 
-export default MembershipManagement;
+export default PaymentManagement;

@@ -1,6 +1,7 @@
 import {
     Box,
     Card,
+    CircularProgress,
     Grid,
     IconButton,
     LinearProgress,
@@ -65,6 +66,7 @@ const AdminOrdersPage = () => {
     const [deleteId, setDeleteId] = useState("");
     const [token, setToken] = useState("");
     const [cookies, setCookies] = useCookies(["adminToken"]);
+    const [allOrders, setAllOrders] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
 
 
@@ -86,16 +88,34 @@ const AdminOrdersPage = () => {
         console.log(allProducts, "jsdahfaksdjhf")
     }
 
+
+    const getOrdersByAdmin = async () => {
+        try {
+            setLoading(true)
+            const res = await instance.get("/admin/orders")
+            if (res.data) {
+                setLoading(false)
+                setAllOrders(res.data.orders)
+            }
+
+
+        } catch (error) {
+            setLoading(false)
+            console.log(error);
+        }
+    }
     const getProductsByAdmin = async () => {
         try {
-
+            setLoading(true)
             const res = await instance.get("/admin/products")
             if (res.data) {
+                setLoading(false)
                 setAllProducts(res.data.products)
             }
 
 
         } catch (error) {
+            setLoading(false)
             console.log(error);
         }
     }
@@ -103,6 +123,7 @@ const AdminOrdersPage = () => {
 
     useEffect(() => {
         if (token) {
+            getOrdersByAdmin()
             getProductsByAdmin()
         }
     }, [token])
@@ -138,11 +159,15 @@ const AdminOrdersPage = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "orderDate",
+            field: "createdAt",
             headerName: "Order Date",
             align: "left",
             headerAlign: "left",
-            disableColumnMenu: true,
+            disableColumnMenu: true, renderCell: ({ row }) => (
+                <Typography variant="body1" fontWeight={500}>
+                    {new Date(row?.createdAt).toLocaleDateString('en-GB')}
+                </Typography>
+            ),
         },
         {
             minWidth: 150,
@@ -158,7 +183,7 @@ const AdminOrdersPage = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "Order Id",
+            field: "_id",
             headerName: "Order Id",
             align: "left",
             headerAlign: "left",
@@ -167,7 +192,7 @@ const AdminOrdersPage = () => {
         {
             minWidth: 120,
 
-            field: "Order Total",
+            field: "totalPrice",
             headerName: "Order Total",
             flex: 0.2,
             align: "left",
@@ -177,18 +202,19 @@ const AdminOrdersPage = () => {
         {
             minWidth: 120,
 
-            field: "Payment Status",
+            field: "paymentInfo.status",
             headerName: "Payment Status",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
+            valueGetter: (params) => params.row.paymentInfo.status,
         },
         {
             minWidth: 120,
 
-            field: "Status",
-            headerName: "Status",
+            field: "orderStatus",
+            headerName: "Order Status",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
@@ -243,7 +269,9 @@ const AdminOrdersPage = () => {
                 <Sidebar />
                 <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                     {/* <main> */}
-                    <div className='bg-gray-50'>
+                    {loading ? <div className="flex items-center justify-center text-3xl h-full">
+                        <CircularProgress className="text-3xl" />
+                    </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
                         <div className="flex justify-between items-center mt-8 mb-6">
                             <div className=" text-sm px-3">
@@ -417,7 +445,7 @@ const AdminOrdersPage = () => {
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
-                                        rows={users || []}
+                                        rows={allOrders || []}
                                         columns={all_customer_columns}
                                         getRowId={(row) => row._id}
                                         autoHeight
@@ -464,7 +492,7 @@ const AdminOrdersPage = () => {
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
                         /> */}
-                    </div>
+                    </div>}
                 </div>
                 {/* </main> */}
             </div>

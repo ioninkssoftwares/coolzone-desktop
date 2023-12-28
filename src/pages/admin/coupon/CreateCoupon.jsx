@@ -1,6 +1,7 @@
 import {
     Box,
     Card,
+    CircularProgress,
     Grid,
     IconButton,
     LinearProgress,
@@ -20,15 +21,18 @@ import { toast } from "react-toastify";
 // import { location, newResponse, Pagination, response, User } from "src/@types";
 // import { AdminCustomers } from "../../../componets/user/adminCustomer";
 // import AdminsideNav from "../../../componets/admin/adminDasboardnav";
-import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
+// import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
 // import DashBoardLayout from "src/Layout/DasboardsLayout";
 // import { useFetch } from "src/lib/hooks/useFetch";
-import { useAxios } from "../../utils/axios";
-import { tableStyles } from "../../components/admin/shared/ConfirmDialog";
-import Sidebar from "../../components/sidebar/Sidebar";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import { useAxios } from "../../../utils/axios";
+import { tableStyles } from "../../../components/admin/shared/ConfirmDialog";
+// import { tableStyles } from "../../components/admin/shared/ConfirmDialog";
+import Sidebar from "../../../components/sidebar/Sidebar";
+import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
+import AddCouponPartnerModal from "../../../components/admin/modals/AddCouponPartnerModal";
+import CreateCouponModal from "../../../components/admin/modals/CreateCouponModal";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -56,7 +60,7 @@ export const Button = ({
 const userTypes = ["All", "Premium"];
 
 // give main area a max widht
-const PaymentManagement = () => {
+const CreateCoupon = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -117,8 +121,8 @@ const PaymentManagement = () => {
             flex: 0.25,
             minWidth: 150,
 
-            field: "name",
-            headerName: "Customer Name",
+            field: "partnersName",
+            headerName: "Partners Name",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -132,8 +136,8 @@ const PaymentManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "orderDate",
-            headerName: "OrderDate",
+            field: "email",
+            headerName: "Email",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -142,8 +146,8 @@ const PaymentManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "orderType",
-            headerName: "Order Type",
+            field: "couponSegment",
+            headerName: "Coupon Segment",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -152,8 +156,8 @@ const PaymentManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "orderId",
-            headerName: "Order ID",
+            field: "orders",
+            headerName: "Orders",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -171,8 +175,8 @@ const PaymentManagement = () => {
         {
             minWidth: 120,
 
-            field: "paymentStatus",
-            headerName: "Payment Status",
+            field: "cashbackEarned",
+            headerName: "Cashback Earned",
             flex: 0.2,
             align: "left",
             headerAlign: "left",
@@ -237,18 +241,25 @@ const PaymentManagement = () => {
                 <Sidebar />
                 <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                     {/* <main> */}
-                    <div className='bg-gray-50'>
+                    {loading ? <div className="flex items-center justify-center text-3xl h-full">
+                        <CircularProgress className="text-3xl" />
+                    </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
-                        <div className="flex justify-between items-center mt-8 mb-6 px-4">
-                            <div className=" text-sm px-3 basis-[18%]">
+                        <div className="flex justify-end mt-8 mb-6 px-4">
+                            <div className=" text-sm px-3">
                                 <button
                                     // onClick={() => router.push("/admin/customers/add")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
-                                        {/* <TbEdit /> */}
+                                        <TbEdit />
                                     </span>
-                                    <span>Payment Summary</span>
+                                    {/* <span>Add a new Affiliated Partner</span> */}
+                                    <CreateCouponModal
+                                        buttonText="Create a Coupon"
+                                        modalTitle="Add a New Coupon "
+                                    // onSubmit={projectSubmit}
+                                    />
                                 </button>
                             </div>
                         </div>
@@ -263,29 +274,29 @@ const PaymentManagement = () => {
                                         This week <FaArrowDown />
                                     </button>
                                 </div>
-                                <div className="mt-8 flex items-center justify-start gap-28 w-full">
+                                <div className="mt-8 flex items-center justify-start gap-36 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            All Orders
+                                            All Coupons
                                         </p>
                                         <p className="text-xl font-bold">
-                                            960
+                                            25
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Refund Requested
+                                            Active Coupons
                                         </p>
                                         <p className="text-xl font-bold">
-                                            29
+                                            21
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Completed
+                                            Inactive Coupons
                                         </p>
                                         <p className="text-xl font-bold">
-                                            437
+                                            4
 
                                         </p>
                                     </div>
@@ -304,27 +315,27 @@ const PaymentManagement = () => {
                                 <div className="mt-8 flex items-center justify-start gap-28 w-full">
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Cancelled
+                                            Total Purchasing
                                         </p>
                                         <p className="text-xl font-bold">
-                                            30 <span className="text-red-600 text-sm">-20.80%</span>
+                                            6,56,567
 
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            Refunded
+                                            Cashback Given
                                         </p>
                                         <p className="text-xl font-bold">
-                                            20
+                                            63,500
                                         </p>
                                     </div>
                                     <div className="flex flex-col items-start justify-center">
                                         <p className="text-xl text-gray-400">
-                                            In Process
+                                            No. of times Coupon Used
                                         </p>
                                         <p className="text-xl font-bold">
-                                            9
+                                            95
                                         </p>
                                     </div>
 
@@ -365,7 +376,7 @@ const PaymentManagement = () => {
 
                         <div className="flex justify-between items-center mb-8 px-4">
                             <div className="space-x-5">
-                                <p className="text-2xl ">Customer Orders</p>
+                                <p className="text-2xl ">Affiliated Partners</p>
                             </div>
 
                             <div className="flex space-x-[12px]">
@@ -387,7 +398,7 @@ const PaymentManagement = () => {
                         </div>
                         {/* dashboard caerd */}
 
-                        <Grid container spacing={6} sx={{ pb: 38, }}>
+                        <Grid container spacing={6} >
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
@@ -438,7 +449,7 @@ const PaymentManagement = () => {
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
                         /> */}
-                    </div>
+                    </div>}
                 </div>
                 {/* </main> */}
             </div>
@@ -448,4 +459,4 @@ const PaymentManagement = () => {
     );
 };
 
-export default PaymentManagement;
+export default CreateCoupon;

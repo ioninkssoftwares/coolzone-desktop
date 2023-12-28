@@ -1,6 +1,7 @@
 import {
     Box,
     Card,
+    CircularProgress,
     Grid,
     IconButton,
     LinearProgress,
@@ -188,22 +189,26 @@ const ProductManagement = () => {
 
 
     const getProductsByAdmin = async () => {
+        setLoading(true)
         try {
 
             const res = await instance.get("/admin/products")
             if (res.data) {
                 setAllProducts(res.data.products)
+                setLoading(false)
             }
 
 
         } catch (error) {
             console.log(error);
+            setLoading(false)
         }
     }
 
 
     useEffect(() => {
         if (token) {
+
             getProductsByAdmin()
         }
     }, [token])
@@ -339,7 +344,9 @@ const ProductManagement = () => {
                 <Sidebar />
                 <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                     {/* <main> */}
-                    <div className='bg-gray-50'>
+                    {loading ? <div className="flex items-center justify-center text-3xl h-full">
+                        <CircularProgress className="text-3xl" />
+                    </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
                         <div className="flex justify-between items-center mt-8 mb-6 px-4">
                             <div className=" text-sm px-3">
@@ -414,7 +421,6 @@ const ProductManagement = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* dashboard caerd */}
 
                         <Grid container spacing={6} sx={{ pb: 38, }}>
                             <Grid item xs={12}>
@@ -455,19 +461,7 @@ const ProductManagement = () => {
                                 </Card>
                             </Grid>
                         </Grid>
-
-                        {/* {users && <AdminCustomers users={users} />} */}
-
-                        {/* <ConfirmBox
-                            title="Customer"
-                            name="customer"
-                            open={deleteOpen}
-                            closeDialog={() => setDeleteOpen(false)}
-                            toDoFunction={deleteCustomer}
-                            loading={deleteLoading}
-                            sx={{ pb: 4, border: "2px solid red" }}
-                        /> */}
-                    </div>
+                    </div>}
                 </div>
                 {/* </main> */}
             </div>

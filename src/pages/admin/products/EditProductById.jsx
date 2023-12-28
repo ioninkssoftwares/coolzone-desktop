@@ -246,15 +246,18 @@ const EditProductById = () => {
     }
 
     const getProductDetailsById = async (productId) => {
+        setLoading(true)
         try {
             const res = await instance.get(`/product/${productId}`)
             if (res.data) {
+                setLoading(false)
                 console.log(res.data.product, "djshfkjsa")
                 setProductData(res.data.product)
             }
 
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
     }
     useEffect(() => {
@@ -455,7 +458,9 @@ const EditProductById = () => {
                 <Sidebar />
                 <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden'>
                     {/* <main> */}
-                    <div className='bg-gray-50'>
+                    {loading ? <div className="flex items-center justify-center text-3xl h-full">
+                        <CircularProgress className="text-3xl" />
+                    </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
                         <div className="flex items-center justify-between mx-10 my-5">
                             <p>Add Product Details</p>
@@ -811,7 +816,7 @@ const EditProductById = () => {
                         </div>
 
 
-                    </div>
+                    </div>}
                 </div>
                 {/* </main> */}
             </div>
