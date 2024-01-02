@@ -4,6 +4,7 @@ import {
   RouterProvider,
   Route,
   Link,
+  Routes,
 } from "react-router-dom";
 import Home from './pages/Home';
 import Products from './pages/Products';
@@ -40,6 +41,8 @@ import EditMembershipPlans from './pages/admin/membership/EditMembershipPlans';
 import AnalyticsAndReports from './pages/admin/analytics/AnalyticsAndReports';
 import PartnerCouponManagement from './pages/admin/coupon/PartnerCouponManagement';
 import CreateCoupon from './pages/admin/coupon/CreateCoupon';
+import Admin404 from './pages/admin/Admin404';
+import EditOrderById from './pages/admin/orders/EditOrderById';
 
 const router = createBrowserRouter([
   {
@@ -123,12 +126,27 @@ const router = createBrowserRouter([
     element: <AdminDashboard></AdminDashboard>,
   },
   {
+    path: "/admin/*",
+    element: (
+      // Nested Routes for "/admin/*"
+      <Routes>
+        {/* Add specific admin routes here */}
+        {/* If no admin routes match, show the NotFound component */}
+        <Route path="*" element={<Admin404 tittle={"Go to Admin Dashboard"} source={"/admin"} />} />
+      </Routes>
+    ),
+  },
+  {
     path: '/admin/addProducts',
     element: <ProductForm></ProductForm>,
   },
   {
     path: '/admin/orders',
     element: <AdminOrdersPage></AdminOrdersPage>,
+  },
+  {
+    path: '/admin/order/:id',
+    element: <EditOrderById></EditOrderById>,
   },
   {
     path: '/admin/userManagement',

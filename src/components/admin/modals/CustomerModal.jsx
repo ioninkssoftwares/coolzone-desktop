@@ -199,15 +199,15 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
 
 
 
-    const handleChange = (event) => {
-        console.log(event.target.value, "clieee")
+    // const handleChange = (event) => {
+    //     console.log(event.target.value, "clieee")
 
-        setStatus(event.target.value);
-        setNewCustomerData({
-            ...newCustomerData,
-            status: event.target.value
-        });
-    };
+    //     setStatus(event.target.value);
+    //     setNewCustomerData({
+    //         ...newCustomerData,
+    //         status: event.target.value
+    //     });
+    // };
 
 
 
@@ -234,14 +234,14 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
 
 
 
-    const handleClient = (event) => {
-        console.log(event.target.value, "clieee")
-        setSelectedClient(event.target.value)
-        setNewCustomerData({
-            ...newCustomerData,
-            clientEmail: event.target.value.clientEmail
-        });
-    };
+    // const handleClient = (event) => {
+    //     console.log(event.target.value, "clieee")
+    //     setSelectedClient(event.target.value)
+    //     setNewCustomerData({
+    //         ...newCustomerData,
+    //         clientEmail: event.target.value.clientEmail
+    //     });
+    // };
 
 
 

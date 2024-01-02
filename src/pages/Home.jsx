@@ -46,72 +46,77 @@ const Home = () => {
   const productss = useSelector(selectAllProducts);
   const isPending = useSelector(selectProductListStatus);
 
-  if(productss){
-    console.log(productss,"cxvvxxv")
+  if (productss) {
+    console.log(productss, "cxvvxxv")
   }
 
-useEffect(() => {
-  // setBannersData(data.banners);
-  if (banners.banners && banners.banners.length > 0) {
-    setBannersData(banners.banners)
-    // console.log(banners.banners,"dfjdk")
+  useEffect(() => {
+    // setBannersData(data.banners);
+    if (banners.banners && banners.banners.length > 0) {
+      setBannersData(banners.banners)
+      // console.log(banners.banners,"dfjdk")
 
-  }
+    }
 
-}, [banners.banners])
-
-
-useEffect(() => {
-const filterBanner = () => {
-  const fashionBanners = bannersData?.filter(banner => banner.category === "Fasion");
-  const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
-    const categoryKey = curBanner.category;
-    acc[categoryKey] = curBanner;
-    return acc;
-  }, {});
-  console.log(fashionBannerObject.Fasion,"fjdfkj")
-  setFasionBanner(fashionBannerObject.Fasion)
-
-}
-
-filterBanner()
-
-}, [bannersData])
+  }, [banners.banners])
 
 
+  useEffect(() => {
+    const filterBanner = () => {
+      const fashionBanners = bannersData?.filter(banner => banner.category === "Fasion");
+      const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
+        const categoryKey = curBanner.category;
+        acc[categoryKey] = curBanner;
+        return acc;
+      }, {});
+      console.log(fashionBannerObject.Fasion, "fjdfkj")
+      setFasionBanner(fashionBannerObject.Fasion)
 
-useEffect(() => {
-  if (cookies && cookies.token) {
-    console.log(cookies.token,"dslfjadslk")
-    setToken(cookies.token);
-  }
-}, [cookies]);
+    }
 
-useEffect(() => {
-  if (token) {
-    dispatch(fetchBannerAsync( token ));
-    dispatch(fetchAllProductsAsync(token))
-  }
-}, [token, dispatch]);
+    filterBanner()
+
+  }, [bannersData])
 
 
 
- useEffect(() => {
-        if (cookies.token === undefined) {
-          toast.error("Please Login")
-          navigate('/login')
-        }
-      }, [])
-      
-// TODO:Add the token to the redux state so dont need to use state everywhere
-    useEffect(() => {
-        if (token) {
-            dispatch(getCurrentUserAsync(token))
-        }
+  useEffect(() => {
+    if (cookies && cookies.token) {
+      console.log(cookies.token, "dslfjadslk")
+      setToken(cookies.token);
+    }
+  }, [cookies]);
 
-    }, [token])
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch(fetchBannerAsync(token));
+  //     dispatch(fetchAllProductsAsync(token))
+  //   }
+  // }, [token, dispatch]);
+  useEffect(() => {
 
-    
+    dispatch(fetchBannerAsync());
+    dispatch(fetchAllProductsAsync())
+
+  }, []);
+
+
+  //  useEffect(() => {
+  //         if (cookies.token === undefined) {
+  //           toast.error("Please Login")
+  //           navigate('/login')
+  //         }
+  //       }, [])
+
+  // TODO:Add the token to the redux state so dont need to use state everywhere
+  useEffect(() => {
+    if (token) {
+      dispatch(getCurrentUserAsync(token))
+    }
+
+  }, [token])
+
+
 
   const productSamples = [
     { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
@@ -131,9 +136,9 @@ useEffect(() => {
 
 
 
-if(userDetails){
-  console.log(userDetails,"dsfafadfafddfsasdfdfs")
-}
+  if (userDetails) {
+    console.log(userDetails, "dsfafadfafddfsasdfdfs")
+  }
 
   return <>
     <Navbar />
@@ -141,10 +146,10 @@ if(userDetails){
       <section>
         <CorouselSlider bannerCategory={fasionBanner} />
       </section>
-      <section  className='flex  items-center  justify-center my-5'>
+      <section className='flex  items-center  justify-center my-5'>
         <div style={{ border: "2px solid gray" }} className='rounded-lg flex md:flex-row flex-col md:items-center md:justify-center justify-start  w-[79%] p-5'>
           {/* <div style={{ border: "2px solid gray" }} className="max-w-7xl mx-auto p-5 md:px-10 rounded-lg flex items-center justify-center "> */}
-          <div  className='w-fit md:border-r-4  flex items-center justify-center gap-3 px-14 py-3'>
+          <div className='w-fit md:border-r-4  flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <SiAdguard className='w-full h-full text-blue-950 ' />
             </div>
@@ -153,7 +158,7 @@ if(userDetails){
               <p className='text-xs'>24 Months</p>
             </div>
           </div>
-          <div  className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
+          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <BsTicketPerforatedFill className='w-full h-full text-orange-400' />
             </div>
@@ -162,7 +167,7 @@ if(userDetails){
               <p className='text-xs'>4-12 Months</p>
             </div>
           </div>
-          <div  className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
+          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <MdOutlineSecurity className='w-full h-full text-primary-blue' />
             </div>
@@ -171,7 +176,7 @@ if(userDetails){
               <p className='text-xs'>Secured</p>
             </div>
           </div>
-          <div  className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
+          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
             <div className='w-[25px] h-[25px] mt-2'>
               <TbTruckDelivery className='w-full h-full text-green-500' />
             </div>
@@ -223,17 +228,17 @@ if(userDetails){
         </div>
       </section>
       {/* Categories Section */}
-      <section  className='bg-gray-100 mb-5'>
+      <section className='bg-gray-100 mb-5'>
         <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 ">
           <HomeSectionTitle text="Categories" />
-          <div  className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-8'>
+          <div className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-8'>
             {productSamples?.map((curElem) => (<CategoryCard categoryData={curElem} />))}
           </div>
         </div>
       </section>
       {/* Offers Section */}
       <section className=' mb-5'>
-        <div  className="max-w-7xl mx-auto px-5 md:px-10 py-8 flex gap-8 overflow-x-auto ">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 flex gap-8 overflow-x-auto ">
           <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
@@ -297,35 +302,35 @@ if(userDetails){
         </div>
       </section>
       {/* Best Sellers section */}
-        <section className="pt-5 mb-5">
-          {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
-          {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-          <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-            <div className="w-full flex items-center justify-between">
-              <HomeSectionTitle text="Best Sellers" />
-              {/* Buttons container */}
-              <div className="flex space-x-4  md:mt-0">
-                <button
-                  onClick={() => scrollLeft("best")}
-                  className="p-2 m-2 rounded-full bg-white"
-                >
-                  <FiChevronLeft />
-                </button>
-                <button
-                  onClick={() => scrollRight("best")}
-                  className="p-2 m-2 rounded-full bg-white"
-                >
-                  <FiChevronRight />
-                </button>
-              </div>
+      <section className="pt-5 mb-5">
+        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
+            <HomeSectionTitle text="Best Sellers" />
+            {/* Buttons container */}
+            <div className="flex space-x-4  md:mt-0">
+              <button
+                onClick={() => scrollLeft("best")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("best")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronRight />
+              </button>
             </div>
-            {productss && (
-              <div id="best" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-                <CardCarousel id="best" data={productss} Card={MediumHouseCard} />
-              </div>
-            )}
           </div>
-        </section>
+          {productss && (
+            <div id="best" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+              <CardCarousel id="best" data={productss} Card={MediumHouseCard} />
+            </div>
+          )}
+        </div>
+      </section>
       {/* Big Deals section */}
       <section className="pt-5 mb-5">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
@@ -371,17 +376,17 @@ if(userDetails){
           </h1>
         </div>
         <div className="max-w-7xl mx-auto  flex md:flex-row flex-col items-center space-x-6  ">
-          <div   className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
+          <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>
-          <h1  className={`font-semibold w-fit text-3xl font-manrope md:hidden block  border-b-2 border-b-black relative right-28 py-4 `}>
+          <h1 className={`font-semibold w-fit text-3xl font-manrope md:hidden block  border-b-2 border-b-black relative right-28 py-4 `}>
             Bestsellers
           </h1>
-          <div  className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8 pr-6 md:pr-0'>
+          <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8 pr-6 md:pr-0'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>
-          <h1  className={`font-semibold w-fit text-3xl font-manrope md:hidden block  border-b-2 border-b-black relative right-28 py-4 `}>
-          Mega Offers
+          <h1 className={`font-semibold w-fit text-3xl font-manrope md:hidden block  border-b-2 border-b-black relative right-28 py-4 `}>
+            Mega Offers
           </h1>
           <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8 pr-6 md:pr-0'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
@@ -390,7 +395,7 @@ if(userDetails){
       </section>
       {/* <div className=' bg-[#3b4758] w-full h-24'></div> */}
       {/* Newsletter Section */}
-      <section  className='bg-[#3b4758] '>
+      <section className='bg-[#3b4758] '>
         <div className="max-w-7xl mx-auto px-5 md:px-10  flex space-x-6 p-6 items-center justify-between ">
           <p className=' text-white '><span className='text-base font-bold text-white '>Subscribe to Our Newsletter</span> - get a <span className=' text-white text-base font-bold underline'>₹500 Coupon</span> for your first order!</p>
           <div style={{ width: "500px" }} className="flex ">

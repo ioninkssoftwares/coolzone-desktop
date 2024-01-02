@@ -32,6 +32,7 @@ import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import OrderModal from "../../../components/admin/modals/OrderModal";
 import OrderDetailsModal from "../../../components/admin/modals/OrderDetailsModal";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -82,6 +83,7 @@ const AdminOrdersPage = () => {
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
     // const router = useRouter();
+    const navigate = useNavigate();
 
 
     if (allProducts) {
@@ -231,17 +233,17 @@ const AdminOrdersPage = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) => (
                 <Box>
-                    <Tooltip title="Edit">
+                    {/* <Tooltip title="Edit">
                         <IconButton
                             // onClick={() => router.push(`/admin/customers/${row._id}`)}
                             color="primary"
                         >
                             <BsEyeFill />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip title="Edit">
                         <IconButton
-                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+                            onClick={() => navigate(`/admin/order/${row._id}`)}
                             color="primary"
                         >
                             <BsPencilFill />
@@ -481,17 +483,7 @@ const AdminOrdersPage = () => {
                             </Grid>
                         </Grid>
 
-                        {/* {users && <AdminCustomers users={users} />} */}
 
-                        {/* <ConfirmBox
-                            title="Customer"
-                            name="customer"
-                            open={deleteOpen}
-                            closeDialog={() => setDeleteOpen(false)}
-                            toDoFunction={deleteCustomer}
-                            loading={deleteLoading}
-                            sx={{ pb: 4, border: "2px solid red" }}
-                        /> */}
                     </div>}
                 </div>
                 {/* </main> */}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Footer from '../components/footer/Footer'
 import MediumHouseCard from '../components/features/MediumHomeCard'
@@ -13,12 +13,23 @@ import { AiOutlineOrderedList } from 'react-icons/ai'
 import { MdArtTrack } from 'react-icons/md'
 import { FaAddressBook } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { useCookies } from 'react-cookie'
 // import ProductDetails from '../components/product/productDetails'
 
 const MyAccountPage = () => {
     const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies(["token"]);
     const productss = useSelector(selectAllProducts);
     const isPending = useSelector(selectProductListStatus);
+
+
+    useEffect(() => {
+        if (cookies.token === undefined) {
+            toast.error("Please Login")
+            navigate('/login')
+        }
+    }, [])
     return (
         <div>
             <Navbar />
@@ -28,55 +39,55 @@ const MyAccountPage = () => {
                     <div onClick={() => navigate("/profile")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer  flex rounded-lg p-4 gap-6 '>
                         <BiSolidUser className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>My Profile</p>
+                            <p className='text-lg font-semibold'>My Profile</p>
                             <p>Edit your basic profile</p>
                         </div>
                     </div>
                     <div onClick={() => navigate("/orders")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <AiOutlineOrderedList className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>My Orders</p>
+                            <p className='text-lg font-semibold'>My Orders</p>
                             <p>View, cancel orders and buy again</p>
                         </div>
                     </div>
                     <div onClick={() => navigate("/ordersTracking")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <MdArtTrack className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>Order Tracking</p>
+                            <p className='text-lg font-semibold'>Order Tracking</p>
                             <p>Track your order status</p>
                         </div>
                     </div>
                     <div onClick={() => navigate("/address")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <FaAddressBook className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>My Address</p>
+                            <p className='text-lg font-semibold'>My Address</p>
                             <p>Manage your saved address</p>
                         </div>
                     </div>
-                    <div onClick={() => navigate("/coupon")}  style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    <div onClick={() => navigate("/coupon")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>My Coupon</p>
+                            <p className='text-lg font-semibold'>My Coupon</p>
                             <p>Manage your discount coupon </p>
                         </div>
                     </div>
-                    <div onClick={() => navigate("/coupon")}  style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    <div onClick={() => navigate("/coupon")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>My Coupon</p>
+                            <p className='text-lg font-semibold'>My Coupon</p>
                             <p>Manage your discount coupon </p>
                         </div>
                     </div>
                     <div onClick={() => navigate("/membership")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
-                            <p className = 'text-lg font-semibold'>Membership</p>
+                            <p className='text-lg font-semibold'>Membership</p>
                             <p>Manage your Membership </p>
                         </div>
                     </div>
                     <div style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidUser className='mt-4 text-2xl text-red-500' />
-                       <p className='mt-3 text-lg font-semibold text-red-500 '>Logout</p>
+                        <p className='mt-3 text-lg font-semibold text-red-500 '>Logout</p>
                     </div>
 
                 </div>

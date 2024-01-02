@@ -88,15 +88,74 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     const [clientNames, setClientNames] = useState([]);
     const [saveProduct, setSaveProduct] = useState([]);
     const [filterSaveProduct, setFilterSaveProduct] = useState([]);
+    const [orderItems, setOrderItems] = useState([]);
+
+    const [totalPrice, setTotalPrice] = useState(null);
+    const [totalTax, setTotalTax] = useState(null);
+
+    if (filterSaveProduct) {
+        console.log("Filter Save Product", filterSaveProduct)
+    }
     const [orderData, setOrderData] = useState({
         cid: '',
+        taxPrice: totalTax,
+        totalPrice: totalPrice + totalTax,
+        shippingPrice: null,
         paymentType: '',
         orderType: '',
         orderStatus: '',
         orderNote: '',
-        orderItems: [],
+        orderItems,
         project_categories: '',
     });
+
+    if (orderItems) {
+        console.log(orderItems, "Order Items")
+    }
+
+
+    useEffect(() => {
+        // Extracting only the desired fields from each product
+        const filteredProducts = filterSaveProduct.map(product => ({
+            product: product._id,
+            name: product.name,
+            price: product.price,
+            image: product.images ? product.images[0].url : "",
+            //   images: product.images, // Add this line if 'images' is a field in your product objects
+            quantity: product.Stock
+        }));
+
+        // Updating the filterFieldProduct state
+        setOrderItems(filteredProducts);
+
+
+
+        // Calculate total price
+        const total = filteredProducts.reduce((acc, product) => acc + product.price, 0);
+
+        // Updating the totalPrice state
+        setTotalPrice(total);
+
+        // Calculate total tax (18% of total price)
+        const tax = total * 0.18;
+
+        // Updating the totalTax state
+        setTotalTax(tax);
+
+
+    }, [filterSaveProduct])
+
+
+    // Update orderData when orderItems or totalPrice changes
+    useEffect(() => {
+        setOrderData(prevOrderData => ({
+            ...prevOrderData,
+            orderItems: orderItems,
+            totalPrice: totalPrice,
+            taxPrice: totalTax,
+        }));
+    }, [orderItems, totalPrice, totalTax]);
+
 
     if (orderData) {
         console.log(orderData, "uoiuiio")
@@ -134,6 +193,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     };
 
     const handleSubmit = async () => {
+        console.log(orderData, "Order Data");
         setLoading(true)
         // onSubmit(orderData);
         // setOpen(false);
@@ -169,6 +229,8 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
         gap: 7,
         top: '50%',
         left: '50%',
+        overflowY: "auto",
+        maxHeight: "700px",
         transform: 'translate(-50%, -50%)',
         width: 900,
         bgcolor: 'white', // Changed background color to white
@@ -529,12 +591,26 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
 
 
 
+                        <div className="border-t border-gray-200 px-1 py-2 sm:px-6">
+                            <div className="flex justify-between text-base font-medium text-gray-900">
+                                <p>Shipping Price</p>
+                                <input type="text" onChange={(event) => setOrderData({ ...orderData, shippingPrice: event.target.value })} className="border border-gray-300  w-full" />
+                            </div>
 
+                        </div>
+
+                        <div className="border-t border-gray-200 px-4 py-2 sm:px-6">
+                            <div className="flex justify-between text-base font-medium text-gray-900">
+                                <p>Tax</p>
+                                <p>{totalTax}</p>
+                            </div>
+
+                        </div>
 
                         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                             <div className="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
-                                <p>$262.00</p>
+                                <p>{totalPrice + totalTax}</p>
                             </div>
                             <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                         </div>
@@ -544,6 +620,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                             onClick={handleSubmit}
                             sx={{
                                 marginTop: 2,
+                                marginBottom: 2,
                                 padding: 2,
                                 backgroundColor: '#04a7ff', // Set the background color
                                 // '&:hover': {

@@ -6,6 +6,7 @@ import { fetchItemsByUserIdAsync, selectCartLoaded, selectCartStatus, selectItem
 import { Grid } from 'react-loader-spinner';
 import { useAxios } from '../../utils/axios';
 import { CircularProgress } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,12 @@ const Cart = () => {
     }
   }, [items, dispatch])
 
-
+  useEffect(() => {
+    if (cookies.token === undefined) {
+      toast.error("Please Login")
+      navigate('/login')
+    }
+  }, [])
 
   useEffect(() => {
     if (cookies && cookies.token) {

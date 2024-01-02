@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Footer from '../components/footer/Footer'
 import { data } from '../test'
@@ -10,19 +10,30 @@ import { useSelector } from 'react-redux'
 import { selectAllProducts, selectProductListStatus } from '../components/product/productSlice'
 import { scrollLeft, scrollRight } from './Home'
 import { selectCurrentUserDetails } from '../components/auth/authSlice'
+import { useCookies } from 'react-cookie'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 // import ProductDetails from '../components/product/productDetails'
 
 const WishListPage = () => {
+    const navigate = useNavigate();
     const productss = useSelector(selectAllProducts);
     const isPending = useSelector(selectProductListStatus);
     const userDetails = useSelector(selectCurrentUserDetails);
+    const [cookies, setCookies] = useCookies(["token"]);
 
-    if(userDetails){
-        console.log(userDetails,"fdlsjfkds")
+    if (userDetails) {
+        console.log(userDetails, "fdlsjfkds")
     }
 
+    useEffect(() => {
+        if (cookies.token === undefined) {
+            toast.error("Please Login")
+            navigate('/login')
+        }
+    }, [])
 
-    
+
     return (
         <div>
             <Navbar />
