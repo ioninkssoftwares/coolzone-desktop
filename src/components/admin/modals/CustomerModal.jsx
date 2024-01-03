@@ -102,13 +102,17 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
     const [token, setToken] = useState("");
     const [clientNames, setClientNames] = useState([]);
     const [cookies, setCookies] = useCookies(["adminToken"]);
+    const [sameAddress, setSameAddress] = useState(false);
     const [newCustomerData, setNewCustomerData] = useState({
-        customerName: '',
-        phone: '',
+        name: '',
+        email: '',
+        mobileNo: '',
+        password: 'defaultPassword',
         address: '',
         landmark: '',
         state: '',
         city: '',
+        sameCustomerAddress: sameAddress
     });
 
     const instance = useAxios(token);
@@ -116,6 +120,10 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
 
     const handleSwitchChange = (event) => {
         setSwitchState(event.target.checked);
+    };
+
+    const handleAddressSwitchChange = (event) => {
+        setSameAddress(event.target.checked);
     };
 
     const handleOpen = () => {
@@ -132,11 +140,13 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
         // setOpen(false);
         try {
 
-            const res = await instance.post("/admin/newCustomer", newCustomerData);
+            const res = await instance.post("/admin/createcustomer", newCustomerData);
 
             if (res.data) {
-                setLoading(false)
-                console.log(res.data)
+                setLoading(false);
+                console.log(res.data);
+                toast("Customer added successfully");
+                setOpen(false);
             }
 
         } catch (error) {
@@ -278,9 +288,9 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Customer Name"
                             fullWidth
                             margin="normal"
-                            value={newCustomerData.customerName}
+                            value={newCustomerData.name}
                             onChange={(e) =>
-                                setNewCustomerData({ ...newCustomerData, customerName: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, name: e.target.value })
                             }
                         />
                         {/* <div>
@@ -374,9 +384,19 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Phone Number"
                             fullWidth
                             margin="normal"
-                            value={newCustomerData.phone}
+                            value={newCustomerData.mobileNo}
                             onChange={(e) =>
-                                setNewCustomerData({ ...newCustomerData, phone: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, mobileNo: e.target.value })
+                            }
+                        />
+
+                        <TextField
+                            label="Email"
+                            fullWidth
+                            margin="normal"
+                            value={newCustomerData.email}
+                            onChange={(e) =>
+                                setNewCustomerData({ ...newCustomerData, email: e.target.value })
                             }
                         />
                         <FormGroup>
@@ -433,8 +453,7 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                                 <Typography sx={{ marginRight: 2, display: "inline-block" }}>Billing Address</Typography> <Typography sx={{ display: "inline-block", marginRight: 2 }}> Same as Customer Address</Typography>
                                 <FormGroup sx={{ display: "inline-block" }}>
                                     <FormControlLabel
-                                        control={<Switch defaultChecked />}
-
+                                        control={<Switch defaultChecked={sameAddress} onChange={handleSwitchChange} />}
                                     />
                                 </FormGroup>
                             </Box>

@@ -69,7 +69,7 @@ const MembershipManagement = () => {
     const [token, setToken] = useState("");
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const instance = useAxios(token);
-    const [users, setUsers] = useState([]);
+    const [membershipList, setMemberShipList] = useState([]);
     const [pagination, setPagination] = useState(
         null
     );
@@ -81,13 +81,13 @@ const MembershipManagement = () => {
     const [selected, setSelected] = useState("All");
     // const router = useRouter();
 
-    const getAllMembershipOffers = async () => {
+    const getAllMembershipList = async () => {
         try {
             setLoading(true)
-            const res = await instance.get("mebershipoffers")
+            const res = await instance.get("/admin/membershipslist")
             if (res.data) {
                 setLoading(false)
-                setAllProducts(res.data.products)
+                setMemberShipList(res.data.data)
             }
 
 
@@ -101,7 +101,7 @@ const MembershipManagement = () => {
 
     useEffect(() => {
         if (token) {
-            getAllMembershipOffers()
+            getAllMembershipList()
         }
     }, [token])
 
@@ -121,14 +121,14 @@ const MembershipManagement = () => {
             flex: 0.25,
             minWidth: 150,
 
-            field: "name",
+            field: "username",
             headerName: "Customer Name",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
             renderCell: ({ row }) => (
                 <Typography variant="body1" fontWeight={500}>
-                    {row?.name}
+                    {row?.username}
                 </Typography>
             ),
         },
@@ -152,16 +152,16 @@ const MembershipManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 150,
+        // {
+        //     minWidth: 150,
 
-            flex: 0.25,
-            field: "city",
-            headerName: "City",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+        //     flex: 0.25,
+        //     field: "city",
+        //     headerName: "City",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 120,
 
@@ -172,20 +172,25 @@ const MembershipManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 120,
 
+        {
+            minWidth: 150,
+            flex: 0.25,
             field: "memberSince",
             headerName: "Member Since",
-            flex: 0.2,
             align: "left",
             headerAlign: "left",
-            disableColumnMenu: true,
+            disableColumnMenu: true, renderCell: ({ row }) => (
+                <Typography variant="body1" fontWeight={500}>
+                    {new Date(row?.memberSince).toLocaleDateString('en-GB')}
+                </Typography>
+            ),
         },
+
         {
             minWidth: 120,
 
-            field: "status",
+            field: "isActiveMembership",
             headerName: "Status",
             flex: 0.2,
             align: "left",
@@ -416,46 +421,48 @@ const MembershipManagement = () => {
                             </div>
                         </div>
                         {/* dashboard caerd */}
+                        <Box sx={{ margin: "0 25px" }}>
 
-                        <Grid container spacing={6} sx={{ pb: 38, }}>
-                            <Grid item xs={12}>
-                                <Card sx={{ borderRadius: 2 }}>
-                                    <DataGrid
-                                        rows={users || []}
-                                        columns={all_customer_columns}
-                                        getRowId={(row) => row._id}
-                                        autoHeight
-                                        components={{
-                                            LoadingOverlay: LinearProgress,
-                                        }}
-                                        loading={loading}
-                                        getRowHeight={() => "auto"}
+                            <Grid container spacing={6} sx={{ pb: 38, }}>
+                                <Grid item xs={12}>
+                                    <Card sx={{ borderRadius: 2 }}>
+                                        <DataGrid
+                                            rows={membershipList || []}
+                                            columns={all_customer_columns}
+                                            getRowId={(row) => row._id}
+                                            autoHeight
+                                            components={{
+                                                LoadingOverlay: LinearProgress,
+                                            }}
+                                            loading={loading}
+                                            getRowHeight={() => "auto"}
 
-                                        pagination
-                                        paginationModel={paginationModel}
-                                        pageSizeOptions={[25, 50, 75, 100]}
-                                        rowCount={pagination?.totalUsers}
-                                        paginationMode="server"
-                                        onPaginationModelChange={setPaginationModel}
+                                            pagination
+                                            paginationModel={paginationModel}
+                                            pageSizeOptions={[25, 50, 75, 100]}
+                                            rowCount={pagination?.totalUsers}
+                                            paginationMode="server"
+                                            onPaginationModelChange={setPaginationModel}
 
 
-                                        // pagination
-                                        // rowsPerPageOptions={[5, 10, 25]}
-                                        // rowCount={pagination?.totalUsers || 0}
-                                        // page={pageState.page - 1}
-                                        // pageSize={pageState.pageSize}
-                                        // paginationMode="server"
-                                        // onPageChange={(newPage: number) => {
-                                        //   setPageState((old) => ({ ...old, page: newPage + 1 }));
-                                        // }}
-                                        // onPageSizeChange={(newPageSize: number) =>
-                                        //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
-                                        // }
-                                        sx={tableStyles}
-                                    />
-                                </Card>
+                                            // pagination
+                                            // rowsPerPageOptions={[5, 10, 25]}
+                                            // rowCount={pagination?.totalUsers || 0}
+                                            // page={pageState.page - 1}
+                                            // pageSize={pageState.pageSize}
+                                            // paginationMode="server"
+                                            // onPageChange={(newPage: number) => {
+                                            //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+                                            // }}
+                                            // onPageSizeChange={(newPageSize: number) =>
+                                            //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+                                            // }
+                                            sx={tableStyles}
+                                        />
+                                    </Card>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
 
                         {/* {users && <AdminCustomers users={users} />} */}
 

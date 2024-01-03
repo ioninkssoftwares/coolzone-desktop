@@ -80,16 +80,18 @@ const UserManagement = () => {
     const navigate = useNavigate();
     const instance = useAxios(token);
 
+    if (users) console.log(users, "dfajfksd")
+
     async function getAllUsers() {
 
         try {
             setLoading(true);
             const res = await instance.get(
-                `/admin/allUser`
+                `/admin/users`
             );
             if (res.data) {
-                setUsers(res?.data?.data);
-                setPagination(res?.data?.pagination);
+                setUsers(res?.data?.users);
+                // setPagination(res?.data?.pagination);
                 setLoading(false);
             }
         } catch (error) {
@@ -163,7 +165,7 @@ const UserManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "phone",
+            field: "mobileNo",
             headerName: "Phone",
             align: "left",
             headerAlign: "left",
@@ -428,7 +430,7 @@ const UserManagement = () => {
                             </div>
                             {/* dashboard caerd */}
 
-                            <Grid container spacing={6} sx={{ pb: 38, }}>
+                            <Box sx={{ margin: "0 20px" }}>     <Grid container spacing={6} sx={{ pb: 38, }}>
                                 <Grid item xs={12}>
                                     <Card sx={{ borderRadius: 2 }}>
                                         <DataGrid
@@ -467,6 +469,7 @@ const UserManagement = () => {
                                     </Card>
                                 </Grid>
                             </Grid>
+                            </Box>
 
                             {/* {users && <AdminCustomers users={users} />} */}
 

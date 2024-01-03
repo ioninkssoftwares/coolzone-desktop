@@ -258,3 +258,199 @@ const MembershipPage = () => {
 }
 
 export default MembershipPage
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import FormGroup from '@mui/material/FormGroup';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+
+
+
+
+// import Switch from '@mui/material/Switch';
+
+// const ApplianceSwitches = () => {
+//   // Appliance types
+//   const washingMachineTypes = ["Top Load Agitator", "Top Load Impeller", "Front Load", "Fully Automatic Front Load"];
+//   const airConditionerTypes = ["Window A/C", "Split A/C", "Inverter Split A/C", "Cooling Casette", "Column A/C"];
+//   const microwaveHouseholdTypes = ["Microwave", "O.T.G", "Convection Oven"];
+//   const microwaveCommercialTypes = ["Standard Oven", "Pizza Oven", "Conveyor Oven", "Rotisserie Oven"];
+//   const mixedTypes = ["Juicer", "Mixer Grinder", "Water Purifier"];
+
+//   // Initialize states for switches
+//   const [washingMachineState, setWashingMachineState] = useState(
+//     washingMachineTypes.reduce((acc, type) => {
+//       acc[type] = true;
+//       return acc;
+//     }, {})
+//   );
+
+//   const [airConditionerState, setAirConditionerState] = useState(
+//     airConditionerTypes.reduce((acc, type) => {
+//       acc[type] = true;
+//       return acc;
+//     }, {})
+//   );
+
+//   const [microwaveHouseholdState, setMicrowaveHouseholdState] = useState(
+//     microwaveHouseholdTypes.reduce((acc, type) => {
+//       acc[type] = true;
+//       return acc;
+//     }, {})
+//   );
+
+//   const [microwaveCommercialState, setMicrowaveCommercialState] = useState(
+//     microwaveCommercialTypes.reduce((acc, type) => {
+//       acc[type] = true;
+//       return acc;
+//     }, {})
+//   );
+
+//   const [mixedTypesState, setMixedTypesState] = useState(
+//     mixedTypes.reduce((acc, type) => {
+//       acc[type] = true;
+//       return acc;
+//     }, {})
+//   );
+
+//   const handleSwitch = (type, appliance) => {
+//     switch (appliance) {
+//       case 'washingMachine':
+//         setWashingMachineState((prevState) => ({
+//           ...prevState,
+//           [type]: !prevState[type],
+//         }));
+//         break;
+//       case 'airConditioner':
+//         setAirConditionerState((prevState) => ({
+//           ...prevState,
+//           [type]: !prevState[type],
+//         }));
+//         break;
+//       case 'microwaveHousehold':
+//         setMicrowaveHouseholdState((prevState) => ({
+//           ...prevState,
+//           [type]: !prevState[type],
+//         }));
+//         break;
+//       case 'microwaveCommercial':
+//         setMicrowaveCommercialState((prevState) => ({
+//           ...prevState,
+//           [type]: !prevState[type],
+//         }));
+//         break;
+//       case 'mixedTypes':
+//         setMixedTypesState((prevState) => ({
+//           ...prevState,
+//           [type]: !prevState[type],
+//         }));
+//         break;
+//       // Add cases for other appliances if needed
+//       default:
+//         break;
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="mt-16">
+//         <p className="my-4 text-xl font-semibold">Washing Machine</p>
+//         <div className="flex gap-12">
+//           {washingMachineTypes.map((type) => (
+//             <FormControlLabel
+//               key={type}
+//               label={type}
+//               control={
+//                 <Switch
+//                   checked={washingMachineState[type]}
+//                   onChange={() => handleSwitch(type, 'washingMachine')}
+//                 />
+//               }
+//               className="mr-4"
+//             />
+//           ))}
+//         </div>
+//       </div>
+
+//       <div className="mt-16">
+//         <p className="my-4 text-xl font-semibold">Air Conditioner</p>
+//         <div className="flex gap-12">
+//           {airConditionerTypes.map((type) => (
+//             <FormControlLabel
+//               key={type}
+//               label={type}
+//               control={
+//                 <Switch
+//                   checked={airConditionerState[type]}
+//                   onChange={() => handleSwitch(type, 'airConditioner')}
+//                 />
+//               }
+//               className="mr-4"
+//             />
+//           ))}
+//         </div>
+//       </div>
+
+//       <div className="mt-16">
+//         <p className="my-4 text-xl font-semibold">Microwave</p>
+//         <p className="mb-4 text-xl font-semibold">HouseHold </p>
+//         <div className="flex gap-12">
+//           {microwaveHouseholdTypes.map((type) => (
+//             <FormControlLabel
+//               key={type}
+//               label={type}
+//               control={
+//                 <Switch
+//                   checked={microwaveHouseholdState[type]}
+//                   onChange={() => handleSwitch(type, 'microwaveHousehold')}
+//                 />
+//               }
+//               className="mr-4"
+//             />
+//           ))}
+//         </div>
+//         <p className="my-4 text-xl font-semibold">Commercial </p>
+//         <div className="flex gap-12">
+//           {microwaveCommercialTypes.map((type) => (
+//             <FormControlLabel
+//               key={type}
+//               label={type}
+//               control={
+//                 <Switch
+//                   checked={microwaveCommercialState[type]}
+//                   onChange={() => handleSwitch(type, 'microwaveCommercial')}
+//                 />
+//               }
+//               className="mr-4"
+//             />
+//           ))}
+//         </div>
+//       </div>
+
+//       <div className="mt-16">
+//         <p className="my-4 text-xl font-semibold">Mixed Types</p>
+//         <div className="flex gap-12">
+//           {mixedTypes.map((type) => (
+//             <FormControlLabel
+//               key={type}
+//               label={type}
+//               control={
+//                 <Switch
+//                   checked={mixedTypesState[type]}
+//                   onChange={() => handleSwitch(type, 'mixedTypes')}
+//                 />
+//               }
+//               className="mr-4"
+//             />
+//           ))}
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default ApplianceSwitches;

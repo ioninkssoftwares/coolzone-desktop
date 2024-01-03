@@ -13,6 +13,9 @@ import { Textarea } from '@mui/joy';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
 import { useAxios } from '../../../utils/axios';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { useAxios } from '../../utills/axios';
 
 
@@ -104,17 +107,21 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
     const [token, setToken] = useState("");
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const instance = useAxios(token);
-    const [clientNames, setClientNames] = useState([]);
+    const [discountPercentage, setDiscountPercentage] = useState(false);
+    const [date, setDate] = useState(null); // Initialize with null or a default date
     const [couponData, setCouponData] = useState({
-        couponName: '',
-        couponCode: '',
-        couponType: '',
+        name: '',
+        expiry: date,
+        coupontype: '',
+        code: "",
+        percentage: discountPercentage,
         discount: '',
-        couponSegment: '',
-        couponExpiry: '',
-        maxUser: '',
-        couponDescription: '',
+        CouponSegment: '',
+        maxUsePerCustomer: '',
+        discription: '',
     });
+
+    if (date) console.log(date, "sdfkjld")
 
     const [switchState, setSwitchState] = useState(false);
 
@@ -136,11 +143,12 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
         setLoading(true)
         try {
 
-            const res = await instance.post("/admin/createCoupon", couponData);
+            const res = await instance.post("/admin/coupon/new", couponData);
 
             if (res.data) {
                 setLoading(false)
-
+                toast("Coupon added successfully")
+                setOpen(false);
                 console.log(res.data)
             }
 
@@ -153,6 +161,10 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
 
     };
 
+
+    const handleDateChange = (event) => {
+        console.log(event, "hjsdjkfh");
+    }
     const style = {
         position: 'absolute',
         top: '50%',
@@ -198,15 +210,15 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
 
 
 
-    const handleChange = (event) => {
-        console.log(event.target.value, "clieee")
+    // const handleChange = (event) => {
+    //     console.log(event.target.value, "clieee")
 
-        setStatus(event.target.value);
-        setCouponData({
-            ...couponData,
-            status: event.target.value
-        });
-    };
+    //     setStatus(event.target.value);
+    //     setCouponData({
+    //         ...couponData,
+    //         status: event.target.value
+    //     });
+    // };
 
 
 
@@ -231,16 +243,18 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
     //     getAllClients(); // Make the API call
     // }, []);
 
+    const handlePercentageSwitchChange = (event) => {
+        setDiscountPercentage(event.target.checked)
+    }
 
-
-    const handleClient = (event) => {
-        console.log(event.target.value, "clieee")
-        setSelectedClient(event.target.value)
-        setCouponData({
-            ...couponData,
-            clientEmail: event.target.value.clientEmail
-        });
-    };
+    // const handleClient = (event) => {
+    //     console.log(event.target.value, "clieee")
+    //     setSelectedClient(event.target.value)
+    //     setCouponData({
+    //         ...couponData,
+    //         clientEmail: event.target.value.clientEmail
+    //     });
+    // };
 
 
     useEffect(() => {
@@ -285,18 +299,18 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Coupon Name"
                             fullWidth
                             margin="normal"
-                            value={couponData.couponName}
+                            value={couponData.name}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, couponName: e.target.value })
+                                setCouponData({ ...couponData, name: e.target.value })
                             }
                         />
                         <TextField
                             label="Coupon Code"
                             fullWidth
                             margin="normal"
-                            value={couponData.couponCode}
+                            value={couponData.code}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, couponCode: e.target.value })
+                                setCouponData({ ...couponData, code: e.target.value })
                             }
                         />
 
@@ -304,9 +318,9 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Coupon Type"
                             fullWidth
                             margin="normal"
-                            value={couponData.couponType}
+                            value={couponData.coupontype}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, couponType: e.target.value })
+                                setCouponData({ ...couponData, coupontype: e.target.value })
                             }
                         />
 
@@ -319,37 +333,53 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                                 setCouponData({ ...couponData, discount: e.target.value })
                             }
                         />
+
+                        <FormGroup>
+                            <FormControlLabel
+                                control={<Switch checked={discountPercentage} onChange={handlePercentageSwitchChange} />}
+                                label="Discount in %"
+                            />
+                        </FormGroup>
+
                         <TextField
                             label="Coupon Segment"
                             fullWidth
                             margin="normal"
-                            value={couponData.couponSegment}
+                            value={couponData.CouponSegment}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, couponSegment: e.target.value })
+                                setCouponData({ ...couponData, CouponSegment: e.target.value })
                             }
                         />
-                        <TextField
+                        {/* <TextField
                             label="Coupon Expiry"
                             fullWidth
                             margin="normal"
-                            value={couponData.couponExpiry}
+                            value={couponData.expiry}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, couponExpiry: e.target.value })
+                                setCouponData({ ...couponData, expiry: e.target.value })
                             }
-                        />
+                        /> */}
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DatePicker']}>
+                                <DatePicker value={date}
+                                    onChange={(newDate) => setCouponData({ ...couponData, expiry: newDate.toDate() })} />
+                            </DemoContainer>
+                        </LocalizationProvider>
+
                         <TextField
                             label="Max User Per Customer"
                             fullWidth
                             margin="normal"
-                            value={couponData.maxUser}
+                            value={couponData.maxUsePerCustomer}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, maxUser: e.target.value })
+                                setCouponData({ ...couponData, maxUsePerCustomer: e.target.value })
                             }
                         />
 
-                        <Textarea value={couponData.couponDescription}
+                        <Textarea value={couponData.discription}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, couponDescription: e.target.value })
+                                setCouponData({ ...couponData, discription: e.target.value })
                             } sx={{ marginTop: 2 }} minRows={4} placeholder="Description of Coupon" />
                         {/* <Button
                             variant="contained"

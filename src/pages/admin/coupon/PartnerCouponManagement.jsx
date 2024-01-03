@@ -68,7 +68,7 @@ const PartnerCouponManagement = () => {
     const [loading, setLoading] = useState(false);
     const [deleteId, setDeleteId] = useState("");
     const [token, setToken] = useState("");
-    const [users, setUsers] = useState([]);
+    const [coupons, setCoupons] = useState([]);
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const [pagination, setPagination] = useState(
         null
@@ -87,10 +87,10 @@ const PartnerCouponManagement = () => {
         try {
             setLoading(true);
             const res = await instance.get(
-                `/admin/allCoupons`
+                `/admin/coupons`
             );
             if (res.data) {
-                // setUsers(res?.data?.data);
+                setCoupons(res.data.allCouponList);
                 // setPagination(res?.data?.pagination);
                 setLoading(false);
             }
@@ -101,7 +101,7 @@ const PartnerCouponManagement = () => {
     }
 
     useEffect(() => {
-        getAllCoupons();
+        if (token) getAllCoupons();
     }, [token]);
 
 
@@ -134,8 +134,8 @@ const PartnerCouponManagement = () => {
             flex: 0.25,
             minWidth: 150,
 
-            field: "partnersName",
-            headerName: "Partners Name",
+            field: "name",
+            headerName: "Coupon Name",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -145,19 +145,65 @@ const PartnerCouponManagement = () => {
                 </Typography>
             ),
         },
+
         {
             minWidth: 150,
-
             flex: 0.25,
-            field: "email",
-            headerName: "Email",
+            field: "coupontype",
+            headerName: "Coupon Type",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
         {
             minWidth: 150,
+            flex: 0.25,
+            field: "code",
+            headerName: "Coupon Code",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
 
+        {
+            minWidth: 150,
+            flex: 0.25,
+            field: "discount",
+            headerName: "Discount",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true, renderCell: ({ row }) => (
+                <Typography variant="body1" fontWeight={500}>
+                    {`${row?.discount} ${row.percentage ? "%" : "RS"}`}
+                </Typography>
+            ),
+        },
+
+
+        {
+            minWidth: 150,
+            flex: 0.25,
+            field: "expiry",
+            headerName: "Expiry",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true, renderCell: ({ row }) => (
+                <Typography variant="body1" fontWeight={500}>
+                    {new Date(row?.expiry).toLocaleDateString('en-GB')}
+                </Typography>
+            ),
+        },
+        {
+            minWidth: 150,
+            flex: 0.25,
+            field: "coupontype",
+            headerName: "Coupon Type",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 150,
             flex: 0.25,
             field: "couponSegment",
             headerName: "Coupon Segment",
@@ -167,34 +213,25 @@ const PartnerCouponManagement = () => {
         },
         {
             minWidth: 150,
-
             flex: 0.25,
-            field: "orders",
-            headerName: "Orders",
+            field: "maxUsePerCustomer",
+            headerName: "Max User",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
         {
-            minWidth: 120,
-
-            field: "orderTotal",
-            headerName: "Order Total",
-            flex: 0.2,
+            minWidth: 150,
+            flex: 0.25,
+            field: "discription",
+            headerName: "Coupon Description",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 120,
 
-            field: "cashbackEarned",
-            headerName: "Cashback Earned",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+
+
         {
             minWidth: 120,
 
@@ -438,7 +475,7 @@ const PartnerCouponManagement = () => {
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
-                                        rows={users || []}
+                                        rows={coupons || []}
                                         columns={all_customer_columns}
                                         getRowId={(row) => row._id}
                                         autoHeight
