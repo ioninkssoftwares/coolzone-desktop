@@ -74,12 +74,12 @@ const filters = [
         id: 'priceRange',
         name: 'Price Range',
         options: [
-            { value: '2l', label: '<15,000', checked: false },
-            { value: '6l', label: '15,000 t0 25,000', checked: false },
-            { value: '12l', label: '25,000 t0 50,000', checked: false },
-            { value: '18l', label: '50,000 t0 74,999', checked: false },
-            { value: '20l', label: '75,000 t0 99,999', checked: false },
-            { value: '40l', label: '>1,00,000', checked: true },
+            { value: '1500', label: '<15,000', checked: false },
+            { value: '2500', label: 'upto 25,000', checked: false },
+            { value: '50000', label: 'upto 50,000', checked: false },
+            { value: '75000', label: 'upto  74,999', checked: false },
+            { value: '1000000', label: 'upto 99,999', checked: false },
+            { value: '1100000', label: '>1,00,000', checked: true },
         ],
     },
 ]
@@ -99,6 +99,15 @@ const ProductList = () => {
     const categories = useSelector(selectCategories);
     const isPending = useSelector(selectProductListStatus);
     const [page, setPage] = useState(1)
+    const [filter, setFilter] = useState({});
+
+
+    // if (productss) {
+    //     console.log(productss, "fadjkhkad")
+    // }
+    if (totalItems) {
+        console.log(totalItems, "sdjhfjdksafh")
+    }
 
     // const filters = [
     //     {
@@ -126,20 +135,27 @@ const ProductList = () => {
     if (isPending) {
         console.log(isPending, "prkjf")
     }
-    const [filter, setFilter] = useState({});
 
 
+    if (filter) {
+        console.log(filter, "filter")
+    }
 
     const handlePage = (page) => {
         setPage(page)
 
     }
 
+
     useEffect(() => {
-        const pagination = { page: page }
-        console.log(pagination, "kgjkjlh")
-        dispatch(fetchProductsByFiltersAsync({ filter, pagination }))
-    }, [dispatch, page, filter])
+        // Check if either page or filter has changed
+        if (page !== 1 || Object.keys(filter).length > 0) {
+            const pagination = { page: page };
+            console.log(pagination, "kgjkjlh");
+            dispatch(fetchProductsByFiltersAsync({ filter, pagination }));
+        }
+    }, [filter, page]);
+
 
 
     const handleFilter = (e, section, option) => {
@@ -579,7 +595,8 @@ const ProductList = () => {
 
                     {/* Pagination component start here */}
 
-                    {/* <Pagination page={page} setPage={setPage} handlePage={handlePage} totalItems={totalItems} /> */}
+                    {/* {productss.length > 7 ? <Pagination page={page} setPage={setPage} handlePage={handlePage} totalItems={totalItems} /> : ""} */}
+                    <Pagination page={page} setPage={setPage} handlePage={handlePage} totalItems={totalItems} />
 
 
                 </main>

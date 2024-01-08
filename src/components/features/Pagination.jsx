@@ -22,8 +22,8 @@ const Pagination = ({ page, setPage, handlePage, totalItems }) => {
       <div className="sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">{(page - 1) * Items_Per_Page + 1}</span> to <span className="font-medium">{page * Items_Per_Page}</span> of{totalItems}
-            <span className="font-medium">97</span> results
+            Showing <span className="font-medium">{(page - 1) * Items_Per_Page + 1}</span> to <span className="font-medium">{page * Items_Per_Page}</span> of
+            <span className="font-medium">  {totalItems}</span> results
           </p>
         </div>
         <div>

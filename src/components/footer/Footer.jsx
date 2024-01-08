@@ -44,8 +44,8 @@ const Footer = () => {
             Categories
           </p>
 
-          <div  className="flex flex-col pl-2 space-y-4">
-            {productSamples.map((curElem) => ( <p>{curElem.name}</p>)      
+          <div className="flex flex-col pl-2 space-y-4">
+            {productSamples.map((curElem) => (<p>{curElem.name}</p>)
             )}
           </div>
 
@@ -54,16 +54,16 @@ const Footer = () => {
 
         <div className="space-y-8 ">
           <h1 className="font-semibold text-black ">Useful Links</h1>
-          <div  className="flex flex-col space-y-4">
-            {usefulLinks.map((curElem) => ( <p>{curElem.name}</p>)      
+          <div className="flex flex-col space-y-4">
+            {usefulLinks.map((curElem) => (<p>{curElem.name}</p>)
             )}
           </div>
         </div>
 
         <div className="space-y-8">
           <h1 className="font-semibold text-black">Customer Service</h1>
-          <div  className="flex flex-col space-y-4">
-            {customerService.map((curElem) => ( <p>{curElem.name}</p>)      
+          <div className="flex flex-col space-y-4">
+            {customerService.map((curElem) => (<p>{curElem.name}</p>)
             )}
           </div>
         </div>
@@ -91,19 +91,19 @@ const Footer = () => {
 
           <div className="flex text-2xl space-x-4 items-center py-8">
             <GrFacebookOption
-              onClick={() => window.open("https://www.facebook.com/WonderPlots", "_blank")}
+              onClick={() => window.open("https:google.com", "_blank")}
               className="text-primary-blue cursor-pointer"
             />
             <GrTwitter
-              onClick={() => window.open("https://twitter.com/WonderPlotsReal", "_blank")}
+              onClick={() => window.open("https:google.com", "_blank")}
               className="text-primary-blue cursor-pointer"
             />
             <GrInstagram
-              onClick={() => window.open("https://www.instagram.com/wonderplots/", "_blank")}
+              onClick={() => window.open("https:google.com", "_blank")}
               className="text-primary-blue cursor-pointer"
             />
             <GrYoutube
-              onClick={() => window.open("https://www.youtube.com/@WonderPlots", "_blank")}
+              onClick={() => window.open("https:google.com", "_blank")}
               className="text-primary-blue cursor-pointer"
             />
           </div>
