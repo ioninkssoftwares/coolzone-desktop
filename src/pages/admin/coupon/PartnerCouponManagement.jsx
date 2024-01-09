@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 // import { location, newResponse, Pagination, response, User } from "src/@types";
 // import { AdminCustomers } from "../../../componets/user/adminCustomer";
 // import AdminsideNav from "../../../componets/admin/adminDasboardnav";
-// import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
+import ConfirmBox from "../../../components/admin/shared/ConfirmDialog";
 // import DashBoardLayout from "src/Layout/DasboardsLayout";
 // import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "../../../utils/axios";
@@ -118,10 +118,11 @@ const PartnerCouponManagement = () => {
             setDeleteLoading(true);
             const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
             if (res.data) {
-                toast.success("Customer Deleted Successfully");
+                toast.success("Coupon Deleted Successfully");
                 setDeleteLoading(false);
                 setDeleteOpen(false);
-                getAllUsers();
+                getAllCoupons()
+                // getAllUsers();
             }
         } catch (e) {
             setDeleteLoading(false);
@@ -242,47 +243,47 @@ const PartnerCouponManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        // {
-        //     minWidth: 150,
+        {
+            minWidth: 150,
 
-        //     field: "action",
-        //     headerName: "ACTION",
-        //     flex: 0.15,
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        //     renderCell: ({ row }) => (
-        //         <Box>
-        //             <Tooltip title="Edit">
-        //                 <IconButton
-        //                     // onClick={() => router.push(`/admin/customers/${row._id}`)}
-        //                     color="primary"
-        //                 >
-        //                     <BsEyeFill />
-        //                 </IconButton>
-        //             </Tooltip>
-        //             <Tooltip title="Edit">
-        //                 <IconButton
-        //                     // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
-        //                     color="primary"
-        //                 >
-        //                     <BsPencilFill />
-        //                 </IconButton>
-        //             </Tooltip>
-        //             <Tooltip title="Delete">
-        //                 <IconButton
-        //                     onClick={() => {
-        //                         setDeleteId(row?._id);
-        //                         setDeleteOpen(true);
-        //                     }}
-        //                     color="error"
-        //                 >
-        //                     <MdDeleteForever />
-        //                 </IconButton>
-        //             </Tooltip>
-        //         </Box>
-        //     ),
-        // },
+            field: "action",
+            headerName: "ACTION",
+            flex: 0.15,
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+            renderCell: ({ row }) => (
+                <Box>
+                    <Tooltip title="Edit">
+                        <IconButton
+                            // onClick={() => router.push(`/admin/customers/${row._id}`)}
+                            color="primary"
+                        >
+                            <BsEyeFill />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                        <IconButton
+                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+                            color="primary"
+                        >
+                            <BsPencilFill />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <IconButton
+                            onClick={() => {
+                                setDeleteId(row?._id);
+                                setDeleteOpen(true);
+                            }}
+                            color="error"
+                        >
+                            <MdDeleteForever />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            ),
+        },
     ];
 
     return (
@@ -513,15 +514,15 @@ const PartnerCouponManagement = () => {
 
                         {/* {users && <AdminCustomers users={users} />} */}
 
-                        {/* <ConfirmBox
-                            title="Customer"
-                            name="customer"
+                        <ConfirmBox
+                            title="Coupon"
+                            name="coupon"
                             open={deleteOpen}
                             closeDialog={() => setDeleteOpen(false)}
                             toDoFunction={deleteCustomer}
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
-                        /> */}
+                        />
                     </div>}
                 </div>
                 {/* </main> */}

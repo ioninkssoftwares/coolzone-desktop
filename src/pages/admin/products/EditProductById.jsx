@@ -129,6 +129,7 @@ const EditProductById = () => {
     const [uploadedProductImage, setUploadedProductImages] = useState([])
     const instance = useAxios(token);
     const [users, setUsers] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const [pagination, setPagination] = useState(
         null
@@ -161,6 +162,7 @@ const EditProductById = () => {
     const [featuredSwitch, setFeaturedSwitch] = useState(null);
     const [bestSellerSwitch, setBestSellerSwitch] = useState(null);
     const [productData, setProductData] = useState({});
+
 
     if (uploadedProductImage) {
         console.log(uploadedProductImage, "dsjfhakjdfh")
@@ -344,6 +346,11 @@ const EditProductById = () => {
 
 
 
+    useEffect(() => {
+        // Update the selected category when productData changes
+        setSelectedCategory(productData?.category || '');
+    }, [productData]);
+
 
 
     const handleCategory = (event) => {
@@ -352,6 +359,7 @@ const EditProductById = () => {
             ...product,
             category: event.target.value
         });
+        setSelectedCategory(event.target.value);
     };
 
     const handleProductSubmit = async () => {
@@ -490,12 +498,12 @@ const EditProductById = () => {
                                         }
                                     />
 
-                                    <FormControl fullWidth>
+                                    <FormControl sx={{ marginTop: 3 }} fullWidth>
                                         <InputLabel id="demo-simple-select-label">Select Product Category</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            value={product?.category}
+                                            value={selectedCategory}
                                             label="Select Customer"
                                             onChange={handleCategory}
                                         >
@@ -551,15 +559,7 @@ const EditProductById = () => {
                                             setProduct({ ...product, brand: e.target.value })
                                         }
                                     />
-                                    <TextField
-                                        label="Specification"
-                                        fullWidth
-                                        margin="normal"
-                                        value={product.specification}
-                                        onChange={(e) =>
-                                            setProduct({ ...product, specification: e.target.value })
-                                        }
-                                    />
+
 
                                     <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
@@ -641,7 +641,7 @@ const EditProductById = () => {
                                         />
                                     </FormGroup>
                                 </Box> */}
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['DatePicker', 'DatePicker']}>
                                             <DatePicker
                                                 sx={{ width: "100%" }}
@@ -650,7 +650,7 @@ const EditProductById = () => {
                                                 onChange={(newValue) => setValue(newValue)}
                                             />
                                         </DemoContainer>
-                                    </LocalizationProvider>
+                                    </LocalizationProvider> */}
 
 
 
@@ -661,16 +661,31 @@ const EditProductById = () => {
                                         shortDescription: event.target.value
                                     })} placeholder="Short Description" minRows={3} />
 
+
+                                    <TextField
+                                        label="Specification"
+                                        fullWidth
+                                        margin="normal"
+                                        value={product.specification}
+                                        onChange={(e) =>
+                                            setProduct({ ...product, specification: e.target.value })
+                                        }
+                                        sx={{ marginTop: 4 }}
+                                    />
+
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Product Long Description
                                     </Typography>
 
                                     <Textarea value={product?.description} onChange={(event) => setProduct({ ...product, description: event.target.value })} placeholder="Your text goes here" minRows={5} />
+
+
+
                                     <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Add a long description for your product
                                     </Typography>
 
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2, marginTop: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                             Return Policy
                                         </Typography>
@@ -687,11 +702,11 @@ const EditProductById = () => {
                                         </FormGroup>
                                     </Box>
 
-                                    <Typography sx={{ marginTop: 2 }}>
+                                    {/* <Typography sx={{ marginTop: 2 }}>
                                         Date Added
-                                    </Typography>
+                                    </Typography> */}
 
-                                    <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
+                                    {/* <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                             <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                 <DatePicker
@@ -710,7 +725,7 @@ const EditProductById = () => {
                                                 />
                                             </DemoContainer>
                                         </LocalizationProvider>
-                                    </Box>
+                                    </Box> */}
 
                                 </div>
                             </div>

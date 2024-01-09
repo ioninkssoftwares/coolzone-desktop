@@ -114,6 +114,22 @@ const MembershipManagement = () => {
     }, [cookies]);
 
 
+    async function deleteCustomer() {
+        try {
+            setDeleteLoading(true);
+            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            if (res.data) {
+                toast.success("Customer Deleted Successfully");
+                setDeleteLoading(false);
+                setDeleteOpen(false);
+                getAllMembershipList()
+
+            }
+        } catch (e) {
+            setDeleteLoading(false);
+            // ErrorDispaly(e);
+        }
+    }
 
 
     const all_customer_columns = [
@@ -197,47 +213,47 @@ const MembershipManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        // {
-        //     minWidth: 150,
+        {
+            minWidth: 150,
 
-        //     field: "action",
-        //     headerName: "ACTION",
-        //     flex: 0.15,
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        //     renderCell: ({ row }) => (
-        //         <Box>
-        //             <Tooltip title="Edit">
-        //                 <IconButton
-        //                     // onClick={() => router.push(`/admin/customers/${row._id}`)}
-        //                     color="primary"
-        //                 >
-        //                     <BsEyeFill />
-        //                 </IconButton>
-        //             </Tooltip>
-        //             <Tooltip title="Edit">
-        //                 <IconButton
-        //                     // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
-        //                     color="primary"
-        //                 >
-        //                     <BsPencilFill />
-        //                 </IconButton>
-        //             </Tooltip>
-        //             <Tooltip title="Delete">
-        //                 <IconButton
-        //                     onClick={() => {
-        //                         setDeleteId(row?._id);
-        //                         setDeleteOpen(true);
-        //                     }}
-        //                     color="error"
-        //                 >
-        //                     <MdDeleteForever />
-        //                 </IconButton>
-        //             </Tooltip>
-        //         </Box>
-        //     ),
-        // },
+            field: "action",
+            headerName: "ACTION",
+            flex: 0.15,
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+            renderCell: ({ row }) => (
+                <Box>
+                    <Tooltip title="Edit">
+                        <IconButton
+                            // onClick={() => router.push(`/admin/customers/${row._id}`)}
+                            color="primary"
+                        >
+                            <BsEyeFill />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                        <IconButton
+                            // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+                            color="primary"
+                        >
+                            <BsPencilFill />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <IconButton
+                            onClick={() => {
+                                setDeleteId(row?._id);
+                                setDeleteOpen(true);
+                            }}
+                            color="error"
+                        >
+                            <MdDeleteForever />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            ),
+        },
     ];
 
     return (
@@ -466,15 +482,15 @@ const MembershipManagement = () => {
 
                         {/* {users && <AdminCustomers users={users} />} */}
 
-                        {/* <ConfirmBox
-                            title="Customer"
-                            name="customer"
+                        <ConfirmBox
+                            title="Membership"
+                            name="membership"
                             open={deleteOpen}
                             closeDialog={() => setDeleteOpen(false)}
                             toDoFunction={deleteCustomer}
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
-                        /> */}
+                        />
                     </div>}
                 </div>
                 {/* </main> */}

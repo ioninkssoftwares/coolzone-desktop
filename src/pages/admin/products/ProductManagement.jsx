@@ -135,43 +135,28 @@ const ProductManagement = () => {
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const navigate = useNavigate();
 
-    async function getAllUsers() {
-        let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
-        try {
-            setLoading(true);
-            const res = await instance.get(
-                `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
-            );
-            if (res.data) {
-                setUsers(res?.data?.data);
-                setPagination(res?.data?.pagination);
-                setLoading(false);
-            }
-        } catch (e) {
-            setLoading(false);
-            // ErrorDispaly(e);
-        }
-    }
+    // async function getAllUsers() {
+    //     let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
+    //     try {
+    //         setLoading(true);
+    //         const res = await instance.get(
+    //             `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
+    //         );
+    //         if (res.data) {
+    //             setUsers(res?.data?.data);
+    //             setPagination(res?.data?.pagination);
+    //             setLoading(false);
+    //         }
+    //     } catch (e) {
+    //         setLoading(false);
+    //         // ErrorDispaly(e);
+    //     }
+    // }
 
     useEffect(() => {
         getAllUsers();
     }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
 
-    async function deleteCustomer() {
-        try {
-            setDeleteLoading(true);
-            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
-            if (res.data) {
-                toast.success("Customer Deleted Successfully");
-                setDeleteLoading(false);
-                setDeleteOpen(false);
-                getAllUsers();
-            }
-        } catch (e) {
-            setDeleteLoading(false);
-            // ErrorDispaly(e);
-        }
-    }
 
 
     if (allProducts) {
@@ -214,6 +199,22 @@ const ProductManagement = () => {
     }, [token])
 
 
+    async function deleteCustomer() {
+        try {
+            setDeleteLoading(true);
+            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            if (res.data) {
+                toast.success("Customer Deleted Successfully");
+                setDeleteLoading(false);
+                setDeleteOpen(false);
+                getProductsByAdmin();
+                // getAllUsers();
+            }
+        } catch (e) {
+            setDeleteLoading(false);
+            // ErrorDispaly(e);
+        }
+    }
 
 
 
@@ -248,7 +249,17 @@ const ProductManagement = () => {
 
             flex: 0.25,
             field: "price",
-            headerName: "Unit Price",
+            headerName: "Selling Price",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 150,
+
+            flex: 0.25,
+            field: "costPrice",
+            headerName: "Cost",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -461,6 +472,16 @@ const ProductManagement = () => {
                                 </Card>
                             </Grid>
                         </Grid>
+
+                        <ConfirmBox
+                            title="Product"
+                            name="product"
+                            open={deleteOpen}
+                            closeDialog={() => setDeleteOpen(false)}
+                            toDoFunction={deleteCustomer}
+                            loading={deleteLoading}
+                            sx={{ pb: 4, border: "2px solid red" }}
+                        />
                     </div>}
                 </div>
                 {/* </main> */}

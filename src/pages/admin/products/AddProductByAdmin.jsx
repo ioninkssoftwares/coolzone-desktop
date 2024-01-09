@@ -465,15 +465,7 @@ const AddProductByAdmin = () => {
                                             setProduct({ ...product, brand: e.target.value })
                                         }
                                     />
-                                    <TextField
-                                        label="Specification"
-                                        fullWidth
-                                        margin="normal"
-                                        value={product.specification}
-                                        onChange={(e) =>
-                                            setProduct({ ...product, specification: e.target.value })
-                                        }
-                                    />
+
 
                                     <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
@@ -555,7 +547,7 @@ const AddProductByAdmin = () => {
                                             />
                                         </FormGroup>
                                     </Box> */}
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DemoContainer components={['DatePicker', 'DatePicker']}>
                                             <DatePicker
                                                 sx={{ width: "100%" }}
@@ -564,7 +556,7 @@ const AddProductByAdmin = () => {
                                                 onChange={(newValue) => setValue(newValue)}
                                             />
                                         </DemoContainer>
-                                    </LocalizationProvider>
+                                    </LocalizationProvider> */}
 
 
 
@@ -575,6 +567,16 @@ const AddProductByAdmin = () => {
                                         shortDescription: event.target.value
                                     })} placeholder="Short Description" minRows={3} />
 
+
+                                    <TextField
+                                        label="Specification"
+                                        fullWidth
+                                        margin="normal"
+                                        value={product.specification}
+                                        onChange={(e) =>
+                                            setProduct({ ...product, specification: e.target.value })
+                                        }
+                                    />
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Product Long Description
                                     </Typography>
@@ -584,7 +586,7 @@ const AddProductByAdmin = () => {
                                         Add a long description for your product
                                     </Typography>
 
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2, marginTop: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                             Return Policy
                                         </Typography>
@@ -601,11 +603,11 @@ const AddProductByAdmin = () => {
                                         </FormGroup>
                                     </Box>
 
-                                    <Typography sx={{ marginTop: 2 }}>
+                                    {/* <Typography sx={{ marginTop: 2 }}>
                                         Date Added
-                                    </Typography>
+                                    </Typography> */}
 
-                                    <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
+                                    {/* <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                             <DemoContainer components={['DatePicker', 'DatePicker']}>
                                                 <DatePicker
@@ -624,7 +626,7 @@ const AddProductByAdmin = () => {
                                                 />
                                             </DemoContainer>
                                         </LocalizationProvider>
-                                    </Box>
+                                    </Box> */}
 
                                 </div>
                             </div>
