@@ -94,7 +94,7 @@ const EditCustomer = () => {
     }
 
     useEffect(() => {
-        getAllUsers();
+        // getAllUsers();
     }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
 
     async function deleteCustomer() {

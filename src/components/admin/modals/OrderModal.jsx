@@ -81,8 +81,12 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     // const theme = useTheme();
     const [status, setStatus] = useState('');
     const [token, setToken] = useState("");
+    const [users, setUsers] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
-    const [selectedClient, setSelectedClient] = useState('');
+    const [selectedClient, setSelectedClient] = useState({
+        name: '',
+        id: ''
+    });
     const [clients, setClients] = useState(null)
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const [clientNames, setClientNames] = useState([]);
@@ -93,11 +97,11 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     const [totalPrice, setTotalPrice] = useState(null);
     const [totalTax, setTotalTax] = useState(null);
 
-    if (filterSaveProduct) {
-        console.log("Filter Save Product", filterSaveProduct)
+    if (selectedClient) {
+        console.log("Filter Save Product", selectedClient)
     }
     const [orderData, setOrderData] = useState({
-        cid: '',
+        cid: "",
         taxPrice: totalTax,
         totalPrice: totalPrice + totalTax,
         shippingPrice: null,
@@ -112,6 +116,11 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     if (orderItems) {
         console.log(orderItems, "Order Items")
     }
+
+
+    useEffect(() => {
+        setOrderData({ ...orderData, cid: selectedClient.id });
+    }, [selectedClient])
 
 
     useEffect(() => {
@@ -303,6 +312,48 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     if (filterSaveProduct) {
         console.log(filterSaveProduct, "jhjkhkjk")
     }
+
+
+    // Get All Users
+    async function getAllUsers() {
+
+        try {
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/users`
+            );
+            if (res.data) {
+                setUsers(res?.data?.users);
+                // setPagination(res?.data?.pagination);
+                setLoading(false);
+            }
+        } catch (error) {
+            setLoading(false);
+            toast.error(error.response.data.message || error.message)
+            // ErrorDispaly(e);
+        }
+    }
+
+
+    useEffect(() => {
+        if (token) {
+            getAllUsers();
+        }
+    }, [token]);
+
+
+
+
+    const handleClient = (event) => {
+        const selectedUserName = event.target.value;
+        const selectedUser = users.find((user) => user.name === selectedUserName);
+
+        setSelectedClient({
+            name: selectedUserName,
+            id: selectedUser ? selectedUser._id : ''
+        });
+    };
+
     return (
         <>
             {/* <p></p> */}
@@ -348,17 +399,18 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                     id="demo-simple-select"
                                     // value={clients}
                                     label="Select Customer"
-                                // onChange={handleClient}
+                                    onChange={handleClient}
                                 >
-                                    {/* { clients && clients.map((name) => (
-                                            <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
-                                            // style={getStyles(name, personName, theme)}
-                                            >
-                                                {name?.clientName}
-                                            </MenuItem>
-                                        ))} */}
+                                    {users && users.map((user) => (
+                                        <MenuItem
+
+                                            key={user?._id}
+                                            value={user?.name}
+                                        // style={getStyles(name, personName, theme)}
+                                        >
+                                            {user?.name}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
 

@@ -154,7 +154,7 @@ const ProductManagement = () => {
     // }
 
     useEffect(() => {
-        getAllUsers();
+        // getAllUsers();
     }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
 
 
