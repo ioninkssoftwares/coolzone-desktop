@@ -37,6 +37,7 @@ import InputBase from '@mui/material/InputBase';
 import Textarea from '@mui/joy/Textarea';
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from "react-router-dom";
+import InputField from "../../../components/InputField";
 
 
 export const Button = ({
@@ -460,6 +461,55 @@ const EditProductById = () => {
         });
     };
 
+
+
+    // Validation Logics
+
+
+    const validateProductName = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in product name';
+    };
+    const validateBrandName = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in brand name';
+    };
+
+    // Numeric Regex Logic
+    const validateSellingPrice = (value) => {
+        const floatValue = parseFloat(value);
+
+        // Add specific validation logic for product price
+        if (isNaN(floatValue) || floatValue <= 0) {
+            return 'Invalid selling price';
+        }
+
+        return null;
+    };
+    const validateCostPrice = (value) => {
+        const floatValue = parseFloat(value);
+
+        // Add specific validation logic for product price
+        if (isNaN(floatValue) || floatValue <= 0) {
+            return 'Invalid cost price';
+        }
+
+        return null;
+    };
+    const validateQuantity = (value) => {
+        const floatValue = parseFloat(value);
+
+        // Add specific validation logic for product price
+        if (isNaN(floatValue) || floatValue <= 0) {
+            return 'Invalid quantity';
+        }
+
+        return null;
+    };
+
+
     return (
         <div>
             <div className='flex h-screen overflow-hidden'>
@@ -471,7 +521,7 @@ const EditProductById = () => {
                     </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
                         <div className="flex items-center justify-between mx-10 my-5">
-                            <p>Add Product Details</p>
+                            <p>Edit Product Details</p>
                             <div className="flex gap-7">
                                 <button className="px-4 py-2 rounded-lg text-white bg-black">
                                     Save as Draft
@@ -488,7 +538,7 @@ const EditProductById = () => {
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Product Name
                                     </Typography>
-                                    <TextField
+                                    {/* <TextField
                                         label="Product Name"
                                         fullWidth
                                         margin="normal"
@@ -496,6 +546,14 @@ const EditProductById = () => {
                                         onChange={(e) =>
                                             setProduct({ ...product, name: e.target.value })
                                         }
+                                    /> */}
+
+                                    <InputField
+                                        label="Product Name"
+                                        type="text"
+                                        value={product?.name}
+                                        onChange={(e) => setProduct({ ...product, name: e })}
+                                        validate={validateProductName}
                                     />
 
                                     <FormControl sx={{ marginTop: 3 }} fullWidth>
@@ -520,44 +578,22 @@ const EditProductById = () => {
                                     </FormControl>
 
                                     <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
-                                        <TextField
-                                            label="Selling Price"
-                                            fullWidth
-                                            margin="normal"
-                                            value={product.price}
-                                            onChange={(e) =>
-                                                setProduct({ ...product, price: e.target.value })
-                                            }
-                                        />
-                                        <TextField
-                                            label="Cost Price"
-                                            fullWidth
-                                            margin="normal"
-                                            value={product.costPrice}
-                                            onChange={(e) =>
-                                                setProduct({ ...product, costPrice: e.target.value })
-                                            }
-                                        />
-                                        <TextField
-                                            label="Quantity"
-                                            fullWidth
-                                            margin="normal"
-                                            value={product.Stock}
-                                            onChange={(e) =>
-                                                setProduct({ ...product, Stock: e.target.value })
-                                            }
-                                        />
+
+                                        <InputField label="Selling Price" type="number" value={product.price} onChange={(e) => setProduct({ ...product, price: e })} validate={validateSellingPrice} />
+
+                                        <InputField label="Cost Price" type="number" value={product.costPrice} onChange={(e) => setProduct({ ...product, costPrice: e })} validate={validateCostPrice} />
+
+
+                                        <InputField label="Quantity" type="number" value={product.Stock} onChange={(e) => setProduct({ ...product, Stock: e })} validate={validateQuantity} />
+
 
                                     </Box>
-
-                                    <TextField
+                                    <InputField
                                         label="Brand"
-                                        fullWidth
-                                        margin="normal"
-                                        value={product.brand}
-                                        onChange={(e) =>
-                                            setProduct({ ...product, brand: e.target.value })
-                                        }
+                                        type="text"
+                                        value={product?.brand}
+                                        onChange={(e) => setProduct({ ...product, brand: e })}
+                                        validate={validateBrandName}
                                     />
 
 

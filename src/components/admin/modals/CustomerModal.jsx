@@ -12,80 +12,10 @@ import { CircularProgress, FormControlLabel, FormGroup, Switch } from '@mui/mate
 import { useAxios } from '../../../utils/axios';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
+import InputField from '../../InputField';
 // import { useAxios } from '../../utills/axios';
 
 
-
-
-// function SearchDropdown({ options, onSelect, propertyData }) {
-//     const [searchQuery, setSearchQuery] = useState('');
-//     const [isOpen, setIsOpen] = useState(false);
-//     const [selectedOption, setSelectedOption] = useState(null);
-
-
-
-//     useEffect(() => {
-//       if (propertyData) {
-//         setSearchQuery(propertyData?.location.name);
-//         setSelectedOption(null);
-//       }
-//     }, [propertyData]);
-
-
-//     const filteredOptions = options?.filter((option) =>
-//       option.name.toLowerCase().includes(searchQuery.toLowerCase())
-//     );
-
-//     const handleSearchChange = (e) => {
-//       setSearchQuery(e.target.value);
-//       setSelectedOption(null);
-//     };
-
-//     const handleOptionSelect = (optionName) => {
-//       onSelect(optionName);
-//       setSelectedOption(optionName);
-//       setSearchQuery('');
-//       setIsOpen(false);
-//     };
-
-//     const placeholder = selectedOption ? selectedOption : "Search locations";
-
-
-//     return (
-
-//       <div style={{ margin: "20px 0" }} className="relative">
-//         <div
-//           className={`relative z-10 ${isOpen ? "border-blue-500" : ""
-//             } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
-//         >
-//           <input
-//             style={{ borderRadius: "18px" }}
-//             type="text"
-//             className="inputField"
-//             placeholder={placeholder}
-//             value={searchQuery}
-//             onChange={handleSearchChange}
-//             onClick={() => setIsOpen(true)}
-//           />
-//         </div>
-
-//         {isOpen && (
-//           <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
-//             {filteredOptions.map((option) => (
-//               <div
-//                 key={option._id}
-//                 className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-//                 onClick={() => handleOptionSelect(option.name)}
-//               >
-//                 {option.name}
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-
-//     );
-//   }
 
 
 
@@ -260,6 +190,56 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
     //     console.log(newCustomerData, "project")
     // }
 
+
+    // Validation Logics
+
+
+    const validateCustomerName = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in customer name';
+    };
+    const validateLandmark = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in landmark';
+    };
+    const validateState = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in state';
+    };
+    const ValidateCity = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in city';
+    };
+
+
+    const validateEmail = (value) => {
+        // Basic email validation regex
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        // Add specific validation logic for product name
+        return emailRegex.test(value) ? null : 'Invalid email address';
+    };
+
+    // Numeric Regex Logic
+    const validatePhoneNumber = (value) => {
+        const floatValue = parseFloat(value);
+        const mobileNumberRegex = /^\d{10}$/;
+
+        if (!mobileNumberRegex.test(value)) {
+            return 'Invalid mobile number';
+        }
+
+        return null;
+    };
+
+
+
+
+
     return (
         <>
             {/* <p></p> */}
@@ -284,121 +264,39 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                     </Typography>
                     <form>
                         {/* Add margin-bottom to separate form fields */}
-                        <TextField
+
+                        <InputField
                             label="Customer Name"
-                            fullWidth
-                            margin="normal"
+                            type="text"
                             value={newCustomerData.name}
                             onChange={(e) =>
-                                setNewCustomerData({ ...newCustomerData, name: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, name: e })
                             }
+                            validate={validateCustomerName}
                         />
-                        {/* <div>
-                            <SearchDropdown propertyData={propertyData} options={loc?.result} onSelect={handleLocationSelect} />
-                        </div> */}
 
-
-                        {/* <div>
-                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={status}
-                                        label="Status"
-                                        onChange={handleChange}
-                                    >
-                                        {names.map((name) => (
-                                            <MenuItem
-                                                key={name}
-                                                value={name}
-                                            // style={getStyles(name, personName, theme)}
-                                            >
-                                                {name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        </div> */}
-
-
-                        {/* <div>
-                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Client</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={selectedClient}
-                                        label="Client"
-                                        onChange={handleClient}
-                                    >
-                                        {clients && clients.map((client) => (
-                                            <MenuItem
-                                                key={client._id}
-                                                value={client}
-                                            >
-                                                {client.clientName}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        </div> */}
-
-                        {/* <div>
-                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Client</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={clients}
-                                        label="Client"
-                                        onChange={handleClient}
-                                    >
-                                        { clients && clients.map((name) => (
-                                            <MenuItem
-                                                key={name?.clientName}
-                                                value={name?.clientName}
-                                            // style={getStyles(name, personName, theme)}
-                                            >
-                                                {name?.clientName}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        </div> */}
-
-                        {/* <div>
-                            <Box sx={{ minWidth: 320, marginTop: "15px", marginBottom: "10px" }}>
-
-                            </Box>
-                        </div> */}
-
-
-                        <TextField
+                        <InputField
                             label="Phone Number"
-                            fullWidth
-                            margin="normal"
+                            type="text"
                             value={newCustomerData.mobileNo}
                             onChange={(e) =>
-                                setNewCustomerData({ ...newCustomerData, mobileNo: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, mobileNo: e })
                             }
+                            validate={validatePhoneNumber}
                         />
 
-                        <TextField
+
+                        <InputField
                             label="Email"
-                            fullWidth
-                            margin="normal"
+                            type="text"
                             value={newCustomerData.email}
                             onChange={(e) =>
-                                setNewCustomerData({ ...newCustomerData, email: e.target.value })
+                                setNewCustomerData({ ...newCustomerData, email: e })
                             }
+                            validate={validateEmail}
                         />
+
+
                         <FormGroup>
                             <FormControlLabel
                                 control={<Switch checked={switchState} onChange={handleSwitchChange} />}
@@ -417,34 +315,39 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
                                     setNewCustomerData({ ...newCustomerData, address: e.target.value })
                                 }
                             />
-                            <TextField
+
+                            <InputField
                                 label="Landmark"
-                                fullWidth
-                                margin="normal"
+                                type="text"
                                 value={newCustomerData.landmark}
                                 onChange={(e) =>
-                                    setNewCustomerData({ ...newCustomerData, landmark: e.target.value })
+                                    setNewCustomerData({ ...newCustomerData, landmark: e })
                                 }
+                                validate={validateLandmark}
                             />
 
                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}>
-                                <TextField
+
+
+                                <InputField
                                     label="State"
-                                    fullWidth
-                                    margin="normal"
+                                    type="text"
                                     value={newCustomerData.state}
                                     onChange={(e) =>
-                                        setNewCustomerData({ ...newCustomerData, state: e.target.value })
+                                        setNewCustomerData({ ...newCustomerData, state: e })
                                     }
+                                    validate={validateState}
                                 />
-                                <TextField
+
+
+                                <InputField
                                     label="City"
-                                    fullWidth
-                                    margin="normal"
+                                    type="text"
                                     value={newCustomerData.city}
                                     onChange={(e) =>
-                                        setNewCustomerData({ ...newCustomerData, city: e.target.value })
+                                        setNewCustomerData({ ...newCustomerData, city: e })
                                     }
+                                    validate={ValidateCity}
                                 />
                             </Box>
 

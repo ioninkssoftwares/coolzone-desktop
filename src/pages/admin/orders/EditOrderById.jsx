@@ -300,7 +300,12 @@ const EditOrderById = ({ }) => {
 
 
                                 <div className="flex m-7 ">
-                                    <p className="mr-9">SAMSUNG 8 kg Fully Automatic Washing Machine</p>
+                                    <p className="mr-9 flex gap-3">
+                                        {orderData && orderData.length > 0 ? orderData[0]?.orderItems?.map((item, index) => {
+
+                                            return <span key={index} className="mr-3 font-bold ">{item.name}</span>
+                                        }) : "No order items"}
+                                    </p>
 
                                     <p className="mr-2">Date Added</p>
                                     <span className="text-gray-400 mr-12"> 01-Jan-2023 - 03:21 pm</span>

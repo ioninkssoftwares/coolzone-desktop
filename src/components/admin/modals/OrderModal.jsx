@@ -22,6 +22,7 @@ import InputBase from '@mui/material/InputBase';
 import { useCookies } from 'react-cookie';
 import { useAxios } from '../../../utils/axios';
 import { toast } from 'react-toastify';
+import InputField from '../../InputField';
 
 // import { useAxios } from '../../utills/axios';
 
@@ -70,6 +71,53 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         },
     },
 }));
+
+// Validation Logics
+
+
+const validateProductName = (value) => {
+    // Add specific validation logic for product name
+    const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+    return regex.test(value) ? null : 'Invalid characters in product name';
+};
+const validateOrderNote = (value) => {
+    // Add specific validation logic for product name
+    const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+    return regex.test(value) ? null : 'Invalid characters in order note';
+};
+
+// Numeric Regex Logic
+const validateShippingPrice = (value) => {
+    const floatValue = parseFloat(value);
+
+    // Add specific validation logic for product price
+    if (isNaN(floatValue) || floatValue <= 0) {
+        return 'Invalid shipping price';
+    }
+
+    return null;
+};
+const validateCostPrice = (value) => {
+    const floatValue = parseFloat(value);
+
+    // Add specific validation logic for product price
+    if (isNaN(floatValue) || floatValue <= 0) {
+        return 'Invalid cost price';
+    }
+
+    return null;
+};
+const validateQuantity = (value) => {
+    const floatValue = parseFloat(value);
+
+    // Add specific validation logic for product price
+    if (isNaN(floatValue) || floatValue <= 0) {
+        return 'Invalid quantity';
+    }
+
+    return null;
+};
+
 
 
 
@@ -483,7 +531,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                 </LocalizationProvider>
                             </Box> */}
 
-                            <FormControl fullWidth sx={{ marginTop: 2 }}>
+                            <FormControl fullWidth sx={{ marginTop: 2, marginBottom: 2 }}>
                                 <InputLabel id="demo-simple-select-label">Order Status</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -504,16 +552,14 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
                                 </Select>
                             </FormControl>
 
-
-
-                            <TextField
+                            <InputField
                                 label="Order Note"
-                                fullWidth
-                                margin="normal"
+                                type="text"
                                 value={orderData.project_name}
                                 onChange={(e) =>
-                                    setOrderData({ ...orderData, orderNote: e.target.value })
+                                    setOrderData({ ...orderData, orderNote: e })
                                 }
+                                validate={validateOrderNote}
                             />
 
 
@@ -645,8 +691,15 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
 
                         <div className="border-t border-gray-200 px-1 py-2 sm:px-6">
                             <div className="flex justify-between text-base font-medium text-gray-900">
-                                <p>Shipping Price</p>
-                                <input type="text" onChange={(event) => setOrderData({ ...orderData, shippingPrice: event.target.value })} className="border border-gray-300  w-full" />
+                                {/* <p>Shipping Price</p> */}
+                                {/* <input type="text" onChange={(event) => setOrderData({ ...orderData, shippingPrice: event.target.value })} className="border border-gray-300  w-full" /> */}
+                                <InputField
+                                    label="Shipping Price"
+                                    type="text"
+                                    value={orderData.shippingPrice}
+                                    onChange={(event) => setOrderData({ ...orderData, shippingPrice: event })}
+                                    validate={validateShippingPrice}
+                                />
                             </div>
 
                         </div>

@@ -292,20 +292,20 @@ const AdminOrdersPage = () => {
                         <AdminNavbar />
                         <div className="flex justify-between items-center mt-8 mb-6">
                             <div className=" text-sm px-3">
-                                <button
+                                {/* <button
                                     // onClick={() => router.push("/admin/customers/add")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
-                                >
-                                    <span>
-                                        {/* <TbEdit /> */}
-                                    </span>
-                                    {/* <span>Order Summary</span> */}
-                                    <OrderDetailsModal
+                                > */}
+                                {/* <span> */}
+                                {/* <TbEdit /> */}
+                                {/* </span> */}
+                                {/* <span>Order Summary</span> */}
+                                {/* <OrderDetailsModal
                                         buttonText="Order Summary"
                                         modalTitle="Order Details"
 
-                                    />
-                                </button>
+                                    /> */}
+                                {/* </button> */}
                             </div>
                             <div className=" text-sm px-3">
                                 <button

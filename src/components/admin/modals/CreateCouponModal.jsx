@@ -16,6 +16,7 @@ import { useAxios } from '../../../utils/axios';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import InputField from '../../InputField';
 // import { useAxios } from '../../utills/axios';
 
 
@@ -271,6 +272,78 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
     //     console.log(couponData, "project")
     // }
 
+    // Validation Logics
+
+
+    const validateCouponName = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in coupon name';
+    };
+    const validateLandmark = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in landmark';
+    };
+    const validateState = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in state';
+    };
+    const ValidateCity = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in city';
+    };
+
+
+    const validateEmail = (value) => {
+        // Basic email validation regex
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        // Add specific validation logic for product name
+        return emailRegex.test(value) ? null : 'Invalid email address';
+    };
+
+    // Numeric Regex Logic
+    const validateDiscountAmount = (value) => {
+        const floatValue = parseFloat(value);
+
+        // Add specific validation logic for discount amount
+        if (isNaN(floatValue) || floatValue <= 0) {
+            return 'Invalid discount amount';
+        }
+
+        // Regular expression to allow only digits and optionally a decimal point
+        const validInputRegex = /^\d+(\.\d{1,2})?$/;
+
+        if (!validInputRegex.test(value)) {
+            return 'Invalid characters in discount amount';
+        }
+
+        return null;
+    };
+    const validateMaxUsers = (value) => {
+        const floatValue = parseFloat(value);
+
+        // Add specific validation logic for discount amount
+        if (isNaN(floatValue) || floatValue <= 0) {
+            return 'Invalid max users count';
+        }
+
+        // Regular expression to allow only digits and optionally a decimal point
+        const validInputRegex = /^\d+(\.\d{1,2})?$/;
+
+        if (!validInputRegex.test(value)) {
+            return 'Invalid characters in max users count';
+        }
+
+        return null;
+    };
+
+
+
+
     return (
         <>
             {/* <p></p> */}
@@ -317,6 +390,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                         <TextField
                             label="Coupon Type"
                             fullWidth
+                            sx={{ marginBottom: 3 }}
                             margin="normal"
                             value={couponData.coupontype}
                             onChange={(e) =>
@@ -324,14 +398,15 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             }
                         />
 
-                        <TextField
+
+                        <InputField
                             label="Discount (Percentage / Flat Amount)"
-                            fullWidth
-                            margin="normal"
+                            type="text"
                             value={couponData.discount}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, discount: e.target.value })
+                                setCouponData({ ...couponData, discount: e })
                             }
+                            validate={validateDiscountAmount}
                         />
 
                         <FormGroup>
@@ -345,36 +420,31 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             label="Coupon Segment"
                             fullWidth
                             margin="normal"
+                            sx={{ marginBottom: 2 }}
                             value={couponData.CouponSegment}
                             onChange={(e) =>
                                 setCouponData({ ...couponData, CouponSegment: e.target.value })
                             }
                         />
-                        {/* <TextField
-                            label="Coupon Expiry"
-                            fullWidth
-                            margin="normal"
-                            value={couponData.expiry}
-                            onChange={(e) =>
-                                setCouponData({ ...couponData, expiry: e.target.value })
-                            }
-                        /> */}
 
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={['DatePicker']}>
-                                <DatePicker value={date}
-                                    onChange={(newDate) => setCouponData({ ...couponData, expiry: newDate.toDate() })} />
-                            </DemoContainer>
-                        </LocalizationProvider>
+                        <Box sx={{ marginBottom: 3 }}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DemoContainer components={['DatePicker']}>
+                                    <DatePicker value={date}
+                                        onChange={(newDate) => setCouponData({ ...couponData, expiry: newDate.toDate() })} />
+                                </DemoContainer>
+                            </LocalizationProvider>
+                        </Box>
 
-                        <TextField
+
+                        <InputField
                             label="Max User Per Customer"
-                            fullWidth
-                            margin="normal"
+                            type="text"
                             value={couponData.maxUsePerCustomer}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, maxUsePerCustomer: e.target.value })
+                                setCouponData({ ...couponData, maxUsePerCustomer: e })
                             }
+                            validate={validateMaxUsers}
                         />
 
                         <Textarea value={couponData.discription}

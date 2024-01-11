@@ -136,10 +136,10 @@ const router = createBrowserRouter([
       </Routes>
     ),
   },
-  {
-    path: '/admin/addProducts',
-    element: <ProductForm></ProductForm>,
-  },
+  // {
+  //   path: '/admin/addProducts',
+  //   element: <ProductForm></ProductForm>,
+  // },
   {
     path: '/admin/orders',
     element: <AdminOrdersPage></AdminOrdersPage>,
@@ -184,6 +184,7 @@ const router = createBrowserRouter([
     path: '/admin/editProductDetails/:id',
     element: <EditProductById></EditProductById>,
   },
+
   {
     path: '/admin/partnerCoupon',
     element: <PartnerCouponManagement></PartnerCouponManagement>,
