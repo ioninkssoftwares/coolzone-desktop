@@ -23,7 +23,7 @@ const MediumHouseCard = ({ images, category, price, title, _id }) => {
 
   return (
     <div onClick={() => navigate(`/product/${_id}`)} style={{ border: "2px solid GRAY" }} className=" p-4 min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
-      <div  className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <p className="text-md font-semibold text-primary-blue mb-4">{category}</p>
         <div onCLick={() => handleWishlist()} className=" p-1.5 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
           <BsFillHeartFill className="text-sm text-white" />
@@ -34,12 +34,12 @@ const MediumHouseCard = ({ images, category, price, title, _id }) => {
       <h1 className="text-xl font-semibold text-primary-blue my-4">{title}</h1>
       <div className="flex items-center justify-center">
         <div className="relative my-10 w-[200px] h-[150px]">
-          <img
+          {/* <img
             src={images.length > 0 ? images[0].url : null}
             fill
             alt="home"
             className="w-full h-full object-fillr rounded-lg"
-          />
+          /> */}
         </div>
       </div>
       <div className="flex items-center justify-between">

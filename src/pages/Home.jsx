@@ -43,11 +43,12 @@ const Home = () => {
   const userDetails = useSelector(selectCurrentUserDetails);
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
-  const productss = useSelector(selectAllProducts);
+  const homeProducts = useSelector(selectAllProducts)
+
   const isPending = useSelector(selectProductListStatus);
 
-  if (productss) {
-    console.log(productss, "cxvvxxv")
+  if (homeProducts) {
+    console.log(homeProducts, "cxvvxxv")
   }
 
   useEffect(() => {
@@ -95,7 +96,7 @@ const Home = () => {
   // }, [token, dispatch]);
   useEffect(() => {
 
-    dispatch(fetchBannerAsync());
+    // dispatch(fetchBannerAsync());
     dispatch(fetchAllProductsAsync())
 
   }, []);
@@ -144,7 +145,7 @@ const Home = () => {
     <Navbar />
     <div className='hide-scrollbar overflow-y-hidden'>
       <section>
-        <CorouselSlider bannerCategory={fasionBanner} />
+        {/* <CorouselSlider bannerCategory={fasionBanner} /> */}
       </section>
       <section className='flex  items-center  justify-center my-5'>
         <div style={{ border: "2px solid gray" }} className='rounded-lg flex md:flex-row flex-col md:items-center md:justify-center justify-start  w-[79%] p-5'>
@@ -220,9 +221,9 @@ const Home = () => {
               </button>
             </div>
           </div>
-          {productss && (
+          {homeProducts && (
             <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="feat" data={productss} Card={MediumHouseCard} />
+              <CardCarousel id="feat" data={homeProducts} Card={MediumHouseCard} />
             </div>
           )}
         </div>
@@ -324,9 +325,9 @@ const Home = () => {
               </button>
             </div>
           </div>
-          {productss && (
+          {homeProducts && (
             <div id="best" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="best" data={productss} Card={MediumHouseCard} />
+              <CardCarousel id="best" data={homeProducts} Card={MediumHouseCard} />
             </div>
           )}
         </div>
@@ -354,9 +355,9 @@ const Home = () => {
               </button>
             </div>
           </div>
-          {productss && (
+          {homeProducts && (
             <div id="big" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="big" data={productss} Card={MediumHouseCard} />
+              <CardCarousel id="big" data={homeProducts} Card={MediumHouseCard} />
             </div>
           )}
         </div>

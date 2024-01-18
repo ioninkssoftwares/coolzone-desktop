@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-//   fetchAllProducts,
+  //   fetchAllProducts,
   // fetchProductsByFilters,
   fetchBrands,
   fetchCategories,
@@ -44,7 +44,7 @@ export const fetchAllProductsAsync = createAsyncThunk(
 export const fetchProductsByNavbarAsync = createAsyncThunk(
   'product/fetchProductsByNavbarAsync',
   async (filter) => {
-    console.log(filter,"filterrr")
+    console.log(filter, "filterrr")
     const response = await fetchProductsByNavbar(filter);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
@@ -53,9 +53,9 @@ export const fetchProductsByNavbarAsync = createAsyncThunk(
 
 export const fetchProductsByFiltersAsync = createAsyncThunk(
   'product/fetchProductsByFiltersAsync',
-  async ({filter,pagination}) => {
-    console.log(pagination,"filterrr")
-    const response = await fetchProductsByFilters(filter,pagination);
+  async ({ filter, pagination }) => {
+    console.log(pagination, "filterrr")
+    const response = await fetchProductsByFilters(filter, pagination);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -115,7 +115,7 @@ export const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    clearSelectedProduct:(state)=>{
+    clearSelectedProduct: (state) => {
       state.selectedProduct = null
     }
   },
@@ -125,7 +125,7 @@ export const productSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
-        console.log(action.payload.productsCount,"sgfdjghfkd")
+        console.log(action.payload, "sgfdjghfkd")
         state.status = 'idle';
         state.products = action.payload.products;
         state.totalItems = action.payload.productsCount;
@@ -206,5 +206,7 @@ export const selectProductListStatus = (state) => state.product.status;
 export const selectBanners = (state) => state.product.banners;
 
 export const selectTotalItems = (state) => state.product.totalItems;
+
+
 
 export default productSlice.reducer;

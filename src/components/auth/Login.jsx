@@ -38,7 +38,7 @@ export default function Login() {
             localStorage.setItem("token", user.token);
             toast(" User Login Successful")
             navigate("/")
-        } else if( user?.user.role === "admin") {
+        } else if (user?.user.role === "admin") {
             console.log(user, "hjfdsfsj")
             setCookies("adminToken", user.token);
             localStorage.setItem("isAdmin", true);
@@ -60,13 +60,13 @@ export default function Login() {
     //     }
     // }, [user])
 
-useEffect(() => {
-    if(error){
+    useEffect(() => {
+        if (error) {
             setLoading(false)
-    }
-}, [error])
+        }
+    }, [error])
 
-   
+
 
     return (
         <>
@@ -87,13 +87,13 @@ useEffect(() => {
                     <form
                         noValidate
                         onSubmit={handleSubmit((data) => {
-                            if(user === null){
+                            if (user === null) {
                                 setLoading(true)
-                            }      
+                            }
                             dispatch(
                                 loginUserAsync({ email: data.email, password: data.password })
                             );
-                 
+
                             // setLoading(false)
                         })}
                         className="space-y-6"
@@ -158,12 +158,12 @@ useEffect(() => {
                         </div>
 
                         <div>
-                     {loading === false ?       <button
+                            {loading === false ? <button
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Log in
-                            </button> : <div className='flex items-center justify-center'><CircularProgress/></div> }
+                            </button> : <div className='flex items-center justify-center'><CircularProgress /></div>}
                         </div>
                     </form>
 

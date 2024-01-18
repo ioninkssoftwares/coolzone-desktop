@@ -14,12 +14,13 @@ import {
 
 const initialState = {
   loggedInUserToken: null, // this should only contain user identity => 'id'/'role'
-  currentUser:{},
+  currentUser: null,
   status: 'idle',
+  loading: true,
   error: null,
   userChecked: false,
   mailSent: false,
-  passwordReset:false
+  passwordReset: false
 };
 
 
@@ -38,13 +39,13 @@ export const loginUserAsync = createAsyncThunk(
 );
 
 export const createUserAsync = createAsyncThunk(
-    'user/createUser',
-    async ({userData}) => {
-      const response = await createUser(userData);
-      // The value we return becomes the `fulfilled` action payload
-      return response.data;
-    }
-  );
+  'user/createUser',
+  async ({ userData }) => {
+    const response = await createUser(userData);
+    // The value we return becomes the `fulfilled` action payload
+    return response.data;
+  }
+);
 
 
 
@@ -58,7 +59,7 @@ export const checkAuthAsync = createAsyncThunk('user/checkAuth', async () => {
 });
 export const resetPasswordRequestAsync = createAsyncThunk(
   'user/resetPasswordRequest',
-  async (email,{rejectWithValue}) => {
+  async (email, { rejectWithValue }) => {
     try {
       const response = await resetPasswordRequest(email);
       return response.data;
@@ -72,7 +73,7 @@ export const resetPasswordRequestAsync = createAsyncThunk(
 
 export const resetPasswordAsync = createAsyncThunk(
   'user/resetPassword',
-  async (data,{rejectWithValue}) => {
+  async (data, { rejectWithValue }) => {
     try {
       const response = await resetPassword(data);
       console.log(response);
@@ -111,19 +112,28 @@ export const authSlice = createSlice({
       .addCase(createUserAsync.pending, (state) => {
         state.status = 'loading';
       })
+      .addCase(createUserAsync.rejected, (state, action) => {
+        state.status = 'idle';
+        state.loading = false;
+        state.error = action.payload.response.data.message || "Sign up Failed";
+        // console.log(action.payload.response.data.message,"dsjfkdjksf")
+      })
       .addCase(createUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.loggedInUserToken = action.payload;
       })
       .addCase(loginUserAsync.pending, (state) => {
         state.status = 'loading';
+
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
+        state.loading = false;
         state.loggedInUserToken = action.payload;
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.status = 'idle';
+        state.loading = false;
         state.error = action.payload.response.data.message;
         // console.log(action.payload.response.data.message,"dsjfkdjksf")
       })
@@ -168,19 +178,22 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
-        console.log(action.payload,"kgjfkk")
+        console.log(state.status, "kgjfkk")
         state.status = 'idle';
+        state.loading = false;
         state.currentUser = action.payload.user;
       })
       .addCase(getCurrentUserAsync.rejected, (state, action) => {
         state.status = 'idle';
-        state.error = action.payload
+        state.error = action.payload;
+        state.loading = false;
       })
   },
 });
 
 export const selectLoggedInUser = (state) => state.auth.loggedInUserToken;
 export const selectCurrentUserDetails = (state) => state.auth.currentUser;
+export const userLoading = (state) => state.auth.loading;
 export const selectError = (state) => state.auth.error;
 export const selectUserChecked = (state) => state.auth.userChecked;
 export const selectMailSent = (state) => state.auth.mailSent;

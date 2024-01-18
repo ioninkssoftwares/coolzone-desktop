@@ -68,7 +68,7 @@ const ProductDetails = () => {
             const latestItem = { cartItem: newItem, jwtToken: token }
             dispatch(addToCartAsync({ item: latestItem }));
             toast("Item is added")
-        
+
         }
 
 
@@ -176,7 +176,7 @@ const ProductDetails = () => {
                                     />
                                 </div>
                                 <div className='w-full flex flex-wrap items-center justify-center my-4 gap-3'>
-                                    {product?.product && product?.product.images.map((image, index) => (
+                                    {/* {product?.product && product?.product.images.map((image, index) => (
                                         <div
                                             key={index}
                                             className={`w-[60px] h-[60px] border-2 rounded-md cursor-pointer ${selectedImage === image
@@ -191,7 +191,7 @@ const ProductDetails = () => {
                                                 className='w-full h-full object-cover object-center rounded'
                                             />
                                         </div>
-                                    ))}
+                                    ))} */}
                                 </div>
                                 <div className='w-full flex items-center justify-between px-4'>
                                     <button onClick={handleCart} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Cart</button>

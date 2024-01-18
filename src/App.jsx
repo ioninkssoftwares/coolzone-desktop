@@ -1,48 +1,45 @@
-import { useState } from 'react'
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Link,
-  Routes,
-} from "react-router-dom";
-import Home from './pages/Home';
-import Products from './pages/Products';
-import ProductDetailsPage from './pages/ProductDetailsPage';
+import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AddressPage from './pages/AddressPage';
 import CartPage from './pages/CartPage';
 import Checkout from './pages/Checkout';
-import MembershipPage from './pages/MembershipPage';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import CouponPage from './pages/CouponPage';
+import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
+import MembershipPage from './pages/MembershipPage';
+import OrdersPage from './pages/OrdersPage';
+import OrdersTrackingPage from './pages/OrdersTrackingPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import Products from './pages/Products';
+import ProfilePage from './pages/ProfilePage';
 import SignupPage from './pages/SignupPage';
 import WishListPage from './pages/WishListPage';
-import OrdersPage from './pages/OrdersPage';
-import MyAccountPage from './pages/MyAccountPage';
-import ProfilePage from './pages/ProfilePage';
-import AddressPage from './pages/AddressPage';
-import CouponPage from './pages/CouponPage';
-import OrdersTrackingPage from './pages/OrdersTrackingPage';
-import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
-import ProductForm from './components/product/productForm';
-import AdminOrdersPage from './pages/admin/orders/AdminOrdersPage';
-import UserManagement from './pages/admin/customer/UserManagement';
-import MembershipManagement from './pages/admin/membership/MembershipManagement';
 import InventoryManagement from './pages/admin/InventoryManagement';
-import PaymentManagement from './pages/admin/payment/PaymentManagement';
-import ProductManagement from './pages/admin/products/ProductManagement';
 import EditCustomer from './pages/admin/customer/EditCustomer';
+import UserManagement from './pages/admin/customer/UserManagement';
+import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
+import MembershipManagement from './pages/admin/membership/MembershipManagement';
+import AdminOrdersPage from './pages/admin/orders/AdminOrdersPage';
 import AddProductByAdmin from './pages/admin/products/AddProductByAdmin';
+import ProductManagement from './pages/admin/products/ProductManagement';
 // import EditProductDetails from './pages/admin/products/EditProductDetails';
 // import CouponManagement from './pages/admin/coupon/PartnerCouponManagement';
-import AdminLogin from './pages/admin/AdminLogin';
-import EditProductById from './pages/admin/products/EditProductById';
-import EditMembershipPlans from './pages/admin/membership/EditMembershipPlans';
+import { useCookies } from 'react-cookie';
+import { useSelector } from 'react-redux';
+import ProtectedRoute from './components/ProtectedRoute';
+import { selectCurrentUserDetails, selectLoggedInUser, userLoading } from './components/auth/authSlice';
+import NotFound from './pages/NotFount';
 import AnalyticsAndReports from './pages/admin/analytics/AnalyticsAndReports';
-import PartnerCouponManagement from './pages/admin/coupon/PartnerCouponManagement';
 import CreateCoupon from './pages/admin/coupon/CreateCoupon';
-import Admin404 from './pages/admin/Admin404';
+import PartnerCouponManagement from './pages/admin/coupon/PartnerCouponManagement';
+import EditMembershipPlans from './pages/admin/membership/EditMembershipPlans';
 import EditOrderById from './pages/admin/orders/EditOrderById';
+import EditProductById from './pages/admin/products/EditProductById';
+import MyAccountPage from './pages/MyAccountPage';
+import AdminLogin from './pages/admin/AdminLogin';
+import Admin404 from './pages/admin/Admin404';
 
 const router = createBrowserRouter([
   {
@@ -168,10 +165,10 @@ const router = createBrowserRouter([
     path: '/admin/inventory',
     element: <InventoryManagement></InventoryManagement>,
   },
-  {
-    path: '/admin/payment',
-    element: <PaymentManagement></PaymentManagement>,
-  },
+  // {
+  //   path: '/admin/payment',
+  //   element: <PaymentMan,
+  // },
   {
     path: '/admin/productManagement',
     element: <ProductManagement></ProductManagement>,
@@ -211,3 +208,99 @@ function App() {
 }
 
 export default App
+
+
+
+// const App = () => {
+//   const user = useSelector(selectCurrentUserDetails);
+//   const loading = useSelector(userLoading);
+
+//   if (user) console.log(user, "dsfhdsjhf")
+//   // if (loading) console.log(loading, "dsfhdsjhf")
+//   const [token, setToken] = useState("");
+//   const [cookies, setCookies] = useCookies(["token"]);
+
+//   useEffect(() => {
+//     if (cookies && cookies.token) {
+//       console.log(cookies.token, "dslfjadslk")
+//       setToken(cookies.token);
+//     }
+//   }, [cookies]);
+
+//   console.log(user, "Dsfjdskfl")
+//   return (
+//     <Router>
+//       {/* Header */}
+//       {/* <Header user={user} /> */}
+//       {/* <Suspense fallback={<Loader />}> */}
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/products" element={<Products />} />
+//         <Route path="/products/:id" element={<ProductDetailsPage />} />
+//         <Route path="/cart" element={<CartPage />} />
+
+
+//         {/* NOt Logged in Route */}
+//         <Route path="/login"
+//           element={<ProtectedRoute isAuthenticated={user ? false : true}>
+//             <LoginPage />
+//           </ProtectedRoute>}
+//         />
+//         <Route path="/signup"
+//           element={<ProtectedRoute isAuthenticated={user ? false : true}>
+//             <SignupPage />
+//           </ProtectedRoute>}
+//         />
+
+
+//         {/* Logged in user Routes */}
+
+//         <Route element={<ProtectedRoute isAuthenticated={user ? true : false} />}>
+//           <Route path="/checkout" element={<Checkout />} />
+//           <Route path="/membership" element={<MembershipPage />} />
+//           <Route path="/wishlist" element={<WishListPage />} />
+//           <Route path="/orders" element={<OrdersPage />} />
+//           <Route path="/myAccount" element={<MyAccountPage />} />
+//           <Route path="/profile" element={<ProfilePage />} />
+//           <Route path="/address" element={<AddressPage />} />
+//           <Route path="/coupon" element={<CouponPage />} />
+//           <Route path="/ordersTracking" element={<OrdersTrackingPage />} />
+//         </Route>
+
+
+
+//         {/* Admin Routes */}
+//         <Route
+//           element={
+//             <ProtectedRoute isAuthenticated={true}
+//               adminOnly={true}
+//               admin={user?.role === "admin" ? true : false}
+//             />
+//           }
+//         />
+//         <Route path="/admin" element={<AdminDashboard />} />
+//         <Route path="/admin/addProduct" element={<AddProductByAdmin />} />
+//         <Route path="/admin/productManagement" element={<ProductManagement />} />
+//         <Route path="/admin/editProductDetails/:id" element={<EditProductById />} />
+//         <Route path="/admin/orders" element={<AdminOrdersPage />} />
+//         <Route path="/admin/order/:id" element={<EditOrderById />} />
+//         <Route path="/admin/userManagement" element={<UserManagement />} />
+//         <Route path="/admin/editCustomer" element={<EditCustomer />} />
+//         <Route path="/admin/membership" element={<MembershipManagement />} />
+//         <Route path="/admin/editMembershipPlans" element={<EditMembershipPlans />} />
+//         <Route path="/admin/inventory" element={<InventoryManagement />} />
+//         <Route path="/admin/partnerCoupon" element={<PartnerCouponManagement />} />
+//         <Route path="/admin/createCoupon" element={<CreateCoupon />} />
+//         <Route path="/admin/siteSettings" element={<AnalyticsAndReports />} />
+
+//         <Route path="*" element={<NotFound />} />
+//       </Routes>
+//       {/* </Suspense> */}
+//       {/* <Toaster position="bottom-center" /> */}
+//       <ToastContainer />
+//     </Router>
+//   )
+
+
+// }
+// export default App

@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 
 
 export const fetchBanners = async (userToken) => {
-  console.log(userToken,"djsfkdsjflds")
+  console.log(userToken, "djsfkdsjflds")
   const instance = useAxios(userToken);
   try {
     const response = await instance.get('/banners');
@@ -57,8 +57,8 @@ export function updateProduct(update) {
   });
 }
 
-export const fetchProductsByFilters = async (filter,pagination) => {
-  console.log(filter,pagination,"ksjdfkladjsl")
+export const fetchProductsByFilters = async (filter, pagination) => {
+  console.log(filter, pagination, "ksjdfkladjsl")
   const instance = useAxios();
   try {
     console.log(filter, "query");
@@ -70,9 +70,9 @@ export const fetchProductsByFilters = async (filter,pagination) => {
       queryString += `${key}=${filter[key]}&`;
       // }
     }
-for(let key in pagination){
-  queryString += `${key}=${pagination[key]}`;
-}
+    for (let key in pagination) {
+      queryString += `${key}=${pagination[key]}`;
+    }
     console.log(queryString, "query");
 
     const response = await instance.get(
@@ -143,7 +143,7 @@ export const fetchProductsByNavbar = async (filter) => {
 export const fetchAllProducts = async (userToken) => {
   const instance = useAxios(userToken);
   try {
-    const response = await instance.get("/products");
+    const response = await instance.get("/latest-products");
     return { data: response.data };
   } catch (error) {
     console.error('Error fetching products:', error);
