@@ -99,6 +99,7 @@ const ProductList = () => {
     const categories = useSelector(selectCategories);
     const isPending = useSelector(selectProductListStatus);
     const [page, setPage] = useState(1)
+    const [lastSelectedOptions, setLastSelectedOptions] = useState({});
     const [filter, setFilter] = useState({});
 
 
@@ -158,29 +159,47 @@ const ProductList = () => {
 
 
 
+    // const handleFilter = (e, section, option) => {
+    //     console.log(section.id, option.value, "handleFilter");
+    //     const newFilter = { ...filter, [section.id]: option.value };
+    //     setFilter(newFilter)
+
+    //     // dispatch(fetchProductsByFiltersAsync(newFilter))
+    //     // const newFilter = { ...filter };
+    //     // if (e.target.checked) {
+    //     //   if (newFilter[section.id]) {
+    //     //     newFilter[section.id].push(option.value);
+    //     //   } else {
+    //     //     newFilter[section.id] = [option.value];
+    //     //   }
+    //     // } else {
+    //     //   const index = newFilter[section.id].findIndex(
+    //     //     (el) => el === option.value
+    //     //   );
+    //     //   newFilter[section.id].splice(index, 1);
+    //     // }
+    //     // console.log({ newFilter });
+
+    //     // setFilter(newFilter);
+    // };
+
+
     const handleFilter = (e, section, option) => {
         console.log(section.id, option.value, "handleFilter");
-        const newFilter = { ...filter, [section.id]: option.value };
-        setFilter(newFilter)
 
-        // dispatch(fetchProductsByFiltersAsync(newFilter))
-        // const newFilter = { ...filter };
-        // if (e.target.checked) {
-        //   if (newFilter[section.id]) {
-        //     newFilter[section.id].push(option.value);
-        //   } else {
-        //     newFilter[section.id] = [option.value];
-        //   }
-        // } else {
-        //   const index = newFilter[section.id].findIndex(
-        //     (el) => el === option.value
-        //   );
-        //   newFilter[section.id].splice(index, 1);
-        // }
-        // console.log({ newFilter });
+        const isSameOption = lastSelectedOptions[section.id] === option.value;
 
-        // setFilter(newFilter);
-    };
+        if (isSameOption) {
+            // If the same option is clicked again, undo the selection
+            const { [section.id]: removedOption, ...newLastSelectedOptions } = lastSelectedOptions;
+            setLastSelectedOptions(newLastSelectedOptions);
+            setFilter({ ...filter, [section.id]: null });
+        } else {
+            // If a different option is clicked, update the filter
+            setLastSelectedOptions({ ...lastSelectedOptions, [section.id]: option.value });
+            setFilter({ ...filter, [section.id]: option.value });
+        }
+    }
 
     // useEffect(() => {
     //     const ITEMS_PER_PAGE  = 8
@@ -360,13 +379,14 @@ const ProductList = () => {
                                                                 {section.options.map((option, optionIdx) => (
                                                                     <div key={option.value} className="flex items-center">
                                                                         <input
+                                                                            style={{ border: "2px solid red" }}
                                                                             id={`filter-${section.id}-${optionIdx}`}
                                                                             name={`${section.id}[]`}
-                                                                            defaultValue={option.value}
+                                                                            // defaultValue={true}
                                                                             type="radio"
-                                                                            defaultChecked={option.checked}
+                                                                            // defaultChecked={true}
                                                                             onChange={(e) => handleFilter(e, section, option)}
-                                                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                                                            className="h-4 w-4 rounded  text-indigo-600 focus:ring-indigo-500"
                                                                         />
                                                                         <label
                                                                             htmlFor={`filter-${section.id}-${optionIdx}`}
