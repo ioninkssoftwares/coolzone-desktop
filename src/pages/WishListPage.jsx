@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/Navbar'
 import Footer from '../components/footer/Footer'
 import { data } from '../test'
@@ -13,6 +13,7 @@ import { selectCurrentUserDetails } from '../components/auth/authSlice'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { useAxios } from '../utils/axios'
 // import ProductDetails from '../components/product/productDetails'
 
 const WishListPage = () => {
@@ -21,10 +22,12 @@ const WishListPage = () => {
     const isPending = useSelector(selectProductListStatus);
     const userDetails = useSelector(selectCurrentUserDetails);
     const [cookies, setCookies] = useCookies(["token"]);
+    const [token, setToken] = useState("");
+    const [loading, setLoading] = useState(false)
+    const [wishlistProducts, setWishlistProducts] = useState([]);
 
-    if (userDetails) {
-        console.log(userDetails, "fdlsjfkds")
-    }
+
+
 
     useEffect(() => {
         if (cookies.token === undefined) {
@@ -32,6 +35,41 @@ const WishListPage = () => {
             navigate('/login')
         }
     }, [])
+
+
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            console.log(cookies.token, "dslfjadslk")
+            setToken(cookies.token);
+        }
+    }, [cookies]);
+
+
+    const getWishlist = async () => {
+        const instance = useAxios(token)
+        setLoading(true)
+        try {
+            setLoading(true)
+            const res = await instance.get("/getWishlist")
+            if (res.data) {
+                setLoading(false)
+                setWishlistProducts(res.data.wishlist)
+                // setAllProducts(res.data.products)
+            }
+
+
+        } catch (error) {
+            setLoading(false)
+            console.log(error);
+        }
+    }
+
+
+    useEffect(() => {
+        if (token) {
+            getWishlist()
+        }
+    }, [token])
 
 
     return (
@@ -64,20 +102,23 @@ const WishListPage = () => {
                                     </button>
                                 </div>
                             </div>
-                            {userDetails && (
-                                <div id="wishlist" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-                                    <CardCarousel id="wishlist" data={userDetails?.wishlistDetails} Card={MediumHouseCard} />
-                                </div>
-                            )}
+
+                            <div id="wishlist" className="flex mt-4 overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+                                {wishlistProducts.length > 0 ? (
+                                    <CardCarousel id="wishlist" data={wishlistProducts} Card={MediumHouseCard} />
+                                ) : (
+                                    <p>No items in the wishlist</p>
+                                )}
+                            </div>
+
                         </div>
                     </section>
-                    <section className="pt-5 mb-5">
-                        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
-                        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+                    {/* <section className="pt-5 mb-5">
+         
                         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
                             <div className="w-full flex items-center justify-between">
                                 <HomeSectionTitle text="Top Deals (Today)" />
-                                {/* Buttons container */}
+                                Buttons container
                                 <div className="flex space-x-4  md:mt-0">
                                     <button
                                         onClick={() => scrollLeft("top")}
@@ -99,7 +140,7 @@ const WishListPage = () => {
                                 </div>
                             )}
                         </div>
-                    </section>
+                    </section> */}
                 </div>
             </section>
             <Footer />

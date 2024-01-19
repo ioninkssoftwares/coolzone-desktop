@@ -7,24 +7,46 @@ import { Grid } from 'react-loader-spinner';
 import { useAxios } from '../../utils/axios';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
+import { addToCart, calculatePrice, discountApplied, removeCartItem } from '../../redux/reducer/cartReducer';
+import axios from 'axios';
+import { VscError } from 'react-icons/vsc';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const instance = useAxios()
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
-  const items = useSelector(selectItems);
-  const status = useSelector(selectCartStatus);
-  const cartLoaded = useSelector(selectCartLoaded)
-  const [coupons, setCoupons] = useState("")
-  const [loading, setLoading] = useState(false)
+  // const items = useSelector(selectItems);
+  // const status = useSelector(selectCartStatus);
+  // const cartLoaded = useSelector(selectCartLoaded)
+  const [couponCode, setCouponCode] = useState("");
+  const [isValidCouponCode, setIsValidCouponCode] = useState(false);
+  const [apiLoading, setApiLoading] = useState(false)
+
+  const status = ""
 
 
-  useEffect(() => {
-    if (items) {
-      console.log(items, "sdjfksdkl")
-    }
-  }, [items, dispatch])
+  const { cartItems, discount, loading: cartLoading, shippingCharges, subtotal, tax, total } = useSelector((state) => state.cartReducer)
+
+
+  const increamentHandler = (cartItem) => {
+    if (cartItem.quantity >= cartItem.stock) return toast.error("Max quantity reached");
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }))
+  }
+
+
+  const decrementHandler = (cartItem) => {
+    console.log(cartItem, "fdhkjsdf")
+    if (cartItem.quantity <= 1) return;
+    dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity - 1 }))
+  }
+
+
+  const removeHandler = (productId) => {
+    dispatch(removeCartItem(productId))
+  }
+
 
   useEffect(() => {
     if (cookies.token === undefined) {
@@ -40,32 +62,70 @@ const Cart = () => {
     }
   }, [cookies]);
 
-  useEffect(() => {
-    if (token) {
-      // console.log(token,"fjkdsfjkd")
-      dispatch(fetchItemsByUserIdAsync(token))
-    }
+  // useEffect(() => {
+  //   if (token) {
+  //     // console.log(token,"fjkdsfjkd")
+  //     dispatch(fetchItemsByUserIdAsync(token))
+  //   }
 
-  }, [dispatch, token])
+  // }, [dispatch, token])
 
   // TODO:Redux is not implemented
-  const handleCoupon = async () => {
-    setLoading(true)
-    const instance = useAxios(token);
+  // const handleCoupon = async () => {
+  //   setApiLoading(true)
+  //   const instance = useAxios(token);
 
-    try {
-      const newCoupon = { coupon: coupons }
-      const response = await instance.post('/applycoupon', newCoupon);
-      // return { data: response.data };
-      dispatch(fetchItemsByUserIdAsync(token))
-      setLoading(false)
+  //   try {
+  //     const newCoupon = { coupon: coupons }
+  //     const response = await instance.post('/applycoupon', newCoupon);
+  //     // return { data: response.data };
+  //     dispatch(fetchItemsByUserIdAsync(token))
+  //     setApiLoading(false)
 
-      console.log(response, "fdlshjs")
-    } catch (error) {
-      console.error('Error in login:', error);
-      throw error;
-    }
-  }
+  //     console.log(response, "fdlshjs")
+  //   } catch (error) {
+  //     console.error('Error in login:', error);
+  //     setApiLoading(false)
+  //     throw error;
+  //   }
+  // }
+
+  // Coupon Handling
+
+  useEffect(() => {
+    const { token: cancelToken, cancel } = axios.CancelToken.source();
+    const timeOutID = setTimeout(() => {
+      axios
+        .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/discount?coupon=${couponCode}`, {
+          cancelToken,
+        })
+        .then((res) => {
+          dispatch(discountApplied(res.data.discount));
+          setIsValidCouponCode(true);
+          dispatch(calculatePrice());
+        })
+        .catch(() => {
+          dispatch(discountApplied(0));
+          setIsValidCouponCode(false);
+          dispatch(calculatePrice());
+        });
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeOutID);
+      cancel();
+      setIsValidCouponCode(false);
+    };
+  }, [couponCode]);
+
+
+
+
+  useEffect(() => {
+    console.log("dsfhsdkj")
+    dispatch(calculatePrice())
+  }, [cartItems])
+
 
   return (
     <>
@@ -89,7 +149,7 @@ const Cart = () => {
               <div className="flex justify-between border-b pb-8">
                 <h1 className="font-semibold text-2xl">Shopping Cart</h1>
                 <h2 className="font-semibold text-2xl">
-                  {Array.isArray(items?.products) ? items.products.length : 0}
+                  {/* {Array.isArray(items?.products) ? items.products.length : 0} */}
                 </h2>
               </div>
               <div className="flex mt-10 mb-5">
@@ -99,32 +159,40 @@ const Cart = () => {
                 <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
               </div>
 
-              {items?.products?.length > 0 && items.products.map((item) => (<>
-                <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
-                  <div className="flex w-2/5">
-                    <div className="w-20">
-                      <img className="h-24" src={item?.images?.length > 0 ? item?.images[0]?.url : ""} alt="" />
-                    </div>
-                    <div className="flex flex-col justify-between ml-4 flex-grow">
-                      <span className="font-bold text-sm">{item.product.name}</span>
-                      <span className="text-red-500 text-xs">{item.product.category}</span>
-                      <a href="#" className="font-semibold hover:text-red-500 text-gray-500 text-xs">Remove</a>
-                    </div>
-                  </div>
-                  <div className="flex justify-center w-1/5">
-                    <svg className="fill-current text-gray-600 w-3" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                    </svg>
+              {cartItems.length > 0 ? (
+                cartItems.map((item, idx) => (
+                  <>
+                    <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+                      <div className="flex w-2/5">
+                        {/* <div className="w-20">
+                            <img className="h-24" src={item?.images?.length > 0 ? item?.images[0]?.url : ""} alt="" />
+                          </div> */}
+                        <div className="flex flex-col justify-between ml-4 flex-grow">
+                          <span className="font-bold text-sm">{item.name}</span>
+                          <span className="text-red-500 text-xs">{item.category}</span>
+                          <a onClick={() => removeHandler(item.productId)} className="font-semibold mt-4 cursor-pointer hover:text-red-500 hover:font-bold text-gray-500 text-xs">Remove</a>
+                        </div>
+                      </div>
+                      <div className="flex justify-center w-1/5">
+                        <svg onClick={() => decrementHandler(item)} className="fill-current cursor-pointer text-gray-600 w-3" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+                        </svg>
 
-                    <input className="mx-2 border text-center w-8" type="text" value={item?.quantity} />
+                        <input className="mx-2 border text-center w-12" type="text" value={item?.quantity} />
 
-                    <svg className="fill-current text-gray-600 w-3" viewBox="0 0 448 512">
-                      <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
-                    </svg>
-                  </div>
-                  <span className="text-center w-1/5 font-semibold text-sm">${item?.price}</span>
-                  <span className="text-center w-1/5 font-semibold text-sm">${item.product.price}</span>
-                </div>
-              </>))}
+                        <svg onClick={() => increamentHandler(item)} className="fill-current cursor-pointer text-gray-600 w-3" viewBox="0 0 448 512">
+                          <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
+                        </svg>
+                      </div>
+                      <span className="text-center w-1/5 font-semibold text-sm">${item?.price}</span>
+                      <span className="text-center w-1/5 font-semibold text-sm">${item.price}</span>
+                    </div>
+                  </>))
+              ) : (
+                <h1>No Items Added</h1>
+              )}
+
+              {/* {items?.products?.length > 0 && items.products.map((item) => (
+              ))} */}
               <p onClick={() => navigate("/")} className="flex font-semibold text-primary-blue cursor-pointer text-sm mt-10">
 
                 <svg className="fill-current mr-2 text-primary-blue w-4" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z" /></svg>
@@ -137,25 +205,51 @@ const Cart = () => {
               <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
               <div className="flex justify-between mt-10 mb-5">
                 <span className="font-semibold text-sm uppercase">Subtotal</span>
-                <span className="font-semibold text-sm">  {items ? `$${items.cartTotal}` : ""}</span>
+                <span className="font-semibold text-sm">  ₹{subtotal}</span>
               </div>
-              <div>
+              <div className="flex justify-between mt-10 mb-5">
+                <span className="font-semibold text-sm uppercase">Tax</span>
+                <span className="font-semibold text-sm">  ₹{tax}</span>
+              </div>
+              <div className="flex justify-between mt-10 mb-5">
+                <span className="font-semibold text-sm uppercase">Shipping Charges</span>
+                <span className="font-semibold text-sm">  ₹{shippingCharges}</span>
+              </div>
+              {/* <div>
                 <label className="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
-                <select className="block p-2 text-gray-600 w-full text-sm">
-                  <option>Standard shipping - $10.00</option>
-                </select>
+                <p>Shipping Charges: ₹{shippingCharges}</p>
+              </div> */}
+              <div className="py-2">
+                <label for="promo" className="font-semibold inline-block mb-3 text-sm uppercase">Coupon Code</label>
+                {/* <input type="text" id="promo" onChange={(e) => setCoupons(e.target.value)} placeholder="Enter your code" className="p-2 text-sm w-full" /> */}
+                <input
+                  className="p-2 text-sm w-full"
+                  type="text"
+                  placeholder="Coupon Code"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                />
+
+                {couponCode &&
+                  (isValidCouponCode ? (
+                    <span className="text-green-500">
+                      ₹{discount} off using the <code>{couponCode}</code>
+                    </span>
+                  ) : (
+                    <span className="text-red-600 flex items-center gap-2 justify-center">
+                      Invalid Coupon <VscError />
+                    </span>
+                  ))}
+
+                {/* {cartItems.length > 0 && <Link to="/shipping">Checkout</Link>} */}
               </div>
-              <div className="py-10">
-                <label for="promo" className="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
-                <input type="text" id="promo" onChange={(e) => setCoupons(e.target.value)} placeholder="Enter your code" className="p-2 text-sm w-full" />
-              </div>
-              {loading === false ? <button onClick={handleCoupon} className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> : <CircularProgress />}
+              {/* {loading === false ? <button onClick={handleCoupon} className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> : <CircularProgress />} */}
               <div className="border-t mt-8">
                 <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                   <span>Total cost</span>
-                  <span>  {items ? `$${items.totalAfterDiscount}` : ""}</span>
+                  <b> ₹{total}</b>
                 </div>
-                <Link to="/checkout"> <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button> </Link>
+                {cartItems.length > 0 && <Link to="/shipping"> <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button> </Link>}
               </div>
             </div>
 

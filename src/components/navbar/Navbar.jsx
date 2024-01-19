@@ -28,8 +28,8 @@ export default function Navbar() {
   let location = useLocation();
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
-  const cartItems = useSelector(selectItems);
-  const cartItemsInLength = useSelector(cartItemsLength);
+  // const cartItems = useSelector(selectItems);
+  // const cartItemsInLength = useSelector(cartItemsLength);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [term, setTerm] = useState("");
@@ -179,9 +179,12 @@ export default function Navbar() {
                   <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div> */}
                 <div className='cursor-pointer' onClick={() => navigate("/cart")} >
-                  <Badge badgeContent={cartItemsInLength} color="error">
+                  <Badge color="error">
                     <AddShoppingCart />
                   </Badge>
+                  {/* <Badge badgeContent={cartItemsInLength} color="error">
+                    <AddShoppingCart />
+                  </Badge> */}
                 </div>
                 <div onClick={() => navigate("/orders")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <AiOutlineOrderedList className='w-full h-full cursor-pointer hover:text-primary-blue' />

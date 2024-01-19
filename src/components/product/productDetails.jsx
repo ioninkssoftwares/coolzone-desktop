@@ -14,12 +14,13 @@ import { Grid } from 'react-loader-spinner';
 import { useCookies } from 'react-cookie';
 import { useAxios } from '../../utils/axios';
 import { Box, Rating, Typography } from '@mui/material';
+import { addToCart } from '../../redux/reducer/cartReducer';
 
 const ProductDetails = () => {
     const params = useParams()
     const dispatch = useDispatch();
     const product = useSelector(selectProductById)
-    const items = useSelector(selectItems);
+    // const items = useSelector(selectItems);
     const status = useSelector(selectProductListStatus);
     const [cookies, setCookies] = useCookies(["token"]);
     const [token, setToken] = useState("");
@@ -29,8 +30,8 @@ const ProductDetails = () => {
     const [allReviews, setAllReviews] = useState([]);
 
 
-    if (allReviews) {
-        console.log(allReviews, "filsjkfkl")
+    if (product) {
+        console.log(product, "filsjkfkl")
     }
 
     useEffect(() => {
@@ -47,34 +48,30 @@ const ProductDetails = () => {
 
 
 
-    // if (product) {
-    //     console.log(product, "selefh")
-    // }
+    if (product) {
+        console.log(product.product, "selefh")
+    }
 
     const handleImageClick = (image) => {
         setSelectedImage(image);
     };
 
 
-    const handleCart = (e) => {
-        e.preventDefault();
-        // if (items.products.findIndex((item) => item.product.id === product.product._id) < 0) {
-        // console.log({ items, product });
+    const handleCart = () => {
+        // e.preventDefault();
+        console.log("click")
+        if (product.product.stock < 1) return toast.error("Out of Stock")
+
         const newItem = {
-            _id: product.product._id,
-            quantity: 1,
+            productId: product.product._id,
+            price: product.product.price,
+            name: product.product.name,
+            // photo: product.product._id,
+            stock: product.product.stock,
+            quantity: 1
         };
-        if (token) {
-            const latestItem = { cartItem: newItem, jwtToken: token }
-            dispatch(addToCartAsync({ item: latestItem }));
-            toast("Item is added")
-
-        }
-
-
-        // } else {
-        //     toast('Item Already added');
-        // }
+        dispatch(addToCart(newItem))
+        toast.success("Added to Cart")
     };
 
 
@@ -195,7 +192,7 @@ const ProductDetails = () => {
                                 </div>
                                 <div className='w-full flex items-center justify-between px-4'>
                                     <button onClick={handleCart} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Cart</button>
-                                    <button className='rounded-full px-8 py-2 bg-primary-blue text-white'>Buy Now</button>
+                                    {/* <button className='rounded-full px-8 py-2 bg-primary-blue text-white'>Buy Now</button> */}
                                 </div>
                             </div>
                             <div className=" md:w-[70%] w-full lg:pl-10 lg:py-0 mt-0 lg:mt-0">
@@ -212,6 +209,7 @@ const ProductDetails = () => {
                                     </div>
                                 </div>
                                 <p className='my-4 text-xl '>Standard EMI starting from ₹2,192/month <span className='ml-4 text-sm font-semibold text-primary-blue'>View Plans</span></p>
+                                <p className='my-4 text-xl font-semibold '>Stock: {product.product.stock} </p>
                                 <div className="flex mb-4">
                                     <span className="flex items-center">
                                         <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">

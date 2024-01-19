@@ -252,8 +252,7 @@ const OrderModal = ({ buttonText, modalTitle, products }) => {
     const handleSubmit = async () => {
         console.log(orderData, "Order Data");
         setLoading(true)
-        // onSubmit(orderData);
-        // setOpen(false);
+
         try {
 
             const res = await instance.post("/admin/orders", orderData);

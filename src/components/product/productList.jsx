@@ -285,20 +285,36 @@ const ProductList = () => {
     // ]
 
 
+    // const handleWishlist = async (productId) => {
+
+    //     const instances = useAxios(token)
+    //     try {
+    //         const response = await instances.post(`addToWishlist`)
+    //         // setMembership(true)
+    //         // window.location.reload();
+    //     } catch (error) {
+    //         console.log(error)
+
+    //     }
+    // }
+
     const handleWishlist = async (productId) => {
+        const instances = useAxios(token);
+        const data = {
+            productId: productId,
+        };
 
-        const instances = useAxios(token)
         try {
-            const response = await instances.put(`/product/wishlist/${productId}`)
-            console.log(response.data)
-            toast("Product has been added to wishlist")
-            // setMembership(true)
-            // window.location.reload();
+            const response = await instances.post('addToWishlist', data);
+            if (response.data) {
+                toast.success("Product has been added to wishlist")
+            }
         } catch (error) {
-            console.log(error)
-
+            console.log(error);
+            toast.error(error.response.data.message)
+            // Handle the error as needed
         }
-    }
+    };
 
 
     const { data: categoriesData,
@@ -339,14 +355,14 @@ const ProductList = () => {
     const isNextPage = page < 4
 
 
-    if (isError) {
-        const err = error
-        toast.error(err.data.message)
-    }
-    if (productIsError) {
-        const err = productError
-        toast.error(err.data.message)
-    }
+    // if (isError) {
+    //     const err = error
+    //     toast.error(err.data.message)
+    // }
+    // if (productIsError) {
+    //     const err = productError
+    //     toast.error(err.data.message)
+    // }
 
     return (
 
@@ -454,7 +470,7 @@ const ProductList = () => {
                             onChange={(e) => setSearch(e.target.value)}
                         />
 
-                        <div className="flex items-center">
+                        {/* <div className="flex items-center">
                             <Menu as="div" className="relative inline-block text-left">
                                 <div>
                                     <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
@@ -510,7 +526,7 @@ const ProductList = () => {
                                 <span className="sr-only">Filters</span>
                                 <BsFunnel className="h-5 w-5" aria-hidden="true" />
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
                     <section aria-labelledby="products-heading" className=" pt-6">
@@ -601,7 +617,7 @@ const ProductList = () => {
                                                         /> */}
                                                     </div>
                                                     <div className="flex items-center justify-between">
-                                                        <p className="text-xl font-semibold">${product.price}</p>
+                                                        <p className="text-xl font-semibold">₹{product.price}</p>
                                                         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
                                                     </div>
 

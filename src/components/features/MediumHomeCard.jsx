@@ -43,7 +43,7 @@ const MediumHouseCard = ({ images, category, price, title, _id }) => {
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-xl font-semibold">${price}</p>
+        <p className="text-xl font-semibold">₹{price}</p>
         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
       </div>
 

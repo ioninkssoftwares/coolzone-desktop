@@ -40,6 +40,7 @@ import EditProductById from './pages/admin/products/EditProductById';
 import MyAccountPage from './pages/MyAccountPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import Admin404 from './pages/admin/Admin404';
+import ShippingPage from './pages/ShippingPage';
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,12 @@ const router = createBrowserRouter([
     path: "/cart",
     element: (
       <CartPage />
+    ),
+  },
+  {
+    path: "/shipping",
+    element: (
+      <ShippingPage />
     ),
   },
   {

@@ -2,8 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const productsAPI = createApi({
     reducerPath: "productsApi",
-    // baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_REACT_APP_BASE_URL}/api/v1/` }),
-    baseQuery: fetchBaseQuery({ baseUrl: `http://localhost:9000/api/v1/` }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_REACT_APP_BASE_URL}/` }),
     tagTypes: ["products"],
     endpoints: (builder) => ({
         latestProducts: builder.query({
