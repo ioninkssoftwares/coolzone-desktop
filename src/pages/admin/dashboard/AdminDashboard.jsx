@@ -85,7 +85,7 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         if (cookies.adminToken === undefined) {
-            toast.error("Please Login")
+            toast.error("Please Login as a admin")
             navigate('/admin/login')
         }
     }, [])

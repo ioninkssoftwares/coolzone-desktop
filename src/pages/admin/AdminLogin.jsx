@@ -15,14 +15,15 @@ import { useAxios } from '../../utils/axios';
 
 
 const AdminLogin = () => {
-    const instance = useAxios();
+
     // const dispatch = useDispatch();
     const navigate = useNavigate()
-
-    const [cookies, setCookies] = useCookies(["token"]);
     // const error = useSelector(selectError);
     // const user = useSelector(selectLoggedInUser);
     const [loading, setLoading] = useState(false)
+    const [cookies, setCookies] = useCookies(["adminToken"]);
+    const [token, setToken] = useState("");
+    const instance = useAxios(token);
     const {
         register,
         handleSubmit,
@@ -30,6 +31,12 @@ const AdminLogin = () => {
     } = useForm();
 
 
+    // useEffect(() => {
+    //     if (cookies && cookies.adminToken) {
+    //         console.log(cookies.adminToken, "fdsfsdfsf")
+    //         setToken(cookies.adminToken);
+    //     }
+    // }, [cookies]);
 
     // useEffect(() => {
     //     if (user?.user.role === "user") {

@@ -25,6 +25,7 @@ import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useCategoriesQuery, useSearchProductsQuery } from '../../redux/api/productApi';
 import Loader from '../Loader';
+import { addToCart } from '../../redux/reducer/cartReducer';
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -364,6 +365,27 @@ const ProductList = () => {
     //     toast.error(err.data.message)
     // }
 
+
+    // Handle Cart funciton
+
+    const handleCart = (cartProduct) => {
+        // e.preventDefault();
+        console.log(cartProduct, "dfs")
+        // if (product.product.stock < 1) return toast.error("Out of Stock")
+
+        const newItem = {
+            productId: cartProduct._id,
+            price: cartProduct.price,
+            name: cartProduct.name,
+            // photo: cartProduct._id,
+            stock: cartProduct.stock,
+            quantity: 1
+        };
+        dispatch(addToCart(newItem))
+        toast.success("Added to Cart")
+    };
+
+
     return (
 
         <div className="bg-white">
@@ -616,7 +638,7 @@ const ProductList = () => {
                                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                                         /> */}
                                                     </div>
-                                                    <div className="flex items-center justify-between">
+                                                    <div onClick={() => handleCart(product)} className="flex cursor-pointer items-center justify-between">
                                                         <p className="text-xl font-semibold">₹{product.price}</p>
                                                         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
                                                     </div>

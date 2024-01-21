@@ -199,12 +199,12 @@ const ProductManagement = () => {
     }, [token])
 
 
-    async function deleteCustomer() {
+    async function deleteProduct() {
         try {
             setDeleteLoading(true);
-            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            const res = await instance.delete("/admin/product/" + deleteId);
             if (res.data) {
-                toast.success("Customer Deleted Successfully");
+                toast.success("Product Deleted Successfully");
                 setDeleteLoading(false);
                 setDeleteOpen(false);
                 getProductsByAdmin();
@@ -212,6 +212,7 @@ const ProductManagement = () => {
             }
         } catch (e) {
             setDeleteLoading(false);
+            console.log(e)
             // ErrorDispaly(e);
         }
     }
@@ -254,56 +255,56 @@ const ProductManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
+        // {
+        //     minWidth: 150,
+
+        //     flex: 0.25,
+        //     field: "costPrice",
+        //     headerName: "Cost",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
 
             flex: 0.25,
-            field: "costPrice",
-            headerName: "Cost",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 150,
-
-            flex: 0.25,
-            field: "Stock",
+            field: "stock",
             headerName: "In-Stock",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        {
-            minWidth: 120,
+        // {
+        //     minWidth: 120,
 
-            field: "discount",
-            headerName: "Discount",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 120,
+        //     field: "discount",
+        //     headerName: "Discount",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 120,
 
-            field: "totalValue",
-            headerName: "Total Value",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 120,
+        //     field: "totalValue",
+        //     headerName: "Total Value",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 120,
 
-            field: "status",
-            headerName: "Status",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+        //     field: "status",
+        //     headerName: "Status",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
 
@@ -478,7 +479,7 @@ const ProductManagement = () => {
                             name="product"
                             open={deleteOpen}
                             closeDialog={() => setDeleteOpen(false)}
-                            toDoFunction={deleteCustomer}
+                            toDoFunction={deleteProduct}
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
                         />

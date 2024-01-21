@@ -35,6 +35,7 @@ import AddCouponPartnerModal from "../../../components/admin/modals/AddCouponPar
 import { useNavigate } from "react-router-dom";
 import CouponDetailsModal from "../../../components/admin/modals/CouponDetailsModal";
 import { useCookies } from "react-cookie";
+import CreateCouponModal from "../../../components/admin/modals/CreateCouponModal";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -81,6 +82,7 @@ const PartnerCouponManagement = () => {
     const [selected, setSelected] = useState("All");
     const navigate = useNavigate();
     const instance = useAxios(token);
+    const [couponAdded, setCouponAdded] = useState(false)
 
     async function getAllCoupons() {
 
@@ -113,10 +115,10 @@ const PartnerCouponManagement = () => {
     }, [cookies]);
 
 
-    async function deleteCustomer() {
+    async function deleteCoupon() {
         try {
             setDeleteLoading(true);
-            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            const res = await instance.delete("/coupon/" + deleteId);
             if (res.data) {
                 toast.success("Coupon Deleted Successfully");
                 setDeleteLoading(false);
@@ -130,32 +132,39 @@ const PartnerCouponManagement = () => {
         }
     }
 
+    useEffect(() => {
+        if (couponAdded === true) {
+            getAllCoupons()
+        }
+    }, [couponAdded])
+
+
+
     const all_customer_columns = [
-        {
-            flex: 0.25,
-            minWidth: 150,
+        // {
+        //     flex: 0.25,
+        //     minWidth: 150,
+        //     field: "name",
+        //     headerName: "Coupon Name",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     renderCell: ({ row }) => (
+        //         <Typography variant="body1" fontWeight={500}>
+        //             {row?.name}
+        //         </Typography>
+        //     ),
+        // },
 
-            field: "name",
-            headerName: "Coupon Name",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            renderCell: ({ row }) => (
-                <Typography variant="body1" fontWeight={500}>
-                    {row?.name}
-                </Typography>
-            ),
-        },
-
-        {
-            minWidth: 150,
-            flex: 0.25,
-            field: "coupontype",
-            headerName: "Coupon Type",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "coupontype",
+        //     headerName: "Coupon Type",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
             flex: 0.25,
@@ -166,83 +175,93 @@ const PartnerCouponManagement = () => {
             disableColumnMenu: true,
         },
 
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "amount",
+        //     headerName: "Discount",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true, renderCell: ({ row }) => (
+        //         <Typography variant="body1" fontWeight={500}>
+        //             {`${row?.discount} ${row.percentage ? "%" : "RS"}`}
+        //         </Typography>
+        //     ),
+        // },
+
         {
             minWidth: 150,
             flex: 0.25,
-            field: "discount",
+            field: "amount",
             headerName: "Discount",
             align: "left",
             headerAlign: "left",
-            disableColumnMenu: true, renderCell: ({ row }) => (
-                <Typography variant="body1" fontWeight={500}>
-                    {`${row?.discount} ${row.percentage ? "%" : "RS"}`}
-                </Typography>
-            ),
-        },
-
-
-        {
-            minWidth: 150,
-            flex: 0.25,
-            field: "expiry",
-            headerName: "Expiry",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true, renderCell: ({ row }) => (
-                <Typography variant="body1" fontWeight={500}>
-                    {new Date(row?.expiry).toLocaleDateString('en-GB')}
-                </Typography>
-            ),
-        },
-        {
-            minWidth: 150,
-            flex: 0.25,
-            field: "coupontype",
-            headerName: "Coupon Type",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 150,
-            flex: 0.25,
-            field: "couponSegment",
-            headerName: "Coupon Segment",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 150,
-            flex: 0.25,
-            field: "maxUsePerCustomer",
-            headerName: "Max User",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 150,
-            flex: 0.25,
-            field: "discription",
-            headerName: "Coupon Description",
-            align: "left",
-            headerAlign: "left",
             disableColumnMenu: true,
         },
 
 
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "expiry",
+        //     headerName: "Expiry",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true, renderCell: ({ row }) => (
+        //         <Typography variant="body1" fontWeight={500}>
+        //             {new Date(row?.expiry).toLocaleDateString('en-GB')}
+        //         </Typography>
+        //     ),
+        // },
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "coupontype",
+        //     headerName: "Coupon Type",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "couponSegment",
+        //     headerName: "Coupon Segment",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "maxUsePerCustomer",
+        //     headerName: "Max User",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 150,
+        //     flex: 0.25,
+        //     field: "discription",
+        //     headerName: "Coupon Description",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
 
-        {
-            minWidth: 120,
 
-            field: "status",
-            headerName: "Status",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+
+        // {
+        //     minWidth: 120,
+
+        //     field: "status",
+        //     headerName: "Status",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
 
@@ -254,7 +273,7 @@ const PartnerCouponManagement = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) => (
                 <Box>
-                    <Tooltip title="Edit">
+                    {/* <Tooltip title="Edit">
                         <IconButton
                             // onClick={() => router.push(`/admin/customers/${row._id}`)}
                             color="primary"
@@ -269,7 +288,7 @@ const PartnerCouponManagement = () => {
                         >
                             <BsPencilFill />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     <Tooltip title="Delete">
                         <IconButton
                             onClick={() => {
@@ -298,27 +317,25 @@ const PartnerCouponManagement = () => {
                         <AdminNavbar />
                         <div className="flex justify-between items-center mt-8 mb-6 px-4">
                             <div className=" text-sm w-[30%] flex gap-2 px-3">
-                                <button
-                                    // onClick={() => router.push("/admin/customers/add")}
+                                {/* <button
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
-                                        {/* <TbEdit /> */}
+                                  
                                     </span>
                                     <span onClick={() => navigate("/admin/createCoupon")}>Coupon Codes</span>
-                                </button>
-                                <button
-                                    // onClick={() => router.push("/admin/customers/add")}
+                                </button> */}
+                                {/* <button
                                     className=" px-3  text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
-                                        {/* <TbEdit /> */}
+                                   
                                     </span>
-                                    {/* <span >Coupon Codes</span> */}
+                                    <span >Coupon Codes</span>
                                     <CouponDetailsModal
                                         buttonText="Coupon Details"
                                         modalTitle="Coupon Details " />
-                                </button>
+                                </button> */}
                             </div>
                             <div className=" text-sm px-3">
                                 <button
@@ -329,9 +346,15 @@ const PartnerCouponManagement = () => {
                                         <TbEdit />
                                     </span>
                                     {/* <span>Add a new Affiliated Partner</span> */}
-                                    <AddCouponPartnerModal
+                                    {/* <AddCouponPartnerModal
                                         buttonText="Add a new Affiliated Partner"
                                         modalTitle="Add a New Partner"
+                                    // onSubmit={projectSubmit}
+                                    /> */}
+                                    <CreateCouponModal
+                                        buttonText="Create a Coupon"
+                                        modalTitle="Add a New Coupon "
+                                        isCouponAdded={setCouponAdded}
                                     // onSubmit={projectSubmit}
                                     />
                                 </button>
@@ -519,7 +542,7 @@ const PartnerCouponManagement = () => {
                             name="coupon"
                             open={deleteOpen}
                             closeDialog={() => setDeleteOpen(false)}
-                            toDoFunction={deleteCustomer}
+                            toDoFunction={deleteCoupon}
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
                         />

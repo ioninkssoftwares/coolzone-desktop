@@ -1,6 +1,29 @@
+import { useCookies } from "react-cookie";
+import { CiLogout } from "react-icons/ci";
 import { FaStoreAlt } from "react-icons/fa"
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+
+
 
 const AdminNavbar = () => {
+    const navigate = useNavigate()
+    const [cookies, setCookies, removeCookies] = useCookies(['token']);
+
+    // Todo-localStorageUsed
+    const isAdmin = localStorage.getItem("isAdmin");
+
+    const handleLogout = () => {
+        toast("Logout Successfully")
+        // Remove cookies
+        removeCookies('adminToken');
+        // Clear localStorage
+        localStorage.removeItem("isAdmin");
+        // localStorage.removeItem("token");
+        navigate("/admin/login")
+        // Add any other cleanup code here
+    };
     return (
         <nav className="bg-white">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -51,6 +74,11 @@ const AdminNavbar = () => {
                                     <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                                 </button>
                                 <span className="text-black">Sandeep</span>
+
+                                {isAdmin ? (<div onClick={handleLogout} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                                    <CiLogout className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                                </div>) : ""}
+
                             </div>
 
                         </div>

@@ -140,20 +140,18 @@ const AddProductByAdmin = () => {
     const [selected, setSelected] = useState("All");
     const [filesToupload, setFilesToUpload] = useState([]);
     const [product, setProduct] = useState({
-        Discount: false,
-        ratings: 0,
-        Stock: 1,
+        stock: 0,
         name: "",
         price: 0,
-        description: "",
+        // description: "",
         category: "",
-        brand: "",
-        specification: "",
-        featured: true,
-        best_seller: true,
-        shortDescription: "",
-        costPrice: 0,
-        returnPolicy: true
+        // brand: "",
+        // specification: "",
+        // featured: true,
+        // best_seller: true,
+        // shortDescription: "",
+        // costPrice: 0,
+        // returnPolicy: true
     })
     const [returnSwitch, setReturnSwitch] = useState(true);
     const [discountSwitch, setDiscountSwitch] = useState(true);
@@ -217,25 +215,25 @@ const AddProductByAdmin = () => {
     const handleProductSubmit = async () => {
         setLoading(true)
         var ProductFormData = new FormData();
-        for (let i of filesToupload) {
-            ProductFormData.append('images', i);
-        }
+        // for (let i of filesToupload) {
+        //     ProductFormData.append('images', i);
+        // }
 
         ProductFormData.append('name', product.name);
         ProductFormData.append('category', product.category);
-        ProductFormData.append('description', product.description);
-        ProductFormData.append('shortDescription', product.shortDescription);
+        // ProductFormData.append('description', product.description);
+        // ProductFormData.append('shortDescription', product.shortDescription);
         // ProductFormData.append('sellingPrice', product.sellingPrice);
-        ProductFormData.append('costPrice', product.costPrice);
-        ProductFormData.append('Stock', product.Stock);
+        // ProductFormData.append('costPrice', product.costPrice);
+        ProductFormData.append('stock', product.stock);
         // ProductFormData.append('shortDescription', product.shortDescription);
         ProductFormData.append('price', product.price);
-        ProductFormData.append('brand', product.brand);
-        ProductFormData.append('specification', product.specification);
-        ProductFormData.append('featured', product.featured);
-        ProductFormData.append('best_seller', product.best_seller);
-        ProductFormData.append('returnPolicy', product.returnPolicy);
-        ProductFormData.append('Discount', product.Discount);
+        // ProductFormData.append('brand', product.brand);
+        // ProductFormData.append('specification', product.specification);
+        // ProductFormData.append('featured', product.featured);
+        // ProductFormData.append('best_seller', product.best_seller);
+        // ProductFormData.append('returnPolicy', product.returnPolicy);
+        // ProductFormData.append('Discount', product.Discount);
 
         try {
             const res = await instance.post("/admin/product/new", ProductFormData)
@@ -245,20 +243,18 @@ const AddProductByAdmin = () => {
                 toast("Product has been added")
                 navigate("/admin/productManagement")
                 setProduct({
-                    Discount: false,
-                    ratings: 0,
-                    Stock: 1,
+                    stock: 0,
                     name: "",
                     price: 0,
-                    description: "",
+                    // description: "",
                     category: "",
-                    brand: "",
-                    specification: "",
-                    featured: true,
-                    best_seller: true,
-                    shortDescription: "",
-                    costPrice: 0,
-                    returnPolicy: true
+                    // brand: "",
+                    // specification: "",
+                    // featured: true,
+                    // best_seller: true,
+                    // shortDescription: "",
+                    // costPrice: 0,
+                    // returnPolicy: true
                 })
             }
         } catch (error) {
@@ -336,6 +332,11 @@ const AddProductByAdmin = () => {
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
         return regex.test(value) ? null : 'Invalid characters in product name';
     };
+    const validateCategory = (value) => {
+        // Add specific validation logic for product name
+        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        return regex.test(value) ? null : 'Invalid characters in category';
+    };
     const validateBrandName = (value) => {
         // Add specific validation logic for product name
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
@@ -386,9 +387,9 @@ const AddProductByAdmin = () => {
                         <div className="flex items-center justify-between mx-10 my-5">
                             <p>Add Product Details</p>
                             <div className="flex gap-7">
-                                <button className="px-4 py-2 rounded-lg text-white bg-black">
+                                {/* <button className="px-4 py-2 rounded-lg text-white bg-black">
                                     Save as Draft
-                                </button>
+                                </button> */}
                                 {loading ? <CircularProgress /> : <button onClick={handleProductSubmit} className="px-4 py-2 rounded-lg text-white bg-primary-blue">
                                     Save & Publish
                                 </button>}
@@ -409,10 +410,21 @@ const AddProductByAdmin = () => {
                                         onChange={(e) => setProduct({ ...product, name: e })}
                                         validate={validateProductName}
                                     />
+                                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                        Category
+                                    </Typography>
+
+                                    <InputField
+                                        label="Category"
+                                        type="text"
+                                        value={product?.category}
+                                        onChange={(e) => setProduct({ ...product, category: e })}
+                                        validate={validateCategory}
+                                    />
 
 
 
-                                    <FormControl fullWidth>
+                                    {/* <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">Select Product Category</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
@@ -431,30 +443,30 @@ const AddProductByAdmin = () => {
                                                 </MenuItem>
                                             ))}
                                         </Select>
-                                    </FormControl>
+                                    </FormControl> */}
 
                                     <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
 
-                                        <InputField label="Selling Price" type="number" value={product.sellingPrice} onChange={(e) => setProduct({ ...product, price: e })} validate={validateSellingPrice} />
+                                        <InputField label=" Price" type="number" value={product.price} onChange={(e) => setProduct({ ...product, price: e })} validate={validateSellingPrice} />
 
-                                        <InputField label="Cost Price" type="number" value={product.costPrice} onChange={(e) => setProduct({ ...product, costPrice: e })} validate={validateCostPrice} />
+                                        {/* <InputField label="Cost Price" type="number" value={product.costPrice} onChange={(e) => setProduct({ ...product, costPrice: e })} validate={validateCostPrice} />
+ */}
 
-
-                                        <InputField label="Quantity" type="number" value={product.Stock} onChange={(e) => setProduct({ ...product, Stock: e })} validate={validateQuantity} />
+                                        <InputField label="Stock" type="number" value={product.stock} onChange={(e) => setProduct({ ...product, stock: e })} validate={validateQuantity} />
 
 
                                     </Box>
-
+                                    {/* 
                                     <InputField
                                         label="Brand"
                                         type="text"
                                         value={product?.brand}
                                         onChange={(e) => setProduct({ ...product, brand: e })}
                                         validate={validateBrandName}
-                                    />
+                                    /> */}
 
 
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
+                                    {/* <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                             Discount
                                         </Typography>
@@ -466,9 +478,9 @@ const AddProductByAdmin = () => {
 
                                             />
                                         </FormGroup>
-                                    </Box>
+                                    </Box> */}
 
-                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                    {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                         <FormGroup>
                                             <FormControlLabel
                                                 label="Featured"
@@ -486,7 +498,7 @@ const AddProductByAdmin = () => {
                                             />
                                         </FormGroup>
                                     </Box>
-
+ */}
 
 
                                     {/* <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
@@ -573,7 +585,7 @@ const AddProductByAdmin = () => {
                                         Add a long description for your product
                                     </Typography>
 
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2, marginTop: 2 }}>
+                                    {/* <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2, marginTop: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                             Return Policy
                                         </Typography>
@@ -588,7 +600,7 @@ const AddProductByAdmin = () => {
                                                 }
                                             />
                                         </FormGroup>
-                                    </Box>
+                                    </Box> */}
 
                                     {/* <Typography sx={{ marginTop: 2 }}>
                                         Date Added

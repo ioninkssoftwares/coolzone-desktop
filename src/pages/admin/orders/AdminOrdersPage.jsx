@@ -35,6 +35,8 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
+import { FcProcess } from "react-icons/fc";
+
 
 
 export const Button = ({
@@ -64,11 +66,14 @@ const AdminOrdersPage = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [processLoading, setProcessLoading] = useState(false);
     const [deleteId, setDeleteId] = useState("");
     const [token, setToken] = useState("");
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const [allOrders, setAllOrders] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
+    const [processLoadingState, setProcessLoadingState] = useState({});
+
 
 
     const instance = useAxios(token);
@@ -94,7 +99,7 @@ const AdminOrdersPage = () => {
     const getOrdersByAdmin = async () => {
         try {
             setLoading(true)
-            const res = await instance.get("/admin/orders")
+            const res = await instance.get("/orders/all")
             if (res.data) {
                 setLoading(false)
                 setAllOrders(res.data.orders)
@@ -138,12 +143,12 @@ const AdminOrdersPage = () => {
         }
     }, [cookies]);
 
-    async function deleteCustomer() {
+    async function deleteOrder() {
         try {
             setDeleteLoading(true);
-            const res = await instance.delete("/admin/user/deleteUser/" + deleteId);
+            const res = await instance.delete("/order/" + deleteId);
             if (res.data) {
-                toast.success("Customer Deleted Successfully");
+                toast.success("Order Deleted Successfully");
                 setDeleteLoading(false);
                 setDeleteOpen(false);
                 getOrdersByAdmin();
@@ -154,6 +159,54 @@ const AdminOrdersPage = () => {
             // ErrorDispaly(e);
         }
     }
+
+    // Process Order
+
+    // const processOrder = async (processId) => {
+
+    //     try {
+    //         setProcessLoading(true);
+    //         const res = await instance.put("/order/" + processId);
+    //         if (res.data) {
+    //             toast.success("Order Processed Successfully");
+    //             setProcessLoading(false);
+    //             setDeleteOpen(false);
+    //             getOrdersByAdmin();
+    //             // getAllUsers();
+    //         }
+    //     } catch (e) {
+    //         setProcessLoading(false);
+    //         // ErrorDispaly(e);
+    //     }
+
+
+
+    // }
+
+    const processOrder = async (processId) => {
+        try {
+            // Set loading state to true for the specific order
+            setProcessLoadingState((prev) => ({ ...prev, [processId]: true }));
+
+            const res = await instance.put("/order/" + processId);
+
+            if (res.data) {
+                toast.success("Order Processed Successfully");
+
+                // Clear loading state for the specific order
+                setProcessLoadingState((prev) => ({ ...prev, [processId]: false }));
+                setDeleteOpen(false);
+                getOrdersByAdmin();
+            }
+        } catch (e) {
+            // Handle errors here
+            console.error(e);
+
+            // Clear loading state for the specific order on error
+            setProcessLoadingState((prev) => ({ ...prev, [processId]: false }));
+        }
+    };
+
 
 
     const all_customer_columns = [
@@ -168,7 +221,7 @@ const AdminOrdersPage = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) => (
                 <Typography variant="body1" fontWeight={500}>
-                    {row?.name}
+                    {row?.user?.name}
                 </Typography>
             ),
         },
@@ -186,12 +239,32 @@ const AdminOrdersPage = () => {
                 </Typography>
             ),
         },
+        // {
+        //     minWidth: 150,
+
+        //     flex: 0.25,
+        //     field: "Order Type",
+        //     headerName: "Order Type",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 150,
+
+        //     flex: 0.25,
+        //     field: "_id",
+        //     headerName: "Order Id",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
 
             flex: 0.25,
-            field: "Order Type",
-            headerName: "Order Type",
+            field: "subtotal",
+            headerName: "Subtotal",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -200,8 +273,19 @@ const AdminOrdersPage = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "_id",
-            headerName: "Order Id",
+            field: "tax",
+            headerName: "Tax",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+
+        {
+            minWidth: 120,
+
+            field: "discount",
+            headerName: "Discount",
+            flex: 0.2,
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -209,28 +293,38 @@ const AdminOrdersPage = () => {
         {
             minWidth: 120,
 
-            field: "totalPrice",
+            field: "shippingCharges",
+            headerName: "Shipping Charges",
+            flex: 0.2,
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 150,
+
+            flex: 0.25,
+            field: "total",
             headerName: "Order Total",
-            flex: 0.2,
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
         },
+        // {
+        //     minWidth: 120,
+
+        //     field: "paymentInfo.status",
+        //     headerName: "Payment Status",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     valueGetter: (params) => params.row.paymentInfo.status,
+        // },
         {
             minWidth: 120,
 
-            field: "paymentInfo.status",
-            headerName: "Payment Status",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            valueGetter: (params) => params.row.paymentInfo.status,
-        },
-        {
-            minWidth: 120,
-
-            field: "orderStatus",
+            field: "status",
             headerName: "Order Status",
             flex: 0.2,
             align: "left",
@@ -248,20 +342,12 @@ const AdminOrdersPage = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) => (
                 <Box>
-                    {/* <Tooltip title="Edit">
+                    <Tooltip title="Process">
                         <IconButton
-                            // onClick={() => router.push(`/admin/customers/${row._id}`)}
+                            onClick={() => processOrder(row._id)}
                             color="primary"
                         >
-                            <BsEyeFill />
-                        </IconButton>
-                    </Tooltip> */}
-                    <Tooltip title="Edit">
-                        <IconButton
-                            onClick={() => navigate(`/admin/order/${row._id}`)}
-                            color="primary"
-                        >
-                            <BsPencilFill />
+                            {processLoadingState[row._id] ? <CircularProgress size={24} /> : <FcProcess />}
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
@@ -316,12 +402,12 @@ const AdminOrdersPage = () => {
                                         <TbEdit />
                                     </span>
                                     {/* <span>Create New Order</span> */}
-                                    <OrderModal
+                                    {/* <OrderModal
                                         buttonText="Create New Order"
                                         modalTitle="Create New Order"
                                         // onSubmit={projectSubmit}
                                         products={allProducts}
-                                    />
+                                    /> */}
                                 </button>
                             </div>
                         </div>
@@ -503,7 +589,7 @@ const AdminOrdersPage = () => {
                             name="order"
                             open={deleteOpen}
                             closeDialog={() => setDeleteOpen(false)}
-                            toDoFunction={deleteCustomer}
+                            toDoFunction={deleteOrder}
                             loading={deleteLoading}
                             sx={{ pb: 4, border: "2px solid red" }}
                         />

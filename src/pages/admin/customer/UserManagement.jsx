@@ -131,6 +131,7 @@ const UserManagement = () => {
             }
         } catch (e) {
             setDeleteLoading(false);
+            console.log(e, "dsjfhs")
             // ErrorDispaly(e);
         }
     }
@@ -171,46 +172,52 @@ const UserManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
+        // {
+        //     minWidth: 150,
+
+        //     flex: 0.25,
+        //     field: "orders",
+        //     headerName: "Orders",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
+        // {
+        //     minWidth: 120,
+
+        //     field: "orderTotal",
+        //     headerName: "Order Total",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
 
             flex: 0.25,
-            field: "orders",
-            headerName: "Orders",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 120,
-
-            field: "orderTotal",
-            headerName: "Order Total",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
-        {
-            minWidth: 120,
-
-            field: "customerSince",
+            field: "createdAt",
             headerName: "Customer Since",
-            flex: 0.2,
             align: "left",
             headerAlign: "left",
-            disableColumnMenu: true,
+            disableColumnMenu: true, renderCell: ({ row }) => (
+                <Typography variant="body1" fontWeight={500}>
+                    {new Date(row?.createdAt).toLocaleDateString('en-GB')}
+                </Typography>
+            ),
         },
-        {
-            minWidth: 120,
 
-            field: "status",
-            headerName: "Status",
-            flex: 0.2,
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-        },
+
+        // {
+        //     minWidth: 120,
+
+        //     field: "status",
+        //     headerName: "Status",
+        //     flex: 0.2,
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        // },
         {
             minWidth: 150,
 
@@ -222,7 +229,7 @@ const UserManagement = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) => (
                 <Box>
-                    <Tooltip title="Edit">
+                    {/* <Tooltip title="Edit">
                         <IconButton
                             // onClick={() => router.push(`/admin/customers/${row._id}`)}
                             // onClick={() => navigate(`/admin/editProductDetails/${row._id}`)}
@@ -230,7 +237,7 @@ const UserManagement = () => {
                         >
                             <BsPencilFill />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                     {/* <Tooltip title="Edit">
                         <IconButton
                             // onClick={() => router.push(`/admin/customers/edit/${row._id}`)}

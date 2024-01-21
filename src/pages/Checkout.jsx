@@ -8,12 +8,22 @@ import { useNewOrderMutation } from '../redux/api/orderApi';
 import { toast } from 'react-toastify';
 import { resetCart } from '../redux/reducer/cartReducer';
 
+// Todo-localStorageUsed
+const userId = localStorage.getItem("userId");
+
+
 const Checkout = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(selectLoggedInUser);
 
-    const userId = localStorage.getItem("userId");
+    if (userId) console.log(userId, "dsjhfafsk")
+
+    if (!userId) {
+        // userId is undefined or null, handle this case accordingly
+        return;
+    }
+
 
     const {
         shippingInfo,

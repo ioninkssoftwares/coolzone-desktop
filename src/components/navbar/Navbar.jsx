@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BsPencil, BsFillHeartFill } from "react-icons/bs";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaRegUser, FaShoppingCart } from "react-icons/fa";
 import { AiOutlineOrderedList, AiOutlineSearch } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -15,6 +15,10 @@ import { Badge } from '@mui/material';
 import { AddShoppingCart } from '@mui/icons-material';
 import { cartItemsLength, fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
 import { useCookies } from 'react-cookie';
+import { FiLogOut } from 'react-icons/fi';
+import { CiLogout } from "react-icons/ci";
+import { toast } from 'react-toastify';
+
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 
@@ -26,7 +30,7 @@ function classNames(...classes) {
 export default function Navbar() {
 
   let location = useLocation();
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies, setCookies, removeCookies] = useCookies(['token']);
   const [token, setToken] = useState("");
   // const cartItems = useSelector(selectItems);
   // const cartItemsInLength = useSelector(cartItemsLength);
@@ -42,13 +46,13 @@ export default function Navbar() {
     }
   }, [cookies]);
 
-  useEffect(() => {
-    if (token) {
-      // console.log(token,"fjkdsfjkd")
-      dispatch(fetchItemsByUserIdAsync(token))
-    }
+  // useEffect(() => {
+  //   if (token) {
+  //     // console.log(token,"fjkdsfjkd")
+  //     dispatch(fetchItemsByUserIdAsync(token))
+  //   }
 
-  }, [dispatch, token])
+  // }, [dispatch, token])
 
   const navigation = [
     { name: 'Products', href: '/products', current: location.pathname === '/products' },
@@ -112,12 +116,27 @@ export default function Navbar() {
 
   }
 
+  // Todo-localStorageUsed
+  const userId = localStorage.getItem("userId");
+
+  const handleLogout = () => {
+    toast("Logout Successfully")
+    // Remove cookies
+    removeCookies('token');
+    // Clear localStorage
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    navigate("/")
+    // Add any other cleanup code here
+  };
+
+
   return (
     <Disclosure as="nav" className="bg-white sticky top-0 z-50 ">
       {({ open }) => (
         <>
           {/* <div className="sticky top-5 z-50"> */}
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
+          <div style={{ boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }} className="mx-auto shadow max-w-[100%] px-2 sm:px-6 lg:px-8 -mt-4 ">
             <div className="relative flex h-16 items-center justify-between mt-4">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -139,13 +158,14 @@ export default function Navbar() {
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
                   />
-                  <span className='cursor-pointer' onClick={() => navigate("/")}>Coolzone</span>
+                  <span className='cursor-pointer hover:text-primary-blue hover:font-bold ml-2' onClick={() => navigate("/")}>Coolzone</span>
                 </div>
 
               </div>
 
+              {/* Default SearchBar */}
               {/* <div style={{border:"2px solid green"}} > */}
-              <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 ">
+              {/* <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 ">
                 <form onSubmit={searchSubmitHandler} className='flex' style={{ width: "85%", height: "100%" }}>
                   <div style={{ width: "100%", height: "100%" }}>
                     <input type="text"
@@ -162,7 +182,7 @@ export default function Navbar() {
                 </form>
 
 
-              </div>
+              </div> */}
               {/* </div> */}
 
               <div className="absolute inset-y-0 space-x-8 right-0 md:flex hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -180,7 +200,7 @@ export default function Navbar() {
                 </div> */}
                 <div className='cursor-pointer' onClick={() => navigate("/cart")} >
                   <Badge color="error">
-                    <AddShoppingCart />
+                    <AddShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                   </Badge>
                   {/* <Badge badgeContent={cartItemsInLength} color="error">
                     <AddShoppingCart />
@@ -190,11 +210,21 @@ export default function Navbar() {
                   <AiOutlineOrderedList className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>
 
+                {userId ? (<div onClick={handleLogout} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                  <CiLogout className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                </div>) : (<div onClick={() => navigate("/login")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                  <FiLogOut className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                </div>)}
+
               </div>
             </div>
 
+
+
+
           </div>
-          <section className='w-full md:flex items-center justify-center bg-primary-blue mt-4 hidden'>
+          {/* Category Section */}
+          {/* <section className='w-full md:flex items-center justify-center bg-primary-blue mt-4 hidden'>
             <div style={{ width: "70%" }} className='flex items-center justify-center  gap-1 '>
 
               <ProductSelect products={sampleProducts} defaultValue="Smartphones" />
@@ -208,7 +238,7 @@ export default function Navbar() {
 
 
             </div>
-          </section>
+          </section> */}
           {/* </div> */}
 
           <Disclosure.Panel className="sm:hidden">

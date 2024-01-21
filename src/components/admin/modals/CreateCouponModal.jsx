@@ -17,6 +17,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import InputField from '../../InputField';
+import { useNavigate } from 'react-router-dom';
 // import { useAxios } from '../../utills/axios';
 
 
@@ -96,8 +97,9 @@ import InputField from '../../InputField';
 
 
 
-const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
+const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
     // const instance = useAxios();
+    const navigate = useNavigate()
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     // const theme = useTheme();
@@ -111,15 +113,15 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
     const [discountPercentage, setDiscountPercentage] = useState(false);
     const [date, setDate] = useState(null); // Initialize with null or a default date
     const [couponData, setCouponData] = useState({
-        name: '',
-        expiry: date,
-        coupontype: '',
-        code: "",
-        percentage: discountPercentage,
-        discount: '',
-        CouponSegment: '',
-        maxUsePerCustomer: '',
-        discription: '',
+        // name: '',
+        // expiry: date,
+        // coupontype: '',
+        coupon: "",
+        // percentage: discountPercentage,
+        amount: '',
+        // CouponSegment: '',
+        // maxUsePerCustomer: '',
+        // discription: '',
     });
 
     if (date) console.log(date, "sdfkjld")
@@ -144,12 +146,13 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
         setLoading(true)
         try {
 
-            const res = await instance.post("/admin/coupon/new", couponData);
+            const res = await instance.post("/coupon/new", couponData);
 
             if (res.data) {
                 setLoading(false)
                 toast("Coupon added successfully")
                 setOpen(false);
+                isCouponAdded(true)
                 console.log(res.data)
             }
 
@@ -368,7 +371,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                     </Typography>
                     <form>
                         {/* Add margin-bottom to separate form fields */}
-                        <TextField
+                        {/* <TextField
                             label="Coupon Name"
                             fullWidth
                             margin="normal"
@@ -376,18 +379,18 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             onChange={(e) =>
                                 setCouponData({ ...couponData, name: e.target.value })
                             }
-                        />
+                        /> */}
                         <TextField
                             label="Coupon Code"
                             fullWidth
                             margin="normal"
-                            value={couponData.code}
+                            value={couponData.coupon}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, code: e.target.value })
+                                setCouponData({ ...couponData, coupon: e.target.value })
                             }
                         />
 
-                        <TextField
+                        {/* <TextField
                             label="Coupon Type"
                             fullWidth
                             sx={{ marginBottom: 3 }}
@@ -396,27 +399,27 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             onChange={(e) =>
                                 setCouponData({ ...couponData, coupontype: e.target.value })
                             }
-                        />
+                        /> */}
 
 
                         <InputField
-                            label="Discount (Percentage / Flat Amount)"
+                            label="Discount"
                             type="text"
-                            value={couponData.discount}
+                            value={couponData.amount}
                             onChange={(e) =>
-                                setCouponData({ ...couponData, discount: e })
+                                setCouponData({ ...couponData, amount: e })
                             }
                             validate={validateDiscountAmount}
                         />
 
-                        <FormGroup>
+                        {/* <FormGroup>
                             <FormControlLabel
                                 control={<Switch checked={discountPercentage} onChange={handlePercentageSwitchChange} />}
                                 label="Discount in %"
                             />
-                        </FormGroup>
+                        </FormGroup> */}
 
-                        <TextField
+                        {/* <TextField
                             label="Coupon Segment"
                             fullWidth
                             margin="normal"
@@ -425,19 +428,19 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                             onChange={(e) =>
                                 setCouponData({ ...couponData, CouponSegment: e.target.value })
                             }
-                        />
+                        /> */}
 
-                        <Box sx={{ marginBottom: 3 }}>
+                        {/* <Box sx={{ marginBottom: 3 }}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DemoContainer components={['DatePicker']}>
                                     <DatePicker value={date}
                                         onChange={(newDate) => setCouponData({ ...couponData, expiry: newDate.toDate() })} />
                                 </DemoContainer>
                             </LocalizationProvider>
-                        </Box>
+                        </Box> */}
 
 
-                        <InputField
+                        {/* <InputField
                             label="Max User Per Customer"
                             type="text"
                             value={couponData.maxUsePerCustomer}
@@ -445,12 +448,12 @@ const CreateCouponModal = ({ buttonText, modalTitle, onSubmit }) => {
                                 setCouponData({ ...couponData, maxUsePerCustomer: e })
                             }
                             validate={validateMaxUsers}
-                        />
+                        /> */}
 
-                        <Textarea value={couponData.discription}
+                        {/* <Textarea value={couponData.discription}
                             onChange={(e) =>
                                 setCouponData({ ...couponData, discription: e.target.value })
-                            } sx={{ marginTop: 2 }} minRows={4} placeholder="Description of Coupon" />
+                            } sx={{ marginTop: 2 }} minRows={4} placeholder="Description of Coupon" /> */}
                         {/* <Button
                             variant="contained"
                             // onClick={handleSubmit}
