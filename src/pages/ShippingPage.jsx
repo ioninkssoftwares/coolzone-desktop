@@ -82,7 +82,6 @@ const ShippingPage = () => {
 
                             <input
                                 className="border w-[60%] border-gray-300 p-4 outline-none rounded"
-
                                 required
                                 type="text"
                                 placeholder="Address"
@@ -93,7 +92,6 @@ const ShippingPage = () => {
 
                             <input
                                 className="border w-[60%] border-gray-300 p-4 outline-none rounded"
-
                                 required
                                 type="text"
                                 placeholder="City"
@@ -104,7 +102,6 @@ const ShippingPage = () => {
 
                             <input
                                 className="border w-[60%] border-gray-300 p-4 outline-none rounded"
-
                                 required
                                 type="text"
                                 placeholder="State"
@@ -115,7 +112,6 @@ const ShippingPage = () => {
 
                             <select
                                 className="border w-[60%] border-gray-300 p-4 outline-none rounded"
-
                                 name="country"
                                 required
                                 value={shippingInfo.country}
@@ -127,7 +123,6 @@ const ShippingPage = () => {
 
                             <input
                                 className="border w-[60%] border-gray-300 p-4 outline-none rounded mt-4"
-
                                 required
                                 type="number"
                                 placeholder="Pin Code"
