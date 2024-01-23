@@ -50,13 +50,13 @@ const MyAccountPage = () => {
                             <p>View, cancel orders and buy again</p>
                         </div>
                     </div>
-                    <div onClick={() => navigate("/ordersTracking")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    {/* <div onClick={() => navigate("/ordersTracking")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <MdArtTrack className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
                             <p className='text-lg font-semibold'>Order Tracking</p>
                             <p>Track your order status</p>
                         </div>
-                    </div>
+                    </div> */}
                     <div onClick={() => navigate("/address")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <FaAddressBook className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>

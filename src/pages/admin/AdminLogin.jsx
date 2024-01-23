@@ -103,14 +103,17 @@ const AdminLogin = () => {
 
                                 const res = await instance.post("/login", data)
 
-                                if (res.data) {
-                                    console.log(res.data.token, "token")
+                                if (res.data && res.data.user && res.data.user.role === "admin") {
+                                    console.log(res.data.token, "token");
                                     setCookies("adminToken", res.data.token);
                                     localStorage.setItem("isAdmin", true);
                                     // localStorage.setItem("userId", res.data.userId);
-                                    toast(" Admin Login Successful")
-                                    navigate("/admin")
-                                    setLoading(false)
+                                    toast("Admin Login Successful");
+                                    navigate("/admin");
+                                    setLoading(false);
+                                } else {
+                                    toast.error("You are not authorized");
+                                    setLoading(false);
                                 }
 
                             } catch (error) {

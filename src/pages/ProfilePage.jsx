@@ -18,10 +18,11 @@ import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { Checkbox, FormControlLabel, FormGroup, InputAdornment } from '@mui/material'
+import { Checkbox, CircularProgress, FormControlLabel, FormGroup, InputAdornment } from '@mui/material'
 import { toast } from 'react-toastify'
 import { useAxios } from '../utils/axios'
 import { useCookies } from 'react-cookie'
+import InputField from '../components/InputField'
 // import ProductDetails from '../components/product/productDetails'
 
 const ProfilePage = () => {
@@ -30,7 +31,10 @@ const ProfilePage = () => {
     const [token, setToken] = useState("");
     const productss = useSelector(selectAllProducts);
     const isPending = useSelector(selectProductListStatus);
-    const userDetails = useSelector(selectCurrentUserDetails);
+    const [loading, setLoading] = useState(false);
+    const [userDetails, setUserDetails] = useState({});
+    const instance = useAxios(token)
+    // const userDetails = useSelector(selectCurrentUserDetails);
 
 
     const [userData, setUserData] = useState({
@@ -38,7 +42,7 @@ const ProfilePage = () => {
         name: '',
         lastName: '',
         DOB: '',
-        contactNumber: '',
+        contactNumber: 0,
         gender: ""
     });
 
@@ -63,24 +67,49 @@ const ProfilePage = () => {
         }
     }, [cookies]);
 
-    useEffect(() => {
-        // Pick only the relevant fields from userDetails
-        const { email, name, lastName, DOB, contactNumber, gender } = userDetails;
 
-        // Update userData state
-        setUserData({
-            email: email || '',
-            name: name || '',
-            lastName: lastName || '',
-            DOB: DOB || '',
-            contactNumber: contactNumber || '',
-            gender: gender || '',
-        });
-    }, [userDetails, dispatch]);
+    const getUserDetails = async () => {
+        try {
+            setLoading(true)
+            const res = await instance.get("/me")
+            if (res.data) {
+                setUserDetails(res.data.user)
+                setLoading(false)
+            }
+
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        getUserDetails()
+    }, [token])
+
+
+    useEffect(() => {
+        if (userDetails && Object.keys(userDetails).length > 0) {
+            // Pick only the relevant fields from userDetails
+            const { email, name, lastName, DOB, contactNumber } = userDetails;
+
+            // Update userData state
+            setUserData({
+                email: email || '',
+                name: name || '',
+                lastName: lastName || '',
+                DOB: DOB || '',
+                contactNumber: contactNumber || '',
+                // gender: gender || '',
+            });
+        }
+    }, [userDetails]);
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        console.log(userData, "djkshksdjhf")
         // Check for empty fields
         // const emptyFields = Object.keys(userData).filter((key) => userData[key] === '');
 
@@ -89,26 +118,61 @@ const ProfilePage = () => {
         //     toast.error(`${field} is empty`, { position: toast.POSITION.TOP_RIGHT });
         //   });
         // } else {
-        const instance = useAxios(token)
+
         try {
             const response = await instance.put("/me/update", userData)
             console.log(response.data, "kjdfklsjfd")
-            dispatch(getCurrentUserAsync(token))
+            if (response.data) {
+                toast.success("User updated successfully")
+                getUserDetails()
+            }
+
+            // dispatch(getCurrentUserAsync(token))
         } catch (error) {
             console.log(error)
+            toast.error(error.response.data.message)
         }
-        // }
+    }
+
+
+    // };
+
+
+    // useEffect(() => {
+    //     if (token) {
+    //         dispatch(getCurrentUserAsync(token))
+    //     }
+
+    // }, [token])
+
+    // Validations Logics
+
+    const validateMobileNumber = (value) => {
+        const regex = /^[0-9]{10}$/; // Only allow 10 digits
+        const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(value); // Check for special characters
+        const hasLetters = /[a-zA-Z]/.test(value); // Check for letters
+
+        if (!regex.test(value)) {
+            return 'Invalid mobile number (must have exactly 10 digits)';
+        } else if (hasSpecialChars) {
+            return 'Mobile number cannot contain special characters';
+        } else if (hasLetters) {
+            return 'Mobile number cannot contain letters';
+        }
+
+        return null; // No validation error
     };
 
 
-    useEffect(() => {
-        if (token) {
-            dispatch(getCurrentUserAsync(token))
-        }
+    const validateDate = (value) => {
+        const regex = /^(0[1-9]|[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2]|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\d{4}$/i; // DD-MM-YYYY or DD-MMM-YYYY format
+        return regex.test(value) ? null : 'Invalid date format (DD-MM-YYYY or DD-MMM-YYYY)';
+    };
 
-    }, [token])
-
-
+    const validateFirstName = (value) => {
+        const regex = /^[a-zA-Z]+$/; // Only allow letters without spaces
+        return regex.test(value) ? null : 'Invalid name';
+    };
 
 
     return (
@@ -118,45 +182,22 @@ const ProfilePage = () => {
                 <div className="max-w-7xl mx-auto px-5 md:px-10 my-4  ">
                     <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Profile Section</p>
                     <div className='my-4'>
-                        <p className='font-semibold text-2xl text-primary-blue w-fit'>My Account Information</p>
-                        <form>
-                            <div className='flex items-center justify-between gap-6'>
-                                <div className='basis-[48%]'>
-                                    <TextField
+                        <p className='font-semibold text-center text-2xl text-primary-blue w-full mb-8'>My Account Information</p>
+                        {loading ? <p> Loading...</p> : <form>
+                            <div className='flex items-center justify-center gap-6'>
+                                <div className='w-[50%]'>
+
+                                    <InputField
                                         label="First Name"
-                                        fullWidth
-                                        margin="normal"
+                                        type="text"
+                                        required
                                         value={userData?.name}
-                                        required
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, name: e.target.value })
-                                        }
-                                    />
-                                    <TextField
-                                        label="Date of Birth"
-                                        fullWidth
-                                        margin="normal"
-                                        value={userData?.DOB}
-                                        required
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, DOB: e.target.value })
-                                        }
-                                    />
-                                    <TextField
-                                        label="Contact Number"
-                                        fullWidth
-                                        margin="normal"
-                                        value={userData?.contactNumber}
-                                        required
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, contactNumber: e.target.value })
-                                        }
+                                        onChange={(e) => setUserData({ ...userData, name: e })}
+
+                                        validate={validateFirstName}
                                     />
 
-                                </div>
-
-                                <div className='basis-[48%]'>
-                                    <TextField
+                                    <InputField
                                         label="Last Name"
                                         fullWidth
                                         margin="normal"
@@ -164,51 +205,40 @@ const ProfilePage = () => {
                                         required
                                         // error={!!formErrors.lastName}
                                         onChange={(e) =>
-                                            setUserData({ ...userData, lastName: e.target.value })
+                                            setUserData({ ...userData, lastName: e })
                                         }
+                                        validate={validateFirstName}
                                     />
 
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '20px',
-                                            border: '1px solid #c4c4c4',
-                                            padding: '6px 10px',
-                                            borderRadius: '5px',
-                                            marginTop: '15px',
-                                            marginBottom: '10px',
+
+
+                                    <InputField
+                                        label="Date of Birth"
+                                        type="text"
+                                        required
+                                        value={userData?.DOB}
+                                        onChange={(e) =>
+                                            setUserData({ ...userData, DOB: e })
+                                        }
+                                        InputLabelProps={{
+                                            shrink: true,
                                         }}
-                                    >
-                                        <p>Gender</p>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        value="Male"
-                                                        checked={userData.gender === 'Male'}
-                                                        onChange={handleCheckboxChange}
-                                                        defaultChecked
-                                                    />
-                                                }
-                                                label="Male"
-                                            />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        value="Female"
-                                                        checked={userData.gender === 'Female'}
-                                                        onChange={handleCheckboxChange}
-                                                        defaultChecked
-                                                    />
-                                                }
-                                                label="Female"
-                                            />
-                                        </FormGroup>
-                                        {/* <span style={{ color: 'red' }}>{formErrors.gender}</span> */}
-                                    </Box>
+
+                                        validate={validateDate}
+
+                                    />
+                                    <InputField
+                                        label="Contact Number"
+                                        type="number"
+                                        required
+                                        value={userData?.contactNumber}
+
+                                        onChange={(e) =>
+                                            setUserData({ ...userData, contactNumber: e })
+                                        }
+                                        validate={validateMobileNumber}
+
+                                    />
 
 
                                     <TextField
@@ -222,35 +252,90 @@ const ProfilePage = () => {
                                             },
                                         }}
                                         value={userData?.email}
-                                        required // Built-in validation for required field
-                                        // helperText={userData.email === '' ? 'Email is required' : ''}
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, email: e.target.value })
-                                        }
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+
+                                    // onChange={(e) =>
+                                    //     setUserData({ ...userData, email: e.target.value })
+                                    // }
                                     />
 
                                 </div>
+
+                                {/* <div className='basis-[48%]'> */}
+
+
+                                {/* <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '20px',
+                                            border: '1px solid #c4c4c4',
+                                            padding: '6px 10px',
+                                            borderRadius: '5px',
+                                            marginTop: '15px',
+                                            marginBottom: '10px',
+                                        }}
+                                    > */}
+                                {/* <p>Gender</p>
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        value="Male"
+                                                        checked={userData.gender === 'Male'}
+                                                        onChange={handleCheckboxChange}
+                                                        defaultChecked
+                                                    />
+                                                }
+                                                label="Male"
+                                            />
+                                        </FormGroup> */}
+                                {/* <FormGroup>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        value="Female"
+                                                        checked={userData.gender === 'Female'}
+                                                        onChange={handleCheckboxChange}
+                                                        defaultChecked
+                                                    />
+                                                }
+                                                label="Female"
+                                            />
+                                        </FormGroup> */}
+                                {/* <span style={{ color: 'red' }}>{formErrors.gender}</span> */}
+                                {/* </Box> */}
+
+
+
+
+                                {/* </div> */}
                             </div>
 
 
                             {/* Add margin-top to separate form fields and button */}
-                            <Button
-                                onClick={handleSubmit}
-                                variant="contained"
-                                // onClick={handleSubmit}
-                                sx={{
-                                    marginTop: 2,
-                                    backgroundColor: '#04a7ff', // Set the background color
-                                    '&:hover': {
-                                        backgroundColor: '#04a7ff', // Set the hover background color
-                                    },
-                                    color: 'white', // Set the text color
-                                }}
-                                className="bg-primary-blue text-white "
-                            >
-                                Submit
-                            </Button>
-                        </form>
+                            {loading ? <CircularProgress /> : <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <Button
+                                    onClick={handleSubmit}
+                                    variant="contained"
+                                    // onClick={handleSubmit}
+                                    sx={{
+                                        marginTop: 2,
+                                        backgroundColor: '#04a7ff', // Set the background color
+                                        '&:hover': {
+                                            backgroundColor: '#04a7ff', // Set the hover background color
+                                        },
+                                        color: 'white', // Set the text color
+                                    }}
+                                    className="bg-primary-blue  text-white "
+                                >
+                                    Submit
+                                </Button>
+                            </Box>}
+
+                        </form>}
                     </div>
 
                 </div>

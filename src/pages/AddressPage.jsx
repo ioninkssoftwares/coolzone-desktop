@@ -18,9 +18,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { TextField, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import { TextField, MenuItem, FormControl, InputLabel, Select, CircularProgress } from '@mui/material';
 import { useAxios } from '../utils/axios'
 import { useCookies } from 'react-cookie'
+import InputField from '../components/InputField'
+import { toast } from 'react-toastify'
 // import ProductDetails from '../components/product/productDetails'
 const style = {
     position: 'absolute',
@@ -45,23 +47,25 @@ const AddressPage = () => {
     const [addNewOpen, setAddNewOpen] = useState(false);
     const [savedAddress, setSavedAddress] = useState([]);
     const userDetails = useSelector(selectCurrentUserDetails);
+    const [addLoading, setAddLoading] = useState(false)
     const [address, setAddress] = useState({
         address: "",
         city: "",
         state: "",
         country: "",
         pinCode: "",
-        phoneNo: "",
+        // phoneNo: "",
     })
 
-    const [updateAddress, setUpdateAddress] = useState({
-        address: "",
-        city: "",
-        state: "",
-        country: "",
-        pinCode: "",
-        phoneNo: "",
-    })
+    if (savedAddress) console.log(savedAddress, "dsafjhskf")
+    // const [updateAddress, setUpdateAddress] = useState({
+    //     address: "",
+    //     city: "",
+    //     state: "",
+    //     country: "",
+    //     pinCode: "",
+    //     phoneNo: "",
+    // })
 
 
     if (savedAddress) {
@@ -121,50 +125,64 @@ const AddressPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(address, "jkdljlkdjkfsl")
+        setAddLoading(true)
         const instance = useAxios(token)
         try {
-            const response = await instance.post("/me/address/new", address)
+            const response = await instance.post("/me/addAddress", address)
             console.log(response.data, "jvkdjk")
-            handleNewClose()
-            setAddress({
-                address: "",
-                city: "",
-                state: "",
-                country: "",
-                pinCode: "",
-                phoneNo: "",
-            })
+            if (response.data) {
+                setAddLoading(false)
+                getUserAddress()
+                handleNewClose()
+                setAddress({
+                    address: "",
+                    city: "",
+                    state: "",
+                    country: "",
+                    pinCode: "",
+                    // phoneNo: "",
+                })
+            }
+            // setRefreshAddress(true)
+
         } catch (error) {
             console.log(error)
+            setAddLoading(false)
+
         }
     };
 
 
-    const handleUpdateAddress = async (id) => {
-        const instance = useAxios(token)
-        try {
-            const response = await instance.put(`/me/address/${id}`, updateAddress)
-            console.log(response.data, "jvkdjk")
-            handleClose()
-            setUpdateAddress({
-                address: "",
-                city: "",
-                state: "",
-                country: "",
-                pinCode: "",
-                phoneNo: "",
-            })
-            window.location.reload();
-        } catch (error) {
-            console.log(error)
-        }
-    };
+    // const handleUpdateAddress = async (id) => {
+    //     const instance = useAxios(token)
+    //     try {
+    //         const response = await instance.put(`/me/address/${id}`, updateAddress)
+    //         console.log(response.data, "jvkdjk")
+    //         handleClose()
+    //         setUpdateAddress({
+    //             address: "",
+    //             city: "",
+    //             state: "",
+    //             country: "",
+    //             pinCode: "",
+    //             phoneNo: "",
+    //         })
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // };
+
+
     const handleDeleteAddress = async (id) => {
         const instance = useAxios(token)
         try {
-            const response = await instance.delete(`/me/address/${id}`)
+            const response = await instance.delete(`/me/deleteAddress/${id}`)
             console.log(response.data, "jvkdjk")
-            window.location.reload();
+            if (response.data) {
+                getUserAddress()
+                toast.success("Address deleted Successsfully")
+            }
         } catch (error) {
             console.log(error)
         }
@@ -172,8 +190,8 @@ const AddressPage = () => {
     const getUserAddress = async (event) => {
         const instance = useAxios(token)
         try {
-            const response = await instance.get("/me/getmyaddress")
-            setSavedAddress(response.data.data)
+            const response = await instance.get("/me/getMyAddress")
+            setSavedAddress(response.data.addresses)
         } catch (error) {
             console.log(error)
         }
@@ -186,16 +204,29 @@ const AddressPage = () => {
     const handleEditAddress = (curElem) => {
         // Set the initial values based on curElem
         setUpdateAddress({
-          phoneNo: curElem.phoneNo,
-          address: curElem.address,
-          city: curElem.city,
-          pinCode: curElem.pinCode,
-          state: curElem.state,
-          country: curElem.country,
+            phoneNo: curElem.phoneNo,
+            address: curElem.address,
+            city: curElem.city,
+            pinCode: curElem.pinCode,
+            state: curElem.state,
+            country: curElem.country,
         });
         handleOpen();
-      }
-      
+    }
+
+
+    // Validity logics
+
+    const validatePinCode = (value) => {
+        // Check if it's a 6-digit number
+        const regex = /^\d{6}$/;
+        return regex.test(value) ? null : 'Invalid pincode';
+    };
+    const nameValidity = (value) => {
+        const regex = /^[a-zA-Z]+$/; // Only allow letters without spaces
+        return regex.test(value) ? null : 'Invalid characters';
+    };
+
     return (
         <div>
             <Navbar />
@@ -217,13 +248,13 @@ const AddressPage = () => {
                                         <p>Phone Number- {curElem.phoneNo} </p>
                                     </div>
                                     <div className='basis-[5%] flex gap-4'>
-                                        <EditCalendarOutlinedIcon onClick={() => handleEditAddress(curElem)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} />
+                                        {/* <EditCalendarOutlinedIcon onClick={() => handleEditAddress(curElem)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */}
                                         <DeleteOutlineOutlinedIcon onClick={() => handleDeleteAddress(curElem._id)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} />
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <Modal
+                                {/* <Modal
                                     open={open}
                                     onClose={handleClose}
                                     aria-labelledby="modal-modal-title"
@@ -239,19 +270,19 @@ const AddressPage = () => {
                                         <div className='flex items-center justify-between gap-2 my-4'>
                                             <div>
                                                 <p>Phone Number</p>
-                                                <TextField value={updateAddress.phoneNo} onChange={(e) => setUpdateAddress({...updateAddress,phoneNo:e.target.value})} fullWidth margin="normal" required />
+                                                <TextField value={updateAddress.phoneNo} onChange={(e) => setUpdateAddress({ ...updateAddress, phoneNo: e.target.value })} fullWidth margin="normal" required />
                                                 <p>Address</p>
-                                                <TextField value={updateAddress.address} onChange={(e) => setUpdateAddress({...updateAddress,address:e.target.value})}  fullWidth margin="normal" required />
+                                                <TextField value={updateAddress.address} onChange={(e) => setUpdateAddress({ ...updateAddress, address: e.target.value })} fullWidth margin="normal" required />
                                                 <p>City</p>
-                                                <TextField value={updateAddress.city} onChange={(e) => setUpdateAddress({...updateAddress,city:e.target.value})}  fullWidth margin="normal" required />
+                                                <TextField value={updateAddress.city} onChange={(e) => setUpdateAddress({ ...updateAddress, city: e.target.value })} fullWidth margin="normal" required />
                                             </div>
                                             <div>
                                                 <p>Pin Code</p>
-                                                <TextField value={updateAddress.pinCode} onChange={(e) => setUpdateAddress({...updateAddress,pinCode:e.target.value})}  fullWidth margin="normal" required />
+                                                <TextField value={updateAddress.pinCode} onChange={(e) => setUpdateAddress({ ...updateAddress, pinCode: e.target.value })} fullWidth margin="normal" required />
                                                 <p>State</p>
-                                                <TextField value={updateAddress.state} onChange={(e) => setUpdateAddress({...updateAddress,state:e.target.value})}  fullWidth margin="normal" required />
+                                                <TextField value={updateAddress.state} onChange={(e) => setUpdateAddress({ ...updateAddress, state: e.target.value })} fullWidth margin="normal" required />
                                                 <p>Country</p>
-                                                <TextField value={updateAddress.country} onChange={(e) => setUpdateAddress({...updateAddress,country:e.target.value})} fullWidth margin="normal" required />
+                                                <TextField value={updateAddress.country} onChange={(e) => setUpdateAddress({ ...updateAddress, country: e.target.value })} fullWidth margin="normal" required />
                                             </div>
                                         </div>
 
@@ -260,12 +291,12 @@ const AddressPage = () => {
                                                 onClick={() => handleUpdateAddress(curElem._id)}
                                                 className="px-4 py-2 m-2 rounded-lg bg-primary-blue text-white"
                                             >
-                                                <EditCalendarOutlinedIcon sx={{marginRight:"5px"}} /> Edit Address
+                                                <EditCalendarOutlinedIcon sx={{ marginRight: "5px" }} /> Edit Address
                                             </button>
                                         </div>
 
                                     </Box>
-                                </Modal>
+                                </Modal> */}
                             </div>
                         </>
                         )) : ""}
@@ -291,35 +322,87 @@ const AddressPage = () => {
                                 <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: "bold", fontSize: "25px" }}>
                                     Add New Address
                                 </Typography>
-                                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                                <Typography id="modal-modal-description" sx={{ mt: 2, mb: 2 }}>
                                     You can add your new address
                                 </Typography>
                                 <form onSubmit={handleSubmit}>
                                     {/* <TextField label="Full Name" fullWidth margin="normal" required /> */}
-                                    <TextField onChange={(e) => setAddress({ ...address, phoneNo: e.target.value })} label="Mobile Number" fullWidth margin="normal" required />
-                                    <TextField onChange={(e) => setAddress({ ...address, pinCode: e.target.value })} label="Pincode" fullWidth margin="normal" required />
-                                    {/* <TextField label="Flat, House no., Building, Apartment" fullWidth margin="normal" required /> */}
-                                    <TextField onChange={(e) => setAddress({ ...address, address: e.target.value })} label="Address" fullWidth margin="normal" required />
-                                    {/* <TextField label="Landmark" fullWidth margin="normal" /> */}
-                                    <TextField onChange={(e) => setAddress({ ...address, city: e.target.value })} label="Town/City" fullWidth margin="normal" required />
-                                    <TextField onChange={(e) => setAddress({ ...address, country: e.target.value })} label="Country" fullWidth margin="normal" required />
+                                    {/* <InputField
+                                     onChange={(e) => setAddress({ ...address, phoneNo: e.target.value })}
+                                      label="Mobile Number" 
+                                      fullWidth margin="no
+                                      rmal" 
+                                      required /> */}
 
-                                    <FormControl fullWidth margin="normal">
-                                        <InputLabel>State</InputLabel>
-                                        <Select value={address?.state} onChange={handleChange} label="State" required>
-                                            {states.map((state) => (
-                                                <MenuItem key={state} value={state}>
-                                                    {state}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
+                                    {/* <InputField
+                                        label="First Name"
+                                        type="text"
+                                        required
+                                        value={userData?.name}
+                                        onChange={(e) => setUserData({ ...userData, name: e })}
+
+                                        validate={validateFirstName}
+                                    /> */}
+
+
+                                    {/* <TextField label="Flat, House no., Building, Apartment" fullWidth margin="normal" required /> */}
+                                    <InputField
+                                        onChange={(e) => setAddress({ ...address, address: e })}
+                                        label="Address"
+                                        value={address?.address}
+                                        fullWidth
+                                        margin="normal"
+                                        required />
+
+                                    {/* <TextField label="Landmark" fullWidth margin="normal" /> */}
+                                    <InputField
+                                        onChange={(e) => setAddress({ ...address, city: e })}
+                                        label="Town/City"
+                                        value={address?.city}
+                                        fullWidth margin="normal"
+                                        required
+                                        validate={nameValidity} />
+
+                                    <Box sx={{ marginBottom: 3 }}>
+                                        <FormControl fullWidth >
+                                            <InputLabel>State</InputLabel>
+                                            <Select value={address?.state} onChange={handleChange} label="State" required>
+                                                {states.map((state) => (
+                                                    <MenuItem key={state} value={state}>
+                                                        {state}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+
+                                    <InputField
+                                        onChange={(e) => setAddress({ ...address, country: e })}
+                                        label="Country" fullWi
+                                        dth margin="normal"
+                                        required
+                                        validate={nameValidity}
+                                    />
+
+
+                                    <InputField
+                                        label="Pincode"
+                                        type="text"
+                                        value={address?.pinCode}
+                                        onChange={(e) => setAddress({ ...address, pinCode: e })}
+                                        fullWidth
+                                        margin="normal"
+                                        required
+                                        validate={validatePinCode}
+                                    />
+
 
                                     {/* <TextField label="Delivery Instructions" fullWidth margin="normal" multiline /> */}
 
-                                    <Button type="submit" variant="contained" color="primary">
+                                    {addLoading ? <CircularProgress /> : <Button type="submit" variant="contained" color="primary">
                                         Save Address
-                                    </Button>
+                                    </Button>}
                                 </form>
                             </Box>
                         </Modal>

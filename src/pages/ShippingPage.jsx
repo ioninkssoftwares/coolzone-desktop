@@ -6,14 +6,37 @@ import { useDispatch, useSelector } from "react-redux"
 import { saveShippingInfo } from "../redux/reducer/cartReducer"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { useAxios } from "../utils/axios"
+import { useCookies } from "react-cookie"
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import { TextField, MenuItem, FormControl, InputLabel, Select, CircularProgress, FormControlLabel, FormGroup, Checkbox } from '@mui/material';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
 
 const ShippingPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [cookies, setCookies] = useCookies(["token"]);
+    const [token, setToken] = useState("");
+    const [savedAddress, setSavedAddress] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState(null);
+
+    if (selectedAddress) console.log(selectedAddress, "asdfjsakjfhdsaj")
+
 
     const { cartItems, total } = useSelector(
         (state) => state.cartReducer
     );
+
+
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            console.log(cookies.token, "dslfjadslk")
+            setToken(cookies.token);
+        }
+    }, [cookies]);
+
 
     const [shippingInfo, setShippingInfo] = useState({
         address: "",
@@ -27,34 +50,24 @@ const ShippingPage = () => {
         setShippingInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    const submitHandler = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+        // e.preventDefault();
+        if (selectedAddress) {
+            const paymentAddress = {
+                address: selectedAddress?.address,
+                city: selectedAddress?.city,
+                country: selectedAddress?.country,
+                state: selectedAddress?.state,
+                pinCode: selectedAddress?.pinCode,
+            };
+            console.log(paymentAddress, "sdahkasdj");
+            dispatch(saveShippingInfo(paymentAddress));
+            // toast.success("Order placed successfully");
+            navigate("/checkout");
+        } else {
 
-        dispatch(saveShippingInfo(shippingInfo));
-        // toast.success("Order placed successfully")
-        navigate("/checkout")
-
-        // try {
-        //     const { data } = await axios.post(
-        //         `${server}/payment/create`,
-        //         {
-        //             amount: total,
-        //         },
-        //         {
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //             },
-        //         }
-        //     );
-
-        //     navigate("/pay", {
-        //         state: data.clientSecret,
-        //     });
-        // } catch (error) {
-        //     console.log(error);
-        //     toast.error("Something went wrong");
-        // }
-
+            console.error("Please select an address before proceeding.");
+        }
     };
 
     useEffect(() => {
@@ -64,12 +77,39 @@ const ShippingPage = () => {
         }
     }, [cartItems]);
 
+
+    const getUserAddress = async (event) => {
+        const instance = useAxios(token)
+        try {
+            const response = await instance.get("/me/getMyAddress")
+            setSavedAddress(response.data.addresses)
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    useEffect(() => {
+        getUserAddress()
+    }, [token])
+
+
+    const handleCheckbox = (curElem) => {
+
+        // Update the state to the selected address
+        setSelectedAddress(curElem);
+        // Your other logic here...
+    };
+
+
+    {/* <EditCalendarOutlinedIcon onClick={() => handleEditAddress(curElem)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */ }
+    {/* <DeleteOutlineOutlinedIcon onClick={() => handleDeleteAddress(curElem._id)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */ }
+
     return (
         <div>
             <Navbar />
             <section>
                 <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
-                    <div>
+                    {/* <div>
                         <div className="flex justify-end">
                             <button onClick={() => navigate("/cart")}>
                                 <BiArrowBack className="text-2xl" />
@@ -134,7 +174,49 @@ const ShippingPage = () => {
                             <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase px-6"
                                 type="submit">Pay Now</button>
                         </form>
+                    </div> */}
+
+                    {savedAddress && savedAddress.length > 0 ? savedAddress.map((curElem) => (<>
+                        <div className='my-4 border-b-2 border-gray-400 pb-4'>
+                            <div className='flex gap-2'>
+                                <HomeOutlinedIcon />
+                                <p>Home</p>
+                            </div>
+                            <div className='flex justify-between my-2'>
+                                <div className='basis-[90%] flex flex-col'>
+                                    <p>{curElem.address}</p>
+                                    <p>{curElem.city}, {curElem.state}, {curElem.country}, {curElem.pinCode}</p>
+                                    {/* <p>Phone Number- {curElem.phoneNo} </p> */}
+                                </div>
+                                <div className='basis-[5%] flex gap-4'>
+
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    onChange={() => handleCheckbox(curElem)}
+                                                    checked={selectedAddress === curElem}
+                                                />
+                                            }
+                                        // label="Male"
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+
+                        </div>
+                    </>
+                    )) : ""}
+
+                    <div className="flex justify-end">
+                        <button onClick={handleSubmit} className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md  uppercase px-6"
+                            disabled={!selectedAddress}
+
+                        >Pay Now</button>
                     </div>
+
                 </div>
 
             </section>

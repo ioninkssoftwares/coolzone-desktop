@@ -51,7 +51,7 @@ const OrdersPage = () => {
     return (
         <div>
             <Navbar />
-            {myOrders && myOrders.length < 1 ? <p> Loading...</p> : (<section className="max-w-7xl mx-auto px-5 md:px-10 mt-8">
+            {myOrders && myOrders.length < 1 ? <p className='text-xl text-center font-semibold my-36'> You Dont Have Any Orders.</p> : (<section className="max-w-7xl mx-auto px-5 md:px-10 mt-8">
                 <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Orders Section</p>
                 <div>
                     {myOrders.map((order, index) => (

@@ -14,6 +14,7 @@ import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useAxios } from '../utils/axios'
+import WishlistCard from '../components/features/WIshlistCard'
 // import ProductDetails from '../components/product/productDetails'
 
 const WishListPage = () => {
@@ -24,7 +25,8 @@ const WishListPage = () => {
     const [cookies, setCookies] = useCookies(["token"]);
     const [token, setToken] = useState("");
     const [loading, setLoading] = useState(false)
-    const [wishlistProducts, setWishlistProducts] = useState([]);
+    const [wishlistProducts, setWishlistProducts] = useState([])
+    const [refreshItems, setRefreshItems] = useState(false);
 
 
 
@@ -71,6 +73,13 @@ const WishListPage = () => {
         }
     }, [token])
 
+    useEffect(() => {
+        if (refreshItems === true) {
+            getWishlist()
+        }
+    }, [refreshItems])
+
+
 
     return (
         <div>
@@ -105,7 +114,8 @@ const WishListPage = () => {
 
                             <div id="wishlist" className="flex mt-4 overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
                                 {wishlistProducts.length > 0 ? (
-                                    <CardCarousel id="wishlist" data={wishlistProducts} Card={MediumHouseCard} />
+                                    <WishlistCard data={wishlistProducts} setRefreshItems={setRefreshItems} />
+                                    // <CardCarousel id="wishlist" data={wishlistProducts} Card={WishlistCard} />
                                 ) : (
                                     <p>No items in the wishlist</p>
                                 )}

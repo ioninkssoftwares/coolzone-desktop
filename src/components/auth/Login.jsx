@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { CircularProgress } from '@mui/material';
+import { useAxios } from '../../utils/axios';
 
 
 
@@ -17,6 +18,7 @@ export default function Login() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    const instance = useAxios();
     const [cookies, setCookies] = useCookies(["token"]);
     const error = useSelector(selectError);
     const user = useSelector(selectLoggedInUser);
@@ -29,25 +31,25 @@ export default function Login() {
 
 
 
-    useEffect(() => {
-        if (user?.user.role === "user") {
-            console.log(user, "hjfdsfsj")
-            setCookies("token", user.token);
-            localStorage.setItem("isAdmin", false);
-            localStorage.setItem("userId", user.user._id);
-            localStorage.setItem("token", user.token);
-            toast(" User Login Successful")
-            navigate("/")
-        } else if (user?.user.role === "admin") {
-            console.log(user, "hjfdsfsj")
-            setCookies("adminToken", user.token);
-            localStorage.setItem("isAdmin", true);
-            localStorage.setItem("adminId", user.user._id);
-            localStorage.setItem("adminToken", user.token);
-            toast(" Admin Login Successful")
-            navigate("/admin")
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user?.user.role === "user") {
+    //         console.log(user, "hjfdsfsj")
+    //         setCookies("token", user.token);
+    //         localStorage.setItem("isAdmin", false);
+    //         localStorage.setItem("userId", user.user._id);
+    //         localStorage.setItem("token", user.token);
+    //         toast(" User Login Successful")
+    //         navigate("/")
+    //     } else if (user?.user.role === "admin") {
+    //         console.log(user, "hjfdsfsj")
+    //         setCookies("adminToken", user.token);
+    //         localStorage.setItem("isAdmin", true);
+    //         localStorage.setItem("adminId", user.user._id);
+    //         localStorage.setItem("adminToken", user.token);
+    //         toast(" Admin Login Successful")
+    //         navigate("/admin")
+    //     }
+    // }, [user])
     // useEffect(() => {
     //     if (user?.success) {
     //         console.log(user, "hjfdsfsj")
@@ -60,11 +62,34 @@ export default function Login() {
     //     }
     // }, [user])
 
-    useEffect(() => {
-        if (error) {
-            setLoading(false)
-        }
-    }, [error])
+    // useEffect(() => {
+    //     if (error) {
+    //         setLoading(false)
+    //     }
+    // }, [error])
+
+
+    // try {
+
+    //     const res = await instance.post("/login", data)
+
+    //     if (res.data) {
+    //         setCookies("token", user.token);
+    //                 localStorage.setItem("isAdmin", false);
+    //                 localStorage.setItem("userId", user.user._id);
+    //                 localStorage.setItem("token", user.token);
+    //                 toast(" User Login Successful")
+    //                 navigate("/")
+    //         setLoading(false)
+    //     }
+
+    // } catch (error) {
+    //     toast.error("Invalid email or password ")
+    //     setLoading(false)
+    //     console.log(error)
+
+    // }
+
 
 
 
@@ -86,13 +111,43 @@ export default function Login() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form
                         noValidate
-                        onSubmit={handleSubmit((data) => {
-                            if (user === null) {
-                                setLoading(true)
+                        onSubmit={handleSubmit(async (data) => {
+                            // setLoading(true)
+                            // if (user === null) {
+                            //     setLoading(true)
+                            // }
+                            // dispatch(
+                            //     loginUserAsync({ email: data.email, password: data.password })
+                            // );
+
+                            // toast(" User Login Successful")
+                            // navigate("/")
+                            // setLoading(false)
+
+                            setLoading(true)
+                            console.log(data, "dfkasldjfksd")
+                            try {
+
+                                const res = await instance.post("/login", data)
+
+                                if (res.data) {
+                                    // const user = res.data.user;
+                                    // console.log(user, "sdhfaskfhdj")
+                                    setCookies("token", res.data.token);
+                                    localStorage.setItem("isAdmin", false);
+                                    localStorage.setItem("userId", res.data.user._id);
+                                    localStorage.setItem("token", res.data.token);
+                                    toast(" User Login Successful")
+                                    navigate("/")
+                                    setLoading(false)
+                                }
+
+                            } catch (error) {
+                                toast.error("Invalid email or password ")
+                                setLoading(false)
+                                console.log(error)
+
                             }
-                            dispatch(
-                                loginUserAsync({ email: data.email, password: data.password })
-                            );
 
                             // setLoading(false)
                         })}
