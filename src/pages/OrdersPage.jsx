@@ -9,6 +9,9 @@ import { useSelector } from 'react-redux'
 import { selectAllProducts, selectProductListStatus } from '../components/product/productSlice'
 import { scrollLeft, scrollRight } from './Home'
 import { useAxios } from '../utils/axios'
+import { FaFileInvoice } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom'
+
 // import ProductDetails from '../components/product/productDetails'
 
 
@@ -19,6 +22,7 @@ const OrdersPage = () => {
     const [loading, setLoading] = useState(false);
     const [myOrders, setMyOrders] = useState([]);
     const userId = localStorage.getItem("userId");
+    const navigate = useNavigate()
 
     // Todo-localStorageUsed
     if (!userId) {
@@ -48,6 +52,32 @@ const OrdersPage = () => {
         // Rest of your component logic goes here
     }
 
+
+    // Wanrranty Calculte Function
+
+    function calculateWarrantyEndDate(orderDate) {
+        // Create a new Date object from the order date string
+        const orderDateObject = new Date(orderDate);
+
+        // Add 1 year to the order date
+        const warrantyEndDate = new Date(orderDateObject);
+        warrantyEndDate.setFullYear(warrantyEndDate.getFullYear() + 1);
+
+        // Format the warranty end date as a string in the format "DD-MM-YYYY"
+        const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+        const formattedWarrantyEndDate = warrantyEndDate.toLocaleDateString('en-GB', options);
+
+        return formattedWarrantyEndDate;
+    }
+
+    function formatDate(date) {
+        const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+        return new Date(date).toLocaleDateString('en-GB', options);
+    }
+    const navigateToOrder = (order) => {
+        // Use the `navigate` function to navigate to the order details page
+        navigate(`/orders/${order._id}`, { state: { order } });
+    };
     return (
         <div>
             <Navbar />
@@ -56,8 +86,17 @@ const OrdersPage = () => {
                 <div>
                     {myOrders.map((order, index) => (
                         <div key={index} className='mt-8'>
-                            <p className=' text-xl font-bold'>Order #{order._id}</p>
-                            <p className='font-semibold mb-3'>Date Added: {new Date(order.createdAt).toLocaleDateString()}</p>
+                            <div className='flex justify-between'>
+                                <p className=' text-xl font-bold'>Order #{order._id}</p>
+                                <FaFileInvoice onClick={() => navigateToOrder(order)} className='text-2xl cursor-pointer' />
+                            </div>
+                            <div className='flex justify-between'>
+                                <p className='font-semibold mb-3'>Date Added: {formatDate(new Date(order.createdAt))}</p>
+
+                                <p className='font-semibold mb-3'>Warranty till: {calculateWarrantyEndDate(order.createdAt)}</p>
+
+
+                            </div>
                             {order.orderItems.map((item) => (
                                 <div key={item._id} className='flex md:flex-row flex-col p-6 items-center justify-between border-b-2 border-t-2'>
                                     <div className='flex flex-col md:gap-6 gap-2 basis-[20%]'>

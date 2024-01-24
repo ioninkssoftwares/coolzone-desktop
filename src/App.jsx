@@ -41,6 +41,7 @@ import MyAccountPage from './pages/MyAccountPage';
 import AdminLogin from './pages/admin/AdminLogin';
 import Admin404 from './pages/admin/Admin404';
 import ShippingPage from './pages/ShippingPage';
+import InvoicePage from './pages/InvoicePage';
 
 const router = createBrowserRouter([
   {
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
     element: <OrdersPage></OrdersPage>,
   },
   {
+    path: '/orders/:orderId',
+    element: <InvoicePage></InvoicePage>,
+  },
+  {
     path: '/myAccount',
     element: <MyAccountPage></MyAccountPage>,
   },
@@ -148,6 +153,7 @@ const router = createBrowserRouter([
     path: '/admin/orders',
     element: <AdminOrdersPage></AdminOrdersPage>,
   },
+
   {
     path: '/admin/order/:id',
     element: <EditOrderById></EditOrderById>,

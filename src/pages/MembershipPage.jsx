@@ -169,89 +169,90 @@ const MembershipPage = () => {
                         visible={true}
                     />
                 </div>) : null}
-            {userMembership && userMembership.user_Membership?.length > 0 ? <section className="pt-5 mb-5">
-                <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                    <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Membership Section</p>
-                    <div className='flex justify-center items-center my-8'>
-                        <div className='flex bg-[#ffd700] gap-2 flex-col justify-center items-center border-2 py-4 px-10 rounded-lg ' >
-                            <p className='font-bold text-3xl text-white'>{matchedMembership?.memb_name} Membership  </p>
-                            <p className='font-bold text-3xl text-center text-white'>{matchedMembership?.description}   </p>
-                            <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
+            {userMembership && userMembership.user_Membership?.length > 0 ?
+                <section className="pt-5 mb-5">
+                    <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+                        <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Membership Section</p>
+                        <div className='flex justify-center items-center my-8'>
+                            <div className='flex bg-[#ffd700] gap-2 flex-col justify-center items-center border-2 py-4 px-10 rounded-lg ' >
+                                <p className='font-bold text-3xl text-white'>{matchedMembership?.memb_name} Membership  </p>
+                                <p className='font-bold text-3xl text-center text-white'>{matchedMembership?.description}   </p>
+                                <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
+                            </div>
                         </div>
-                    </div>
 
-                    {<div>
-                        <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
-                            <input onChange={(e) => setProductName(e.target.value)} type="text" placeholder='Product Name' />
-                            <input onChange={(e) => setProductSku(e.target.value)} type="text" placeholder='SKU No' />
-                            <button onClick={handleProductIntoMembership} className='bg-primary-blue text-white px-8 py-2 rounded-lg'>Add Product</button>
-                        </div>
-                        <div>
+                        {<div>
+                            <div className='flex flex-col md:flex-row justify-center items-center gap-4'>
+                                <input onChange={(e) => setProductName(e.target.value)} type="text" placeholder='Product Name' />
+                                <input onChange={(e) => setProductSku(e.target.value)} type="text" placeholder='SKU No' />
+                                <button onClick={handleProductIntoMembership} className='bg-primary-blue text-white px-8 py-2 rounded-lg'>Add Product</button>
+                            </div>
+                            <div>
 
-                            {/* product membership card above one */}
-                            {userMembership && userMembership.user_Membership_product?.length > 0 ? (
-                                userMembership.user_Membership_product.map((curElem, index) => {
-                                    if (curElem) {
-                                        return (
-                                            <div key={index}>
-                                                <p className='font-semibold mb-3 mt-9'>Date Added: 06 Nov 2023</p>
-                                                <div className='flex p-6 items-center justify-between border-b-2 border-t-2 '>
-                                                    <div className='flex flex-col gap-6'>
-                                                        <p className='font-semibold '>{curElem?.name}</p>
-                                                        <div className='flex gap-5 items-center '>
-                                                            <div className='w-[80px] h-[60px]'>
-                                                                <img className='w-full h-full object-cover' src="https://cdn.pixabay.com/photo/2021/09/08/07/20/air-conditioner-6605973_1280.jpg" alt="" />
+                                {/* product membership card above one */}
+                                {userMembership && userMembership.user_Membership_product?.length > 0 ? (
+                                    userMembership.user_Membership_product.map((curElem, index) => {
+                                        if (curElem) {
+                                            return (
+                                                <div key={index}>
+                                                    <p className='font-semibold mb-3 mt-9'>Date Added: 06 Nov 2023</p>
+                                                    <div className='flex p-6 items-center justify-between border-b-2 border-t-2 '>
+                                                        <div className='flex flex-col gap-6'>
+                                                            <p className='font-semibold '>{curElem?.name}</p>
+                                                            <div className='flex gap-5 items-center '>
+                                                                <div className='w-[80px] h-[60px]'>
+                                                                    <img className='w-full h-full object-cover' src="https://cdn.pixabay.com/photo/2021/09/08/07/20/air-conditioner-6605973_1280.jpg" alt="" />
+                                                                </div>
+                                                                {/* <p>Voltas Vectra 4 in 1 Convertible 1.5 ton</p> */}
                                                             </div>
-                                                            {/* <p>Voltas Vectra 4 in 1 Convertible 1.5 ton</p> */}
+                                                        </div>
+                                                        <div className='flex flex-col gap-6'>
+                                                            <p className='font-semibold'>Expiry Date</p>
+                                                            <p>05-Nov-2026</p>
+                                                        </div>
+                                                        <div className='flex flex-col gap-6'>
+                                                            <p className='font-semibold'>SKU No</p>
+                                                            <p>{curElem?.skuid}</p>
+                                                        </div>
+                                                        <div className=' flex-col gap-6 hidden md:flex'>
+                                                            <p className='font-semibold'>View Details</p>
+                                                            <button className='p-2 rounded-lg bg-primary-blue text-white'>View Details</button>
                                                         </div>
                                                     </div>
-                                                    <div className='flex flex-col gap-6'>
-                                                        <p className='font-semibold'>Expiry Date</p>
-                                                        <p>05-Nov-2026</p>
-                                                    </div>
-                                                    <div className='flex flex-col gap-6'>
-                                                        <p className='font-semibold'>SKU No</p>
-                                                        <p>{curElem?.skuid}</p>
-                                                    </div>
-                                                    <div className=' flex-col gap-6 hidden md:flex'>
-                                                        <p className='font-semibold'>View Details</p>
-                                                        <button className='p-2 rounded-lg bg-primary-blue text-white'>View Details</button>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    } else {
-                                        return null; // Skip rendering if the element is null
-                                    }
-                                })
-                            ) : (
-                                <p>No user membership data available</p>
-                            )}
+                                            );
+                                        } else {
+                                            return null; // Skip rendering if the element is null
+                                        }
+                                    })
+                                ) : (
+                                    <p>No user membership data available</p>
+                                )}
 
 
-                        </div>
-                    </div>
-                    }
-                </div>
-            </section> : <div className='pt-5 mb-5'>
-
-                <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                    <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'> Select Membership</p>
-                    {membershipOffers.length > 0 && membershipOffers.map((curElem) => {
-                        return (
-                            <div className={`flex justify-center items-center my-8 `}>
-                                <div onClick={() => handleMembership(curElem)} className={`flex gap-2 flex-col justify-center ${getColorClass(curElem.memb_name)} cursor-pointer items-center border-2 py-4 px-12 rounded-lg`}>
-                                    <p className='font-bold text-3xl text-white'>{curElem.memb_name.toUpperCase()}</p>
-                                    <p className='font-bold text-xl capitalize text-white'>{curElem.description}</p>
-                                    <p className='font-bold text-3xl text-white'>₹{curElem.price}</p>
-                                    <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
-                                </div>
                             </div>
-                        );
-                    })}
+                        </div>
+                        }
+                    </div>
+                </section> : <div className='pt-5 mb-5'>
 
-                </div>
-            </div>}
+                    <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+                        <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'> Select Membership</p>
+                        {membershipOffers.length > 0 && membershipOffers.map((curElem) => {
+                            return (
+                                <div className={`flex justify-center items-center my-8 `}>
+                                    <div onClick={() => handleMembership(curElem)} className={`flex gap-2 flex-col justify-center ${getColorClass(curElem.memb_name)} cursor-pointer items-center border-2 py-4 px-12 rounded-lg`}>
+                                        <p className='font-bold text-3xl text-white'>{curElem.memb_name.toUpperCase()}</p>
+                                        <p className='font-bold text-xl capitalize text-white'>{curElem.description}</p>
+                                        <p className='font-bold text-3xl text-white'>₹{curElem.price}</p>
+                                        <p className='text-sm font-bold text-white'>Valid till - 31-09-2023</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+
+                    </div>
+                </div>}
             <Footer />
         </div>
     )
