@@ -215,28 +215,20 @@ const AddProductByAdmin = () => {
     const handleProductSubmit = async () => {
         setLoading(true)
         var ProductFormData = new FormData();
-        // for (let i of filesToupload) {
-        //     ProductFormData.append('images', i);
-        // }
-
+        for (let i of filesToupload) {
+            ProductFormData.append('productImages', i);
+        }
         ProductFormData.append('name', product.name);
         ProductFormData.append('category', product.category);
-        // ProductFormData.append('description', product.description);
-        // ProductFormData.append('shortDescription', product.shortDescription);
-        // ProductFormData.append('sellingPrice', product.sellingPrice);
-        // ProductFormData.append('costPrice', product.costPrice);
         ProductFormData.append('stock', product.stock);
-        // ProductFormData.append('shortDescription', product.shortDescription);
         ProductFormData.append('price', product.price);
-        // ProductFormData.append('brand', product.brand);
-        // ProductFormData.append('specification', product.specification);
-        // ProductFormData.append('featured', product.featured);
-        // ProductFormData.append('best_seller', product.best_seller);
-        // ProductFormData.append('returnPolicy', product.returnPolicy);
-        // ProductFormData.append('Discount', product.Discount);
 
         try {
-            const res = await instance.post("/admin/product/new", ProductFormData)
+            const res = await instance.post("/admin/product/new", ProductFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             if (res.data) {
                 setLoading(false)
                 console.log(res.data, "sdfhadjkf")
@@ -246,15 +238,8 @@ const AddProductByAdmin = () => {
                     stock: 0,
                     name: "",
                     price: 0,
-                    // description: "",
                     category: "",
-                    // brand: "",
-                    // specification: "",
-                    // featured: true,
-                    // best_seller: true,
-                    // shortDescription: "",
-                    // costPrice: 0,
-                    // returnPolicy: true
+
                 })
             }
         } catch (error) {

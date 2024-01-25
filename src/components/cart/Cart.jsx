@@ -96,7 +96,7 @@ const Cart = () => {
     const { token: cancelToken, cancel } = axios.CancelToken.source();
     const timeOutID = setTimeout(() => {
       axios
-        .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/discount?coupon=${couponCode}`, {
+        .get(`${import.meta.env.VITE_REACT_APP_BASE_URL}/discount?coupon=${couponCode}&total=${total}`, {
           cancelToken,
         })
         .then((res) => {
