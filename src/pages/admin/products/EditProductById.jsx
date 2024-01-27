@@ -146,11 +146,11 @@ const EditProductById = () => {
         stock: 0,
         name: "",
         price: 0,
-        // description: "",
+        description: "",
         category: "",
-        // brand: "",
-        // specification: "",
-        // featured: true,
+        specification: "",
+        featured: true,
+        bestSeller: true,
         // best_seller: true,
         // shortDescription: "",
         // costPrice: 0,
@@ -163,8 +163,8 @@ const EditProductById = () => {
     const [productData, setProductData] = useState({});
 
 
-    if (uploadedProductImage) {
-        console.log(uploadedProductImage, "dsjfhakjdfh")
+    if (productData) {
+        console.log(productData, "dsjfhakjdfh")
     }
 
 
@@ -229,7 +229,7 @@ const EditProductById = () => {
     };
     const handleBestSellerSwitch = (event) => {
         setBestSellerSwitch(event.target.checked);
-        setProduct({ ...product, best_seller: event.target.checked })
+        setProduct({ ...product, bestSeller: event.target.checked })
     };
 
 
@@ -280,16 +280,16 @@ const EditProductById = () => {
         // } else {
         //     setReturnSwitch(false)
         // }
-        // if (productData.best_seller) {
-        //     setBestSellerSwitch(true);
-        // } else {
-        //     setBestSellerSwitch(false)
-        // }
-        // if (productData.featured) {
-        //     setFeaturedSwitch(true);
-        // } else {
-        //     setFeaturedSwitch(false)
-        // }
+        if (productData.bestSeller) {
+            setBestSellerSwitch(true);
+        } else {
+            setBestSellerSwitch(false)
+        }
+        if (productData.featured) {
+            setFeaturedSwitch(true);
+        } else {
+            setFeaturedSwitch(false)
+        }
         // if (productData.returnPolicy) {
         //     setReturnSwitch(true);
         // } else {
@@ -306,8 +306,11 @@ const EditProductById = () => {
             stock: productData?.stock,
             name: productData?.name,
             price: productData?.price,
-            // description: productData?.description,
+            description: productData?.description,
             category: productData?.category,
+            specification: productData?.specification,
+            featured: productData?.featured,
+            bestSeller: productData?.bestSeller,
             // brand: productData?.brand,
             // specification: productData?.specification,
             // featured: productData?.featured,
@@ -364,13 +367,13 @@ const EditProductById = () => {
     const handleProductSubmit = async () => {
         setLoading(true)
         var ProductFormData = new FormData();
-        // for (let i of filesToupload) {
-        //     ProductFormData.append('images', i);
-        // }
+        for (let i of filesToupload) {
+            ProductFormData.append('productImages', i);
+        }
 
         ProductFormData.append('name', product.name);
         ProductFormData.append('category', product.category);
-        // ProductFormData.append('description', product.description);
+        ProductFormData.append('description', product.description);
         // ProductFormData.append('shortDescription', product.shortDescription);
         // ProductFormData.append('sellingPrice', product.sellingPrice);
         // ProductFormData.append('costPrice', product.costPrice);
@@ -378,9 +381,9 @@ const EditProductById = () => {
         // ProductFormData.append('shortDescription', product.shortDescription);
         ProductFormData.append('price', product.price);
         // ProductFormData.append('brand', product.brand);
-        // ProductFormData.append('specification', product.specification);
-        // ProductFormData.append('featured', product.featured);
-        // ProductFormData.append('best_seller', product.best_seller);
+        ProductFormData.append('specification', product.specification);
+        ProductFormData.append('featured', product.featured);
+        ProductFormData.append('bestSeller', product.bestSeller);
         // ProductFormData.append('returnPolicy', product.returnPolicy);
         // ProductFormData.append('Discount', product.Discount);
 
@@ -621,7 +624,7 @@ const EditProductById = () => {
                                         </FormGroup>
                                     </Box> */}
 
-                                    {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                         <FormGroup>
                                             <FormControlLabel
                                                 label="Featured"
@@ -640,7 +643,7 @@ const EditProductById = () => {
                                         </FormGroup>
                                     </Box>
 
- */}
+
 
                                     {/* <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
                                     <FormControl fullWidth>
@@ -701,14 +704,14 @@ const EditProductById = () => {
 
 
                                 </div>
-                                <div className="basis-[45%] p-10">
-                                    <Textarea value={product?.shortDescription} onChange={(event) => setProduct({
+                                <div className="basis-[45%] p-10 mt-10">
+                                    <Textarea sx={{ padding: 0, borderRadius: 1 }} value={product?.description} onChange={(event) => setProduct({
                                         ...product,
-                                        shortDescription: event.target.value
+                                        description: event.target.value
                                     })} placeholder="Short Description" minRows={3} />
 
 
-                                    <TextField
+                                    {/* <TextField
                                         label="Specification"
                                         fullWidth
                                         margin="normal"
@@ -717,19 +720,19 @@ const EditProductById = () => {
                                             setProduct({ ...product, specification: e.target.value })
                                         }
                                         sx={{ marginTop: 4 }}
-                                    />
+                                    /> */}
 
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
-                                        Product Long Description
+                                        Product Specification
                                     </Typography>
 
-                                    <Textarea value={product?.description} onChange={(event) => setProduct({ ...product, description: event.target.value })} placeholder="Your text goes here" minRows={5} />
+                                    <Textarea sx={{ padding: 0, borderRadius: 1 }} value={product?.specification} onChange={(event) => setProduct({ ...product, specification: event.target.value })} placeholder="Your text goes here" minRows={5} />
 
 
 
-                                    <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                    {/* <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Add a long description for your product
-                                    </Typography>
+                                    </Typography> */}
 
                                     {/* <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2, marginTop: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
@@ -777,7 +780,25 @@ const EditProductById = () => {
                             </div>
                             <div className="basis-[25%] max-w-[380px]  px-7 ">
                                 <div>
-                                    {/* <p className='text-center text-xl my-8 '>Add Images</p> */}
+                                    <p className='text-center text-xl my-8 '>Uploaded Images</p>
+                                    <div className="w-full flex flex-col items-center justify-center gap-4 max-w-md flex-wrap">
+
+                                        {productData && productData.productImages && productData.productImages.length > 0 ? productData.productImages.map((curElem, index) => (
+                                            <div
+                                                className="w-max h-40 flex justify-center items-center  relative max-w-[200px]"
+                                                key={index}
+                                            >
+
+                                                <img
+                                                    className=" h-full object-cover"
+                                                    src={curElem}
+                                                    alt="image"
+                                                    key={curElem}
+                                                />
+                                            </div>
+                                        )) : ""}
+                                    </div>
+
 
                                     <div className="mt-12">
                                         {/* <label className="inline-block mb-2 text-gray-500">

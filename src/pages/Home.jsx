@@ -64,14 +64,15 @@ const Home = () => {
 
   useEffect(() => {
     const filterBanner = () => {
-      const fashionBanners = bannersData?.filter(banner => banner.category === "Fasion");
-      const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
-        const categoryKey = curBanner.category;
-        acc[categoryKey] = curBanner;
-        return acc;
-      }, {});
-      console.log(fashionBannerObject.Fasion, "fjdfkj")
-      setFasionBanner(fashionBannerObject.Fasion)
+      const fashionBanners = bannersData?.filter(banner => banner.category === "fasion");
+      // const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
+      //   const categoryKey = curBanner.category;
+      //   acc[categoryKey] = curBanner;
+      //   return acc;
+      // }, {});
+      console.log(fashionBanners, "fjdfkj")
+      // setFasionBanner(fashionBannerObject.Fasion)
+      setFasionBanner(fashionBanners)
 
     }
 
@@ -96,7 +97,7 @@ const Home = () => {
   // }, [token, dispatch]);
   useEffect(() => {
 
-    // dispatch(fetchBannerAsync());
+    dispatch(fetchBannerAsync());
     dispatch(fetchAllProductsAsync())
 
   }, []);

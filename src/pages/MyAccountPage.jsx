@@ -19,7 +19,8 @@ import { useCookies } from 'react-cookie'
 
 const MyAccountPage = () => {
     const navigate = useNavigate();
-    const [cookies, setCookies] = useCookies(["token"]);
+    const [cookies, setCookies, removeCookies] = useCookies(["token"]);
+    // const [token, setToken] = useState("");
     const productss = useSelector(selectAllProducts);
     const isPending = useSelector(selectProductListStatus);
 
@@ -30,6 +31,18 @@ const MyAccountPage = () => {
             navigate('/login')
         }
     }, [])
+
+    const handleLogout = () => {
+        toast("Logout Successfully")
+        // Remove cookies
+        removeCookies('token');
+        // Clear localStorage
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+        navigate("/")
+        // Add any other cleanup code here
+    };
+
     return (
         <div>
             <Navbar />
@@ -64,13 +77,13 @@ const MyAccountPage = () => {
                             <p>Manage your saved address</p>
                         </div>
                     </div>
-                    <div onClick={() => navigate("/coupon")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    {/* <div onClick={() => navigate("/coupon")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
                             <p className='text-lg font-semibold'>My Coupon</p>
                             <p>Manage your discount coupon </p>
                         </div>
-                    </div>
+                    </div> */}
                     <div onClick={() => navigate("/coupon")} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidCoupon className='mt-4 text-2xl' />
                         <div className='flex flex-col gap-2 '>
@@ -85,7 +98,7 @@ const MyAccountPage = () => {
                             <p>Manage your Membership </p>
                         </div>
                     </div>
-                    <div style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
+                    <div onClick={handleLogout} style={{ border: "2px solid grey" }} className='basis-[30%] hover:scale-105 cursor-pointer flex rounded-lg p-4 gap-6 '>
                         <BiSolidUser className='mt-4 text-2xl text-red-500' />
                         <p className='mt-3 text-lg font-semibold text-red-500 '>Logout</p>
                     </div>

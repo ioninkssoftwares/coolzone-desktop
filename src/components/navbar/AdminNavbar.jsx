@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 const AdminNavbar = () => {
     const navigate = useNavigate()
-    const [cookies, setCookies, removeCookies] = useCookies(['token']);
+    const [cookies, setCookies, removeCookies] = useCookies(['adminToken']);
 
     // Todo-localStorageUsed
     const isAdmin = localStorage.getItem("isAdmin");
@@ -19,11 +19,13 @@ const AdminNavbar = () => {
         // Remove cookies
         removeCookies('adminToken');
         // Clear localStorage
-        localStorage.removeItem("isAdmin");
+        localStorage.removeItem("adminToken");
         // localStorage.removeItem("token");
         navigate("/admin/login")
         // Add any other cleanup code here
     };
+
+
     return (
         <nav className="bg-white">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

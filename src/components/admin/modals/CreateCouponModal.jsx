@@ -121,7 +121,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
         amount: '',
         // CouponSegment: '',
         // maxUsePerCustomer: '',
-        // discription: '',
+        description: '',
     });
 
     if (date) console.log(date, "sdfkjld")
@@ -283,10 +283,10 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
         return regex.test(value) ? null : 'Invalid characters in coupon name';
     };
-    const validateLandmark = (value) => {
+    const validateDescription = (value) => {
         // Add specific validation logic for product name
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
-        return regex.test(value) ? null : 'Invalid characters in landmark';
+        return regex.test(value) ? null : 'Invalid characters in description';
     };
     const validateState = (value) => {
         // Add specific validation logic for product name
@@ -381,6 +381,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
                             }
                         /> */}
                         <TextField
+                            sx={{ mb: 4 }}
                             label="Coupon Code"
                             fullWidth
                             margin="normal"
@@ -403,13 +404,23 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
 
 
                         <InputField
-                            label="Discount"
+                            label="Discount Amount"
                             type="text"
                             value={couponData.amount}
                             onChange={(e) =>
                                 setCouponData({ ...couponData, amount: e })
                             }
                             validate={validateDiscountAmount}
+                        />
+
+                        <InputField
+                            label="Description"
+                            type="text"
+                            value={couponData.description}
+                            onChange={(e) =>
+                                setCouponData({ ...couponData, description: e })
+                            }
+                        // validate={validateDiscountAmount}
                         />
 
                         {/* <FormGroup>

@@ -37,8 +37,8 @@ const ProductDetails = () => {
     }
 
     useEffect(() => {
-        if (product && product.product && product.product.images && product.product.images.length > 0) {
-            setSelectedImage(product.product.images[0].url);
+        if (product && product.product && product.product.productImages && product.product.productImages.length > 0) {
+            setSelectedImage(product.product.productImages[0]);
         } else {
             setSelectedImage("");
         }
@@ -70,7 +70,8 @@ const ProductDetails = () => {
             name: product.product.name,
             // photo: product.product._id,
             stock: product.product.stock,
-            quantity: 1
+            quantity: 1,
+            cartImage: product.product && product.product.productImages && product.product.productImages.length > 0 ? product.product.productImages[0] : ""
         };
         dispatch(addToCart(newItem))
         toast.success("Added to Cart")
@@ -196,22 +197,22 @@ const ProductDetails = () => {
                                     />
                                 </div>
                                 <div className='w-full flex flex-wrap items-center justify-center my-4 gap-3'>
-                                    {/* {product?.product && product?.product.images.map((image, index) => (
+                                    {product?.product && product?.product.productImages.map((image, index) => (
                                         <div
                                             key={index}
                                             className={`w-[60px] h-[60px] border-2 rounded-md cursor-pointer ${selectedImage === image
                                                 ? 'border-gray-500 ring-2 ring-green-200'
                                                 : 'border-gray-200'
                                                 }`}
-                                            onClick={() => handleImageClick(image.url)}
+                                            onClick={() => handleImageClick(image)}
                                         >
                                             <img
-                                                src={image.url}
+                                                src={image}
                                                 alt={`Thumbnail ${index}`}
                                                 className='w-full h-full object-cover object-center rounded'
                                             />
                                         </div>
-                                    ))} */}
+                                    ))}
                                 </div>
                                 <div className='w-full flex items-center justify-between px-4'>
                                     <button onClick={handleCart} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Cart</button>
@@ -489,11 +490,11 @@ const ProductDetails = () => {
                                 </button>
                             </div>
                         </div>
-                        {data && (
+                        {/* {data && (
                             <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
                                 <CardCarousel id="feat" data={data} Card={MediumHouseCard} />
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </section>
 

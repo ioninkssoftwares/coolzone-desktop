@@ -213,15 +213,15 @@ const PartnerCouponManagement = () => {
         //         </Typography>
         //     ),
         // },
-        // {
-        //     minWidth: 150,
-        //     flex: 0.25,
-        //     field: "coupontype",
-        //     headerName: "Coupon Type",
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        // },
+        {
+            minWidth: 150,
+            flex: 0.25,
+            field: "description",
+            headerName: "Description",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
         // {
         //     minWidth: 150,
         //     flex: 0.25,

@@ -631,12 +631,12 @@ const ProductList = () => {
                                                         </div>
                                                     </div>
 
-                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative my-10 mx-auto w-[200px] h-[150px]">
-                                                        {/* <img
-                                                            src={product?.images.length > 0 ? product.images[0].url : null}
-                                                            // alt={product.imageAlt}
+                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[200px] h-[150px]">
+                                                        <img
+                                                            src={product?.productImages.length > 0 ? product.productImages[0] : null}
+                                                            alt="product image"
                                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                                                        /> */}
+                                                        />
                                                     </div>
                                                     <div onClick={() => handleCart(product)} className="flex cursor-pointer items-center justify-between">
                                                         <p className="text-xl font-semibold">₹{product.price}</p>

@@ -30,6 +30,8 @@ const Cart = () => {
   const { cartItems, discount, loading: cartLoading, shippingCharges, subtotal, tax, total } = useSelector((state) => state.cartReducer)
 
 
+  if (cartItems) console.log(cartItems, "cart items")
+
   const increamentHandler = (cartItem) => {
     if (cartItem.quantity >= cartItem.stock) return toast.error("Max quantity reached");
     dispatch(addToCart({ ...cartItem, quantity: cartItem.quantity + 1 }))
@@ -164,9 +166,9 @@ const Cart = () => {
                   <>
                     <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
                       <div className="flex w-2/5">
-                        {/* <div className="w-20">
-                            <img className="h-24" src={item?.images?.length > 0 ? item?.images[0]?.url : ""} alt="" />
-                          </div> */}
+                        <div className="w-20">
+                          <img className="w-full h-full object-cover" src={item.cartImage} alt="cartImage" />
+                        </div>
                         <div className="flex flex-col justify-between ml-4 flex-grow">
                           <span className="font-bold text-sm">{item.name}</span>
                           <span className="text-red-500 text-xs">{item.category}</span>

@@ -143,12 +143,12 @@ const AddProductByAdmin = () => {
         stock: 0,
         name: "",
         price: 0,
-        // description: "",
+        description: "",
         category: "",
         // brand: "",
-        // specification: "",
-        // featured: true,
-        // best_seller: true,
+        specification: "",
+        featured: true,
+        bestSeller: true,
         // shortDescription: "",
         // costPrice: 0,
         // returnPolicy: true
@@ -174,7 +174,7 @@ const AddProductByAdmin = () => {
     };
     const handleBestSellerSwitch = (event) => {
         setBestSellerSwitch(event.target.checked);
-        setProduct({ ...product, best_seller: event.target.checked })
+        setProduct({ ...product, bestSeller: event.target.checked })
     };
 
 
@@ -222,6 +222,10 @@ const AddProductByAdmin = () => {
         ProductFormData.append('category', product.category);
         ProductFormData.append('stock', product.stock);
         ProductFormData.append('price', product.price);
+        ProductFormData.append('bestSeller', product.bestSeller);
+        ProductFormData.append('featured', product.featured);
+        ProductFormData.append('specification', product.specification);
+        ProductFormData.append('description', product.description);
 
         try {
             const res = await instance.post("/admin/product/new", ProductFormData, {
@@ -234,13 +238,6 @@ const AddProductByAdmin = () => {
                 console.log(res.data, "sdfhadjkf")
                 toast("Product has been added")
                 navigate("/admin/productManagement")
-                setProduct({
-                    stock: 0,
-                    name: "",
-                    price: 0,
-                    category: "",
-
-                })
             }
         } catch (error) {
             console.log(error, "skdfhsjdf")
@@ -361,6 +358,8 @@ const AddProductByAdmin = () => {
     };
 
 
+
+
     return (
         <div>
             <div className='flex h-screen overflow-hidden'>
@@ -465,7 +464,7 @@ const AddProductByAdmin = () => {
                                         </FormGroup>
                                     </Box> */}
 
-                                    {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                         <FormGroup>
                                             <FormControlLabel
                                                 label="Featured"
@@ -483,7 +482,7 @@ const AddProductByAdmin = () => {
                                             />
                                         </FormGroup>
                                     </Box>
- */}
+
 
 
                                     {/* <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
@@ -545,13 +544,13 @@ const AddProductByAdmin = () => {
 
 
                                 </div>
-                                <div className="basis-[45%] p-10">
-                                    <Textarea onChange={(event) => setProduct({
+                                <div className="basis-[45%] p-10 mt-10">
+                                    <Textarea sx={{ padding: 0, borderRadius: 1 }} onChange={(event) => setProduct({
                                         ...product,
-                                        shortDescription: event.target.value
-                                    })} placeholder="Short Description" minRows={3} />
+                                        description: event.target.value
+                                    })} placeholder="Description" minRows={3} />
 
-
+                                    {/* 
                                     <TextField
                                         label="Specification"
                                         fullWidth
@@ -560,15 +559,16 @@ const AddProductByAdmin = () => {
                                         onChange={(e) =>
                                             setProduct({ ...product, specification: e.target.value })
                                         }
-                                    />
+                                    /> */}
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
-                                        Product Long Description
+                                        Product Specifications
                                     </Typography>
 
-                                    <Textarea onChange={(event) => setProduct({ ...product, description: event.target.value })} placeholder="Your text goes here" minRows={5} />
-                                    <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                    <Textarea sx={{ padding: 0, borderRadius: 1 }}
+                                        onChange={(event) => setProduct({ ...product, specification: event.target.value })} placeholder="Your text goes here" minRows={5} />
+                                    {/* <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Add a long description for your product
-                                    </Typography>
+                                    </Typography> */}
 
                                     {/* <Box sx={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 2, marginTop: 2 }}>
                                         <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">

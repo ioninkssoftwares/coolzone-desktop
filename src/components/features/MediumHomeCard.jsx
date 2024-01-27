@@ -14,13 +14,12 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 // import generateSlug from "../slug/generateSlug";
 
-const MediumHouseCard = ({ images, category, price, title, _id, name, stock }) => {
+const MediumHouseCard = ({ productImages, category, price, title, _id, name, stock }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
-  // console.log(props,"cproj")
-  const imageSource = "https://images.unsplash.com/photo-1590212151175-e58edd96185b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80";
+
   //   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
 
 
@@ -91,18 +90,18 @@ const MediumHouseCard = ({ images, category, price, title, _id, name, stock }) =
       </div>
       <p className="text-center font-semibold">{name}</p>
 
-      <h1 className="text-xl font-semibold text-primary-blue my-4">{title}</h1>
+      <h1 className="text-xl font-semibold text-primary-blue mt-4">{title}</h1>
       <div className="flex items-center justify-center">
-        <div onClick={() => navigate(`/product/${_id}`)} className=" cursor-pointer relative my-10 w-[200px] h-[150px]">
-          {/* <img
-            src={images.length > 0 ? images[0].url : null}
+        <div onClick={() => navigate(`/product/${_id}`)} className=" cursor-pointer relative mb-8 w-[220px] h-[150px]">
+          <img
+            src={productImages.length > 0 ? productImages[0] : "https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png"}
             fill
             alt="home"
-            className="w-full h-full object-fillr rounded-lg"
-          /> */}
+            className="w-full h-full object-cover rounded-lg "
+          />
         </div>
       </div>
-      <div onClick={handleCart} className="cursor-pointer flex items-center justify-between">
+      <div onClick={handleCart} className=" cursor-pointer flex items-center justify-between">
         <p className="text-xl font-semibold">₹{price}</p>
         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
       </div>
