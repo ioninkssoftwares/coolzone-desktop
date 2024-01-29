@@ -29,6 +29,11 @@ export default function Login() {
         formState: { errors },
     } = useForm();
 
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            navigate("/")
+        }
+    }, [cookies]);
 
 
     // useEffect(() => {

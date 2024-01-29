@@ -392,7 +392,7 @@ const AddProductByAdmin = () => {
                                         type="text"
                                         value={product?.name}
                                         onChange={(e) => setProduct({ ...product, name: e })}
-                                        validate={validateProductName}
+                                    // validate={validateProductName}
                                     />
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Category

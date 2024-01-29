@@ -360,18 +360,18 @@ const ProductManagement = () => {
                         <CircularProgress className="text-3xl" />
                     </div> : <div className='bg-gray-50'>
                         <AdminNavbar />
-                        <div className="flex justify-between items-center mt-8 mb-6 px-4">
-                            <div className=" text-sm px-3">
+                        <div className="flex justify-end items-center mt-8 mb-6 px-4">
+                            {/* <div className=" text-sm px-3">
                                 <button
-                                    // onClick={() => router.push("/admin/customers/add")}
+                                   
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
-                                        {/* <TbEdit /> */}
+                                     
                                     </span>
                                     <span>Product</span>
                                 </button>
-                            </div>
+                            </div> */}
                             <div className=" text-sm px-3">
                                 <button
                                     onClick={() => navigate("/admin/addProduct")}
@@ -385,7 +385,7 @@ const ProductManagement = () => {
                             </div>
                         </div>
 
-                        <Box sx={{ height: 400, width: '50%', margin: "0 auto" }}>
+                        {/* <Box sx={{ height: 400, width: '50%', margin: "0 auto" }}>
                             <Box sx={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: "space-between", margin: "20px 0px" }}>
                                 <Typography variant="h5" >
                                     Top Selling Products
@@ -409,14 +409,14 @@ const ProductManagement = () => {
                                 checkboxSelection
                                 disableRowSelectionOnClick
                             />
-                        </Box>
+                        </Box> */}
 
-                        <div className="flex justify-between items-center mb-8 mt-12 px-4">
+                        <div className="flex justify-between items-center mb-8  px-4">
                             <div className="space-x-5">
                                 <p className="text-2xl ">Inventory Items</p>
                             </div>
 
-                            <div className="flex space-x-[12px]">
+                            {/* <div className="flex space-x-[12px]">
                                 <div className="flex items-center bg-white p-2 rounded-lg space-x-3">
                                     <AiOutlineSearch className="text-xl" />
                                     <input
@@ -431,10 +431,10 @@ const ProductManagement = () => {
                                         className="outline-none"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
-                        <Grid container spacing={6} sx={{ pb: 38, }}>
+                        <Grid container spacing={6} sx={{ pb: 38, px: 4 }}>
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid

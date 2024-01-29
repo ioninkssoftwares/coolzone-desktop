@@ -3,16 +3,18 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
 const CorouselSlider = ({ bannerCategory }) => {
-    if (!bannerCategory || !bannerCategory.images || bannerCategory.images.length === 0) {
-        // If bannerCategory is null or images array is empty, you may want to render a placeholder or handle this case appropriately.
+    // console.log(bannerCategory[0]?.bannerImages, "asdasdasds")
+    if (!bannerCategory || !bannerCategory[0] || !bannerCategory[0].bannerImages || bannerCategory[0].bannerImages.length === 0) {
+        // If bannerCategory is falsy, doesn't have the first index, or bannerImages array is empty, handle appropriately.
         return <div>Loading banner images...</div>;
     }
+
     return (
         <Carousel interval={3000} autoPlay infiniteLoop showThumbs={false} >
-            {bannerCategory.images && bannerCategory.images.length > 0 && bannerCategory.images.map((curElem) => {
+            {bannerCategory[0]?.bannerImages.map((curElem, index) => {
                 return (
-                    <div key={curElem._id} className='relative sm:h-64 md:h-80 lg:h-96 xl:h-112'>
-                        <img className='w-full h-full object-cover' src={curElem.url} alt="Image 1" />
+                    <div key={index} className='relative sm:h-64 md:h-80 lg:h-96 xl:h-112'>
+                        <img className='w-full h-full object-cover' src={curElem} alt="Image 1" />
                     </div>
                 );
 

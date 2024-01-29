@@ -19,7 +19,7 @@ import Pagination from '../features/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductsAsync, fetchBannerAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllProducts, selectCategories, selectProductListStatus, selectTotalItems } from './productSlice';
 import { CastForEducation } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAxios } from '../../utils/axios';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
@@ -106,25 +106,10 @@ const ProductList = () => {
     const [filter, setFilter] = useState({});
 
 
-    // if (productss) {
-    //     console.log(productss, "fadjkhkad")
-    // }
     if (totalItems) {
         console.log(totalItems, "sdjhfjdksafh")
     }
 
-    // const filters = [
-    //     {
-    //       id: 'category',
-    //       name: 'Category',
-    //       options: categories,
-    //     },
-    //     {
-    //       id: 'brand',
-    //       name: 'Brands',
-    //       options: brands,
-    //     },
-    //   ];
 
 
     useEffect(() => {
@@ -136,168 +121,6 @@ const ProductList = () => {
 
 
 
-    // if (isPending) {
-    //     console.log(isPending, "prkjf")
-    // }
-
-
-    // if (filter) {
-    //     console.log(filter, "filter")
-    // }
-
-    // const handlePage = (page) => {
-    //     setPage(page)
-
-    // }
-
-
-    // useEffect(() => {
-    //     // Check if either page or filter has changed
-    //     if (page !== 1 || Object.keys(filter).length > 0) {
-    //         const pagination = { page: page };
-    //         console.log(pagination, "kgjkjlh");
-    //         dispatch(fetchProductsByFiltersAsync({ filter, pagination }));
-    //     }
-    // }, [filter, page]);
-
-
-
-    // // const handleFilter = (e, section, option) => {
-    // //     console.log(section.id, option.value, "handleFilter");
-    // //     const newFilter = { ...filter, [section.id]: option.value };
-    // //     setFilter(newFilter)
-
-    // //     // dispatch(fetchProductsByFiltersAsync(newFilter))
-    // //     // const newFilter = { ...filter };
-    // //     // if (e.target.checked) {
-    // //     //   if (newFilter[section.id]) {
-    // //     //     newFilter[section.id].push(option.value);
-    // //     //   } else {
-    // //     //     newFilter[section.id] = [option.value];
-    // //     //   }
-    // //     // } else {
-    // //     //   const index = newFilter[section.id].findIndex(
-    // //     //     (el) => el === option.value
-    // //     //   );
-    // //     //   newFilter[section.id].splice(index, 1);
-    // //     // }
-    // //     // console.log({ newFilter });
-
-    // //     // setFilter(newFilter);
-    // // };
-
-
-    // const handleFilter = (e, section, option) => {
-    //     console.log(section.id, option.value, "handleFilter");
-
-    //     const isSameOption = lastSelectedOptions[section.id] === option.value;
-
-    //     if (isSameOption) {
-    //         // If the same option is clicked again, undo the selection
-    //         const { [section.id]: removedOption, ...newLastSelectedOptions } = lastSelectedOptions;
-    //         setLastSelectedOptions(newLastSelectedOptions);
-    //         setFilter({ ...filter, [section.id]: null });
-    //     } else {
-    //         // If a different option is clicked, update the filter
-    //         setLastSelectedOptions({ ...lastSelectedOptions, [section.id]: option.value });
-    //         setFilter({ ...filter, [section.id]: option.value });
-    //     }
-    // }
-
-    // // useEffect(() => {
-    // //     const ITEMS_PER_PAGE  = 8
-    // //     const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
-    // //     dispatch(fetchProductsByFiltersAsync({ filter }));
-    // // }, [dispatch, filter]);
-
-
-    // useEffect(() => {
-    //     // dispatch(fetchBrandsAsync());
-    //     dispatch(fetchCategoriesAsync());
-    //     // dispatch(fetchBannerAsync())
-    //     // dispatch(fetchAllProductsAsync())
-    // }, []);
-
-
-    // const products = [
-    //     {
-    //         id: 1,
-    //         name: 'Basic Tee',
-    //         href: '#',
-    //         imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    //         imageAlt: "Front of men's Basic Tee in black.",
-    //         price: '$35',
-    //         color: 'Black',
-    //     },
-    //     {
-    //         id: 1,
-    //         name: 'Basic Tee',
-    //         href: '#',
-    //         imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    //         imageAlt: "Front of men's Basic Tee in black.",
-    //         price: '$35',
-    //         color: 'Black',
-    //     },
-    //     {
-    //         id: 1,
-    //         name: 'Basic Tee',
-    //         href: '#',
-    //         imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    //         imageAlt: "Front of men's Basic Tee in black.",
-    //         price: '$35',
-    //         color: 'Black',
-    //     },
-    //     {
-    //         id: 1,
-    //         name: 'Basic Tee',
-    //         href: '#',
-    //         imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    //         imageAlt: "Front of men's Basic Tee in black.",
-    //         price: '$35',
-    //         color: 'Black',
-    //     },
-    //     {
-    //         id: 1,
-    //         name: 'Basic Tee',
-    //         href: '#',
-    //         imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    //         imageAlt: "Front of men's Basic Tee in black.",
-    //         price: '$35',
-    //         color: 'Black',
-    //     },
-    //     // More products...
-    // ]
-
-    // const sampleProducts = [
-    //     'Smartphones',
-    //     'TV & Audio',
-    //     'Laptops & PCs',
-    //     'Gadgets',
-    //     'Photo & Video',
-    //     'Gifts',
-    //     'Books',
-    //     'Toys',
-    // ];
-
-    // const items = [
-    //     { id: 1, title: 'Back End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
-    //     { id: 2, title: 'Front End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
-    //     { id: 3, title: 'User Interface Designer', department: 'Design', type: 'Full-time', location: 'Remote' },
-    // ]
-
-
-    // const handleWishlist = async (productId) => {
-
-    //     const instances = useAxios(token)
-    //     try {
-    //         const response = await instances.post(`addToWishlist`)
-    //         // setMembership(true)
-    //         // window.location.reload();
-    //     } catch (error) {
-    //         console.log(error)
-
-    //     }
-    // }
 
     const handleWishlist = async (productId) => {
         const instances = useAxios(token);
@@ -371,19 +194,41 @@ const ProductList = () => {
     const handleCart = (cartProduct) => {
         // e.preventDefault();
         console.log(cartProduct, "dfs")
-        // if (product.product.stock < 1) return toast.error("Out of Stock")
+        if (cartProduct.stock < 1) return toast.error("Out of Stock")
 
         const newItem = {
             productId: cartProduct._id,
             price: cartProduct.price,
             name: cartProduct.name,
-            // photo: cartProduct._id,
+            photo: cartProduct?.productImages[0],
             stock: cartProduct.stock,
             quantity: 1
         };
         dispatch(addToCart(newItem))
         toast.success("Added to Cart")
     };
+
+
+
+    // Uisng the history
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const filterCategory = searchParams.get('filterCategory') || '';
+    const navbarSearch = searchParams.get('navbarSearch') || '';
+    if (filterCategory) {
+        console.log(filterCategory, "sdjkfashafkd")
+    }
+
+    useEffect(() => {
+        // Update the search state when the categoryParam changes
+        setCategory(filterCategory)
+    }, [filterCategory]);
+
+    useEffect(() => {
+        // Update the search state when the categoryParam changes
+        setSearch(navbarSearch)
+    }, [navbarSearch]);
 
 
     return (
@@ -622,7 +467,7 @@ const ProductList = () => {
                                                 <div style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
                                                     <p className="text-md font-semibold text-black mb-4">{product.category}</p>
                                                     <div className='flex items-center justify-between'>
-                                                        <h1 className="text-xl font-semibold text-primary-blue my-4">{product.name}</h1>
+                                                        <h1 className="text-xl font-semibold text-primary-blue my-4">{product.name.length > 15 ? product.name.slice(0, 15) + '...' : product.name}</h1>
                                                         <div
                                                             onClick={() => handleWishlist(product._id)}
                                                             className="p-1.5 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer"

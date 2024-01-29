@@ -167,10 +167,10 @@ const Cart = () => {
                     <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
                       <div className="flex w-2/5">
                         <div className="w-20">
-                          <img className="w-full h-full object-cover" src={item.cartImage} alt="cartImage" />
+                          <img className="w-full h-full object-cover" src={item.photo} alt="cartImage" />
                         </div>
                         <div className="flex flex-col justify-between ml-4 flex-grow">
-                          <span className="font-bold text-sm">{item.name}</span>
+                          <span className="font-bold text-sm">{item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}</span>
                           <span className="text-red-500 text-xs">{item.category}</span>
                           <a onClick={() => removeHandler(item.productId)} className="font-semibold mt-4 cursor-pointer hover:text-red-500 hover:font-bold text-gray-500 text-xs">Remove</a>
                         </div>

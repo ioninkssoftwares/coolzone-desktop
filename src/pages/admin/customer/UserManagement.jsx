@@ -274,18 +274,17 @@ const UserManagement = () => {
                     </div> :
                         <div className='bg-gray-50'>
                             <AdminNavbar />
-                            <div className="flex justify-between items-center mt-8 mb-6 px-4">
-                                <div className=" text-sm px-3">
+                            <div className="flex justify-end items-center mt-8 mb-6 px-4">
+                                {/* <div className=" text-sm px-3">
                                     <button
-                                        // onClick={() => router.push("/admin/customers/add")}
                                         className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                     >
                                         <span>
-                                            {/* <TbEdit /> */}
+                                        
                                         </span>
                                         <span onClick={() => navigate("/admin/editCustomer")}>Customer Summary</span>
                                     </button>
-                                </div>
+                                </div> */}
                                 <div className=" text-sm px-3">
                                     <button
                                         // onClick={() => router.push("/admin/customers/add")}
@@ -420,7 +419,7 @@ const UserManagement = () => {
                                     <p className="text-2xl ">Customers</p>
                                 </div>
 
-                                <div className="flex space-x-[12px]">
+                                {/* <div className="flex space-x-[12px]">
                                     <div className="flex items-center bg-white p-2 rounded-lg space-x-3">
                                         <AiOutlineSearch className="text-xl" />
                                         <input
@@ -435,11 +434,11 @@ const UserManagement = () => {
                                             className="outline-none"
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             {/* dashboard caerd */}
 
-                            <Box sx={{ margin: "0 20px" }}>     <Grid container spacing={6} sx={{ pb: 38, }}>
+                            <Grid container spacing={6} sx={{ pb: 38, px: 4 }}>
                                 <Grid item xs={12}>
                                     <Card sx={{ borderRadius: 2 }}>
                                         <DataGrid
@@ -478,7 +477,7 @@ const UserManagement = () => {
                                     </Card>
                                 </Grid>
                             </Grid>
-                            </Box>
+
 
                             {/* {users && <AdminCustomers users={users} />} */}
 

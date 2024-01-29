@@ -49,13 +49,13 @@ const WishlistCard = ({ data, setRefreshItems }) => {
     const handleCart = (product) => {
         // e.preventDefault();
 
-        // if (product.product.stock < 1) return toast.error("Out of Stock")
+        if (product.stock < 1) return toast.error("Out of Stock")
 
         const newItem = {
             productId: product._id,
             price: product.price,
             name: product.name,
-            // photo: cartProduct._id,
+            photo: product.productImages[0],
             stock: product.stock,
             quantity: 1
         };
@@ -100,17 +100,17 @@ const WishlistCard = ({ data, setRefreshItems }) => {
                     </div>
 
                 </div>
-                <p className="text-center mt-4 font-semibold">{elem.name}</p>
+                <p className="text-center mt-4 font-bold text-xl">{elem.name.length > 15 ? elem.name.slice(0, 15) + '...' : elem.name}</p>
 
-                <h1 className="text-xl font-semibold text-primary-blue my-4">{elem.title}</h1>
+                {/* <h1 className="text-xl font-semibold text-primary-blue my-4">{elem.name}</h1> */}
                 <div className="flex items-center justify-center">
-                    <div onClick={() => navigate(`/product/${elem._id}`)} className=" cursor-pointer relative my-10 w-[200px] h-[150px]">
-                        {/* <img
-     src={images.length > 0 ? images[0].url : null}
-     fill
-     alt="home"
-     className="w-full h-full object-fillr rounded-lg"
-   /> */}
+                    <div onClick={() => navigate(`/product/${elem._id}`)} className=" cursor-pointer relative  w-[200px] h-[150px]">
+                        <img
+                            src={elem.productImages ? elem.productImages[0] : imageSource}
+                            fill
+                            alt="home"
+                            className="w-full h-full object-cover rounded-lg"
+                        />
                     </div>
                 </div>
                 <div onClick={() => handleCart(elem)} className="cursor-pointer flex items-center justify-between">

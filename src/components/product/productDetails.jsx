@@ -68,10 +68,10 @@ const ProductDetails = () => {
             productId: product.product._id,
             price: product.product.price,
             name: product.product.name,
-            // photo: product.product._id,
+            photo: product.product && product.product.productImages && product.product.productImages.length > 0 ? product.product.productImages[0] : "",
             stock: product.product.stock,
             quantity: 1,
-            cartImage: product.product && product.product.productImages && product.product.productImages.length > 0 ? product.product.productImages[0] : ""
+            // cartImage: product.product && product.product.productImages && product.product.productImages.length > 0 ? product.product.productImages[0] : ""
         };
         dispatch(addToCart(newItem))
         toast.success("Added to Cart")
@@ -222,6 +222,7 @@ const ProductDetails = () => {
                             <div className=" md:w-[70%] w-full lg:pl-10 lg:py-0 mt-0 lg:mt-0">
                                 <h2 className="text-sm title-font text-gray-500 tracking-widest">{product?.product.category}</h2>
                                 <h1 className="text-primary-blue text-2xl title-font font-medium my-8">{product?.product.name}</h1>
+                                <p className='my-4 text-xl font-semibold '>Stock: {product.product.stock} </p>
                                 <div className='flex gap-8'>
                                     <div className='flex flex-col gap-2'>
                                         <p className="text-primary-blue text-2xl title-font font-medium">CZ's</p>
@@ -232,9 +233,12 @@ const ProductDetails = () => {
                                         <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.price}</p>
                                     </div>
                                 </div>
-                                <p className='my-4 text-xl '>Standard EMI starting from ₹2,192/month <span className='ml-4 text-sm font-semibold text-primary-blue'>View Plans</span></p>
-                                <p className='my-4 text-xl font-semibold '>Stock: {product.product.stock} </p>
-                                <div className="flex mb-4">
+
+                                {/* <p className='my-4 text-xl '>Standard EMI starting from ₹2,192/month <span className='ml-4 text-sm font-semibold text-primary-blue'>View Plans</span></p> */}
+
+
+                                {/* Reviews section */}
+                                {/* <div className="flex mb-4">
                                     <span className="flex items-center">
                                         <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
                                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
@@ -270,7 +274,7 @@ const ProductDetails = () => {
                                             </svg>
                                         </a>
                                     </span>
-                                </div>
+                                </div> */}
                                 {product?.product.category === "Ac" ? <>           <h2 className='mb-2'>Key Features</h2>
                                     <ul className='list-disc list-inside ml-8 mb-4'>
 
@@ -295,8 +299,13 @@ const ProductDetails = () => {
                                         <button className='px-4 py-2 text-gray-500 border-2 border-gray-500 bg-white rounded-md'> 2.0</button>
                                     </div>
                                 </> : ""}
+                                <p className='my-4 text-xl font-semibold '>Product Description:</p>
                                 <p className="leading-relaxed">{product?.product?.description}</p>
-                                <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
+                                <p className='my-4 text-xl font-semibold '>Product Specificaiton:</p>
+                                <p className="leading-relaxed">{product?.product?.specification}</p>
+
+                                {/* Remaining FUteres */}
+                                {/* <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
                                     <div className="flex">
                                         <span className="mr-3">Color</span>
                                         <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
@@ -319,19 +328,18 @@ const ProductDetails = () => {
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex">
-                                    {/* <span className="title-font font-medium text-2xl text-gray-900">$58.00</span> */}
-                                    {/* <button className="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Buy</button> */}
+                                </div> */}
+                                {/* <div className="flex">
+   
                                     <button onClick={handleWishlist} className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                                         <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-5 h-5" viewBox="0 0 24 24">
                                             <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                                         </svg>
                                     </button>
-                                </div>
+                                </div> */}
 
 
-                                <div className='border-2 border-gray-500 my-4 p-4 rounded-lg'>
+                                {/* <div className='border-2 border-gray-500 my-4 p-4 rounded-lg'>
                                     <p className='text-xl font-semibold'>Delivery Options</p>
                                     <p className='my-4 text-xl '>Delivery to Mumbai 400001 <span className='ml-4 text-sm font-semibold text-primary-blue'>Change</span></p>
                                     <h2 className='mb-2 font-semibold'>Express Delivery</h2>
@@ -343,16 +351,16 @@ const ProductDetails = () => {
                                         <GrDeliver className='mt-2 text-white bg-primary-blue text-5xl rounded-md' />
                                     </div>
 
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
                 </section>
-                <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
-                    <div className='border-2 border-gray-500 my-4 p-8 rounded-lg'>
-                        <p className='text-lg font-semibold'>Rating and Review</p>
+                {/* <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 "> */}
+                {/* <div className='border-2 border-gray-500 my-4 p-8 rounded-lg'> */}
+                {/* <p className='text-lg font-semibold'>Rating and Review</p> */}
 
-                        <div className='flex items-start justify-between gap-20 '>
+                {/* <div className='flex items-start justify-between gap-20 '>
                             <div className='basis-[40%]'>
                                 <p className='text-2xl font-semibold mt-4'>Customer Reviews</p>
                                 <p className='my-2 text-2xl'>Review this product</p>
@@ -364,7 +372,7 @@ const ProductDetails = () => {
                                             '& > legend': { mt: 2 },
                                         }}
                                     >
-                                        {/* <Typography component="legend">Controlled</Typography> */}
+                              
                                         <Rating
                                             name="simple-controlled"
                                             value={value}
@@ -443,9 +451,9 @@ const ProductDetails = () => {
                             </div>
 
 
-                        </div>
+                        </div> */}
 
-                        <div className='flex justify-center items-start flex-col gap-6 my-8'>
+                {/* <div className='flex justify-center items-start flex-col gap-6 my-8'>
                             {allReviews && allReviews.length > 0 ? allReviews.map((curElem) => {
                                 return <div >
                                     <p className='font-semibold text-lg'>{curElem.name}</p>
@@ -464,18 +472,18 @@ const ProductDetails = () => {
                                 </div>
 
                             }) : ""}
-                        </div>
-                    </div>
-                </div>
+                        </div> */}
+                {/* </div> */}
+                {/* </div> */}
 
                 <section className="pt-5 mb-5">
                     {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
                     {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
                     <div className="max-w-7xl mx-auto px-5 md:px-10 ">
                         <div className="w-full flex items-center justify-between">
-                            <HomeSectionTitle text="Featured Products" />
+                            {/* <HomeSectionTitle text="Featured Products" /> */}
                             {/* Buttons container */}
-                            <div className="flex space-x-4  md:mt-0">
+                            {/* <div className="flex space-x-4  md:mt-0">
                                 <button
                                     onClick={() => scrollLeft("feat")}
                                     className="p-2 m-2 rounded-full bg-white"
@@ -488,7 +496,7 @@ const ProductDetails = () => {
                                 >
                                     <FiChevronRight />
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                         {/* {data && (
                             <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">

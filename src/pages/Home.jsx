@@ -38,7 +38,9 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [bannersData, setBannersData] = useState([]);
-  const [fasionBanner, setFasionBanner] = useState(null)
+  const [bestSellerProducts, setBestSellerProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [fasionBanner, setFasionBanner] = useState({})
   const banners = useSelector(selectBanners);
   const userDetails = useSelector(selectCurrentUserDetails);
   const [cookies, setCookies] = useCookies(["token"]);
@@ -47,24 +49,24 @@ const Home = () => {
 
   const isPending = useSelector(selectProductListStatus);
 
-  if (homeProducts) {
-    console.log(homeProducts, "cxvvxxv")
+  if (banners) {
+    console.log(banners, "cxvvxxv")
   }
 
-  useEffect(() => {
-    // setBannersData(data.banners);
-    if (banners.banners && banners.banners.length > 0) {
-      setBannersData(banners.banners)
-      // console.log(banners.banners,"dfjdk")
+  // useEffect(() => {
+  //   // setBannersData(data.banners);
+  //   if (banners.banners && banners.banners.length > 0) {
+  //     setBannersData(banners.banners)
+  //     // console.log(banners.banners,"dfjdk")
 
-    }
+  //   }
 
-  }, [banners.banners])
+  // }, [banners.banners])
 
 
   useEffect(() => {
     const filterBanner = () => {
-      const fashionBanners = bannersData?.filter(banner => banner.category === "fasion");
+      const fashionBanners = banners?.allBanner?.filter(banner => banner.category === "fashion");
       // const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
       //   const categoryKey = curBanner.category;
       //   acc[categoryKey] = curBanner;
@@ -78,7 +80,7 @@ const Home = () => {
 
     filterBanner()
 
-  }, [bannersData])
+  }, [banners])
 
 
 
@@ -118,13 +120,46 @@ const Home = () => {
 
   }, [token])
 
+  // Products Filteration 
+
+  useEffect(() => {
+    console.log("Filtred in useEffect:", homeProducts);
+
+    const filterProducts = () => {
+      // Check if Filtred is available and has length
+      if (homeProducts && homeProducts.length > 0) {
+        // const filteredProdects = Filtred.filter(
+        //   (property) => property.cost < 5000000
+        // );
+        // console.log("Filtered properties by cost:", filteredProdects);
+        // setCostFiltred(filteredProdects);
+
+        const featuredProducts = homeProducts.filter(
+          (property) => property.featured
+        );
+        console.log("Featured properties:", featuredProducts);
+        setFeaturedProducts(featuredProducts);
+
+        const bestSellerProducts = homeProducts.filter(
+          (property) => property.bestSeller
+        );
+        console.log("Best Seller Products:", bestSellerProducts);
+        setBestSellerProducts(bestSellerProducts);
+      }
+    };
+
+    filterProducts();
+  }, [homeProducts]);
+
+
+
 
 
   const productSamples = [
-    { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
-    { name: 'TV & Audio', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
-    { name: 'Laptops & PCs', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
-    { name: 'Gadgets', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp' },
+    { name: 'books', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
+    { name: 'tv', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
+    { name: 'laptop', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
+    { name: 'mobile', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp' },
     { name: 'Photo & Video', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png' },
     { name: 'Gifts', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png' },
     { name: 'Books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
@@ -142,11 +177,17 @@ const Home = () => {
     console.log(userDetails, "dsfafadfafddfsasdfdfs")
   }
 
+  // Navigation from home to products
+
+  const navigateToProducts = (categoryName) => {
+    // Navigate to products page and set the search state with the category name
+    navigate(`/products?filterCategory=${encodeURIComponent(categoryName)}`);
+  }
   return <>
     <Navbar />
     <div className='hide-scrollbar overflow-y-hidden'>
       <section>
-        {/* <CorouselSlider bannerCategory={fasionBanner} /> */}
+        <CorouselSlider bannerCategory={fasionBanner} />
       </section>
       <section className='flex  items-center  justify-center my-5'>
         <div style={{ border: "2px solid gray" }} className='rounded-lg flex md:flex-row flex-col md:items-center md:justify-center justify-start  w-[79%] p-5'>
@@ -224,7 +265,7 @@ const Home = () => {
           </div>
           {homeProducts && (
             <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="feat" data={homeProducts} Card={MediumHouseCard} />
+              <CardCarousel id="feat" data={featuredProducts} Card={MediumHouseCard} />
             </div>
           )}
         </div>
@@ -247,7 +288,7 @@ const Home = () => {
               <span className='text-2xl font-bold text-white'>Audio Devices</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div className="relative my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("audio")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
               <img
                 src="https://cdn.pixabay.com/photo/2017/11/06/11/53/music-2923447_1280.png"
                 fill
@@ -262,7 +303,7 @@ const Home = () => {
               <span className='text-2xl font-bold text-white'>Students Laptop</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div className="relative my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("laptop")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
               <img
                 src="https://cdn.pixabay.com/photo/2012/04/13/20/24/laptop-33521_1280.png"
                 fill
@@ -277,7 +318,7 @@ const Home = () => {
               <span className='text-2xl font-bold text-white'>Smart Watch</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div className="relative my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("watch")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
               <img
                 src="https://cdn.pixabay.com/photo/2018/09/13/14/56/apple-watch-series-4-3674940_1280.png"
                 fill
@@ -292,7 +333,7 @@ const Home = () => {
               <span className='text-2xl font-bold text-white'>Accesories</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div className="relative my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
               <img
                 src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
                 fill
@@ -328,7 +369,7 @@ const Home = () => {
           </div>
           {homeProducts && (
             <div id="best" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="best" data={homeProducts} Card={MediumHouseCard} />
+              <CardCarousel id="best" data={bestSellerProducts} Card={MediumHouseCard} />
             </div>
           )}
         </div>
@@ -339,7 +380,7 @@ const Home = () => {
         {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
-            <HomeSectionTitle text="Big Deals" />
+            <HomeSectionTitle text="New Products" />
             {/* Buttons container */}
             <div className="flex space-x-4  md:mt-0">
               <button
@@ -377,7 +418,7 @@ const Home = () => {
             Mega Offers
           </h1>
         </div>
-        <div className="max-w-7xl mx-auto  flex md:flex-row flex-col items-center space-x-6  ">
+        <div className="max-w-7xl mx-auto  flex md:flex-row flex-col items-center justify-center   space-x-6  ">
           <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>

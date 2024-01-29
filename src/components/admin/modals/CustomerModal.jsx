@@ -102,11 +102,13 @@ const CustomerModal = ({ buttonText, modalTitle, onSubmit }) => {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 500,
+        maxHeight: "90%",
         bgcolor: 'white', // Changed background color to white
         boxShadow: 24,
         p: 3, // Adjust padding as needed
-        borderRadius: 4, // Add border radius for rounded corners
+        // borderRadius: 4, // Add border radius for rounded corners
         outline: 'none', // Remove default focus outline
+        overflowY: 'auto',
     };
 
     // MUI DropDown

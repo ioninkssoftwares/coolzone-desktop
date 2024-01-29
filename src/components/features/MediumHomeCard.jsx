@@ -42,14 +42,12 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
 
   const handleCart = () => {
     // e.preventDefault();
-
-    // if (product.product.stock < 1) return toast.error("Out of Stock")
-
+    if (stock < 1) return toast.error("Out of Stock")
     const newItem = {
       productId: _id,
       price: price,
       name: name,
-      // photo: cartProduct._id,
+      photo: productImages[0],
       stock: stock,
       quantity: 1
     };
@@ -88,7 +86,7 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
         </div>
 
       </div>
-      <p className="text-center font-semibold">{name}</p>
+      <p className="text-center font-semibold">  {name.length > 15 ? name.slice(0, 15) + '...' : name}</p>
 
       <h1 className="text-xl font-semibold text-primary-blue mt-4">{title}</h1>
       <div className="flex items-center justify-center">

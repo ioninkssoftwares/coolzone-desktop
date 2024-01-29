@@ -4,15 +4,19 @@ import { useForm } from 'react-hook-form';
 import { selectLoggedInUser, createUserAsync } from './authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
+import { CircularProgress } from '@mui/material';
+import { useAxios } from '../../utils/axios';
 
 export default function Signup() {
   const navigate = useNavigate()
   const dispatch = useDispatch();
+  const instance = useAxios();
   const [cookies, setCookies] = useCookies(["token"]);
   const user = useSelector(selectLoggedInUser);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -23,16 +27,23 @@ export default function Signup() {
 
 
   useEffect(() => {
-    if (user?.success) {
-        console.log(user, "hjfdsfsj")
-        setCookies("token", user.token);
-        localStorage.setItem("isAdmin", false);
-        localStorage.setItem("userId", user.user._id);
-        localStorage.setItem("token", user.token);
-        toast(" User Signup Successful")
-        navigate("/")
+    if (cookies && cookies.token) {
+      navigate("/")
     }
-}, [user])
+  }, [cookies]);
+
+
+  // useEffect(() => {
+  //   if (user?.success) {
+  //     console.log(user, "hjfdsfsj")
+  //     setCookies("token", user.token);
+  //     localStorage.setItem("isAdmin", false);
+  //     localStorage.setItem("userId", user.user._id);
+  //     localStorage.setItem("token", user.token);
+  //     toast(" User Signup Successful")
+  //     navigate("/")
+  //   }
+  // }, [user])
 
 
 
@@ -55,17 +66,28 @@ export default function Signup() {
           <form
             noValidate
             className="space-y-6"
-            onSubmit={handleSubmit((data) => {
-              dispatch(
-                createUserAsync({
-                  userData: {
-                    name: data.name,
-                    email: data.email,
-                    password: data.password,
-                  },
-                })
-              );
-              console.log(data);
+            onSubmit={handleSubmit(async (data) => {
+              setLoading(true)
+              console.log(data, "dfkasldjfksd")
+              try {
+                const res = await instance.post("/register", data)
+                if (res.data) {
+                  setCookies("token", res.data.token);
+                  localStorage.setItem("isAdmin", false);
+                  localStorage.setItem("userId", res.data.user._id);
+                  localStorage.setItem("token", res.data.token);
+                  toast(" User Register Successful")
+                  navigate("/")
+                  setLoading(false)
+                }
+
+              } catch (error) {
+                toast.error("Invalid email or password ")
+                setLoading(false)
+                console.log(error)
+
+              }
+              console.log(data, "sjkdfahasdk");
             })}
           >
             <div>
@@ -117,6 +139,33 @@ export default function Signup() {
                 {errors.email && (
                   <p className="text-red-500">{errors.email.message}</p>
                 )}
+              </div>
+            </div>
+
+
+            <div>
+              <label
+                htmlFor="referral"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Referral Code
+              </label>
+              <div className="mt-2">
+                <input
+                  id="referral"
+                  {...register('referral', {
+                    // required: 'email is required',
+                    // pattern: {
+                    //   value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
+                    //   message: 'email not valid',
+                    // },
+                  })}
+                  type="text"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+                {/* {errors.email && (
+                  <p className="text-red-500">{errors.email.message}</p>
+                )} */}
               </div>
             </div>
 
@@ -180,12 +229,12 @@ export default function Signup() {
             </div> */}
 
             <div>
-              <button
+              {loading ? <CircularProgress /> : <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign Up
-              </button>
+              </button>}
             </div>
           </form>
 

@@ -559,7 +559,7 @@ const EditProductById = () => {
                                         type="text"
                                         value={product?.name}
                                         onChange={(e) => setProduct({ ...product, name: e })}
-                                        validate={validateProductName}
+                                    // validate={validateProductName}
                                     />
                                     <InputField
                                         label="Category"

@@ -476,7 +476,7 @@ const PartnerCouponManagement = () => {
                                 <p className="text-2xl ">Affiliated Partners</p>
                             </div>
 
-                            <div className="flex space-x-[12px]">
+                            {/* <div className="flex space-x-[12px]">
                                 <div className="flex items-center bg-white p-2 rounded-lg space-x-3">
                                     <AiOutlineSearch className="text-xl" />
                                     <input
@@ -491,11 +491,11 @@ const PartnerCouponManagement = () => {
                                         className="outline-none"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         {/* dashboard caerd */}
 
-                        <Grid container spacing={6} >
+                        <Grid container spacing={6} sx={{ pb: 38, px: 4 }} >
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid

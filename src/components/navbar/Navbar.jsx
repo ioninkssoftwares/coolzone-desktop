@@ -18,6 +18,7 @@ import { useCookies } from 'react-cookie';
 import { FiLogOut } from 'react-icons/fi';
 import { CiLogout } from "react-icons/ci";
 import { toast } from 'react-toastify';
+import { useSearchProductsQuery } from '../../redux/api/productApi';
 
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -37,6 +38,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [term, setTerm] = useState("");
+  const [search, setSearch] = useState("");
 
 
   useEffect(() => {
@@ -99,22 +101,13 @@ export default function Navbar() {
     navigate('/orders')
   }
 
-  const searchSubmitHandler = (e) => {
-    e.preventDefault();
-    if (location.pathname === '/') {
-      navigate("/products");
-      dispatch(fetchProductsByNavbarAsync(term))
-    } else if (location.pathname === '/products') {
-      dispatch(fetchProductsByNavbarAsync(term))
-    }
-    //  else if (location.pathname === productPath) {
-    //   navigate("/products");
-    //   dispatch(fetchProductsByNavbarAsync(term))
-    // }
+  const { isLoading: productLoading,
+    data: searchedData,
+    isError: productIsError,
+    error: productError } = useSearchProductsQuery({ search });
 
-    setTerm("")
+  console.log(searchedData, "hfasdjkhfds")
 
-  }
 
   // Todo-localStorageUsed
   const userId = localStorage.getItem("userId");
@@ -130,6 +123,15 @@ export default function Navbar() {
     // Add any other cleanup code here
   };
 
+
+  const handleSearch = (e) => {
+    navigate(`/products?navbarSearch=${encodeURIComponent(e)}`);
+  }
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    navigate(`/products?navbarSearch=${encodeURIComponent(search)}`);
+  }
 
   return (
     <Disclosure as="nav" className="bg-white sticky top-0 z-50 ">
@@ -164,26 +166,55 @@ export default function Navbar() {
               </div>
 
               {/* Default SearchBar */}
-              {/* <div style={{border:"2px solid green"}} > */}
-              {/* <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 ">
-                <form onSubmit={searchSubmitHandler} className='flex' style={{ width: "85%", height: "100%" }}>
-                  <div style={{ width: "100%", height: "100%" }}>
-                    <input type="text"
-                      placeholder="Search..."
-                      value={term}
-                      onChange={(e) => setTerm(e.target.value)}
-                      className="w-full p-2 pl-8 border border-primary-blue rounded-l-full focus:outline-none focus:border-blue-500" />
-                  </div>
-                  <div className='rounded-r-full md:w-[12%] md:h-[42px] '>
-                    <button className='w-full h-full flex items-center rounded-r-full bg-primary-blue '>
-                      <AiOutlineSearch className='md:ml-6 ml-3  mr-5 md:mr-0 text-white' />
-                    </button>
-                  </div>
-                </form>
+              {/* <div style={{ border: "2px solid green" }} >
+                <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 ">
+                  <form onSubmit={searchSubmitHandler} className='flex' style={{ width: "85%", height: "100%" }}>
+                    <div style={{ width: "100%", height: "100%" }}>
+                      <input type="text"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full p-2 pl-8 border border-primary-blue rounded-l-full focus:outline-none focus:border-blue-500" />
+                    </div>
+                    <div className='rounded-r-full md:w-[12%] md:h-[42px] '>
+                      <button className='w-full h-full flex items-center rounded-r-full bg-primary-blue '>
+                        <AiOutlineSearch className='md:ml-6 ml-3  mr-5 md:mr-0 text-white' />
+                      </button>
+                    </div>
+                  </form>
 
 
+                </div>
               </div> */}
-              {/* </div> */}
+
+              <div className="relative">
+                <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 relative">
+                  <form onSubmit={handleSearchSubmit} className='flex' style={{ width: "85%", height: "100%" }}>
+                    <div className="relative w-full">
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full p-2 pl-8 border border-primary-blue rounded-l-full focus:outline-none focus:border-blue-500"
+                      />
+                      <button className='absolute top-0 right-0 w-10 h-full flex items-center rounded-r-full bg-primary-blue'>
+                        <AiOutlineSearch className='ml-3 mr-5 text-white' />
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+
+                {/* Display search results */}
+                <div className="absolute left-0 bg-white border rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
+                  {search.length > 0 && searchedData && searchedData.products.map((result) => (
+                    <div onClick={() => handleSearch(result.name)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100">
+                      {result.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               <div className="absolute inset-y-0 space-x-8 right-0 md:flex hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <div onClick={() => navigate("/myAccount")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>

@@ -394,21 +394,21 @@ const AdminOrdersPage = () => {
                                 {/* </button> */}
                             </div>
                             <div className=" text-sm px-3">
-                                <button
+                                {/* <button
                                     // onClick={() => router.push("/admin/customers/add")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
                                         <TbEdit />
-                                    </span>
-                                    {/* <span>Create New Order</span> */}
-                                    {/* <OrderModal
+                                    </span> */}
+                                {/* <span>Create New Order</span> */}
+                                {/* <OrderModal
                                         buttonText="Create New Order"
                                         modalTitle="Create New Order"
                                         // onSubmit={projectSubmit}
                                         products={allProducts}
                                     /> */}
-                                </button>
+                                {/* </button> */}
                             </div>
                         </div>
 
@@ -525,7 +525,7 @@ const AdminOrdersPage = () => {
                                 <p className="text-2xl ">Customer Orders</p>
                             </div>
 
-                            <div className="flex space-x-[12px]">
+                            {/* <div className="flex space-x-[12px]">
                                 <div className="flex items-center bg-white p-2 rounded-lg space-x-3">
                                     <AiOutlineSearch className="text-xl" />
                                     <input
@@ -540,11 +540,11 @@ const AdminOrdersPage = () => {
                                         className="outline-none"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         {/* dashboard caerd */}
 
-                        <Grid container spacing={6} sx={{ pb: 38 }}>
+                        <Grid container spacing={6} sx={{ pb: 38, px: 4 }}>
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
