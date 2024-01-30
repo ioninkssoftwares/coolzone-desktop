@@ -198,6 +198,15 @@ const PartnerCouponManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
+        {
+            minWidth: 150,
+            flex: 0.25,
+            field: "limit",
+            headerName: "Limit",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
 
 
         // {

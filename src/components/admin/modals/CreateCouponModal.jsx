@@ -119,7 +119,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
         coupon: "",
         // percentage: discountPercentage,
         amount: '',
-        // CouponSegment: '',
+        limit: '',
         // maxUsePerCustomer: '',
         description: '',
     });
@@ -326,6 +326,23 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
 
         return null;
     };
+    const validateLimit = (value) => {
+        const floatValue = parseFloat(value);
+
+        // Add specific validation logic for discount amount
+        if (isNaN(floatValue) || floatValue <= 0) {
+            return 'Invalid limit';
+        }
+
+        // Regular expression to allow only digits and optionally a decimal point
+        const validInputRegex = /^\d+(\.\d{1,2})?$/;
+
+        if (!validInputRegex.test(value)) {
+            return 'Invalid characters in limit';
+        }
+
+        return null;
+    };
     const validateMaxUsers = (value) => {
         const floatValue = parseFloat(value);
 
@@ -405,12 +422,21 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
 
                         <InputField
                             label="Discount Amount"
-                            type="text"
+                            type="number"
                             value={couponData.amount}
                             onChange={(e) =>
                                 setCouponData({ ...couponData, amount: e })
                             }
                             validate={validateDiscountAmount}
+                        />
+                        <InputField
+                            label="Limit"
+                            type="number"
+                            value={couponData.limit}
+                            onChange={(e) =>
+                                setCouponData({ ...couponData, limit: e })
+                            }
+                            validate={validateLimit}
                         />
 
                         <InputField
