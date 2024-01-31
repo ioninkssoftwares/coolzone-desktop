@@ -315,10 +315,11 @@ const AddProductByAdmin = () => {
         return regex.test(value) ? null : 'Invalid characters in product name';
     };
     const validateCategory = (value) => {
-        // Add specific validation logic for product name
-        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
+        // Only allow letters, exclude spaces and symbols
+        const regex = /^[a-zA-Z]+$/;
         return regex.test(value) ? null : 'Invalid characters in category';
     };
+
     const validateBrandName = (value) => {
         // Add specific validation logic for product name
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces

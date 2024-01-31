@@ -19,13 +19,25 @@ export const productsAPI = createApi({
             providesTags: ["products"],
 
         }),
+        brands: builder.query({
+            query: () => `brands`,
+            providesTags: ["products"],
+
+        }),
+        subCategories: builder.query({
+            query: () => `subCategories`,
+            providesTags: ["products"],
+
+        }),
         searchProducts: builder.query({
-            query: ({ price, search, sort, category, page }) => {
+            query: ({ price, search, sort, category, page, subCategory, brand }) => {
                 let base = `products?search=${search}&page=${page}`
 
                 if (price) base += `&price=${price}`
                 if (sort) base += `&sort=${sort}`
                 if (category) base += `&category=${category}`
+                if (brand) base += `&brand=${brand}`
+                if (subCategory) base += `&subCategory=${subCategory}`
 
                 return base
             },
@@ -69,6 +81,8 @@ export const productsAPI = createApi({
 export const { useLatestProductsQuery,
     useAllProductsQuery,
     useCategoriesQuery,
+    useBrandsQuery,
+    useSubCategoriesQuery,
     useSearchProductsQuery,
     useNewProductMutation,
     useProductDetailsQuery,

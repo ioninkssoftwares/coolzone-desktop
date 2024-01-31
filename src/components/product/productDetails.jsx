@@ -140,14 +140,14 @@ const ProductDetails = () => {
 
 
     // handle wishlist function
-    const handleWishlist = async () => {
-        // const instances = useAxios(token);
+    const handleWishlist = async (productId) => {
+        const instances = useAxios(token);
         const data = {
-            productId: params.id,
+            productId: productId,
         };
 
         try {
-            const response = await instance.post('addToWishlist', data);
+            const response = await instances.post('/addToWishlist', data);
             if (response.data) {
                 toast.success("Product has been added to wishlist")
             }
@@ -216,7 +216,7 @@ const ProductDetails = () => {
                                 </div>
                                 <div className='w-full flex items-center justify-between px-4'>
                                     <button onClick={handleCart} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Cart</button>
-                                    {/* <button className='rounded-full px-8 py-2 bg-primary-blue text-white'>Buy Now</button> */}
+                                    <button onClick={() => handleWishlist(product?.product._id)} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Wishlist</button>
                                 </div>
                             </div>
                             <div className=" md:w-[70%] w-full lg:pl-10 lg:py-0 mt-0 lg:mt-0">
@@ -230,7 +230,7 @@ const ProductDetails = () => {
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <p className="text-gray-500 text-2xl title-font font-medium">MRP</p>
-                                        <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.price}</p>
+                                        <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.price + 10599}</p>
                                     </div>
                                 </div>
 

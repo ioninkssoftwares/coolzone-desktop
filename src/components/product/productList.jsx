@@ -4,7 +4,7 @@ import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 // import { XMarkIcon } from '@heroicons/react/24/outline'
 // import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { RxCross2 } from 'react-icons/rx';
-import { MdOutlineSecurity } from 'react-icons/md';
+import { MdDeleteForever, MdOutlineSecurity } from 'react-icons/md';
 import { AiOutlineDown, AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { BsFillHeartFill, BsFunnel } from 'react-icons/bs';
 import { HiMiniSquaresPlus, HiOutlineSquaresPlus } from 'react-icons/hi2';
@@ -23,7 +23,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAxios } from '../../utils/axios';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import { useCategoriesQuery, useSearchProductsQuery } from '../../redux/api/productApi';
+import { useBrandsQuery, useCategoriesQuery, useSearchProductsQuery, useSubCategoriesQuery } from '../../redux/api/productApi';
 import Loader from '../Loader';
 import { addToCart } from '../../redux/reducer/cartReducer';
 
@@ -104,7 +104,9 @@ const ProductList = () => {
     // const [page, setPage] = useState(1)
     const [lastSelectedOptions, setLastSelectedOptions] = useState({});
     const [filter, setFilter] = useState({});
-
+    const [filterData, setFilterData] = useState([]);
+    // const [selectedBrand, setSelectedBrand] = useState('');
+    // const [filter, setFilter] = useState({});
 
     if (totalItems) {
         console.log(totalItems, "sdjhfjdksafh")
@@ -143,8 +145,19 @@ const ProductList = () => {
 
     const { data: categoriesData,
         isLoading: loadingCategories,
-        isError,
-        error } = useCategoriesQuery("");
+    } = useCategoriesQuery("");
+
+    if (categoriesData) console.log(categoriesData, "fsadhkhkj")
+
+    // const { data: brandsData,
+    //     isLoading: loadingBrands,
+    // } = useBrandsQuery("");
+
+    const { data: subCategoriesData,
+        isLoading: loadingSubCategories,
+    } = useSubCategoriesQuery("");
+
+
 
 
     useEffect(() => {
@@ -156,27 +169,68 @@ const ProductList = () => {
 
     const [search, setSearch] = useState("");
     const [sort, setSort] = useState("");
-    const [maxPrice, setMaxPrice] = useState(100000);
+    const [maxPrice, setMaxPrice] = useState(300000);
     const [category, setCategory] = useState("");
+    const [brand, setBrand] = useState("");
+    const [subCategory, setSubCategory] = useState("");
     const [page, setPage] = useState(1);
 
-    if (category) console.log(category, "dsjlhfadjk")
 
     const { isLoading: productLoading,
         data: searchedData,
         isError: productIsError,
-        error: productError } = useSearchProductsQuery({ category, search, sort, page, price: maxPrice });
+        error: productError } = useSearchProductsQuery({ category, search, sort, page, price: maxPrice, brand, subCategory });
 
     console.log(searchedData, "hfasdjkhfds")
 
-    // const addToCartHandler = (cartItem: CartItem) => {
-    //     if (cartItem.stock < 1) return toast.error("Out of Stock")
-    //     dispatch(addToCart(cartItem))
-    //     toast.success("Added to Cart")
-    // }
+
+    useEffect(() => {
+        if (category === "") {
+            setBrand("")
+            setSubCategory("")
+        }
+    }, [category])
+
 
     const isPrevPage = page > 1
     const isNextPage = page < 4
+
+
+
+    const removeFilters = () => {
+        setCategory("")
+        setBrand("")
+        setSubCategory("")
+        setSearch("")
+        setSort("")
+        setMaxPrice(300000)
+    }
+
+
+
+
+    // // Assuming products have a 'brand' property
+    // const brands = [...new Set(searchedData?.products?.map(product => product.brand))];
+
+    // const handleBrandChange = (event) => {
+    //     const brand = event.target.value;
+    //     console.log(brand, "sdljfhsadjkhfk")
+    //     setSelectedBrand(brand === 'ALL' ? null : brand);
+    // };
+
+    // useEffect(() => {
+    //     // Filter products based on the selected brand
+    //     const filteredProducts = selectedBrand
+    //         ? filterData.filter(product => product.brand === selectedBrand)
+    //         : filterData;
+
+    //     // Set the filtered products to state
+    //     setFilterData(filteredProducts);
+    // }, [selectedBrand, filterData]);
+
+
+
+
 
 
     // if (isError) {
@@ -262,7 +316,10 @@ const ProductList = () => {
                             >
                                 <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                                     <div className="flex items-center justify-between px-4 mt-[100px]">
-                                        <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                                        <div className='flex items-center justify-between'>
+                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2> <span onClick={removeFilters} style={{ border: "2px solid red" }}><MdDeleteForever className='text-2xl' /></span>
+                                        </div>
+
                                         <button
                                             type="button"
                                             className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
@@ -406,7 +463,9 @@ const ProductList = () => {
                             <form className="hidden lg:block">
                                 <div className="flex">
                                     <aside className="min-w-80 shadow-md p-8 flex flex-col justify-start space-y-4">
-                                        <h2 className="text-2xl font-bold">Filters</h2>
+                                        <div className='flex items-center justify-between'>
+                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2> <span onClick={removeFilters}><MdDeleteForever className='text-2xl cursor-pointer' /></span>
+                                        </div>
 
                                         <div className="space-y-4">
                                             <div>
@@ -427,7 +486,7 @@ const ProductList = () => {
                                                 <input
                                                     type="range"
                                                     min={100}
-                                                    max={100000}
+                                                    max={500000}
                                                     value={maxPrice}
                                                     onChange={(e) => setMaxPrice(Number(e.target.value))}
                                                     className="w-full p-2 border border-gray-300 rounded"
@@ -447,6 +506,35 @@ const ProductList = () => {
                                                     ))}
                                                 </select>
                                             </div>
+
+
+                                            {category && <div>
+                                                <h4 className="text-lg font-bold">Brands</h4>
+                                                <select
+                                                    value={brand}
+                                                    onChange={(e) => setBrand(e.target.value)}
+                                                    className="w-full p-2 border border-gray-300 rounded"
+                                                >
+                                                    <option value="">ALL</option>
+                                                    {productLoading === false && searchedData?.products.map((curElem) => (
+                                                        <option key={curElem.brand} value={curElem.brand}>{curElem?.brand?.toUpperCase()}</option>
+                                                    ))}
+                                                </select>
+                                            </div>}
+
+                                            {category && <div>
+                                                <h4 className="text-lg font-bold">Sub Categories</h4>
+                                                <select
+                                                    value={subCategory}
+                                                    onChange={(e) => setSubCategory(e.target.value)}
+                                                    className="w-full p-2 border border-gray-300 rounded"
+                                                >
+                                                    <option value="">ALL</option>
+                                                    {searchedData?.products.map((curElem) => (
+                                                        <option key={curElem.subCategory} value={curElem.subCategory}>{curElem.subCategory}</option>
+                                                    ))}
+                                                </select>
+                                            </div>}
                                         </div>
                                     </aside>
                                 </div>
@@ -464,6 +552,7 @@ const ProductList = () => {
                                             {productLoading ? (
                                                 <Loader />
                                             ) : searchedData?.products?.map((product) => (
+                                                // ) : filterData?.map((product) => (
                                                 <div style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
                                                     <p className="text-md font-semibold text-black mb-4">{product.category}</p>
                                                     <div className='flex items-center justify-between'>

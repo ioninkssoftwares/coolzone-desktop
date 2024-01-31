@@ -8,6 +8,7 @@ const InputField = ({ label, type, value, onChange, validate }) => {
     const handleValidation = (inputValue) => {
         const validationError = validate(inputValue);
         setError(validationError);
+        return validationError;
     };
 
     return (

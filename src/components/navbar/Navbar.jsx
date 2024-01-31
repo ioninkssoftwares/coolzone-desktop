@@ -189,14 +189,14 @@ export default function Navbar() {
 
               <div className="relative">
                 <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 relative">
-                  <form onSubmit={handleSearchSubmit} className='flex' style={{ width: "85%", height: "100%" }}>
+                  <form onSubmit={handleSearchSubmit} className='flex ' style={{ width: "85%", height: "100%" }}>
                     <div className="relative w-full">
                       <input
                         type="text"
                         placeholder="Search..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full p-2 pl-8 border border-primary-blue rounded-l-full focus:outline-none focus:border-blue-500"
+                        className="w-full p-2 pl-8 border border-primary-blue rounded-r-full rounded-l-full focus:outline-none focus:border-blue-500"
                       />
                       <button className='absolute top-0 right-0 w-10 h-full flex items-center rounded-r-full bg-primary-blue'>
                         <AiOutlineSearch className='ml-3 mr-5 text-white' />
@@ -207,7 +207,7 @@ export default function Navbar() {
 
 
                 {/* Display search results */}
-                <div className="absolute left-0 bg-white border rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
+                <div className="absolute left-0 bg-white rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
                   {search.length > 0 && searchedData && searchedData.products.map((result) => (
                     <div onClick={() => handleSearch(result.name)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100">
                       {result.name}

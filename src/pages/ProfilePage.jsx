@@ -34,6 +34,7 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(false);
     const [userDetails, setUserDetails] = useState({});
     const instance = useAxios(token)
+    const [formErrors, setFormErrors] = useState({});
     // const userDetails = useSelector(selectCurrentUserDetails);
 
 
@@ -110,14 +111,7 @@ const ProfilePage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(userData, "djkshksdjhf")
-        // Check for empty fields
-        // const emptyFields = Object.keys(userData).filter((key) => userData[key] === '');
 
-        // if (emptyFields.length > 0) {
-        //   emptyFields.forEach((field) => {
-        //     toast.error(`${field} is empty`, { position: toast.POSITION.TOP_RIGHT });
-        //   });
-        // } else {
 
         try {
             const response = await instance.put("/me/update", userData)
@@ -135,17 +129,7 @@ const ProfilePage = () => {
     }
 
 
-    // };
 
-
-    // useEffect(() => {
-    //     if (token) {
-    //         dispatch(getCurrentUserAsync(token))
-    //     }
-
-    // }, [token])
-
-    // Validations Logics
 
     const validateMobileNumber = (value) => {
         const regex = /^[0-9]{10}$/; // Only allow 10 digits
@@ -255,63 +239,13 @@ const ProfilePage = () => {
                                         InputProps={{
                                             readOnly: true,
                                         }}
-
-                                    // onChange={(e) =>
-                                    //     setUserData({ ...userData, email: e.target.value })
-                                    // }
                                     />
 
                                 </div>
 
-                                {/* <div className='basis-[48%]'> */}
-
-
-                                {/* <Box
-                                        sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '20px',
-                                            border: '1px solid #c4c4c4',
-                                            padding: '6px 10px',
-                                            borderRadius: '5px',
-                                            marginTop: '15px',
-                                            marginBottom: '10px',
-                                        }}
-                                    > */}
-                                {/* <p>Gender</p>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        value="Male"
-                                                        checked={userData.gender === 'Male'}
-                                                        onChange={handleCheckboxChange}
-                                                        defaultChecked
-                                                    />
-                                                }
-                                                label="Male"
-                                            />
-                                        </FormGroup> */}
-                                {/* <FormGroup>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        value="Female"
-                                                        checked={userData.gender === 'Female'}
-                                                        onChange={handleCheckboxChange}
-                                                        defaultChecked
-                                                    />
-                                                }
-                                                label="Female"
-                                            />
-                                        </FormGroup> */}
-                                {/* <span style={{ color: 'red' }}>{formErrors.gender}</span> */}
-                                {/* </Box> */}
 
 
 
-
-                                {/* </div> */}
                             </div>
 
 
@@ -330,6 +264,7 @@ const ProfilePage = () => {
                                         color: 'white', // Set the text color
                                     }}
                                     className="bg-primary-blue  text-white "
+                                    disabled={Object.values(formErrors).some((error) => Boolean(error))}
                                 >
                                     Submit
                                 </Button>
