@@ -518,7 +518,7 @@ const ProductList = () => {
                                             </div>
 
 
-                                            {category && <div>
+                                            {/* {category || search && <div>
                                                 <h4 className="text-lg font-bold">Brands</h4>
                                                 <select
                                                     value={brand}
@@ -530,21 +530,43 @@ const ProductList = () => {
                                                         <option key={curElem.brand} value={curElem.brand}>{curElem?.brand?.toUpperCase()}</option>
                                                     ))}
                                                 </select>
-                                            </div>}
+                                            </div>} */}
 
-                                            {category && <div>
-                                                <h4 className="text-lg font-bold">Sub Categories</h4>
-                                                <select
-                                                    value={subCategory}
-                                                    onChange={(e) => setSubCategory(e.target.value)}
-                                                    className="w-full p-2 border border-gray-300 rounded"
-                                                >
-                                                    <option value="">ALL</option>
-                                                    {searchedData?.products.map((curElem) => (
-                                                        <option key={curElem.subCategory} value={curElem.subCategory}>{curElem.subCategory}</option>
-                                                    ))}
-                                                </select>
-                                            </div>}
+                                            {(category || search) && (
+                                                <div>
+                                                    <h4 className="text-lg font-bold">Brands</h4>
+                                                    <select
+                                                        value={brand}
+                                                        onChange={(e) => setBrand(e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded"
+                                                    >
+                                                        <option value="">ALL</option>
+                                                        {productLoading === false &&
+                                                            searchedData?.products.map((curElem) => (
+                                                                <option key={curElem.brand} value={curElem.brand}>
+                                                                    {curElem?.brand?.toUpperCase()}
+                                                                </option>
+                                                            ))}
+                                                    </select>
+                                                </div>
+                                            )}
+
+
+                                            {(category || search) && (
+                                                <div>
+                                                    <h4 className="text-lg font-bold">Sub Categories</h4>
+                                                    <select
+                                                        value={subCategory}
+                                                        onChange={(e) => setSubCategory(e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded"
+                                                    >
+                                                        <option value="">ALL</option>
+                                                        {searchedData?.products.map((curElem) => (
+                                                            <option key={curElem.subCategory} value={curElem.subCategory}>{curElem.subCategory}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            )}
                                         </div>
                                     </aside>
                                 </div>
