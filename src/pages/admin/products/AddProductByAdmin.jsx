@@ -145,11 +145,11 @@ const AddProductByAdmin = () => {
         price: 0,
         description: "",
         category: "",
-        // brand: "",
+        brand: "",
         specification: "",
         featured: true,
         bestSeller: true,
-        // shortDescription: "",
+        subCategory: "",
         // costPrice: 0,
         // returnPolicy: true
     })
@@ -226,6 +226,8 @@ const AddProductByAdmin = () => {
         ProductFormData.append('featured', product.featured);
         ProductFormData.append('specification', product.specification);
         ProductFormData.append('description', product.description);
+        ProductFormData.append('brand', product.brand);
+        ProductFormData.append('subCategory', product.subCategory);
 
         try {
             const res = await instance.post("/admin/product/new", ProductFormData, {
@@ -319,6 +321,11 @@ const AddProductByAdmin = () => {
         const regex = /^[a-zA-Z]+$/;
         return regex.test(value) ? null : 'Invalid characters in category';
     };
+    const validateBrand = (value) => {
+        // Only allow letters, exclude spaces and symbols
+        const regex = /^[a-zA-Z]+$/;
+        return regex.test(value) ? null : 'Invalid characters in brand';
+    };
 
     const validateBrandName = (value) => {
         // Add specific validation logic for product name
@@ -384,9 +391,9 @@ const AddProductByAdmin = () => {
                         <div className="bg-white mx-10  flex  gap-5 ">
                             <div className="basis-[70%] flex gap-10">
                                 <div className="basis-[45%] p-10">
-                                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                                    {/* <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Product Name
-                                    </Typography>
+                                    </Typography> */}
 
                                     <InputField
                                         label="Product Name"
@@ -395,9 +402,20 @@ const AddProductByAdmin = () => {
                                         onChange={(e) => setProduct({ ...product, name: e })}
                                     // validate={validateProductName}
                                     />
-                                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+
+                                    <InputField
+                                        label="Brand"
+                                        type="text"
+                                        value={product?.brand}
+                                        onChange={(e) => setProduct({ ...product, brand: e })}
+                                        validate={validateBrand}
+                                    />
+
+
+
+                                    {/* <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Category
-                                    </Typography>
+                                    </Typography> */}
 
                                     <InputField
                                         label="Category"
@@ -405,6 +423,14 @@ const AddProductByAdmin = () => {
                                         value={product?.category}
                                         onChange={(e) => setProduct({ ...product, category: e })}
                                         validate={validateCategory}
+                                    />
+
+                                    <InputField
+                                        label="Sub Category"
+                                        type="text"
+                                        value={product?.subCategory}
+                                        onChange={(e) => setProduct({ ...product, subCategory: e })}
+                                    // validate={validateCategory}
                                     />
 
 
@@ -465,24 +491,6 @@ const AddProductByAdmin = () => {
                                         </FormGroup>
                                     </Box> */}
 
-                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                label="Featured"
-                                                control={<Switch checked={featuredSwitch}
-                                                    onChange={handleFeaturedSwitch} />}
-
-                                            />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                label="Best Seller"
-                                                control={<Switch checked={bestSellerSwitch}
-                                                    onChange={handleBestSellerSwitch} />}
-
-                                            />
-                                        </FormGroup>
-                                    </Box>
 
 
 
@@ -545,7 +553,29 @@ const AddProductByAdmin = () => {
 
 
                                 </div>
-                                <div className="basis-[45%] p-10 mt-10">
+                                <div className="basis-[45%] py-4 mt-10">
+
+                                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                label="Featured"
+                                                control={<Switch checked={featuredSwitch}
+                                                    onChange={handleFeaturedSwitch} />}
+
+                                            />
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                label="Best Seller"
+                                                control={<Switch checked={bestSellerSwitch}
+                                                    onChange={handleBestSellerSwitch} />}
+
+                                            />
+                                        </FormGroup>
+                                    </Box>
+
+
+
                                     <Textarea sx={{ padding: 0, borderRadius: 1 }} onChange={(event) => setProduct({
                                         ...product,
                                         description: event.target.value
@@ -561,6 +591,8 @@ const AddProductByAdmin = () => {
                                             setProduct({ ...product, specification: e.target.value })
                                         }
                                     /> */}
+
+
                                     <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Product Specifications
                                     </Typography>

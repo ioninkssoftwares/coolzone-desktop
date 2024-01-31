@@ -151,6 +151,8 @@ const EditProductById = () => {
         specification: "",
         featured: true,
         bestSeller: true,
+        subCategory: "",
+        brand: "",
         // best_seller: true,
         // shortDescription: "",
         // costPrice: 0,
@@ -311,7 +313,8 @@ const EditProductById = () => {
             specification: productData?.specification,
             featured: productData?.featured,
             bestSeller: productData?.bestSeller,
-            // brand: productData?.brand,
+            brand: productData?.brand,
+            subCategory: productData?.subCategory,
             // specification: productData?.specification,
             // featured: productData?.featured,
             // best_seller: productData?.best_seller,
@@ -384,6 +387,8 @@ const EditProductById = () => {
         ProductFormData.append('specification', product.specification);
         ProductFormData.append('featured', product.featured);
         ProductFormData.append('bestSeller', product.bestSeller);
+        ProductFormData.append('brand', product.brand);
+        ProductFormData.append('subCategory', product.subCategory);
         // ProductFormData.append('returnPolicy', product.returnPolicy);
         // ProductFormData.append('Discount', product.Discount);
 
@@ -473,9 +478,15 @@ const EditProductById = () => {
         return regex.test(value) ? null : 'Invalid characters in product name';
     };
     const validateCategory = (value) => {
-        // Add specific validation logic for product name
-        const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
-        return regex.test(value) ? null : 'Invalid characters in category name';
+        // Only allow letters, exclude spaces and symbols
+        const regex = /^[a-zA-Z]+$/;
+        return regex.test(value) ? null : 'Invalid characters in category';
+    };
+
+    const validateBrand = (value) => {
+        // Only allow letters, exclude spaces and symbols
+        const regex = /^[a-zA-Z]+$/;
+        return regex.test(value) ? null : 'Invalid characters in brand';
     };
     const validateBrandName = (value) => {
         // Add specific validation logic for product name
@@ -541,18 +552,7 @@ const EditProductById = () => {
                         <div className="bg-white mx-10  flex  gap-5 ">
                             <div className="basis-[70%] flex gap-10">
                                 <div className="basis-[45%] p-10">
-                                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
-                                        Product Name
-                                    </Typography>
-                                    {/* <TextField
-                                        label="Product Name"
-                                        fullWidth
-                                        margin="normal"
-                                        value={product.name}
-                                        onChange={(e) =>
-                                            setProduct({ ...product, name: e.target.value })
-                                        }
-                                    /> */}
+
 
                                     <InputField
                                         label="Product Name"
@@ -561,6 +561,18 @@ const EditProductById = () => {
                                         onChange={(e) => setProduct({ ...product, name: e })}
                                     // validate={validateProductName}
                                     />
+
+                                    <InputField
+                                        label="Brand"
+                                        type="text"
+                                        value={product?.brand}
+                                        onChange={(e) => setProduct({ ...product, brand: e })}
+                                        validate={validateBrand}
+                                    />
+
+
+
+
                                     <InputField
                                         label="Category"
                                         type="text"
@@ -568,6 +580,15 @@ const EditProductById = () => {
                                         onChange={(e) => setProduct({ ...product, category: e })}
                                         validate={validateCategory}
                                     />
+
+                                    <InputField
+                                        label="Sub Category"
+                                        type="text"
+                                        value={product?.subCategory}
+                                        onChange={(e) => setProduct({ ...product, subCategory: e })}
+                                    // validate={validateCategory}
+                                    />
+
 
                                     {/* <FormControl sx={{ marginTop: 3 }} fullWidth>
                                         <InputLabel id="demo-simple-select-label">Select Product Category</InputLabel>
@@ -624,24 +645,6 @@ const EditProductById = () => {
                                         </FormGroup>
                                     </Box> */}
 
-                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                label="Featured"
-                                                control={<Switch checked={featuredSwitch}
-                                                    onChange={handleFeaturedSwitch} />}
-
-                                            />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <FormControlLabel
-                                                label="Best Seller"
-                                                control={<Switch checked={bestSellerSwitch}
-                                                    onChange={handleBestSellerSwitch} />}
-
-                                            />
-                                        </FormGroup>
-                                    </Box>
 
 
 
@@ -704,11 +707,31 @@ const EditProductById = () => {
 
 
                                 </div>
-                                <div className="basis-[45%] p-10 mt-10">
+                                <div className="basis-[45%] py-4 mt-10">
+
+                                    <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                label="Featured"
+                                                control={<Switch checked={featuredSwitch}
+                                                    onChange={handleFeaturedSwitch} />}
+
+                                            />
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                label="Best Seller"
+                                                control={<Switch checked={bestSellerSwitch}
+                                                    onChange={handleBestSellerSwitch} />}
+
+                                            />
+                                        </FormGroup>
+                                    </Box>
+
                                     <Textarea sx={{ padding: 0, borderRadius: 1 }} value={product?.description} onChange={(event) => setProduct({
                                         ...product,
                                         description: event.target.value
-                                    })} placeholder="Short Description" minRows={3} />
+                                    })} placeholder=" Description" minRows={3} />
 
 
                                     {/* <TextField

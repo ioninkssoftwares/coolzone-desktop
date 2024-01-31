@@ -26,6 +26,7 @@ import { toast } from 'react-toastify';
 import { useBrandsQuery, useCategoriesQuery, useSearchProductsQuery, useSubCategoriesQuery } from '../../redux/api/productApi';
 import Loader from '../Loader';
 import { addToCart } from '../../redux/reducer/cartReducer';
+import { IconButton, Tooltip } from '@mui/material';
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -464,7 +465,16 @@ const ProductList = () => {
                                 <div className="flex">
                                     <aside className="min-w-80 shadow-md p-8 flex flex-col justify-start space-y-4">
                                         <div className='flex items-center justify-between'>
-                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2> <span onClick={removeFilters}><MdDeleteForever className='text-2xl cursor-pointer' /></span>
+                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+                                            {/* <span onClick={removeFilters}><MdDeleteForever className='text-2xl cursor-pointer' /></span> */}
+                                            <Tooltip title="Remove Filters">
+                                                <IconButton
+                                                    onClick={removeFilters}
+                                                    color="error"
+                                                >
+                                                    <MdDeleteForever />
+                                                </IconButton>
+                                            </Tooltip>
                                         </div>
 
                                         <div className="space-y-4">

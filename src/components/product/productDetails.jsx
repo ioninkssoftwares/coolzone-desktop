@@ -188,7 +188,7 @@ const ProductDetails = () => {
                         <div className="w-full mx-auto flex flex-wrap md:px-32 px-0 flex-col md:flex-row">
 
                             <div className='md:w-[30%] w-full md:p-0 p-4 '>
-                                <div className='w-full h-1/3 rounded-lg'>
+                                <div className='w-full h-[60%] rounded-lg'>
                                     <img
 
                                         alt="ecommerce"
