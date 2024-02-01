@@ -27,7 +27,7 @@ import { toast } from 'react-toastify'
 const style = {
     position: 'absolute',
     top: '50%',
-    left: '50%',
+    left: '48%',
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
@@ -48,6 +48,7 @@ const AddressPage = () => {
     const [savedAddress, setSavedAddress] = useState([]);
     const userDetails = useSelector(selectCurrentUserDetails);
     const [addLoading, setAddLoading] = useState(false)
+    const [formErrors, setFormErrors] = useState({});
     const [address, setAddress] = useState({
         address: "",
         city: "",
@@ -356,11 +357,14 @@ const AddressPage = () => {
 
                                     {/* <TextField label="Landmark" fullWidth margin="normal" /> */}
                                     <InputField
-                                        onChange={(e) => setAddress({ ...address, city: e })}
                                         label="Town/City"
                                         value={address?.city}
                                         fullWidth margin="normal"
                                         required
+                                        onChange={(value) => {
+                                            setAddress({ ...address, city: value });
+                                            setFormErrors({ ...formErrors, city: nameValidity(value) });
+                                        }}
                                         validate={nameValidity} />
 
                                     <Box sx={{ marginBottom: 3 }}>
@@ -378,10 +382,13 @@ const AddressPage = () => {
 
 
                                     <InputField
-                                        onChange={(e) => setAddress({ ...address, country: e })}
                                         label="Country" fullWi
                                         dth margin="normal"
                                         required
+                                        onChange={(value) => {
+                                            setAddress({ ...address, country: value });
+                                            setFormErrors({ ...formErrors, country: nameValidity(value) });
+                                        }}
                                         validate={nameValidity}
                                     />
 
@@ -390,19 +397,22 @@ const AddressPage = () => {
                                         label="Pincode"
                                         type="text"
                                         value={address?.pinCode}
-                                        onChange={(e) => setAddress({ ...address, pinCode: e })}
                                         fullWidth
                                         margin="normal"
                                         required
+                                        onChange={(value) => {
+                                            setAddress({ ...address, pinCode: value });
+                                            setFormErrors({ ...formErrors, pinCode: validatePinCode(value) });
+                                        }}
                                         validate={validatePinCode}
                                     />
 
 
                                     {/* <TextField label="Delivery Instructions" fullWidth margin="normal" multiline /> */}
 
-                                    {addLoading ? <CircularProgress /> : <Button type="submit" variant="contained" color="primary">
+                                    {addLoading ? <CircularProgress /> : Object.values(formErrors).some((error) => Boolean(error)) ? null : (<Button type="submit" variant="contained" color="primary">
                                         Save Address
-                                    </Button>}
+                                    </Button>)}
                                 </form>
                             </Box>
                         </Modal>

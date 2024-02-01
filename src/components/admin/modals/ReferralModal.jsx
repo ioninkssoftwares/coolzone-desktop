@@ -238,17 +238,35 @@ const ReferralModal = ({ buttonText, modalTitle, userDetails }) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
 
-                        <Typography id="modal-modal-title" variant="h5" component="h2">
+                    }}>
+
+                        <Typography id="modal-modal-title" sx={{
+                            '@media (max-width: 600px)': {
+                                display: "none"
+                            },
+                        }} variant="h5" component="h2">
                             {modalTitle}
                         </Typography>
-                        <Typography id="modal-modal-title" variant="h5" component="h2">
+                        <Typography id="modal-modal-title" sx={{
+                            '@media (max-width: 600px)': {
+                                ml: "5.7rem"
+                            },
+                        }} variant="h5" component="h2">
                             Refferal Score:{userDetails?.referralCount}
                         </Typography>
                     </Box>
 
-                    <Typography sx={{ my: 3, color: "black", textAlign: "center", fontWeight: "bold" }} id="modal-modal-title" variant="h5" component="p">
+                    <Typography sx={{
+                        my: 3, color: "black", textAlign: "center", fontWeight: "bold",
+                        '@media (max-width: 600px)': {
+                            fontWeight: "medium"
+                        },
+                    }} id="modal-modal-title" variant="h5" component="p">
                         Refer your friends, get 50 credits!
                     </Typography>
 

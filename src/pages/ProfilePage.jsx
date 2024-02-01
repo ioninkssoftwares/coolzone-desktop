@@ -35,6 +35,7 @@ const ProfilePage = () => {
     const [userDetails, setUserDetails] = useState({});
     const instance = useAxios(token)
     const [formErrors, setFormErrors] = useState({});
+
     // const userDetails = useSelector(selectCurrentUserDetails);
 
 
@@ -170,7 +171,7 @@ const ProfilePage = () => {
                         {loading ? <p> Loading...</p> : <form>
                             <div className='flex items-center justify-center gap-6'>
                                 <div className='w-[50%]'>
-
+                                    {/* 
                                     <InputField
                                         label="First Name"
                                         type="text"
@@ -178,6 +179,17 @@ const ProfilePage = () => {
                                         value={userData?.name}
                                         onChange={(e) => setUserData({ ...userData, name: e })}
 
+                                        validate={validateFirstName}
+                                    /> */}
+                                    <InputField
+                                        label="First Name"
+                                        type="text"
+                                        required
+                                        value={userData?.name}
+                                        onChange={(value) => {
+                                            setUserData({ ...userData, name: value });
+                                            setFormErrors({ ...formErrors, name: validateFirstName(value) });
+                                        }}
                                         validate={validateFirstName}
                                     />
 
@@ -188,9 +200,10 @@ const ProfilePage = () => {
                                         value={userData?.lastName}
                                         required
                                         // error={!!formErrors.lastName}
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, lastName: e })
-                                        }
+                                        onChange={(value) => {
+                                            setUserData({ ...userData, lastName: value });
+                                            setFormErrors({ ...formErrors, lastName: validateFirstName(value) });
+                                        }}
                                         validate={validateFirstName}
                                     />
 
@@ -201,9 +214,10 @@ const ProfilePage = () => {
                                         type="text"
                                         required
                                         value={userData?.DOB}
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, DOB: e })
-                                        }
+                                        onChange={(value) => {
+                                            setUserData({ ...userData, DOB: value });
+                                            setFormErrors({ ...formErrors, DOB: validateFirstName(value) });
+                                        }}
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -217,9 +231,10 @@ const ProfilePage = () => {
                                         required
                                         value={userData?.contactNumber}
 
-                                        onChange={(e) =>
-                                            setUserData({ ...userData, contactNumber: e })
-                                        }
+                                        onChange={(value) => {
+                                            setUserData({ ...userData, contactNumber: value });
+                                            setFormErrors({ ...formErrors, contactNumber: validateFirstName(value) });
+                                        }}
                                         validate={validateMobileNumber}
 
                                     />
@@ -250,16 +265,15 @@ const ProfilePage = () => {
 
 
                             {/* Add margin-top to separate form fields and button */}
-                            {loading ? <CircularProgress /> : <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            {/* {loading ? <CircularProgress /> : <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <Button
                                     onClick={handleSubmit}
                                     variant="contained"
-                                    // onClick={handleSubmit}
                                     sx={{
                                         marginTop: 2,
-                                        backgroundColor: '#04a7ff', // Set the background color
+                                        backgroundColor: '#04a7ff',
                                         '&:hover': {
-                                            backgroundColor: '#04a7ff', // Set the hover background color
+                                            backgroundColor: '#04a7ff', 
                                         },
                                         color: 'white', // Set the text color
                                     }}
@@ -268,7 +282,27 @@ const ProfilePage = () => {
                                 >
                                     Submit
                                 </Button>
-                            </Box>}
+                            </Box>} */}
+
+                            {loading ? <CircularProgress /> : Object.values(formErrors).some((error) => Boolean(error)) ? null : (
+                                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Button
+                                        onClick={handleSubmit}
+                                        variant="contained"
+                                        sx={{
+                                            marginTop: 2,
+                                            backgroundColor: '#04a7ff',
+                                            '&:hover': {
+                                                backgroundColor: '#04a7ff',
+                                            },
+                                            color: 'white', // Set the text color
+                                        }}
+                                        className="bg-primary-blue  text-white "
+                                    >
+                                        Submit
+                                    </Button>
+                                </Box>
+                            )}
 
                         </form>}
                     </div>

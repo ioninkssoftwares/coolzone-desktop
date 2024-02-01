@@ -166,6 +166,7 @@ const Cart = () => {
                   <>
                     <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
                       <div className="flex w-2/5">
+                        {/* onClick={() => navigate(`/product/${item._id}`)} */}
                         <div className="w-20">
                           <img className="w-full h-full object-cover" src={item.photo} alt="cartImage" />
                         </div>
@@ -175,7 +176,7 @@ const Cart = () => {
                           <a onClick={() => removeHandler(item.productId)} className="font-semibold mt-4 cursor-pointer hover:text-red-500 hover:font-bold text-gray-500 text-xs">Remove</a>
                         </div>
                       </div>
-                      <div className="flex justify-center w-1/5">
+                      <div className="flex md:flex-row flex-col md:justify-center justify-center md:items-baseline items-center w-1/5">
                         <svg onClick={() => decrementHandler(item)} className="fill-current cursor-pointer text-gray-600 w-3" viewBox="0 0 448 512"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                         </svg>
 
@@ -215,7 +216,7 @@ const Cart = () => {
               </div>
               <div className="flex justify-between mt-10 mb-5">
                 <span className="font-semibold text-sm uppercase">Shipping Charges</span>
-                <span className="font-semibold text-sm">  ₹{shippingCharges}</span>
+                <span className="font-semibold text-sm">{cartItems && cartItems.length > 0 ? `₹${shippingCharges}` : ""}</span>
               </div>
               {/* <div>
                 <label className="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>

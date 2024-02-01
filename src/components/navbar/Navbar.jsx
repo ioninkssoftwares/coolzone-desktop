@@ -33,8 +33,7 @@ export default function Navbar() {
   let location = useLocation();
   const [cookies, setCookies, removeCookies] = useCookies(['token']);
   const [token, setToken] = useState("");
-  // const cartItems = useSelector(selectItems);
-  // const cartItemsInLength = useSelector(cartItemsLength);
+  const cartItems = useSelector((state) => state.cartReducer.cartItems);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [term, setTerm] = useState("");
@@ -58,7 +57,7 @@ export default function Navbar() {
 
   const navigation = [
     { name: 'Products', href: '/products', current: location.pathname === '/products' },
-    { name: 'Profile', href: '/profile', current: location.pathname === '/membership' },
+    { name: 'MyAccount', href: '/myAccount', current: location.pathname === '/myAccount' },
     { name: 'Cart', href: '/cart', current: location.pathname === '/cart' },
     { name: 'Favourite', href: '/favourite', current: location.pathname === '/wishlist' },
     { name: 'Orders', href: '/orders', current: location.pathname === '/orders' },
@@ -188,7 +187,7 @@ export default function Navbar() {
               </div> */}
 
               <div className="relative">
-                <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[500px] ml-[50px] md:ml-0 relative">
+                <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[200px] ml-[50px] md:ml-0 relative">
                   <form onSubmit={handleSearchSubmit} className='flex ' style={{ width: "85%", height: "100%" }}>
                     <div className="relative w-full">
                       <input
@@ -230,12 +229,12 @@ export default function Navbar() {
                   <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div> */}
                 <div className='cursor-pointer' onClick={() => navigate("/cart")} >
-                  <Badge color="error">
+                  {/* <Badge color="error">
                     <AddShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
-                  </Badge>
-                  {/* <Badge badgeContent={cartItemsInLength} color="error">
-                    <AddShoppingCart />
                   </Badge> */}
+                  <Badge badgeContent={cartItems && cartItems.length} color="error">
+                    <AddShoppingCart />
+                  </Badge>
                 </div>
                 <div onClick={() => navigate("/orders")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <AiOutlineOrderedList className='w-full h-full cursor-pointer hover:text-primary-blue' />
@@ -279,7 +278,7 @@ export default function Navbar() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : item.name === "Profile" ? handleProfile : item.name === "Favourite" ? handleFavourite : item.name === "Orders" ? handleOrders : null}
+                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : item.name === "MyAccount" ? handleProfile : item.name === "Favourite" ? handleFavourite : item.name === "Orders" ? handleOrders : null}
                   className={classNames(
                     item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'

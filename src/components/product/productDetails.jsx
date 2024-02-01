@@ -215,8 +215,8 @@ const ProductDetails = () => {
                                     ))}
                                 </div>
                                 <div className='w-full flex items-center justify-between px-4'>
-                                    <button onClick={handleCart} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Cart</button>
-                                    <button onClick={() => handleWishlist(product?.product._id)} className='rounded-full px-8 py-2 bg-primary-blue text-white'>Add to Wishlist</button>
+                                    <button onClick={handleCart} className='rounded-full md:px-8 px-4 py-2 bg-primary-blue text-white'>Add to Cart</button>
+                                    <button onClick={() => handleWishlist(product?.product._id)} className='rounded-full md:px-8 px-4  py-2 bg-primary-blue text-white'>Add to Wishlist</button>
                                 </div>
                             </div>
                             <div className=" md:w-[70%] w-full lg:pl-10 lg:py-0 mt-0 lg:mt-0">

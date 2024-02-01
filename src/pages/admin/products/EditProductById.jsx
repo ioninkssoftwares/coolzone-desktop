@@ -131,6 +131,7 @@ const EditProductById = () => {
     const instance = useAxios(token);
     const [users, setUsers] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [formErrors, setFormErrors] = useState({});
 
     const [pagination, setPagination] = useState(
         null
@@ -484,8 +485,8 @@ const EditProductById = () => {
     };
 
     const validateBrand = (value) => {
-        // Only allow letters, exclude spaces and symbols
-        const regex = /^[a-zA-Z]+$/;
+        // Allow letters and white spaces
+        const regex = /^[a-zA-Z\s]+$/;
         return regex.test(value) ? null : 'Invalid characters in brand';
     };
     const validateBrandName = (value) => {
@@ -543,9 +544,9 @@ const EditProductById = () => {
                                 {/* <button className="px-4 py-2 rounded-lg text-white bg-black">
                                     Save as Draft
                                 </button> */}
-                                {loading ? <CircularProgress /> : <button onClick={handleProductSubmit} className="px-4 py-2 rounded-lg text-white bg-primary-blue">
+                                {loading ? <CircularProgress /> : Object.values(formErrors).some((error) => Boolean(error)) ? null : (<button onClick={handleProductSubmit} className="px-4 py-2 rounded-lg text-white bg-primary-blue">
                                     Save & Publish
-                                </button>}
+                                </button>)}
                             </div>
                         </div>
 
@@ -566,7 +567,10 @@ const EditProductById = () => {
                                         label="Brand"
                                         type="text"
                                         value={product?.brand}
-                                        onChange={(e) => setProduct({ ...product, brand: e })}
+                                        onChange={(value) => {
+                                            setProduct({ ...product, brand: value });
+                                            setFormErrors({ ...formErrors, brand: validateBrand(value) });
+                                        }}
                                         validate={validateBrand}
                                     />
 
@@ -577,7 +581,10 @@ const EditProductById = () => {
                                         label="Category"
                                         type="text"
                                         value={product?.category}
-                                        onChange={(e) => setProduct({ ...product, category: e })}
+                                        onChange={(value) => {
+                                            setProduct({ ...product, category: value });
+                                            setFormErrors({ ...formErrors, category: validateCategory(value) });
+                                        }}
                                         validate={validateCategory}
                                     />
 

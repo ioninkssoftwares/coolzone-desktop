@@ -285,22 +285,22 @@ const UserManagement = () => {
                                         <span onClick={() => navigate("/admin/editCustomer")}>Customer Summary</span>
                                     </button>
                                 </div> */}
-                                <div className=" text-sm px-3">
+                                {/* <div className=" text-sm px-3">
                                     <button
-                                        // onClick={() => router.push("/admin/customers/add")}
+                      
                                         className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                     >
                                         <span>
                                             <TbEdit />
                                         </span>
-                                        {/* <span>Create New Customer</span> */}
+                    
                                         <CustomerModal
                                             buttonText="Create New Customer"
                                             modalTitle="Add a New Customer"
-                                        // onSubmit={projectSubmit}
+                                 
                                         />
                                     </button>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="flex md:justify-between md:items-center md:flex-row flex-col justify-center items-center mt-8 mb-6 gap-3 px-8">

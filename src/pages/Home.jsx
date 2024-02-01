@@ -264,7 +264,7 @@ const Home = () => {
             </div>
           </div>
           {homeProducts && (
-            <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+            <div id="feat" className="flex overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
               <CardCarousel id="feat" data={featuredProducts} Card={MediumHouseCard} />
             </div>
           )}
@@ -368,7 +368,7 @@ const Home = () => {
             </div>
           </div>
           {homeProducts && (
-            <div id="best" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+            <div id="best" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
               <CardCarousel id="best" data={bestSellerProducts} Card={MediumHouseCard} />
             </div>
           )}
@@ -398,7 +398,7 @@ const Home = () => {
             </div>
           </div>
           {homeProducts && (
-            <div id="big" className="flex overflow-x-scroll space-x-6 overflow-y-hidden hide-scrollbar">
+            <div id="big" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
               <CardCarousel id="big" data={homeProducts} Card={MediumHouseCard} />
             </div>
           )}

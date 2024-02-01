@@ -318,7 +318,15 @@ const ProductList = () => {
                                 <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                                     <div className="flex items-center justify-between px-4 mt-[100px]">
                                         <div className='flex items-center justify-between'>
-                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2> <span onClick={removeFilters} style={{ border: "2px solid red" }}><MdDeleteForever className='text-2xl' /></span>
+                                            {/* Mobile */}
+                                            <h2 className="text-lg font-medium text-gray-900">Filters</h2>   <Tooltip title="Remove Filters">
+                                                <IconButton
+                                                    onClick={removeFilters}
+                                                    color="error"
+                                                >
+                                                    <MdDeleteForever />
+                                                </IconButton>
+                                            </Tooltip>
                                         </div>
 
                                         <button
@@ -333,7 +341,7 @@ const ProductList = () => {
 
                                     {/* Mobile Filters */}
                                     <form className="mt-4 border-t border-gray-200">
-                                        {filters.map((section) => (
+                                        {/* {filters.map((section) => (
                                             <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
                                                 {({ open }) => (
                                                     <>
@@ -376,7 +384,89 @@ const ProductList = () => {
                                                     </>
                                                 )}
                                             </Disclosure>
-                                        ))}
+                                        ))} */}
+                                        <div className="space-y-4">
+                                            <div className="flex items-center flex-col justify-center mx-16">
+                                                <h4 className="text-lg font-bold text-center">Sort</h4>
+                                                <select
+                                                    value={sort}
+                                                    onChange={(e) => setSort(e.target.value)}
+                                                    className="w-fit p-2 border border-gray-300 rounded  "
+                                                >
+                                                    <option value="">None</option>
+                                                    <option value="asc">Price (Low to High)</option>
+                                                    <option value="dsc">Price (High to Low)</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="flex items-center flex-col justify-center mx-20">
+                                                <h4 className="text-lg font-bold text-center">Max Price: {maxPrice || ""}</h4>
+                                                <input
+                                                    type="range"
+                                                    min={100}
+                                                    max={500000}
+                                                    value={maxPrice}
+                                                    onChange={(e) => setMaxPrice(Number(e.target.value))}
+                                                    className="w-full p-2 border border-gray-300 rounded"
+                                                />
+                                            </div>
+
+                                            <div className="flex items-center flex-col justify-center mx-20">
+                                                <h4 className="text-lg font-bold">Category</h4>
+                                                <select
+                                                    value={category}
+                                                    onChange={(e) => setCategory(e.target.value)}
+                                                    className="w-full p-2 border border-gray-300 rounded"
+                                                >
+                                                    <option value="">ALL</option>
+                                                    {loadingCategories === false && categoriesData?.categories.map((category) => (
+                                                        <option key={category} value={category}>{category.toUpperCase()}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+
+
+
+
+                                            {(category || search) && (
+                                                <div className="flex items-center flex-col justify-center mx-20">
+                                                    <h4 className="text-lg font-bold">Brands</h4>
+                                                    <select
+                                                        value={brand}
+                                                        onChange={(e) => setBrand(e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded"
+                                                    >
+                                                        <option value="">ALL</option>
+                                                        {productLoading === false && searchedData?.products && (
+                                                            // Create a set of unique brands
+                                                            [...new Set(searchedData.products.map((curElem) => curElem.brand))].map((uniqueBrand) => (
+                                                                <option key={uniqueBrand} value={uniqueBrand}>
+                                                                    {uniqueBrand.toUpperCase()}
+                                                                </option>
+                                                            ))
+                                                        )}
+                                                    </select>
+                                                </div>
+                                            )}
+
+
+
+                                            {(category || search) && (
+                                                <div className="flex items-center flex-col justify-center mx-20">
+                                                    <h4 className="text-lg font-bold">Sub Categories</h4>
+                                                    <select
+                                                        value={subCategory}
+                                                        onChange={(e) => setSubCategory(e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded"
+                                                    >
+                                                        <option value="">ALL</option>
+                                                        {searchedData?.products.map((curElem) => (
+                                                            <option key={curElem.subCategory} value={curElem.subCategory}>{curElem.subCategory}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            )}
+                                        </div>
                                     </form>
                                 </Dialog.Panel>
                             </Transition.Child>
@@ -386,7 +476,7 @@ const ProductList = () => {
 
                 <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                        <h1 className="text-md tracking-tight text-gray-500">Computers & Tablets  /  Laptop  / Windows Laptop</h1>
+                        <h1 className="text-md tracking-tight text-gray-500 md:block hidden">Computers & Tablets  /  Laptop  / Windows Laptop</h1>
 
                         <input
                             type="text"
@@ -395,8 +485,8 @@ const ProductList = () => {
                             onChange={(e) => setSearch(e.target.value)}
                         />
 
-                        {/* <div className="flex items-center">
-                            <Menu as="div" className="relative inline-block text-left">
+                        <div className="flex items-center">
+                            {/* <Menu as="div" className="relative inline-block text-left">
                                 <div>
                                     <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                                         Sort
@@ -437,12 +527,12 @@ const ProductList = () => {
                                         </div>
                                     </Menu.Items>
                                 </Transition>
-                            </Menu>
+                            </Menu> */}
 
-                            <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
+                            {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
                                 <span className="sr-only">View grid</span>
                                 <HiOutlineSquaresPlus className="h-5 w-5" aria-hidden="true" />
-                            </button>
+                            </button> */}
                             <button
                                 type="button"
                                 className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
@@ -451,7 +541,7 @@ const ProductList = () => {
                                 <span className="sr-only">Filters</span>
                                 <BsFunnel className="h-5 w-5" aria-hidden="true" />
                             </button>
-                        </div> */}
+                        </div>
                     </div>
 
                     <section aria-labelledby="products-heading" className=" pt-6">
@@ -518,19 +608,7 @@ const ProductList = () => {
                                             </div>
 
 
-                                            {/* {category || search && <div>
-                                                <h4 className="text-lg font-bold">Brands</h4>
-                                                <select
-                                                    value={brand}
-                                                    onChange={(e) => setBrand(e.target.value)}
-                                                    className="w-full p-2 border border-gray-300 rounded"
-                                                >
-                                                    <option value="">ALL</option>
-                                                    {productLoading === false && searchedData?.products.map((curElem) => (
-                                                        <option key={curElem.brand} value={curElem.brand}>{curElem?.brand?.toUpperCase()}</option>
-                                                    ))}
-                                                </select>
-                                            </div>} */}
+
 
                                             {(category || search) && (
                                                 <div>
@@ -541,15 +619,18 @@ const ProductList = () => {
                                                         className="w-full p-2 border border-gray-300 rounded"
                                                     >
                                                         <option value="">ALL</option>
-                                                        {productLoading === false &&
-                                                            searchedData?.products.map((curElem) => (
-                                                                <option key={curElem.brand} value={curElem.brand}>
-                                                                    {curElem?.brand?.toUpperCase()}
+                                                        {productLoading === false && searchedData?.products && (
+                                                            // Create a set of unique brands
+                                                            [...new Set(searchedData.products.map((curElem) => curElem.brand))].map((uniqueBrand) => (
+                                                                <option key={uniqueBrand} value={uniqueBrand}>
+                                                                    {uniqueBrand.toUpperCase()}
                                                                 </option>
-                                                            ))}
+                                                            ))
+                                                        )}
                                                     </select>
                                                 </div>
                                             )}
+
 
 
                                             {(category || search) && (

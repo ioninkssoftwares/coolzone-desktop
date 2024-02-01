@@ -111,6 +111,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const instance = useAxios(token);
     const [discountPercentage, setDiscountPercentage] = useState(false);
+    const [formErrors, setFormErrors] = useState({});
     const [date, setDate] = useState(null); // Initialize with null or a default date
     const [couponData, setCouponData] = useState({
         // name: '',
@@ -424,18 +425,20 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
                             label="Discount Amount"
                             type="number"
                             value={couponData.amount}
-                            onChange={(e) =>
-                                setCouponData({ ...couponData, amount: e })
-                            }
+                            onChange={(value) => {
+                                setCouponData({ ...couponData, amount: value });
+                                setFormErrors({ ...formErrors, amount: validateDiscountAmount(value) });
+                            }}
                             validate={validateDiscountAmount}
                         />
                         <InputField
                             label="Limit"
                             type="number"
                             value={couponData.limit}
-                            onChange={(e) =>
-                                setCouponData({ ...couponData, limit: e })
-                            }
+                            onChange={(value) => {
+                                setCouponData({ ...couponData, limit: value });
+                                setFormErrors({ ...formErrors, limit: validateLimit(value) });
+                            }}
                             validate={validateLimit}
                         />
 
@@ -446,6 +449,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
                             onChange={(e) =>
                                 setCouponData({ ...couponData, description: e })
                             }
+
                         // validate={validateDiscountAmount}
                         />
 
@@ -539,7 +543,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
                             >
                                 Cancle
                             </Button> */}
-                            {loading ? <CircularProgress /> : <Button
+                            {loading ? <CircularProgress /> : Object.values(formErrors).some((error) => Boolean(error)) ? null : (<Button
                                 variant="contained"
                                 onClick={handleSubmit}
                                 sx={{
@@ -553,7 +557,7 @@ const CreateCouponModal = ({ buttonText, modalTitle, isCouponAdded }) => {
                                 className="bg-[#04a7ff] text-white"
                             >
                                 Add
-                            </Button>}
+                            </Button>)}
 
                         </Box>
 

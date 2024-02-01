@@ -139,6 +139,7 @@ const AddProductByAdmin = () => {
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
     const [filesToupload, setFilesToUpload] = useState([]);
+    const [formErrors, setFormErrors] = useState({});
     const [product, setProduct] = useState({
         stock: 0,
         name: "",
@@ -322,11 +323,10 @@ const AddProductByAdmin = () => {
         return regex.test(value) ? null : 'Invalid characters in category';
     };
     const validateBrand = (value) => {
-        // Only allow letters, exclude spaces and symbols
-        const regex = /^[a-zA-Z]+$/;
+        // Allow letters and white spaces
+        const regex = /^[a-zA-Z\s]+$/;
         return regex.test(value) ? null : 'Invalid characters in brand';
     };
-
     const validateBrandName = (value) => {
         // Add specific validation logic for product name
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
@@ -382,9 +382,9 @@ const AddProductByAdmin = () => {
                                 {/* <button className="px-4 py-2 rounded-lg text-white bg-black">
                                     Save as Draft
                                 </button> */}
-                                {loading ? <CircularProgress /> : <button onClick={handleProductSubmit} className="px-4 py-2 rounded-lg text-white bg-primary-blue">
+                                {loading ? <CircularProgress /> : Object.values(formErrors).some((error) => Boolean(error)) ? null : (<button onClick={handleProductSubmit} className="px-4 py-2 rounded-lg text-white bg-primary-blue">
                                     Save & Publish
-                                </button>}
+                                </button>)}
                             </div>
                         </div>
 
@@ -407,7 +407,10 @@ const AddProductByAdmin = () => {
                                         label="Brand"
                                         type="text"
                                         value={product?.brand}
-                                        onChange={(e) => setProduct({ ...product, brand: e })}
+                                        onChange={(value) => {
+                                            setProduct({ ...product, brand: value });
+                                            setFormErrors({ ...formErrors, brand: validateBrand(value) });
+                                        }}
                                         validate={validateBrand}
                                     />
 
@@ -421,7 +424,10 @@ const AddProductByAdmin = () => {
                                         label="Category"
                                         type="text"
                                         value={product?.category}
-                                        onChange={(e) => setProduct({ ...product, category: e })}
+                                        onChange={(value) => {
+                                            setProduct({ ...product, category: value });
+                                            setFormErrors({ ...formErrors, category: validateCategory(value) });
+                                        }}
                                         validate={validateCategory}
                                     />
 
