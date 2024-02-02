@@ -62,14 +62,14 @@ const CouponPage = () => {
                         {coupons && coupons.length > 0 ? coupons.map((curElem) => (
 
                             <div style={{ borderBottom: "1px solid grey" }} className='flex gap-6 justify-between items-center p-5'>
-                                <div className='flex basis-[55%%] gap-4 items-center'>
-                                    <BiSolidCoupon className='text-6xl text-primary-blue' />
+                                <div className='flex md:basis-[55%%] basis-[50%] gap-4 items-center'>
+                                    <BiSolidCoupon className='text-6xl md:block hidden text-primary-blue' />
                                     <div className='flex flex-col gap-2'>
                                         <p className='text-xl text-primary-blue font-semibold'>{curElem.code}</p>
                                         <p>{curElem.description}</p>
                                     </div>
                                 </div>
-                                <div className='flex basis-[35%] justify-between items-center'>
+                                <div className='flex md:basis-[35%] justify-between items-center'>
                                     <div className='flex flex-col gap-2'>
                                         <p className='text-xl'>Coupon Code</p>
                                         <p className='text-primary-blue'>{curElem.code}</p>
