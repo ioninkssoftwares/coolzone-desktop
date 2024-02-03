@@ -479,9 +479,9 @@ const EditProductById = () => {
         return regex.test(value) ? null : 'Invalid characters in product name';
     };
     const validateCategory = (value) => {
-        // Only allow letters, exclude spaces and symbols
-        const regex = /^[a-zA-Z]+$/;
-        return regex.test(value) ? null : 'Invalid characters in category';
+        // Only allow lowercase letters, exclude uppercase, spaces, and symbols
+        const regex = /^[a-z]+$/;
+        return regex.test(value) ? null : 'Invalid characters in category (Accepts only lowercase letters)';
     };
 
     const validateBrand = (value) => {

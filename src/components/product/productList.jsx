@@ -148,7 +148,14 @@ const ProductList = () => {
         isLoading: loadingCategories,
     } = useCategoriesQuery("");
 
-    if (categoriesData) console.log(categoriesData, "fsadhkhkj")
+    if (categoriesData) console.log(categoriesData, "fsadhkhkj");
+
+
+    // const uniqueCategories = loadingCategories === false && categoriesData?.categories
+    //     ? [...new Set(categoriesData.categories.map(category => category.toLowerCase()))]
+    //     : [];
+
+
 
     // const { data: brandsData,
     //     isLoading: loadingBrands,
@@ -419,9 +426,14 @@ const ProductList = () => {
                                                     className="w-full p-2 border border-gray-300 rounded"
                                                 >
                                                     <option value="">ALL</option>
-                                                    {loadingCategories === false && categoriesData?.categories.map((category) => (
-                                                        <option key={category} value={category}>{category.toUpperCase()}</option>
-                                                    ))}
+                                                    {loadingCategories === false && categoriesData?.categories && (
+                                                        // Create a set of unique categories
+                                                        [...new Set(categoriesData.categories)].map((uniqueCategory) => (
+                                                            <option key={uniqueCategory} value={uniqueCategory}>
+                                                                {uniqueCategory.toUpperCase()}
+                                                            </option>
+                                                        ))
+                                                    )}
                                                 </select>
                                             </div>
 

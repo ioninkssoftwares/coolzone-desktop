@@ -11,7 +11,7 @@ const CategoryCard = ({ categoryData }) => {
     navigate(`/products?filterCategory=${encodeURIComponent(categoryName)}`);
   }
   return (
-    <div key={categoryData.id} style={{ width: "275px", height: "280px" }} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 '>
+    <div key={categoryData.id} style={{ width: "275px", height: "280px" }} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 hover:scale-105 '>
       <p>{categoryData?.name}</p>
       <div onClick={() => navigateToProducts(categoryData?.name)} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
         <img
@@ -22,7 +22,7 @@ const CategoryCard = ({ categoryData }) => {
           className="w-full h-full object-fillr rounded-lg"
         />
       </div>
-      <p className="w-[28px] ml-52 h-[28px] rounded-full bg-gray-300 text-white flex items-center justify-center"><AiOutlineArrowRight /></p>
+      <p onClick={() => navigateToProducts(categoryData?.name)} className="w-[28px] ml-52 h-[28px] rounded-full bg-gray-300 cursor-pointer text-white flex items-center justify-center"><AiOutlineArrowRight /></p>
     </div>
   )
 }

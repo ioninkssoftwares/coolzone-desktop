@@ -282,7 +282,7 @@ const Home = () => {
       {/* Offers Section */}
       <section className=' mb-5'>
         <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 flex gap-8 overflow-x-auto ">
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold flex flex-col items-center p-4 '>
+          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Audio Devices</span>
@@ -297,7 +297,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold flex flex-col items-center p-4 '>
+          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Students Laptop</span>
@@ -312,7 +312,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold flex flex-col items-center p-4 '>
+          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Smart Watch</span>
@@ -327,7 +327,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold flex flex-col items-center p-4 '>
+          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Accesories</span>
