@@ -153,13 +153,19 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex md:flex-1 ml-20 md:ml-0 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
+                <div onClick={() => navigate("/")} className="flex cursor-pointer flex-shrink-0 items-center md:w-[150px] md:h-[50px] w-[60px] h-[50px]">
+                  {/* <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
                   />
-                  <span className='cursor-pointer hover:text-primary-blue hover:font-bold ml-2' onClick={() => navigate("/")}>Coolzone</span>
+                  <span className='cursor-pointer hover:text-primary-blue hover:font-bold ml-2' onClick={() => navigate("/")}>Coolzone</span> */}
+                  <img
+                    // className="h-8 w-auto"
+                    className="h-full w-full object-contain"
+                    src="/logo.jpeg"
+                    alt="Coolzone"
+                  />
                 </div>
 
               </div>

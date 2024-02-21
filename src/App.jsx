@@ -214,7 +214,7 @@ function App() {
     <>
       <div className='App'>
         <RouterProvider router={router} />
-        <ToastContainer />
+        <ToastContainer autoClose={300} />
       </div>
     </>
   )

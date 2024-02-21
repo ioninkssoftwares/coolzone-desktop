@@ -216,7 +216,7 @@ const ProfilePage = () => {
                                         value={userData?.DOB}
                                         onChange={(value) => {
                                             setUserData({ ...userData, DOB: value });
-                                            setFormErrors({ ...formErrors, DOB: validateFirstName(value) });
+                                            setFormErrors({ ...formErrors, DOB: validateDate(value) });
                                         }}
                                         InputLabelProps={{
                                             shrink: true,

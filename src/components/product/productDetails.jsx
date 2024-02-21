@@ -37,6 +37,12 @@ const ProductDetails = () => {
     }
 
     useEffect(() => {
+        // Scroll to the top when the component mounts
+        window.scrollTo(0, 0);
+    }, [params.id]);
+
+
+    useEffect(() => {
         if (product && product.product && product.product.productImages && product.product.productImages.length > 0) {
             setSelectedImage(product.product.productImages[0]);
         } else {

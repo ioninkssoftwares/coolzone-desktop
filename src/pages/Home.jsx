@@ -156,13 +156,13 @@ const Home = () => {
 
 
   const productSamples = [
-    { name: 'books', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
+    { name: 'mobile', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
     { name: 'tv', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
     { name: 'laptop', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
-    { name: 'mobile', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp' },
-    { name: 'Photo & Video', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png' },
+    { name: 'accessories', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp' },
+    { name: 'Photography', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png' },
     { name: 'Gifts', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png' },
-    { name: 'Books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
+    { name: 'books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
     { name: 'Toys', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png' },
   ];
   const newProductSamples = [
@@ -198,7 +198,7 @@ const Home = () => {
             </div>
             <div>
               <p className='font-bold'>Guarantee</p>
-              <p className='text-xs'>24 Months</p>
+              <p className='text-xs'>12 Months</p>
             </div>
           </div>
           <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
@@ -225,7 +225,7 @@ const Home = () => {
             </div>
             <div>
               <p className='font-bold'>Free Delivery</p>
-              <p className='text-xs'>from $449</p>
+              <p className='text-xs'>from ₹449</p>
             </div>
           </div>
           <div className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
