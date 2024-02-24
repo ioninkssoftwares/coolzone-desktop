@@ -75,22 +75,24 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
     }
   };
 
-
-
   return (
-    <div style={{ border: "2px solid GRAY" }} className=" p-4 min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
-      <div className="flex items-center justify-between">
-        <p className="text-md font-semibold text-primary-blue mb-4">{category}</p>
-        <div onClick={handleWishlist} className="  p-2.5 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
+    <div style={{ border: "2px solid #E2E2E2" }} className=" p-4 min-w-[200px] md:min-w-[160px] relative max-w-sm grow  rounded-lg font-manrope hover:scale-105">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-sm font-semibold text-primary-blue ">
+          {/* {category && category.length > 13 ? `${category.slice(0, 13).toUpperCase()}...` : category.toUpperCase()} */}
+          {category.length > 15
+            ? category.slice(0, 12).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') + '...'
+            : category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+
+        </p>
+        <div onClick={handleWishlist} className="  p-2 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
           <BsFillHeartFill className="text-sm text-white" />
         </div>
 
       </div>
-      <p className="text-center font-semibold">  {name.length > 15 ? name.slice(0, 15) + '...' : name}</p>
-
-      <h1 className="text-xl font-semibold text-primary-blue mt-4">{title}</h1>
-      <div className="flex items-center justify-center">
-        <div onClick={() => navigate(`/product/${_id}`)} className=" cursor-pointer relative mb-8 w-[220px] h-[150px]">
+      <p className="text-start text-xs font-semibold">  {name.length > 20 ? name.slice(0, 17) + '...' : name}</p>
+      <div className="flex items-center justify-center mt-6">
+        <div onClick={() => navigate(`/product/${_id}`)} className=" cursor-pointer relative mb-6 w-[150px] h-[75px]">
           <img
             src={productImages.length > 0 ? productImages[0] : "https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png"}
             fill
@@ -99,9 +101,9 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
           />
         </div>
       </div>
-      <div onClick={handleCart} className=" cursor-pointer flex items-center justify-between">
+      <div className="  flex items-center justify-between">
         <p className="text-xl font-semibold">₹{price}</p>
-        <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
+        <p onClick={handleCart} className="w-[40px] h-[40px] cursor-pointer rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
       </div>
 
     </div>

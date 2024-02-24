@@ -20,6 +20,7 @@ import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUserAsync, selectCurrentUserDetails } from '../components/auth/authSlice';
+import NewSectionCard from '../components/features/NewSectionCard';
 
 export const scrollLeft = (id) => {
   const ele = document.getElementById(id);
@@ -49,9 +50,11 @@ const Home = () => {
 
   const isPending = useSelector(selectProductListStatus);
 
-  if (banners) {
-    console.log(banners, "cxvvxxv")
+  if (homeProducts) {
+    console.log(homeProducts, "cxvvxxv")
   }
+
+
 
   // useEffect(() => {
   //   // setBannersData(data.banners);
@@ -164,12 +167,22 @@ const Home = () => {
     { name: 'Gifts', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png' },
     { name: 'books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
     { name: 'Toys', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png' },
+    { name: 'gadgets', imageSrc: 'https://cdn.pixabay.com/photo/2018/03/06/08/31/drone-3202860_960_720.jpg' },
+    { name: 'washing machine', imageSrc: 'https://cdn.pixabay.com/photo/2017/08/22/10/47/washing-machine-2668472_1280.jpg' },
   ];
+
+
   const newProductSamples = [
     { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
     { name: 'TV & Audio', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
     { name: 'Laptops & PCs', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
   ];
+
+  const newSectionSamples = [
+    { name: 'PORTABLE SPEAKERS COLLECTION 2023', imageSrc: 'https://www.pngall.com/wp-content/uploads/4/Wireless-Portable-Speaker-PNG-Clipart.png' },
+    { name: 'ALL ACCESSORIES FOR GAMERS', imageSrc: 'https://cdn.pixabay.com/photo/2020/06/21/20/43/playstation-5326719_960_720.png' },
+    { name: 'ALL ACCESSORIES FOR LAPTOPS', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/02/16/36/memory-stick-24902_1280.png' }
+  ]
 
 
 
@@ -241,14 +254,14 @@ const Home = () => {
         </div>
       </section>
       {/* Featured Products section */}
-      <section className="pt-5 mb-5">
+      <section className="pt-5 mb-1">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
         {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Featured Products" />
             {/* Buttons container */}
-            <div className="flex space-x-4  md:mt-0">
+            <div className="flex space-x-4  md:mt-0 mb-6 ">
               <button
                 onClick={() => scrollLeft("feat")}
                 className="p-2 m-2 rounded-full bg-white"
@@ -261,10 +274,11 @@ const Home = () => {
               >
                 <FiChevronRight />
               </button>
+              <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
             </div>
           </div>
           {homeProducts && (
-            <div id="feat" className="flex overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
+            <div id="feat" className="flex overflow-x-auto space-x-6 overflow-y-hidden hide-scrollbar">
               <CardCarousel id="feat" data={featuredProducts} Card={MediumHouseCard} />
             </div>
           )}
@@ -272,23 +286,23 @@ const Home = () => {
       </section>
       {/* Categories Section */}
       <section className='bg-gray-100 mb-5'>
-        <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 ">
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 ">
           <HomeSectionTitle text="Categories" />
-          <div className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-8'>
+          <div className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-7'>
             {productSamples?.map((curElem) => (<CategoryCard categoryData={curElem} />))}
           </div>
         </div>
       </section>
       {/* Offers Section */}
       <section className=' mb-5'>
-        <div className="max-w-7xl mx-auto px-5 md:px-10 py-8 flex gap-8 overflow-x-auto ">
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 flex md:items-center md:justify-center gap-8 overflow-x-auto">
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Audio Devices</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("audio")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("audio")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
                 src="https://cdn.pixabay.com/photo/2017/11/06/11/53/music-2923447_1280.png"
                 fill
@@ -297,13 +311,28 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
-              <span className='text-2xl font-bold text-white'>Students Laptop</span>
+              <span className='text-2xl font-bold text-white'>Audio Devices</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("laptop")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("audio")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2017/11/06/11/53/music-2923447_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Laptops</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("laptop")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
                 src="https://cdn.pixabay.com/photo/2012/04/13/20/24/laptop-33521_1280.png"
                 fill
@@ -312,13 +341,13 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Smart Watch</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("watch")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("watch")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
                 src="https://cdn.pixabay.com/photo/2018/09/13/14/56/apple-watch-series-4-3674940_1280.png"
                 fill
@@ -327,13 +356,28 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "275px", height: "330px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Accesories</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer my-4 w-[180px] h-[150px]">
+            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Accesories</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
                 src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
                 fill
@@ -345,14 +389,14 @@ const Home = () => {
         </div>
       </section>
       {/* Best Sellers section */}
-      <section className="pt-5 mb-5">
+      <section className="pt-5 ">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
         {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Best Sellers" />
             {/* Buttons container */}
-            <div className="flex space-x-4  md:mt-0">
+            <div className="flex space-x-4  md:mt-0 mb-6">
               <button
                 onClick={() => scrollLeft("best")}
                 className="p-2 m-2 rounded-full bg-white"
@@ -365,6 +409,7 @@ const Home = () => {
               >
                 <FiChevronRight />
               </button>
+              <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
             </div>
           </div>
           {homeProducts && (
@@ -374,15 +419,16 @@ const Home = () => {
           )}
         </div>
       </section>
-      {/* Big Deals section */}
-      <section className="pt-5 mb-5">
+
+      {/* New Section */}
+      <section className=" mb-5">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
         {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-between">
-            <HomeSectionTitle text="New Products" />
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-end">
+            {/* <HomeSectionTitle text="New Products" /> */}
             {/* Buttons container */}
-            <div className="flex space-x-4  md:mt-0">
+            <div className="flex space-x-4  md:mt-0 mb-6">
               <button
                 onClick={() => scrollLeft("big")}
                 className="p-2 m-2 rounded-full bg-white"
@@ -395,6 +441,44 @@ const Home = () => {
               >
                 <FiChevronRight />
               </button>
+              {/* <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button> */}
+            </div>
+          </div>
+          {homeProducts && (
+            <div id="big" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
+              <CardCarousel id="big" data={newSectionSamples} Card={NewSectionCard} />
+            </div>
+          )}
+        </div>
+      </section>
+
+
+
+
+
+
+      {/* New Products section */}
+      <section className="pt-5 mb-5">
+        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
+            <HomeSectionTitle text="New Products" />
+            {/* Buttons container */}
+            <div className="flex space-x-4  md:mt-0 mb-6">
+              <button
+                onClick={() => scrollLeft("big")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("big")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronRight />
+              </button>
+              <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
             </div>
           </div>
           {homeProducts && (
@@ -405,10 +489,106 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Second Offers Section */}
+      <section className=' mb-5'>
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 flex md:items-center md:justify-center gap-8 overflow-x-auto">
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Audio Devices</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("audio")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2017/11/06/11/53/music-2923447_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900  font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Laptops</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("laptop")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2012/04/13/20/24/laptop-33521_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900  font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Smart Watch</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("watch")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2018/09/13/14/56/apple-watch-series-4-3674940_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900  font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Smart Watch</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("watch")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2018/09/13/14/56/apple-watch-series-4-3674940_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900  font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Accesories</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900  font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Accesories</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/*Top Rated/Mega Offers Categories Section */}
       <section className='bg-gray-100  md:h-[635px] '>
-        <div className="max-w-7xl mx-auto px-5 md:px-10 pt-4 flex  ">
-          <h1 className={`font-semibold w-fit text-3xl font-manrope  border-b-2 border-b-black `}>
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 pt-4 flex  ">
+          <h1 className={`font-semibold w-fit text-3xl font-manrope  border-b-2 border-b-black md:ml-[215px] ml-0 `}>
             Top Rated
           </h1>
           <h1 className={`font-semibold w-fit text-3xl font-manrope md:block hidden  border-b-2 border-b-black ml-[265px] `}>
@@ -418,7 +598,7 @@ const Home = () => {
             Mega Offers
           </h1>
         </div>
-        <div className="max-w-7xl mx-auto  flex md:flex-row flex-col items-center justify-center   space-x-6  ">
+        <div className="max-w-[92rem] mx-auto  flex md:flex-row flex-col items-center justify-center   space-x-6  ">
           <div className='flex flex-col items-start justify-between flex-wrap mt-7 gap-8'>
             {newProductSamples?.map((curElem) => (<TopRatedCategoryCard categoryData={curElem} />))}
           </div>
@@ -439,7 +619,7 @@ const Home = () => {
       {/* <div className=' bg-[#3b4758] w-full h-24'></div> */}
       {/* Newsletter Section */}
       <section className='bg-[#3b4758] '>
-        <div className="max-w-7xl mx-auto px-5 md:px-10  flex space-x-6 p-6 items-center justify-between ">
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10  flex space-x-6 p-6 items-center justify-between ">
           <p className=' text-white '><span className='text-base font-bold text-white '>Subscribe to Our Newsletter</span> - get a <span className=' text-white text-base font-bold underline'>₹500 Coupon</span> for your first order!</p>
           <div style={{ width: "500px" }} className="flex ">
             <div style={{ width: "85%", height: "100%" }}>

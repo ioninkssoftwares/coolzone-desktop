@@ -208,7 +208,9 @@ const ShippingPage = () => {
 
                         </div>
                     </>
-                    )) : ""}
+                    )) : <div className="flex items-center justify-center my-8">
+                        <p className="font-semibold text-lg">Please add your address, <span onClick={() => navigate("/address")} className="text-blue-800 cursor-pointer">Click here</span></p>
+                    </div>}
 
                     <div className="flex justify-end">
                         <button onClick={handleSubmit} className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md  uppercase px-6"

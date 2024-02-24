@@ -42,6 +42,16 @@ const Checkout = () => {
 
     const orderHandler = async () => {
         setLoading(true)
+
+
+        // Check if all required fields are present
+        if (!shippingInfo || !cartItems || !subtotal || !tax || !discount || !shippingCharges || !total || !userId) {
+            setLoading(false);
+            toast.error("Some required fields are missing");
+            return;
+        }
+
+
         const orderData = {
             shippingInfo,
             orderItems: cartItems,

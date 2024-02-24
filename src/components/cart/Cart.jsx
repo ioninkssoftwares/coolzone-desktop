@@ -128,6 +128,13 @@ const Cart = () => {
     dispatch(calculatePrice())
   }, [cartItems])
 
+  useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+
+
 
   return (
     <>
@@ -158,7 +165,7 @@ const Cart = () => {
                 <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
                 <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Quantity</h3>
                 <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
-                <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
+                {/* <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3> */}
               </div>
 
               {cartItems.length > 0 ? (
@@ -187,7 +194,7 @@ const Cart = () => {
                         </svg>
                       </div>
                       <span className="text-center w-1/5 font-semibold text-sm">₹{item?.price}</span>
-                      <span className="text-center w-1/5 font-semibold text-sm">₹{item.price}</span>
+                      {/* <span className="text-center w-1/5 font-semibold text-sm">₹{item.price}</span> */}
                     </div>
                   </>))
               ) : (
@@ -216,7 +223,7 @@ const Cart = () => {
               </div>
               <div className="flex justify-between mt-10 mb-5">
                 <span className="font-semibold text-sm uppercase">Shipping Charges</span>
-                <span className="font-semibold text-sm">{cartItems && cartItems.length > 0 ? `₹${shippingCharges}` : ""}</span>
+                <span className="font-semibold text-sm">{cartItems && cartItems.length > 0 ? `₹${shippingCharges}` : "₹0"}</span>
               </div>
               {/* <div>
                 <label className="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
@@ -250,7 +257,8 @@ const Cart = () => {
               <div className="border-t mt-8">
                 <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                   <span>Total cost</span>
-                  <b> ₹{total}</b>
+                  {/* <b> ₹{total}</b> */}
+                  <b >{cartItems && cartItems.length > 0 ? `₹${total}` : `₹0`}</b>
                 </div>
                 {cartItems.length > 0 && <Link to="/shipping"> <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button> </Link>}
               </div>

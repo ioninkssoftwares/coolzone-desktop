@@ -260,7 +260,7 @@ export default function Navbar() {
 
           </div>
           {/* Category Section */}
-          {/* <section className='w-full md:flex items-center justify-center bg-primary-blue mt-4 hidden'>
+          <section className='w-full md:flex items-center justify-center bg-primary-blue hidden'>
             <div style={{ width: "70%" }} className='flex items-center justify-center  gap-1 '>
 
               <ProductSelect products={sampleProducts} defaultValue="Smartphones" />
@@ -274,7 +274,7 @@ export default function Navbar() {
 
 
             </div>
-          </section> */}
+          </section>
           {/* </div> */}
 
           <Disclosure.Panel className="sm:hidden">

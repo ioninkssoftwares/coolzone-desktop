@@ -494,10 +494,6 @@ const ProductList = () => {
 
                 <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                        {/* <h1 className="text-md tracking-tight text-gray-500 md:block hidden">{category ? `${category}/${brand}/${subCategory}` : ""}</h1> */}
-                        {/* {category
-                            ? `${category.charAt(0).toUpperCase()}${category.slice(1)}/${brand.charAt(0).toUpperCase()}${brand.slice(1)}/${subCategory}`
-                            : ""} */}
                         <h1 className="text-md tracking-tight text-gray-500 md:block hidden">
                             {category
                                 ? `${category.charAt(0).toUpperCase()}${category.slice(1)}/${brand.charAt(0).toUpperCase()}${brand.slice(1)}${subCategory ? `/${subCategory}` : ''}`
