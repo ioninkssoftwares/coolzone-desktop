@@ -620,12 +620,29 @@ const EditProductById = () => {
 
                                     <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
 
-                                        <InputField label="Price" type="number" value={product.price} onChange={(e) => setProduct({ ...product, price: e })} validate={validateSellingPrice} />
+                                        <InputField label="Price"
+                                            type="number"
+                                            value={product.price}
+                                            // onChange={(e) => setProduct({ ...product, price: e })}
+                                            onChange={(value) => {
+                                                setProduct({ ...product, price: value });
+                                                setFormErrors({ ...formErrors, price: validateSellingPrice(value) });
+                                            }}
+                                            validate={validateSellingPrice} />
 
                                         {/* <InputField label="Cost Price" type="number" value={product.costPrice} onChange={(e) => setProduct({ ...product, costPrice: e })} validate={validateCostPrice} /> */}
 
 
-                                        <InputField label="Stock" type="number" value={product.stock} onChange={(e) => setProduct({ ...product, stock: e })} validate={validateQuantity} />
+                                        <InputField
+                                            label="Stock"
+                                            type="number"
+                                            value={product.stock}
+                                            // onChange={(e) => setProduct({ ...product, stock: e })}
+                                            onChange={(value) => {
+                                                setProduct({ ...product, stock: value });
+                                                setFormErrors({ ...formErrors, stock: validateQuantity(value) });
+                                            }}
+                                            validate={validateQuantity} />
 
 
                                     </Box>

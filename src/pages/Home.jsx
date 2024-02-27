@@ -274,7 +274,8 @@ const Home = () => {
               >
                 <FiChevronRight />
               </button>
-              <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
+              <button onClick={() => navigate(`/products?featured=true`)} className='bg-primary-blue cursor-pointer px-3 rounded-md text-white'>VIEW ALL</button>
+
             </div>
           </div>
           {homeProducts && (
@@ -409,7 +410,7 @@ const Home = () => {
               >
                 <FiChevronRight />
               </button>
-              <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
+              <button onClick={() => navigate(`/products?bestSeller=true`)} className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
             </div>
           </div>
           {homeProducts && (
@@ -430,13 +431,13 @@ const Home = () => {
             {/* Buttons container */}
             <div className="flex space-x-4  md:mt-0 mb-6">
               <button
-                onClick={() => scrollLeft("big")}
+                onClick={() => scrollLeft("newSection")}
                 className="p-2 m-2 rounded-full bg-white"
               >
                 <FiChevronLeft />
               </button>
               <button
-                onClick={() => scrollRight("big")}
+                onClick={() => scrollRight("newSection")}
                 className="p-2 m-2 rounded-full bg-white"
               >
                 <FiChevronRight />
@@ -445,8 +446,8 @@ const Home = () => {
             </div>
           </div>
           {homeProducts && (
-            <div id="big" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="big" data={newSectionSamples} Card={NewSectionCard} />
+            <div id="newSection" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
+              <CardCarousel id="newSection" data={newSectionSamples} Card={NewSectionCard} />
             </div>
           )}
         </div>
@@ -478,7 +479,7 @@ const Home = () => {
               >
                 <FiChevronRight />
               </button>
-              <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
+              <button onClick={() => navigate("/products")} className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button>
             </div>
           </div>
           {homeProducts && (

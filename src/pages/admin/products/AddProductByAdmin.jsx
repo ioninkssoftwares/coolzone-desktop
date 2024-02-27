@@ -151,6 +151,8 @@ const AddProductByAdmin = () => {
         featured: true,
         bestSeller: true,
         subCategory: "",
+        mrp: 0,
+        warrantyPeriod: ""
         // costPrice: 0,
         // returnPolicy: true
     })
@@ -229,6 +231,8 @@ const AddProductByAdmin = () => {
         ProductFormData.append('description', product.description);
         ProductFormData.append('brand', product.brand);
         ProductFormData.append('subCategory', product.subCategory);
+        ProductFormData.append('mrp', product.mrp);
+        ProductFormData.append('warrantyPeriod', product.warrantyPeriod);
 
         try {
             const res = await instance.post("/admin/product/new", ProductFormData, {
@@ -464,12 +468,29 @@ const AddProductByAdmin = () => {
 
                                     <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
 
-                                        <InputField label=" Price" type="number" value={product.price} onChange={(e) => setProduct({ ...product, price: e })} validate={validateSellingPrice} />
+                                        <InputField
+                                            label=" Price"
+                                            type="number"
+                                            value={product.price}
+                                            // onChange={(e) => setProduct({ ...product, price: e })} 
+                                            onChange={(value) => {
+                                                setProduct({ ...product, price: value })
+                                                setFormErrors({ ...formErrors, price: validateSellingPrice(value) });
+                                            }}
+                                            validate={validateSellingPrice} />
 
                                         {/* <InputField label="Cost Price" type="number" value={product.costPrice} onChange={(e) => setProduct({ ...product, costPrice: e })} validate={validateCostPrice} />
  */}
 
-                                        <InputField label="Stock" type="number" value={product.stock} onChange={(e) => setProduct({ ...product, stock: e })} validate={validateQuantity} />
+                                        <InputField label="Stock"
+                                            type="number"
+                                            value={product.stock}
+                                            // onChange={(e) => setProduct({ ...product, stock: e })} 
+                                            onChange={(value) => {
+                                                setProduct({ ...product, stock: value })
+                                                setFormErrors({ ...formErrors, stock: validateQuantity(value) });
+                                            }}
+                                            validate={validateQuantity} />
 
 
                                     </Box>
@@ -605,6 +626,32 @@ const AddProductByAdmin = () => {
 
                                     <Textarea sx={{ padding: 0, borderRadius: 1 }}
                                         onChange={(event) => setProduct({ ...product, specification: event.target.value })} placeholder="Your text goes here" minRows={5} />
+
+                                    <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
+
+                                        <InputField
+                                            label=" Mrp"
+                                            type="number"
+                                            value={product.mrp}
+                                            // onChange={(e) => setProduct({ ...product, price: e })} 
+                                            onChange={(value) => {
+                                                setProduct({ ...product, mrp: value })
+                                                setFormErrors({ ...formErrors, mrp: validateSellingPrice(value) });
+                                            }}
+                                            validate={validateSellingPrice} />
+
+
+                                        <InputField label="Warranty Period"
+                                            type="text"
+                                            value={product.warrantyPeriod}
+                                            // onChange={(e) => setProduct({ ...product, stock: e })} 
+                                            onChange={(value) => {
+                                                setProduct({ ...product, warrantyPeriod: value })
+                                            }}
+                                        />
+
+
+                                    </Box>
                                     {/* <Typography sx={{ color: "gray" }} id="modal-modal-title" variant="p" component="p">
                                         Add a long description for your product
                                     </Typography> */}

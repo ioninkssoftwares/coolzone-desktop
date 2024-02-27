@@ -30,7 +30,7 @@ export const productsAPI = createApi({
 
         }),
         searchProducts: builder.query({
-            query: ({ price, search, sort, category, page, subCategory, brand }) => {
+            query: ({ price, search, sort, category, page, subCategory, brand, featured, bestSeller }) => {
                 let base = `products?search=${search}&page=${page}`
 
                 if (price) base += `&price=${price}`
@@ -38,6 +38,8 @@ export const productsAPI = createApi({
                 if (category) base += `&category=${category}`
                 if (brand) base += `&brand=${brand}`
                 if (subCategory) base += `&subCategory=${subCategory}`
+                if (featured) base += `&featured=${featured}`
+                if (bestSeller) base += `&bestSeller=${bestSeller}`
 
                 return base
             },

@@ -161,17 +161,17 @@ const Cart = () => {
                   {/* {Array.isArray(items?.products) ? items.products.length : 0} */}
                 </h2>
               </div>
-              <div className="flex mt-10 mb-5">
-                <h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">Product Details</h3>
-                <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Quantity</h3>
-                <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
+              <div className="flex justify-between mt-10 mb-5 md:mr-7 mr-0 ">
+                <h3 className="font-semibold text-gray-600 text-xs uppercase ">Product Details</h3>
+                <h3 className="font-semibold text-gray-600 text-xs uppercase  text-center">Quantity</h3>
+                {/* <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3> */}
                 {/* <h3 className="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3> */}
               </div>
 
               {cartItems.length > 0 ? (
                 cartItems.map((item, idx) => (
                   <>
-                    <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
+                    <div className="flex items-center md:justify-between hover:bg-gray-100 -mx-8 px-6 py-5">
                       <div className="flex w-2/5">
                         {/* onClick={() => navigate(`/product/${item._id}`)} */}
                         <div className="w-20">
@@ -181,6 +181,7 @@ const Cart = () => {
                           <span className="font-bold text-sm">{item.name.length > 15 ? item.name.slice(0, 15) + '...' : item.name}</span>
                           <span className="text-red-500 text-xs">{item.category}</span>
                           <a onClick={() => removeHandler(item.productId)} className="font-semibold mt-4 cursor-pointer hover:text-red-500 hover:font-bold text-gray-500 text-xs">Remove</a>
+                          <span className='mt-10 font-medium font-semibold'>₹{item.price}</span>
                         </div>
                       </div>
                       <div className="flex md:flex-row flex-col md:justify-center justify-center md:items-baseline items-center w-1/5">
@@ -193,7 +194,7 @@ const Cart = () => {
                           <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                         </svg>
                       </div>
-                      <span className="text-center w-1/5 font-semibold text-sm">₹{item?.price}</span>
+                      {/* <span className="text-center w-1/5 font-semibold text-sm">₹{item?.price}</span> */}
                       {/* <span className="text-center w-1/5 font-semibold text-sm">₹{item.price}</span> */}
                     </div>
                   </>))
@@ -253,6 +254,7 @@ const Cart = () => {
 
                 {/* {cartItems.length > 0 && <Link to="/shipping">Checkout</Link>} */}
               </div>
+
               {/* {loading === false ? <button onClick={handleCoupon} className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> : <CircularProgress />} */}
               <div className="border-t mt-8">
                 <div className="flex font-semibold justify-between py-6 text-sm uppercase">

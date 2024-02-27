@@ -19,6 +19,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { CiLogout } from "react-icons/ci";
 import { toast } from 'react-toastify';
 import { useSearchProductsQuery } from '../../redux/api/productApi';
+import FlyoutMenu from '../features/FlyoutMenu';
 
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -71,8 +72,102 @@ export default function Navbar() {
     'Photo & Video',
     'Gifts',
     'Books',
-    'Toys',
+    'Customer Service',
   ];
+
+  const refrigerationSamples = [
+    ["IFB", "/ifb"],
+    ["LG", "/lg"],
+    ["SAMSUNG", "/samsung"],
+    ["VOLTAS", "/voltas"],
+    ["WHIRLPOOL", "/whirlpool"],
+    ["LLOYD", "/lloyd"],
+  ]
+  const airConditionerSamples = [
+    ["Daikin", "/ifb"],
+    ["HITACHI", "/lg"],
+    ["IFB", "/samsung"],
+    ["LG", "/voltas"],
+    ["LIVPURE", "/whirlpool"],
+    ["Lloyd", "/lloyd"],
+    ["TCL", "/lloyd"],
+    ["VOLTAS", "/lloyd"],
+    ["Whirlpool", "/lloyd"],
+  ]
+  const washingMachineSamples = [
+    ["IFB", "/ifb"],
+    ["LG", "/lg"],
+    ["SAMSUNG", "/samsung"],
+    ["Lloyd", "/lloyd"],
+    ["TCL", "/lloyd"],
+    ["VOLTAS", "/lloyd"],
+    ["Whirlpool", "/lloyd"],
+  ]
+
+  const furnitureSamples = [
+    ["DAMRO", "/ifb"],
+    ["PEPS", "/lg"],
+    ["PIYESTRA", "/samsung"],
+  ]
+
+  const audioSamples = [
+    ["BOAT", "/ifb"],
+    ["F&D", "/lg"],
+    ["LG", "/samsung"],
+    ["PHILIPS", "/samsung"],
+    ["PROTRONICS", "/samsung"],
+    ["SAMSUNG", "/samsung"],
+    ["SUPER", "/samsung"],
+    ["TREAMES", "/samsung"],
+  ]
+  const homeAppliancesSamples = [
+    ["AIR PURIFIER", "/ifb"],
+    ["COOLERS", "/lg"],
+    ["LG", "/samsung"],
+    ["VACUUM CLEANER", "/samsung"],
+    ["GEYSERS", "/samsung"],
+    ["WAHSING MACHINES", "/samsung"],
+    ["AC", "/samsung"],
+    ["WATER-DISPENCERS-HOME", "/samsung"],
+    ["TV", "/samsung"],
+    ["REFRIGERATOR", "/samsung"],
+    ["CHEST FREEZERS", "/samsung"],
+
+  ]
+  const kitchenApplianceSamples = [
+    ["DISH WASHER", "/ifb"],
+    ["STOVES ", "/lg"],
+    ["MICROWAVE", "/samsung"],
+    ["MIXER GRINDER", "/samsung"],
+    ["WATER PURIFIER-HOME", "/samsung"],
+  ]
+  const customerServiceSamples = [
+    ["TRACK ORDER", "/ifb"],
+    ["SUPPORT ", "/lg"],
+    ["RETURN & EXCHANGE", "/samsung"],
+    ["REPAIR SERVICES", "/samsung"],
+    ["RAISE SERVICE REQUEST", "/samsung"],
+  ]
+
+
+
+
+
+  const telivisionsSamples = [
+    ["BU LED TB", "/ifb"],
+    ["F&D", "/lg"],
+    ["HYUNDAI ", "/samsung"],
+    ["KEPCO", "/lloyd"],
+    ["KODAK", "/lloyd"],
+    ["LG", "/lloyd"],
+    ["LLOYD", "/lloyd"],
+    ["MI", "/lloyd"],
+    ["MICROMAX", "/lloyd"],
+    ["PHILIPS", "/lloyd"],
+    ["SAMSUNG", "/lloyd"],
+    ["SANSUI", "/lloyd"],
+    ["TCL", "/lloyd"],
+  ]
 
 
 
@@ -260,21 +355,19 @@ export default function Navbar() {
 
           </div>
           {/* Category Section */}
-          <section className='w-full md:flex items-center justify-center bg-primary-blue hidden'>
-            <div style={{ width: "70%" }} className='flex items-center justify-center  gap-1 '>
-
-              <ProductSelect products={sampleProducts} defaultValue="Smartphones" />
-              <ProductSelect products={sampleProducts} defaultValue="TV & Audio" />
-              <ProductSelect products={sampleProducts} defaultValue="Laptops & PCs" />
-              <ProductSelect products={sampleProducts} defaultValue="Gadgets" />
-              <ProductSelect products={sampleProducts} defaultValue="Photo & Video" />
-              <ProductSelect products={sampleProducts} defaultValue="Gifts" />
-              <ProductSelect products={sampleProducts} defaultValue="Books" />
-              <ProductSelect products={sampleProducts} defaultValue="Toys" />
-
-
-            </div>
-          </section>
+          {/* <section className='w-full md:flex items-center justify-center bg-primary-blue hidden'> */}
+          <div className='flex  bg-primary-blue gap-1 px-2 '>
+            <FlyoutMenu menuTitle='AIR CONDITIONER' linksArray={airConditionerSamples} />
+            <FlyoutMenu menuTitle='WASHING MACHINE' linksArray={washingMachineSamples} />
+            <FlyoutMenu menuTitle='TELEVISIONS' linksArray={telivisionsSamples} />
+            <FlyoutMenu menuTitle='FURNITURES' linksArray={furnitureSamples} />
+            <FlyoutMenu menuTitle='REFRIGERATION' linksArray={refrigerationSamples} />
+            <FlyoutMenu menuTitle='AUDIO DEVICES' linksArray={audioSamples} />
+            <FlyoutMenu menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
+            <FlyoutMenu menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
+            <FlyoutMenu menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
+          </div>
+          {/* </section> */}
           {/* </div> */}
 
           <Disclosure.Panel className="sm:hidden">

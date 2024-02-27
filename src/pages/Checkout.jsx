@@ -23,7 +23,8 @@ const Checkout = () => {
 
     if (!userId) {
         // userId is undefined or null, handle this case accordingly
-        return;
+        toast.error("User id is not available");
+        navigate("/")
     }
 
 
@@ -45,9 +46,16 @@ const Checkout = () => {
 
 
         // Check if all required fields are present
-        if (!shippingInfo || !cartItems || !subtotal || !tax || !discount || !shippingCharges || !total || !userId) {
+        // if (!shippingInfo || !cartItems ) {
+        //     setLoading(false);
+        //     toast.error("Some required fields are missing");
+        //     return;
+        // }
+
+        if (cartItems.length === 0 && Object.values(shippingInfo).some(value => value === '')) {
             setLoading(false);
-            toast.error("Some required fields are missing");
+            toast.error("Don't refresh while doing checkout; fields are missing.");
+            navigate("/")
             return;
         }
 

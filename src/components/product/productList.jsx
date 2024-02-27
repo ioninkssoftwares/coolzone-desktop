@@ -182,12 +182,14 @@ const ProductList = () => {
     const [brand, setBrand] = useState("");
     const [subCategory, setSubCategory] = useState("");
     const [page, setPage] = useState(1);
+    const [featured, setFeatured] = useState("");
+    const [bestSeller, setBestSeller] = useState("");
 
 
     const { isLoading: productLoading,
         data: searchedData,
         isError: productIsError,
-        error: productError } = useSearchProductsQuery({ category, search, sort, page, price: maxPrice, brand, subCategory });
+        error: productError } = useSearchProductsQuery({ category, search, sort, page, price: maxPrice, brand, subCategory, featured, bestSeller });
 
     console.log(searchedData, "hfasdjkhfds")
 
@@ -203,14 +205,14 @@ const ProductList = () => {
     const isPrevPage = page > 1
     const isNextPage = page < 4
 
-
-
     const removeFilters = () => {
         setCategory("")
         setBrand("")
         setSubCategory("")
         setSearch("")
         setSort("")
+        setFeatured("")
+        setBestSeller("")
         setMaxPrice(300000)
     }
 
@@ -278,9 +280,12 @@ const ProductList = () => {
     const searchParams = new URLSearchParams(location.search);
     const filterCategory = searchParams.get('filterCategory') || '';
     const navbarSearch = searchParams.get('navbarSearch') || '';
-    if (filterCategory) {
-        console.log(filterCategory, "sdjkfashafkd")
-    }
+    const featuredParam = searchParams.get('featured') || '';
+    const bestSellerParam = searchParams.get('bestSeller') || '';
+
+    // if (featured) {
+    //     console.log(featured, "sdjkfashafkd")
+    // }
 
     useEffect(() => {
         // Scroll to the top when the component mounts
@@ -297,6 +302,16 @@ const ProductList = () => {
         // Update the search state when the categoryParam changes
         setSearch(navbarSearch)
     }, [navbarSearch]);
+
+    useEffect(() => {
+        // Update the search state when the categoryParam changes
+        setFeatured(featuredParam)
+    }, [featuredParam]);
+
+    useEffect(() => {
+        // Update the search state when the categoryParam changes
+        setBestSeller(bestSellerParam)
+    }, [featuredParam]);
 
 
     return (

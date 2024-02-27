@@ -100,6 +100,13 @@ const ShippingPage = () => {
         // Your other logic here...
     };
 
+    useEffect(() => {
+        // Scroll to the top when the component mounts
+        window.scrollTo(0, 0);
+    }, [savedAddress]);
+
+
+
 
     {/* <EditCalendarOutlinedIcon onClick={() => handleEditAddress(curElem)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */ }
     {/* <DeleteOutlineOutlinedIcon onClick={() => handleDeleteAddress(curElem._id)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */ }
@@ -175,6 +182,9 @@ const ShippingPage = () => {
                                 type="submit">Pay Now</button>
                         </form>
                     </div> */}
+                    <div className="flex items-center justify-end my-8">
+                        <p className="font-semibold text-lg">Add new address, <span onClick={() => navigate("/address")} className="text-blue-800 cursor-pointer">Click here</span></p>
+                    </div>
 
                     {savedAddress && savedAddress.length > 0 ? savedAddress.map((curElem) => (<>
                         <div className='my-4 border-b-2 border-gray-400 pb-4'>
@@ -208,9 +218,8 @@ const ShippingPage = () => {
 
                         </div>
                     </>
-                    )) : <div className="flex items-center justify-center my-8">
-                        <p className="font-semibold text-lg">Please add your address, <span onClick={() => navigate("/address")} className="text-blue-800 cursor-pointer">Click here</span></p>
-                    </div>}
+                    )) : <div className="flex items-center justify-center">
+                        <CircularProgress /></div>}
 
                     <div className="flex justify-end">
                         <button onClick={handleSubmit} className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md  uppercase px-6"

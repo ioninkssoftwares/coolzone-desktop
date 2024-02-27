@@ -13,7 +13,8 @@ const CorouselSlider = ({ bannerCategory }) => {
         <Carousel interval={2000} autoPlay infiniteLoop showThumbs={false} >
             {bannerCategory[0]?.bannerImages.map((curElem, index) => {
                 return (
-                    <div key={index} className='relative sm:h-64 md:h-80 lg:h-96 xl:h-112'>
+                    <div key={index} className='relative h-full w-full'>
+                        {/* <div style={{ border: "2px solid red" }} key={index} className='relative sm:h-64 md:h-80 lg:h-96 xl:h-112'> */}
                         <img className='w-full h-full object-contain' src={curElem} alt="Image 1" />
                     </div>
                 );

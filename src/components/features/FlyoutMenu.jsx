@@ -1,70 +1,191 @@
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import { FaShoppingCart } from "react-icons/fa";
-import { AiOutlineCaretDown } from "react-icons/ai";
+import { Fragment, useRef, useState, useEffect } from "react"
+import { Popover, Transition } from "@headlessui/react"
+import { FiArrowDown } from "react-icons/fi"
+// import { ChevronDownIcon } from "@heroicons/react/solid"
 
-const solutions = [
-  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: FaShoppingCart },
-  { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: FaShoppingCart },
-  { name: 'Security', description: "Your customers' data will be safe and secure", href: '#', icon: FaShoppingCart },
-  { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: FaShoppingCart },
-  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: FaShoppingCart },
-]
-const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: FaShoppingCart },
-  { name: 'Contact sales', href: '#', icon: FaShoppingCart },
-]
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ")
+}
 
-export default function FlyoutMenu() {
+export default function FlyoutMenu({
+  menuTitle = "Hover Popover",
+  linksArray = [
+    // [[title: string, href: string], ...]
+    ["Home", "/"],
+    ["About", "/about"],
+    ["Blog", "/blog"]
+  ]
+}) {
+  let timeout // NodeJS.Timeout
+  const timeoutDuration = 200
+
+  const buttonRef = useRef(null) // useRef<HTMLButtonElement>(null)
+  const [openState, setOpenState] = useState(false)
+
+  const toggleMenu = (open) => {
+    // log the current open state in React (toggle open state)
+    setOpenState((openState) => !openState)
+    // toggle the menu by clicking on buttonRef
+    buttonRef?.current?.click() // eslint-disable-line
+  }
+
+  // Open the menu after a delay of timeoutDuration
+  const onHover = (open, action) => {
+    // if the modal is currently closed, we need to open it
+    // OR
+    // if the modal is currently open, we need to close it
+    if (
+      (!open && !openState && action === "onMouseEnter") ||
+      (open && openState && action === "onMouseLeave")
+    ) {
+      // clear the old timeout, if any
+      clearTimeout(timeout)
+      // open the modal after a timeout
+      timeout = setTimeout(() => toggleMenu(open), timeoutDuration)
+    }
+    // else: don't click! 😁
+  }
+
+  const handleClick = (open) => {
+    setOpenState(!open) // toggle open state in React state
+    clearTimeout(timeout) // stop the hover timer if it's running
+  }
+
+  const LINK_STYLES = classNames(
+    "py-1 px-1 min-w-[10rem] ",
+    "text-white text-start  uppercase ",
+    "transition duration-500 ease-in-out",
+    "bg-primary-blue hover:text-primary-blue hover:bg-blue-100"
+  )
+  const handleClickOutside = (event) => {
+    if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+      event.stopPropagation()
+    }
+  }
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  })
   return (
-    <Popover className="relative">
-      <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-        <span>Solutions</span>
-        <AiOutlineCaretDown className="h-5 w-5" aria-hidden="true" />
-      </Popover.Button>
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-200"
-        enterFrom="opacity-0 translate-y-1"
-        enterTo="opacity-100 translate-y-0"
-        leave="transition ease-in duration-150"
-        leaveFrom="opacity-100 translate-y-0"
-        leaveTo="opacity-0 translate-y-1"
-      >
-        <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
-          <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
-            <div className="p-4">
-              {solutions.map((item) => (
-                <div key={item.name} className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
-                  <div className="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                    <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <a href={item.href} className="font-semibold text-gray-900">
-                      {item.name}
-                      <span className="absolute inset-0" />
-                    </a>
-                    <p className="mt-1 text-gray-600">{item.description}</p>
-                  </div>
-                </div>
-              ))}
+    <Popover className="relative mx-auto w-35">
+      {({ open }) => (
+        <div
+          onMouseEnter={() => onHover(open, "onMouseEnter")}
+          onMouseLeave={() => onHover(open, "onMouseLeave")}
+          className="relative" // Add relative positioning to the container
+        >
+          <Popover.Button ref={buttonRef}>
+            <div
+              // style={{ border: "2px solid red" }}
+              className={classNames(
+                open ? "text-blue-800" : "text-gray-800",
+                "bg-primary-blue rounded-md",
+                "flex justify-center relative", // Add relative positioning to the button
+                LINK_STYLES
+              )}
+              onClick={() => handleClick(open)}
+            >
+              <span className="uppercase">
+                {menuTitle}
+              </span>
             </div>
-            <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-              {callsToAction.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100"
-                >
-                  <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                  {item.name}
-                </a>
-              ))}
+          </Popover.Button>
+
+          <Transition
+            show={open}
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 translate-y-1"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-1"
+          >
+            <div className="absolute z-10 w-40 mx-auto top-full"> {/* Position the dropdown below the button */}
+              <div
+                className={classNames(
+                  "grid space-y-[2px]",
+                  "bg-white border-2 border-gray-300 border-solid",
+                  "divide-y-2 rounded-md text-center"
+                )}
+              >
+                {linksArray.map(([title, href]) => (
+                  <Fragment key={"PopoverPanel<>" + title + href}>
+                    <p className={LINK_STYLES}>
+                      {title}
+                    </p>
+                  </Fragment>
+                ))}
+              </div>
             </div>
-          </div>
-        </Popover.Panel>
-      </Transition>
+          </Transition>
+        </div>
+      )}
     </Popover>
+
+
+
   )
 }
+
+
+// <Popover className="relative mx-auto w-48">
+//   {({ open }) => (
+//     <div
+//       onMouseEnter={() => onHover(open, "onMouseEnter")}
+//       onMouseLeave={() => onHover(open, "onMouseLeave")}
+//       className="flex flex-col"
+//     >
+//       <Popover.Button ref={buttonRef}>
+//         <div
+//           style={{ border: "2px solid red" }}
+//           className={classNames(
+//             open ? "text-blue-800" : "text-gray-800",
+//             "bg-primary-blue rounded-md",
+//             "border-2 border-black border-solid",
+//             "flex justify-center",
+//             LINK_STYLES
+//           )}
+//           onClick={() => handleClick(open)}
+//         >
+//           <span className="uppercase">
+//             {menuTitle}
+//           </span>
+//         </div>
+//       </Popover.Button>
+
+//       <Transition
+//         show={open}
+//         as={Fragment}
+//         enter="transition ease-out duration-200"
+//         enterFrom="opacity-0 translate-y-1"
+//         enterTo="opacity-100 translate-y-0"
+//         leave="transition ease-in duration-150"
+//         leaveFrom="opacity-100 translate-y-0"
+//         leaveTo="opacity-0 translate-y-1"
+//       >
+//         <Popover.Panel static className="z-10 w-48 mx-auto">
+//           <div
+//             className={classNames(
+//               "relative grid space-y-[2px]",
+//               "bg-white border-2 border-gray-300 border-solid",
+//               "divide-y-2 rounded-md text-center"
+//             )}
+//           >
+//             {linksArray.map(([title, href]) => (
+//               <Fragment key={"PopoverPanel<>" + title + href}>
+//                 <a href={href} className={LINK_STYLES}>
+//                   {title}
+//                 </a>
+//               </Fragment>
+//             ))}
+//           </div>
+//         </Popover.Panel>
+//       </Transition>
+//     </div>
+//   )}
+// </Popover>

@@ -255,52 +255,9 @@ const AddressPage = () => {
                                 </div>
                             </div>
                             <div>
-                                {/* <Modal
-                                    open={open}
-                                    onClose={handleClose}
-                                    aria-labelledby="modal-modal-title"
-                                    aria-describedby="modal-modal-description"
-                                >
-                                    <Box sx={style}>
-                                        <Typography sx={{ fontWeight: "bold", fontSize: "25px" }} id="modal-modal-title" variant="h6" component="h2">
-                                            Edit your Address
-                                        </Typography>
-                                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                            You can edit your below address
-                                        </Typography>
-                                        <div className='flex items-center justify-between gap-2 my-4'>
-                                            <div>
-                                                <p>Phone Number</p>
-                                                <TextField value={updateAddress.phoneNo} onChange={(e) => setUpdateAddress({ ...updateAddress, phoneNo: e.target.value })} fullWidth margin="normal" required />
-                                                <p>Address</p>
-                                                <TextField value={updateAddress.address} onChange={(e) => setUpdateAddress({ ...updateAddress, address: e.target.value })} fullWidth margin="normal" required />
-                                                <p>City</p>
-                                                <TextField value={updateAddress.city} onChange={(e) => setUpdateAddress({ ...updateAddress, city: e.target.value })} fullWidth margin="normal" required />
-                                            </div>
-                                            <div>
-                                                <p>Pin Code</p>
-                                                <TextField value={updateAddress.pinCode} onChange={(e) => setUpdateAddress({ ...updateAddress, pinCode: e.target.value })} fullWidth margin="normal" required />
-                                                <p>State</p>
-                                                <TextField value={updateAddress.state} onChange={(e) => setUpdateAddress({ ...updateAddress, state: e.target.value })} fullWidth margin="normal" required />
-                                                <p>Country</p>
-                                                <TextField value={updateAddress.country} onChange={(e) => setUpdateAddress({ ...updateAddress, country: e.target.value })} fullWidth margin="normal" required />
-                                            </div>
-                                        </div>
-
-                                        <div className='flex justify-end'>
-                                            <button
-                                                onClick={() => handleUpdateAddress(curElem._id)}
-                                                className="px-4 py-2 m-2 rounded-lg bg-primary-blue text-white"
-                                            >
-                                                <EditCalendarOutlinedIcon sx={{ marginRight: "5px" }} /> Edit Address
-                                            </button>
-                                        </div>
-
-                                    </Box>
-                                </Modal> */}
                             </div>
                         </>
-                        )) : ""}
+                        )) : <div className='flex justify-center items-center'><CircularProgress /></div>}
                         <div className="flex justify-end">
                             {/* Other elements */}
 
