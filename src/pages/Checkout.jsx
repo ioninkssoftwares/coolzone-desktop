@@ -36,7 +36,10 @@ const Checkout = () => {
         discount,
         shippingCharges,
         total,
+        referral
     } = useSelector((state) => state.cartReducer);
+
+    if (referral) console.log(referral, "fksdjkldskl")
 
 
     const [newOrder] = useNewOrderMutation()
@@ -69,6 +72,7 @@ const Checkout = () => {
             shippingCharges,
             total,
             user: userId,
+            referral
         };
         const res = await newOrder(orderData)
         setLoading(false)

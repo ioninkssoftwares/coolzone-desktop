@@ -7,7 +7,7 @@ import { Grid } from 'react-loader-spinner';
 import { useAxios } from '../../utils/axios';
 import { CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
-import { addToCart, calculatePrice, discountApplied, removeCartItem } from '../../redux/reducer/cartReducer';
+import { addToCart, calculatePrice, discountApplied, removeCartItem, addReferralCode } from '../../redux/reducer/cartReducer';
 import axios from 'axios';
 import { VscError } from 'react-icons/vsc';
 
@@ -21,6 +21,7 @@ const Cart = () => {
   // const status = useSelector(selectCartStatus);
   // const cartLoaded = useSelector(selectCartLoaded)
   const [couponCode, setCouponCode] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [isValidCouponCode, setIsValidCouponCode] = useState(false);
   const [apiLoading, setApiLoading] = useState(false)
 
@@ -133,6 +134,12 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
 
+
+  const handleShipping = () => {
+    let latestReferral = referralCode;
+    dispatch(addReferralCode(latestReferral))
+    navigate("/shipping")
+  }
 
 
 
@@ -255,6 +262,18 @@ const Cart = () => {
                 {/* {cartItems.length > 0 && <Link to="/shipping">Checkout</Link>} */}
               </div>
 
+              <div className="py-2">
+                <label for="promo" className="font-semibold inline-block mb-3 text-sm uppercase">Referral Code</label>
+                {/* <input type="text" id="promo" onChange={(e) => setCoupons(e.target.value)} placeholder="Enter your code" className="p-2 text-sm w-full" /> */}
+                <input
+                  className="p-2 text-sm w-full"
+                  type="text"
+                  placeholder="Referral Code"
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(e.target.value)}
+                />
+              </div>
+
               {/* {loading === false ? <button onClick={handleCoupon} className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button> : <CircularProgress />} */}
               <div className="border-t mt-8">
                 <div className="flex font-semibold justify-between py-6 text-sm uppercase">
@@ -262,7 +281,8 @@ const Cart = () => {
                   {/* <b> ₹{total}</b> */}
                   <b >{cartItems && cartItems.length > 0 ? `₹${total}` : `₹0`}</b>
                 </div>
-                {cartItems.length > 0 && <Link to="/shipping"> <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button> </Link>}
+                {cartItems.length > 0 && <button onClick={handleShipping} className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button>}
+                {/* {cartItems.length > 0 && <Link to="/shipping"> <button className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md uppercase w-full">Checkout</button> </Link>} */}
               </div>
             </div>
 

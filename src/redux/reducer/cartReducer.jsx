@@ -16,6 +16,7 @@ const initialState = {
         pinCode: ""
     },
     total: 0,
+    referral: ""
 };
 
 export const cartReducer = createSlice({
@@ -57,6 +58,9 @@ export const cartReducer = createSlice({
         saveShippingInfo: (state, action) => {
             state.shippingInfo = action.payload;
         },
+        addReferralCode: (state, action) => {
+            state.referral = action.payload;
+        },
         resetCart: () => initialState,
 
     }
@@ -65,5 +69,6 @@ export const { addToCart,
     removeCartItem,
     calculatePrice,
     discountApplied,
+    addReferralCode,
     saveShippingInfo,
     resetCart, } = cartReducer.actions
