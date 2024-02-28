@@ -20,6 +20,7 @@ import { CiLogout } from "react-icons/ci";
 import { toast } from 'react-toastify';
 import { useSearchProductsQuery } from '../../redux/api/productApi';
 import FlyoutMenu from '../features/FlyoutMenu';
+import FlyoutCategory from '../features/FlyoutCategory';
 
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -362,9 +363,12 @@ export default function Navbar() {
             <FlyoutMenu menuTitle='FURNITURES' linksArray={furnitureSamples} />
             <FlyoutMenu menuTitle='REFRIGERATOR' linksArray={refrigerationSamples} />
             <FlyoutMenu menuTitle='AUDIO DEVICES' linksArray={audioSamples} />
-            <FlyoutMenu menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
+            {/* <FlyoutMenu menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
             <FlyoutMenu menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
-            <FlyoutMenu menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
+            <FlyoutMenu menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} /> */}
+            <FlyoutCategory menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
+            <FlyoutCategory menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
+            <FlyoutCategory menuTitle='AUDIO DEVICES' linksArray={audioSamples} />
           </div>
           {/* </section> */}
           {/* </div> */}

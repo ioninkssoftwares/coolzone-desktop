@@ -284,6 +284,8 @@ const ProductList = () => {
     const bestSellerParam = searchParams.get('bestSeller') || '';
     const flyoutCategory = searchParams.get('flyoutCategory') || '';
     const flyoutBrand = searchParams.get('flyoutBrand') || '';
+    const flyoutOnlyCategory = searchParams.get('flyoutOnlyCategory') || '';
+
 
     // if (featured) {
     //     console.log(featured, "sdjkfashafkd")
@@ -311,6 +313,14 @@ const ProductList = () => {
             setBrand(flyoutBrandLowerCase);
         }, 2000);
     }, [flyoutBrand]);
+
+    useEffect(() => {
+        // Update the state when the brand changes
+        let flyoutOnlyCategoryParam = flyoutOnlyCategory.toLowerCase();
+        setTimeout(() => {
+            setCategory(flyoutOnlyCategoryParam);
+        }, 2000);
+    }, [flyoutOnlyCategory]);
 
     useEffect(() => {
         // Update the search state when the categoryParam changes
