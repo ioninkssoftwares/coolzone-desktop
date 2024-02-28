@@ -14,7 +14,7 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 // import generateSlug from "../slug/generateSlug";
 
-const MediumHouseCard = ({ productImages, category, price, title, _id, name, stock }) => {
+const MediumHouseCard = ({ productImages, category, price, title, _id, name, stock, warrantyPeriod }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cookies, setCookies] = useCookies(["token"]);
@@ -49,7 +49,8 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
       name: name,
       photo: productImages[0],
       stock: stock,
-      quantity: 1
+      quantity: 1,
+      warrantyPeriod: warrantyPeriod
     };
     dispatch(addToCart(newItem))
     toast.success("Added to Cart")

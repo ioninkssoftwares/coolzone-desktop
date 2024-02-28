@@ -266,7 +266,8 @@ const ProductList = () => {
             name: cartProduct.name,
             photo: cartProduct?.productImages[0],
             stock: cartProduct.stock,
-            quantity: 1
+            quantity: 1,
+            warrantyPeriod: cartProduct.warrantyPeriod
         };
         dispatch(addToCart(newItem))
         toast.success("Added to Cart")

@@ -77,6 +77,7 @@ const ProductDetails = () => {
             photo: product.product && product.product.productImages && product.product.productImages.length > 0 ? product.product.productImages[0] : "",
             stock: product.product.stock,
             quantity: 1,
+            warrantyPeriod: product.product.warrantyPeriod
             // cartImage: product.product && product.product.productImages && product.product.productImages.length > 0 ? product.product.productImages[0] : ""
         };
         dispatch(addToCart(newItem))

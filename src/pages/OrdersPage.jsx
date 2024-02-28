@@ -92,9 +92,10 @@ const OrdersPage = () => {
                                 <FaFileInvoice onClick={() => navigateToOrder(order)} className='text-2xl cursor-pointer' />
                             </div>
                             <div className='flex justify-between'>
-                                <p className='font-semibold mb-3'>Date Added: {formatDate(new Date(order.createdAt))}</p>
+                                <p className='font-semibold mb-3'>Date of Purchase: {formatDate(new Date(order.createdAt))}</p>
 
-                                <p className='font-semibold mb-3'>Warranty till: {calculateWarrantyEndDate(order.createdAt)}</p>
+                                {/* <p className='font-semibold mb-3'>{`Warranty: ${order.warrantyPeriod} from the date of purchase `}</p> */}
+                                {/* <p className='font-semibold mb-3'>Warranty till: {calculateWarrantyEndDate(order.createdAt)}</p> */}
 
 
                             </div>
@@ -102,11 +103,17 @@ const OrdersPage = () => {
                                 <div key={item._id} className='flex md:flex-row flex-col p-6 items-center justify-between border-b-2 border-t-2'>
                                     <div className='flex flex-col md:gap-6 gap-2 basis-[20%]'>
                                         <p className='font-bold'>{item.name}</p>
+
+
                                         <div className='flex gap-5 items-center'>
-                                            {/* <div className='w-[80px] h-[60px]'>
-                                                    <img className='w-full h-full object-cover' src="" alt="" />
-                                                </div> */}
+                                            <div className='w-[80px] h-[60px]'>
+                                                <img className='w-full h-full object-cover' src={item.photo} alt="" />
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div className='flex flex-col md:gap-6 md:mt-0 mt-4 basis-[15%]'>
+                                        <p className='font-semibold'>Warranty</p>
+                                        <p className='font-semibold mb-3'>{`Warranty: ${item.warrantyPeriod} from the date of purchase `}</p>
                                     </div>
                                     <div className='flex flex-col md:gap-6 md:mt-0 mt-4 basis-[15%]'>
                                         <p className='font-semibold'>Status</p>
@@ -116,10 +123,6 @@ const OrdersPage = () => {
                                         <p className='font-semibold'>Price</p>
                                         <p>{item.price}</p>
                                     </div>
-                                    {/* <div className='flex-col gap-6 hidden md:flex basis-[15%]'>
-                                        <p className='font-semibold'>View Details</p>
-                                        <button className='p-2 rounded-lg bg-primary-blue text-white'>View Details</button>
-                                    </div> */}
                                 </div>
                             ))}
                         </div>

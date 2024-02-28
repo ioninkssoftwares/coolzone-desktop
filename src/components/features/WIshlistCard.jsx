@@ -57,7 +57,9 @@ const WishlistCard = ({ data, setRefreshItems }) => {
             name: product.name,
             photo: product.productImages[0],
             stock: product.stock,
-            quantity: 1
+            quantity: 1,
+            warrantyPeriod: product.warrantyPeriod
+
         };
         dispatch(addToCart(newItem))
         toast.success("Added to Cart")
