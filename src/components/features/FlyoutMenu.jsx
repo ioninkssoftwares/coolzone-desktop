@@ -1,6 +1,7 @@
 import { Fragment, useRef, useState, useEffect } from "react"
 import { Popover, Transition } from "@headlessui/react"
 import { FiArrowDown } from "react-icons/fi"
+import { useNavigate } from "react-router-dom"
 // import { ChevronDownIcon } from "@heroicons/react/solid"
 
 function classNames(...classes) {
@@ -16,6 +17,8 @@ export default function FlyoutMenu({
     ["Blog", "/blog"]
   ]
 }) {
+
+  const navigate = useNavigate();
   let timeout // NodeJS.Timeout
   const timeoutDuration = 200
 
@@ -69,6 +72,14 @@ export default function FlyoutMenu({
       document.removeEventListener("mousedown", handleClickOutside)
     }
   })
+
+  const navigateToProducts = (category, brand) => {
+    navigate(`/products?flyoutCategory=${encodeURIComponent(category)}&flyoutBrand=${encodeURIComponent(brand)}`);
+  };
+
+  // const navigateToProductsCategory = (category) => {
+  //   navigate(`/products?filterCategory=${encodeURIComponent(category.toLowerCase())}`);
+  // };
   return (
 
     <Popover className="relative mx-auto w-35">
@@ -113,10 +124,23 @@ export default function FlyoutMenu({
                   "divide-y-2 rounded-md text-center"
                 )}
               >
-                {linksArray.map(([title, href]) => (
-                  <Fragment key={"PopoverPanel<>" + title + href}>
-                    <p className={LINK_STYLES}>
+                {linksArray.map(([brand, href]) => (
+                  <Fragment key={"PopoverPanel<>" + brand + href}>
+                    {/* <p className={LINK_STYLES}>
                       {title}
+                    </p> */}
+                    <p className={LINK_STYLES}
+                      onClick={() => navigateToProducts(menuTitle, brand)}
+                    // onClick={() => {
+                    //   if (menuTitle === "KITCHEN APPLIANCE") {
+                    //     navigateToProductsCategory(brand);
+                    //   } else {
+                    //     navigateToProducts(menuTitle, brand);
+                    //   }
+                    // }}
+
+                    >
+                      {brand}
                     </p>
                   </Fragment>
                 ))}

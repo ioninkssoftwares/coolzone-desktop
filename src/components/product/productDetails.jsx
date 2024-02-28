@@ -193,7 +193,7 @@ const ProductDetails = () => {
                     <div className="container px-5 py-8 mx-auto">
                         <div className="w-full mx-auto flex flex-wrap md:px-32 px-0 flex-col md:flex-row">
 
-                            <div className='md:w-[30%] w-full md:p-0 p-4 '>
+                            <div className='md:w-[30%] w-full md:p-0 p-4 mb-4 '>
                                 <div className='w-full h-[60%] rounded-lg'>
                                     <img
 
@@ -202,7 +202,7 @@ const ProductDetails = () => {
                                         src={selectedImage}
                                     />
                                 </div>
-                                <div className='w-full flex flex-wrap items-center justify-center my-4 gap-3'>
+                                <div className='w-full flex flex-wrap items-center justify-start my-4  gap-3'>
                                     {product?.product && product?.product.productImages.map((image, index) => (
                                         <div
                                             key={index}
@@ -220,7 +220,7 @@ const ProductDetails = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className='w-full flex items-center justify-between px-4'>
+                                <div className='w-full flex items-center justify-between px-4 '>
                                     <button onClick={handleCart} className='rounded-full md:px-8 px-4 py-2 bg-primary-blue text-white'>Add to Cart</button>
                                     <button onClick={() => handleWishlist(product?.product._id)} className='rounded-full md:px-8 px-4  py-2 bg-primary-blue text-white'>Add to Wishlist</button>
                                 </div>
@@ -236,7 +236,7 @@ const ProductDetails = () => {
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <p className="text-gray-500 text-2xl title-font font-medium">MRP</p>
-                                        <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.price + 10599}</p>
+                                        <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.mrp}</p>
                                     </div>
                                 </div>
 
@@ -305,6 +305,8 @@ const ProductDetails = () => {
                                         <button className='px-4 py-2 text-gray-500 border-2 border-gray-500 bg-white rounded-md'> 2.0</button>
                                     </div>
                                 </> : ""}
+                                <p className='my-4 text-xl font-semibold '>Warranty Status:</p>
+                                <p className='my-4 text-xl font-semibold '>{product?.product.warrantyPeriod}</p>
                                 <p className='my-4 text-xl font-semibold '>Product Description:</p>
                                 <p className="leading-relaxed">{product?.product?.description}</p>
                                 <p className='my-4 text-xl font-semibold '>Product Specificaiton:</p>

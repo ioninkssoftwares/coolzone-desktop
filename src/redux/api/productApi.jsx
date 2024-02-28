@@ -31,6 +31,7 @@ export const productsAPI = createApi({
         }),
         searchProducts: builder.query({
             query: ({ price, search, sort, category, page, subCategory, brand, featured, bestSeller }) => {
+
                 let base = `products?search=${search}&page=${page}`
 
                 if (price) base += `&price=${price}`

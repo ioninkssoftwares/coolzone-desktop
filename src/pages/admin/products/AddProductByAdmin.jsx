@@ -321,11 +321,17 @@ const AddProductByAdmin = () => {
         const regex = /^[a-zA-Z ]+$/; // Only allow letters and spaces
         return regex.test(value) ? null : 'Invalid characters in product name';
     };
+    // const validateCategory = (value) => {
+    //     // Only allow lowercase letters, exclude uppercase, spaces, and symbols
+    //     const regex = /^[a-z]+$/;
+    //     return regex.test(value) ? null : 'Invalid characters in category (Accepts only lowercase letters)';
+    // };
     const validateCategory = (value) => {
-        // Only allow lowercase letters, exclude uppercase, spaces, and symbols
-        const regex = /^[a-z]+$/;
-        return regex.test(value) ? null : 'Invalid characters in category (Accepts only lowercase letters)';
+        // Allow lowercase letters and spaces, exclude uppercase and symbols
+        const regex = /^[a-z\s]+$/;
+        return regex.test(value) ? null : 'Invalid characters in category (Accepts only lowercase letters and spaces)';
     };
+
     const validateBrand = (value) => {
         // Allow letters and white spaces
         const regex = /^[a-zA-Z\s]+$/;

@@ -168,7 +168,7 @@ const Home = () => {
     { name: 'books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
     { name: 'Toys', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png' },
     { name: 'gadgets', imageSrc: 'https://cdn.pixabay.com/photo/2018/03/06/08/31/drone-3202860_960_720.jpg' },
-    { name: 'washing machine', imageSrc: 'https://cdn.pixabay.com/photo/2017/08/22/10/47/washing-machine-2668472_1280.jpg' },
+    { name: 'Fridge', imageSrc: 'https://cdn.pixabay.com/photo/2017/06/19/18/03/refrigerator-2420417_960_720.png' },
   ];
 
 

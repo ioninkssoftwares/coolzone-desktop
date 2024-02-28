@@ -123,7 +123,6 @@ export default function Navbar() {
   const homeAppliancesSamples = [
     ["AIR PURIFIER", "/ifb"],
     ["COOLERS", "/lg"],
-    ["LG", "/samsung"],
     ["VACUUM CLEANER", "/samsung"],
     ["GEYSERS", "/samsung"],
     ["WAHSING MACHINES", "/samsung"],
@@ -361,7 +360,7 @@ export default function Navbar() {
             <FlyoutMenu menuTitle='WASHING MACHINE' linksArray={washingMachineSamples} />
             <FlyoutMenu menuTitle='TELEVISIONS' linksArray={telivisionsSamples} />
             <FlyoutMenu menuTitle='FURNITURES' linksArray={furnitureSamples} />
-            <FlyoutMenu menuTitle='REFRIGERATION' linksArray={refrigerationSamples} />
+            <FlyoutMenu menuTitle='REFRIGERATOR' linksArray={refrigerationSamples} />
             <FlyoutMenu menuTitle='AUDIO DEVICES' linksArray={audioSamples} />
             <FlyoutMenu menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
             <FlyoutMenu menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />

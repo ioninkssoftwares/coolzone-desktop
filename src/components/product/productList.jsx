@@ -282,6 +282,8 @@ const ProductList = () => {
     const navbarSearch = searchParams.get('navbarSearch') || '';
     const featuredParam = searchParams.get('featured') || '';
     const bestSellerParam = searchParams.get('bestSeller') || '';
+    const flyoutCategory = searchParams.get('flyoutCategory') || '';
+    const flyoutBrand = searchParams.get('flyoutBrand') || '';
 
     // if (featured) {
     //     console.log(featured, "sdjkfashafkd")
@@ -294,8 +296,29 @@ const ProductList = () => {
 
 
     useEffect(() => {
+        // Update the state when the category changes
+        let flyoutCategoryLowerCase = flyoutCategory.toLowerCase();
+        // console.log(flyoutCategoryLowerCase, "sdjfhkjsad")
+        setTimeout(() => {
+            setCategory(flyoutCategoryLowerCase);
+        }, 2000);
+    }, [flyoutCategory]);
+
+    useEffect(() => {
+        // Update the state when the brand changes
+        let flyoutBrandLowerCase = flyoutBrand.toLowerCase();
+        setTimeout(() => {
+            setBrand(flyoutBrandLowerCase);
+        }, 2000);
+    }, [flyoutBrand]);
+
+    useEffect(() => {
         // Update the search state when the categoryParam changes
+        console.log(filterCategory, "sdjfhkjsad")
         setCategory(filterCategory)
+        // setTimeout(() => {
+        //     setCategory(filterCategory)
+        // }, 2000);
     }, [filterCategory]);
 
     useEffect(() => {

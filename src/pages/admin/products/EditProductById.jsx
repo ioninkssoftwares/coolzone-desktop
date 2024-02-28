@@ -154,6 +154,8 @@ const EditProductById = () => {
         bestSeller: true,
         subCategory: "",
         brand: "",
+        mrp: 0,
+        warrantyPeriod: ""
         // best_seller: true,
         // shortDescription: "",
         // costPrice: 0,
@@ -316,6 +318,8 @@ const EditProductById = () => {
             bestSeller: productData?.bestSeller,
             brand: productData?.brand,
             subCategory: productData?.subCategory,
+            mrp: productData?.mrp,
+            warrantyPeriod: productData?.warrantyPeriod,
             // specification: productData?.specification,
             // featured: productData?.featured,
             // best_seller: productData?.best_seller,
@@ -390,6 +394,8 @@ const EditProductById = () => {
         ProductFormData.append('bestSeller', product.bestSeller);
         ProductFormData.append('brand', product.brand);
         ProductFormData.append('subCategory', product.subCategory);
+        ProductFormData.append('mrp', product.mrp);
+        ProductFormData.append('warrantyPeriod', product.warrantyPeriod);
         // ProductFormData.append('returnPolicy', product.returnPolicy);
         // ProductFormData.append('Discount', product.Discount);
 
@@ -479,9 +485,9 @@ const EditProductById = () => {
         return regex.test(value) ? null : 'Invalid characters in product name';
     };
     const validateCategory = (value) => {
-        // Only allow lowercase letters, exclude uppercase, spaces, and symbols
-        const regex = /^[a-z]+$/;
-        return regex.test(value) ? null : 'Invalid characters in category (Accepts only lowercase letters)';
+        // Allow lowercase letters and spaces, exclude uppercase and symbols
+        const regex = /^[a-z\s]+$/;
+        return regex.test(value) ? null : 'Invalid characters in category (Accepts only lowercase letters and spaces)';
     };
 
     const validateBrand = (value) => {
@@ -774,6 +780,33 @@ const EditProductById = () => {
                                     </Typography>
 
                                     <Textarea sx={{ padding: 0, borderRadius: 1 }} value={product?.specification} onChange={(event) => setProduct({ ...product, specification: event.target.value })} placeholder="Your text goes here" minRows={5} />
+
+
+                                    <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
+
+                                        <InputField
+                                            label=" Mrp"
+                                            type="number"
+                                            value={product.mrp}
+                                            // onChange={(e) => setProduct({ ...product, price: e })} 
+                                            onChange={(value) => {
+                                                setProduct({ ...product, mrp: value })
+                                                setFormErrors({ ...formErrors, mrp: validateSellingPrice(value) });
+                                            }}
+                                            validate={validateSellingPrice} />
+
+
+                                        <InputField label="Warranty Period"
+                                            type="text"
+                                            value={product.warrantyPeriod}
+                                            // onChange={(e) => setProduct({ ...product, stock: e })} 
+                                            onChange={(value) => {
+                                                setProduct({ ...product, warrantyPeriod: value })
+                                            }}
+                                        />
+
+
+                                    </Box>
 
 
 
