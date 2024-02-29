@@ -77,7 +77,7 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
   };
 
   return (
-    <div style={{ border: "2px solid #E2E2E2" }} className=" p-4 min-w-[200px] md:min-w-[160px] relative max-w-sm grow  rounded-lg font-manrope hover:scale-105">
+    <div style={{ border: "2px solid #E2E2E2" }} className=" p-4 min-w-[200px] md:min-w-[215px] relative max-w-sm grow  rounded-lg font-manrope hover:scale-105">
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm font-semibold text-primary-blue ">
           {/* {category && category.length > 13 ? `${category.slice(0, 13).toUpperCase()}...` : category.toUpperCase()} */}
@@ -91,17 +91,17 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
         </div>
 
       </div>
-      <p className="text-start text-xs font-semibold">  {name.length > 20 ? name.slice(0, 17) + '...' : name}</p>
       <div className="flex items-center justify-center mt-6">
-        <div onClick={() => navigate(`/product/${_id}`)} className=" cursor-pointer relative mb-6 w-[150px] h-[75px]">
+        <div onClick={() => navigate(`/product/${_id}`)} className=" cursor-pointer relative  w-[170px] h-[120px]">
           <img
             src={productImages.length > 0 ? productImages[0] : "https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png"}
             fill
             alt="home"
-            className="w-full h-full object-cover rounded-lg "
+            className="w-full h-full object-contain rounded-lg "
           />
         </div>
       </div>
+      <p className="text-start text-xs font-semibold my-4">  {name.length > 23 ? name.slice(0, 20) + '...' : name}</p>
       <div className="  flex items-center justify-between">
         <p className="text-xl font-semibold">₹{price}</p>
         <p onClick={handleCart} className="w-[40px] h-[40px] cursor-pointer rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>

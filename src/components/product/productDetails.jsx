@@ -199,7 +199,7 @@ const ProductDetails = () => {
                                     <img
 
                                         alt="ecommerce"
-                                        className="w-full h-full object-cover object-center rounded-lg border border-gray-200"
+                                        className="w-full h-full object-contain object-center rounded-lg border border-gray-200"
                                         src={selectedImage}
                                     />
                                 </div>

@@ -55,11 +55,17 @@ export default function FlyoutMenu({
   }
 
   const LINK_STYLES = classNames(
-    "py-1 px-1 min-w-[10rem] ",
+    "py-1 px-1  ",
     "text-white text-start  uppercase ",
     "transition duration-500 ease-in-out",
     "bg-primary-blue hover:text-primary-blue hover:bg-blue-100"
   )
+  // const LINK_STYLES = classNames(
+  //   "py-1 px-1 min-w-[10rem] ",
+  //   "text-white text-start  uppercase ",
+  //   "transition duration-500 ease-in-out",
+  //   "bg-primary-blue hover:text-primary-blue hover:bg-blue-100"
+  // )
   const handleClickOutside = (event) => {
     if (buttonRef.current && !buttonRef.current.contains(event.target)) {
       event.stopPropagation()
@@ -116,20 +122,27 @@ export default function FlyoutMenu({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <div className="absolute z-10 w-40 mx-auto top-full"> {/* Position the dropdown below the button */}
+            <div className="absolute z-10 w-fit mx-auto top-full"> {/* Position the dropdown below the button */}
               <div
-                className={classNames(
-                  "grid space-y-[2px]",
-                  "bg-white border-2 border-gray-300 border-solid",
-                  "divide-y-2 rounded-md text-center"
-                )}
+              // className={classNames(
+              //   "grid ",
+              //   "",
+              //   "divide-y-2 rounded-md text-center"
+              // )}
+              // className={classNames(
+              //   "grid space-y-[2px]",
+              //   "bg-white border-2 border-gray-300 border-solid",
+              //   "divide-y-2 rounded-md text-center"
+              // )}
               >
                 {linksArray.map(([brand, href]) => (
                   <Fragment key={"PopoverPanel<>" + brand + href}>
                     {/* <p className={LINK_STYLES}>
                       {title}
                     </p> */}
-                    <p className={LINK_STYLES}
+                    <p
+                      className={classNames("px-4", LINK_STYLES)}
+
                       onClick={() => navigateToProducts(menuTitle, brand)}
                     // onClick={() => {
                     //   if (menuTitle === "KITCHEN APPLIANCE") {

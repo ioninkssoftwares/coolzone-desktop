@@ -11,10 +11,10 @@ const CategoryCard = ({ categoryData }) => {
     navigate(`/products?filterCategory=${encodeURIComponent(categoryName.toLowerCase())}`);
   }
   return (
-    <div key={categoryData.id} style={{ width: "215px", height: "220px" }} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 hover:scale-105 '>
+    <div key={categoryData.id} style={{ width: "255px", height: "250px" }} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 hover:scale-105 '>
       {/* <div key={categoryData.id} style={{ width: "275px", height: "280px" }} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 hover:scale-105 '> */}
       <p>{categoryData?.name.toUpperCase()}</p>
-      <div onClick={() => navigateToProducts(categoryData?.name)} className="relative cursor-pointer my-4 w-[130px] h-[100px]">
+      <div onClick={() => navigateToProducts(categoryData?.name)} className="relative cursor-pointer my-4 w-[180px] h-[130px]">
         {/* <div onClick={() => navigateToProducts(categoryData?.name)} className="relative cursor-pointer my-4 w-[180px] h-[150px]"> */}
         <img
           // src={images.length > 0 ? images[0] : null }

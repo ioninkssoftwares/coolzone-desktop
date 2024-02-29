@@ -202,57 +202,49 @@ const Home = () => {
       <section>
         <CorouselSlider bannerCategory={fasionBanner} />
       </section>
-      <section className='flex  items-center  justify-center my-5'>
-        <div style={{ border: "2px solid gray" }} className='rounded-lg flex md:flex-row flex-col md:items-center md:justify-center justify-start  w-[79%] p-5'>
-          {/* <div style={{ border: "2px solid gray" }} className="max-w-7xl mx-auto p-5 md:px-10 rounded-lg flex items-center justify-center "> */}
-          <div className='w-fit md:border-r-4  flex items-center justify-center gap-3 px-14 py-3'>
-            <div className='w-[25px] h-[25px] mt-2'>
-              <SiAdguard className='w-full h-full text-blue-950 ' />
-            </div>
-            <div>
-              <p className='font-bold'>Guarantee</p>
-              <p className='text-xs'>12 Months</p>
-            </div>
-          </div>
-          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
-            <div className='w-[25px] h-[25px] mt-2'>
-              <BsTicketPerforatedFill className='w-full h-full text-orange-400' />
-            </div>
-            <div>
-              <p className='font-bold'>Rate Paying</p>
-              <p className='text-xs'>4-12 Months</p>
-            </div>
-          </div>
-          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
-            <div className='w-[25px] h-[25px] mt-2'>
-              <MdOutlineSecurity className='w-full h-full text-primary-blue' />
-            </div>
-            <div>
-              <p className='font-bold'>Payments</p>
-              <p className='text-xs'>Secured</p>
-            </div>
-          </div>
-          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
-            <div className='w-[25px] h-[25px] mt-2'>
-              <TbTruckDelivery className='w-full h-full text-green-500' />
-            </div>
-            <div>
-              <p className='font-bold'>Free Delivery</p>
-              <p className='text-xs'>from ₹449</p>
-            </div>
-          </div>
-          <div className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
-            <div className='w-[25px] h-[25px] mt-2'>
-              <AiOutlineTags className='w-full h-full text-red-500' />
-            </div>
-            <div>
-              <p className='font-bold'>Brands</p>
-              <p className='text-xs'>Only Top</p>
-            </div>
-          </div>
 
+      {/* New Section */}
+      <section className=" mb-5 mt-3">
+        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-end">
+            {/* <HomeSectionTitle text="New Products" /> */}
+            {/* Buttons container */}
+            <div className="flex space-x-4  md:mt-0 mb-0">
+              <button
+                onClick={() => scrollLeft("newSection")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("newSection")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronRight />
+              </button>
+              {/* <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button> */}
+            </div>
+          </div>
+          {homeProducts && (
+            <div id="newSection" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
+              <CardCarousel id="newSection" data={newSectionSamples} Card={NewSectionCard} />
+            </div>
+          )}
         </div>
       </section>
+
+      {/* Categories Section */}
+      <section className='bg-gray-100 mb-5'>
+        <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 ">
+          <HomeSectionTitle text="Categories" />
+          <div className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-7'>
+            {productSamples?.map((curElem) => (<CategoryCard categoryData={curElem} />))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products section */}
       <section className="pt-5 mb-1">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
@@ -285,15 +277,7 @@ const Home = () => {
           )}
         </div>
       </section>
-      {/* Categories Section */}
-      <section className='bg-gray-100 mb-5'>
-        <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 ">
-          <HomeSectionTitle text="Categories" />
-          <div className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-7'>
-            {productSamples?.map((curElem) => (<CategoryCard categoryData={curElem} />))}
-          </div>
-        </div>
-      </section>
+
       {/* Offers Section */}
       <section className=' mb-5'>
         <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 flex md:items-center md:justify-center gap-8 overflow-x-auto">
@@ -389,6 +373,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
       {/* Best Sellers section */}
       <section className="pt-5 ">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
@@ -420,43 +405,6 @@ const Home = () => {
           )}
         </div>
       </section>
-
-      {/* New Section */}
-      <section className=" mb-5">
-        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
-        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-        <div className="max-w-[92rem] mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-end">
-            {/* <HomeSectionTitle text="New Products" /> */}
-            {/* Buttons container */}
-            <div className="flex space-x-4  md:mt-0 mb-6">
-              <button
-                onClick={() => scrollLeft("newSection")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronLeft />
-              </button>
-              <button
-                onClick={() => scrollRight("newSection")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronRight />
-              </button>
-              {/* <button className='bg-primary-blue cursor-pointer px-3 rounded-md text-white '>VIEW ALL</button> */}
-            </div>
-          </div>
-          {homeProducts && (
-            <div id="newSection" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="newSection" data={newSectionSamples} Card={NewSectionCard} />
-            </div>
-          )}
-        </div>
-      </section>
-
-
-
-
-
 
       {/* New Products section */}
       <section className="pt-5 mb-5">
@@ -491,7 +439,7 @@ const Home = () => {
       </section>
 
       {/* Second Offers Section */}
-      <section className=' mb-5'>
+      {/* <section className=' mb-5'>
         <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 flex md:items-center md:justify-center gap-8 overflow-x-auto">
           <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-red-400 to-red-900 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
@@ -584,7 +532,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/*Top Rated/Mega Offers Categories Section */}
       <section className='bg-gray-100  md:h-[635px] '>
@@ -618,6 +566,61 @@ const Home = () => {
         </div>
       </section>
       {/* <div className=' bg-[#3b4758] w-full h-24'></div> */}
+
+      {/* Guarantee section */}
+      <section className='flex  items-center  justify-center my-5'>
+        <div style={{ border: "2px solid gray" }} className='rounded-lg flex md:flex-row flex-col md:items-center md:justify-center justify-start  w-[79%] p-5'>
+          {/* <div style={{ border: "2px solid gray" }} className="max-w-7xl mx-auto p-5 md:px-10 rounded-lg flex items-center justify-center "> */}
+          <div className='w-fit md:border-r-4  flex items-center justify-center gap-3 px-14 py-3'>
+            <div className='w-[25px] h-[25px] mt-2'>
+              <SiAdguard className='w-full h-full text-blue-950 ' />
+            </div>
+            <div>
+              <p className='font-bold'>Guarantee</p>
+              <p className='text-xs'>12 Months</p>
+            </div>
+          </div>
+          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
+            <div className='w-[25px] h-[25px] mt-2'>
+              <BsTicketPerforatedFill className='w-full h-full text-orange-400' />
+            </div>
+            <div>
+              <p className='font-bold'>Rate Paying</p>
+              <p className='text-xs'>4-12 Months</p>
+            </div>
+          </div>
+          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
+            <div className='w-[25px] h-[25px] mt-2'>
+              <MdOutlineSecurity className='w-full h-full text-primary-blue' />
+            </div>
+            <div>
+              <p className='font-bold'>Payments</p>
+              <p className='text-xs'>Secured</p>
+            </div>
+          </div>
+          <div className='w-fit md:border-r-4 flex items-center justify-center gap-3 px-14 py-3'>
+            <div className='w-[25px] h-[25px] mt-2'>
+              <TbTruckDelivery className='w-full h-full text-green-500' />
+            </div>
+            <div>
+              <p className='font-bold'>Free Delivery</p>
+              <p className='text-xs'>from ₹449</p>
+            </div>
+          </div>
+          <div className='w-fit flex items-center justify-center gap-3 px-14 py-3'>
+            <div className='w-[25px] h-[25px] mt-2'>
+              <AiOutlineTags className='w-full h-full text-red-500' />
+            </div>
+            <div>
+              <p className='font-bold'>Brands</p>
+              <p className='text-xs'>Only Top</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
       {/* Newsletter Section */}
       <section className='bg-[#3b4758] '>
         <div className="max-w-[92rem] mx-auto px-5 md:px-10  flex space-x-6 p-6 items-center justify-between ">

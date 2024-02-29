@@ -45,42 +45,46 @@ const Checkout = () => {
     const [newOrder] = useNewOrderMutation()
 
     const orderHandler = async () => {
-        setLoading(true)
+        try {
+            setLoading(true)
+
+            if (cartItems.length === 0 && Object.values(shippingInfo).some(value => value === '')) {
+                setLoading(false);
+                toast.error("Don't refresh while doing checkout; fields are missing.");
+                navigate("/")
+                return;
+            }
 
 
-        // Check if all required fields are present
-        // if (!shippingInfo || !cartItems ) {
-        //     setLoading(false);
-        //     toast.error("Some required fields are missing");
-        //     return;
-        // }
+            const orderData = {
+                shippingInfo,
+                orderItems: cartItems,
+                subtotal,
+                discount,
+                shippingCharges,
+                total,
+                user: userId,
+                referral
+            };
+            const res = await newOrder(orderData)
 
-        if (cartItems.length === 0 && Object.values(shippingInfo).some(value => value === '')) {
+            if (res.error && res.error.data && res.error.data.success === false) {
+                toast.error(res.error.data.message);
+                navigate("/");
+                return;
+            }
+
+            toast.success("Order Placed Successfully");
+            dispatch(resetCart());
+            navigate("/");
+        } catch (error) {
+            console.error("Error creating order:", error);
+            toast.error("An error occurred while placing the order.");
+            navigate("/");
+        } finally {
             setLoading(false);
-            toast.error("Don't refresh while doing checkout; fields are missing.");
-            navigate("/")
-            return;
         }
-
-
-        const orderData = {
-            shippingInfo,
-            orderItems: cartItems,
-            subtotal,
-            tax,
-            discount,
-            shippingCharges,
-            total,
-            user: userId,
-            referral
-        };
-        const res = await newOrder(orderData)
-        setLoading(false)
-        toast.success("Order Placed Successfully")
-        dispatch(resetCart())
-        navigate("/")
     }
-
 
 
 

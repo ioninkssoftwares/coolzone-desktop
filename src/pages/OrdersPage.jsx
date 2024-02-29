@@ -107,7 +107,7 @@ const OrdersPage = () => {
 
                                         <div className='flex gap-5 items-center'>
                                             <div className='w-[80px] h-[60px]'>
-                                                <img className='w-full h-full object-cover' src={item.photo} alt="" />
+                                                <img className='w-full h-full object-contain' src={item.photo} alt="" />
                                             </div>
                                         </div>
                                     </div>

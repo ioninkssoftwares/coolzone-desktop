@@ -356,7 +356,7 @@ export default function Navbar() {
           </div>
           {/* Category Section */}
           {/* <section className='w-full md:flex items-center justify-center bg-primary-blue hidden'> */}
-          <div className='flex  bg-primary-blue gap-1 px-2 '>
+          <div className='md:flex hidden  bg-primary-blue gap-1 px-2 '>
             <FlyoutMenu menuTitle='AIR CONDITIONER' linksArray={airConditionerSamples} />
             <FlyoutMenu menuTitle='WASHING MACHINE' linksArray={washingMachineSamples} />
             <FlyoutMenu menuTitle='TELEVISIONS' linksArray={telivisionsSamples} />
@@ -368,7 +368,7 @@ export default function Navbar() {
             <FlyoutMenu menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} /> */}
             <FlyoutCategory menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
             <FlyoutCategory menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
-            <FlyoutCategory menuTitle='AUDIO DEVICES' linksArray={audioSamples} />
+            <FlyoutCategory menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
           </div>
           {/* </section> */}
           {/* </div> */}

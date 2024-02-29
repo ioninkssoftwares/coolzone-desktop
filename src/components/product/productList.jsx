@@ -298,43 +298,50 @@ const ProductList = () => {
     }, [filterCategory, navbarSearch]);
 
 
-    useEffect(() => {
-        // Update the state when the category changes
-        let flyoutCategoryLowerCase = flyoutCategory.toLowerCase();
-        // console.log(flyoutCategoryLowerCase, "sdjfhkjsad")
-        setTimeout(() => {
-            setCategory(flyoutCategoryLowerCase);
-        }, 2000);
-    }, [flyoutCategory]);
+    // useEffect(() => {
+    //     // Update the state when the category changes
+    //     let flyoutCategoryLowerCase = flyoutCategory.toLowerCase();
+    //     // console.log(flyoutCategoryLowerCase, "sdjfhkjsad")
+    //     setTimeout(() => {
+    //         setCategory(flyoutCategoryLowerCase);
+    //     }, 2000);
+    // }, [flyoutCategory]);
 
     useEffect(() => {
         // Update the state when the brand changes
         let flyoutBrandLowerCase = flyoutBrand.toLowerCase();
-        setTimeout(() => {
+        let flyoutCategoryLowerCase = flyoutCategory.toLowerCase();
+        if (flyoutBrandLowerCase.length > 0 && flyoutCategoryLowerCase.length > 0) {
+            setCategory(flyoutCategoryLowerCase);
             setBrand(flyoutBrandLowerCase);
-        }, 2000);
-    }, [flyoutBrand]);
+
+        }
+    }, [flyoutBrand, flyoutCategory]);
 
     useEffect(() => {
-        // Update the state when the brand changes
         let flyoutOnlyCategoryParam = flyoutOnlyCategory.toLowerCase();
-        setTimeout(() => {
+        if (flyoutOnlyCategoryParam.length > 0) {
+            setBrand("")
+            console.log(flyoutOnlyCategoryParam, "FlyoutOnlyCategory")
             setCategory(flyoutOnlyCategoryParam);
-        }, 2000);
+        }
     }, [flyoutOnlyCategory]);
 
     useEffect(() => {
-        // Update the search state when the categoryParam changes
-        console.log(filterCategory, "sdjfhkjsad")
-        setCategory(filterCategory)
-        // setTimeout(() => {
-        //     setCategory(filterCategory)
-        // }, 2000);
+        if (filterCategory.length > 0) {
+            console.log("fiterCategory")
+            setCategory(filterCategory);
+        }
+
     }, [filterCategory]);
 
     useEffect(() => {
         // Update the search state when the categoryParam changes
-        setSearch(navbarSearch)
+        if (navbarSearch.length > 0) {
+            setCategory("")
+            setSearch(navbarSearch)
+        }
+        // setSearch(navbarSearch)
     }, [navbarSearch]);
 
     useEffect(() => {
@@ -753,7 +760,7 @@ const ProductList = () => {
                                                         <img
                                                             src={product?.productImages.length > 0 ? product.productImages[0] : null}
                                                             alt="product image"
-                                                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                                            className="h-full w-full object-contain object-center lg:h-full lg:w-full"
                                                         />
                                                     </div>
                                                     <div onClick={() => handleCart(product)} className="flex cursor-pointer items-center justify-between">
@@ -814,3 +821,19 @@ const ProductList = () => {
 }
 
 export default ProductList
+
+// useEffect(() => {
+//     // Update the state when the brand changes
+//     // let flyoutOnlyCategoryParam = flyoutOnlyCategory.toLowerCase();
+//     // console.log(flyoutOnlyCategoryParam, "sdjfhkjsad")
+//     // setCategory(flyoutOnlyCategoryParam);
+//     console.log("FlyoutOnlyCategory")
+// }, [flyoutOnlyCategory]);
+
+// useEffect(() => {
+//     // Update the search state when the categoryParam changes
+//     // console.log(filterCategory, "sdjfhkjsad")
+//     // setCategory(filterCategory)
+//     console.log("fiterCategory")
+
+// }, [filterCategory]);

@@ -115,18 +115,18 @@ export default function FlyoutCategory({
                     >
                         <div className="absolute z-10 w-40 mx-auto top-full"> {/* Position the dropdown below the button */}
                             <div
-                                className={classNames(
-                                    "grid space-y-[2px]",
-                                    "bg-white border-2 border-gray-300 border-solid",
-                                    "divide-y-2 rounded-md text-center"
-                                )}
+                            // className={classNames(
+                            //     "grid space-y-[2px]",
+                            //     "bg-white border-2 border-gray-300 border-solid",
+                            //     "divide-y-2 rounded-md text-center"
+                            // )}
                             >
                                 {linksArray.map(([brand, href]) => (
                                     <Fragment key={"PopoverPanel<>" + brand + href}>
                                         {/* <p className={LINK_STYLES}>
                       {title}
                     </p> */}
-                                        <p className={LINK_STYLES}
+                                        <p className={classNames("px-4", LINK_STYLES)}
                                             onClick={() => navigateToProducts(brand)}
                                         // onClick={() => {
                                         //   if (menuTitle === "KITCHEN APPLIANCE") {

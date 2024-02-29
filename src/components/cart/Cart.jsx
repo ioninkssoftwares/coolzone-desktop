@@ -225,10 +225,10 @@ const Cart = () => {
                 <span className="font-semibold text-sm uppercase">Subtotal</span>
                 <span className="font-semibold text-sm">  ₹{subtotal}</span>
               </div>
-              <div className="flex justify-between mt-10 mb-5">
+              {/* <div className="flex justify-between mt-10 mb-5">
                 <span className="font-semibold text-sm uppercase">Tax</span>
                 <span className="font-semibold text-sm">  ₹{tax}</span>
-              </div>
+              </div> */}
               <div className="flex justify-between mt-10 mb-5">
                 <span className="font-semibold text-sm uppercase">Shipping Charges</span>
                 <span className="font-semibold text-sm">{cartItems && cartItems.length > 0 ? `₹${shippingCharges}` : "₹0"}</span>

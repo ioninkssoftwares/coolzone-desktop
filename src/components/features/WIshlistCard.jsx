@@ -111,7 +111,7 @@ const WishlistCard = ({ data, setRefreshItems }) => {
                             src={elem.productImages ? elem.productImages[0] : imageSource}
                             fill
                             alt="home"
-                            className="w-full h-full object-cover rounded-lg"
+                            className="w-full h-full object-contain rounded-lg"
                         />
                     </div>
                 </div>
