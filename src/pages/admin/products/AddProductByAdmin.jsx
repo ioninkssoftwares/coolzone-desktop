@@ -160,6 +160,29 @@ const AddProductByAdmin = () => {
     const [discountSwitch, setDiscountSwitch] = useState(true);
     const [featuredSwitch, setFeaturedSwitch] = useState(true);
     const [bestSellerSwitch, setBestSellerSwitch] = useState(true);
+    const [allBrands, setAllBrands] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
+
+    const [selectedBrand, setSelectedBrand] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const handleBrandChange = (event) => {
+        console.log(event.target.value, "dsljfdslkj")
+        const selectedBrandId = event.target.value;
+        setSelectedBrand(selectedBrandId);
+
+        // If you need to update your product state as well
+        setProduct({ ...product, brand: selectedBrandId });
+    };
+    const handleCategoryChange = (event) => {
+        const selectedCategoryName = event.target.value;
+        setSelectedCategory(selectedCategoryName);
+
+        // If you need to update your product state as well
+        setProduct({ ...product, category: selectedCategoryName });
+    };
+
+    if (product) console.log(product, "dsfjdslk")
 
     // Handler function to update the switch state
     const handleReturnSwitch = (event) => {
@@ -376,6 +399,58 @@ const AddProductByAdmin = () => {
     };
 
 
+    async function getAllBrands() {
+        try {
+            console.log(token, "jsakdfjkladsj")
+            const instance = useAxios(token);
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/getAllBrands`
+            );
+            if (res.data) {
+                setAllBrands(res.data.brands)
+                setLoading(false);
+            }
+        } catch (e) {
+            setLoading(false);
+            console.log(e)
+            // ErrorDispaly(e);
+        }
+    }
+
+    async function getAllCategories() {
+        try {
+            console.log(token, "jsakdfjkladsj")
+            const instance = useAxios(token);
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/getAllCategories`
+            );
+            if (res.data) {
+                setAllCategories(res.data.categories)
+                setLoading(false);
+            }
+        } catch (e) {
+            setLoading(false);
+            console.log(e)
+            // ErrorDispaly(e);
+        }
+    }
+
+
+    useEffect(() => {
+        getAllBrands();
+        getAllCategories();
+    }, [token]);
+
+
+    // useEffect(() => {
+    //     getAllCategories();
+    // }, [token]);
+
+
+
+
 
 
     return (
@@ -413,7 +488,7 @@ const AddProductByAdmin = () => {
                                     // validate={validateProductName}
                                     />
 
-                                    <InputField
+                                    {/* <InputField
                                         label="Brand"
                                         type="text"
                                         value={product?.brand}
@@ -422,7 +497,24 @@ const AddProductByAdmin = () => {
                                             setFormErrors({ ...formErrors, brand: validateBrand(value) });
                                         }}
                                         validate={validateBrand}
-                                    />
+                                    /> */}
+                                    <FormControl variant="standard" sx={{ mb: 4, width: "100%" }}>
+                                        <InputLabel id="brand-select-label">Select Brand</InputLabel>
+                                        <Select
+                                            labelId="brand-select-label"
+                                            id="brand-select"
+                                            value={selectedBrand}
+                                            onChange={handleBrandChange}
+                                            label="Brand"
+                                        // sx={{ w: '100%' }}
+                                        >
+                                            {allBrands?.map((brand) => (
+                                                <MenuItem key={brand._id} value={brand.brandName}>
+                                                    {brand.brandName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
 
 
 
@@ -430,7 +522,7 @@ const AddProductByAdmin = () => {
                                         Category
                                     </Typography> */}
 
-                                    <InputField
+                                    {/* <InputField
                                         label="Category"
                                         type="text"
                                         value={product?.category}
@@ -439,7 +531,27 @@ const AddProductByAdmin = () => {
                                             setFormErrors({ ...formErrors, category: validateCategory(value) });
                                         }}
                                         validate={validateCategory}
-                                    />
+                                    /> */}
+
+                                    <FormControl variant="standard" sx={{ mb: 4, width: "100%" }}>
+                                        <InputLabel id="brand-select-label">Select Category</InputLabel>
+                                        <Select
+                                            labelId="brand-select-label"
+                                            id="brand-select"
+                                            value={selectedCategory}
+                                            onChange={handleCategoryChange}
+                                            label="Category"
+                                        // sx={{ w: '100%' }}
+                                        >
+
+                                            {allCategories?.map((category) => (
+                                                <MenuItem key={category._id} value={category.categoryName}>
+                                                    {category.categoryName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+
 
                                     <InputField
                                         label="Sub Category"

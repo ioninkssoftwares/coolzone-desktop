@@ -239,7 +239,7 @@ const Home = () => {
       <section className='bg-gray-100 mb-5'>
         <div className="max-w-[92rem] mx-auto px-5 md:px-10 py-8 ">
           <HomeSectionTitle text="Categories" />
-          <div className='flex md:items-start md:justify-between items-center justify-center flex-wrap mt-7 gap-7'>
+          <div className='flex md:items-start md:justify-start items-center justify-center flex-wrap mt-7 gap-7'>
             {productSamples?.map((curElem) => (<CategoryCard categoryData={curElem} />))}
           </div>
         </div>

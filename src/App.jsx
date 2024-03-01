@@ -16,7 +16,7 @@ import Products from './pages/Products';
 import ProfilePage from './pages/ProfilePage';
 import SignupPage from './pages/SignupPage';
 import WishListPage from './pages/WishListPage';
-import InventoryManagement from './pages/admin/InventoryManagement';
+import InventoryManagement from './pages/admin/inventory/InventoryManagement';
 import EditCustomer from './pages/admin/customer/EditCustomer';
 import UserManagement from './pages/admin/customer/UserManagement';
 import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
@@ -42,6 +42,8 @@ import AdminLogin from './pages/admin/AdminLogin';
 import Admin404 from './pages/admin/Admin404';
 import ShippingPage from './pages/ShippingPage';
 import InvoicePage from './pages/InvoicePage';
+import CategoryManagement from './pages/admin/inventory/categoryManagement';
+import BrandManagement from './pages/admin/inventory/BrandManagement';
 
 const router = createBrowserRouter([
   {
@@ -177,6 +179,14 @@ const router = createBrowserRouter([
   {
     path: '/admin/inventory',
     element: <InventoryManagement></InventoryManagement>,
+  },
+  {
+    path: '/admin/categoryManagement',
+    element: <CategoryManagement></CategoryManagement>,
+  },
+  {
+    path: '/admin/brandManagement',
+    element: <BrandManagement></BrandManagement>,
   },
   // {
   //   path: '/admin/payment',

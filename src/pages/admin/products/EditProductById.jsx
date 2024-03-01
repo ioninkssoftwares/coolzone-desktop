@@ -156,10 +156,7 @@ const EditProductById = () => {
         brand: "",
         mrp: 0,
         warrantyPeriod: ""
-        // best_seller: true,
-        // shortDescription: "",
-        // costPrice: 0,
-        // returnPolicy: true
+
     })
     const [returnSwitch, setReturnSwitch] = useState(null);
     const [discountSwitch, setDiscountSwitch] = useState(null);
@@ -167,9 +164,24 @@ const EditProductById = () => {
     const [bestSellerSwitch, setBestSellerSwitch] = useState(null);
     const [productData, setProductData] = useState({});
 
+    const [allBrands, setAllBrands] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
 
-    if (productData) {
-        console.log(productData, "dsjfhakjdfh")
+    const handleBrandChange = (event) => {
+        const selectedBrand = event.target.value;
+        // setBrandValue(selectedBrand);
+        setProduct({ ...product, brand: selectedBrand });
+    };
+
+    const handleCategoryChange = (event) => {
+        const selectedCategory = event.target.value;
+        // setCategoryValue(selectedCategory);
+        setProduct({ ...product, category: selectedCategory });
+    };
+
+
+    if (product) {
+        console.log(product, "dsjfhakjdfh")
     }
 
 
@@ -280,11 +292,7 @@ const EditProductById = () => {
 
 
     useEffect(() => {
-        // if (productData.Discount) {
-        //     setReturnSwitch(true);
-        // } else {
-        //     setReturnSwitch(false)
-        // }
+
         if (productData.bestSeller) {
             setBestSellerSwitch(true);
         } else {
@@ -295,19 +303,9 @@ const EditProductById = () => {
         } else {
             setFeaturedSwitch(false)
         }
-        // if (productData.returnPolicy) {
-        //     setReturnSwitch(true);
-        // } else {
-        //     setReturnSwitch(false)
-        // }
 
-        // if (productData.images) {
-        //     const imageUrls = productData.images.map(image => image.url);
-        //     setUploadedProductImages(imageUrls);
-        // }
         setProduct({
-            // Discount: productData?.Discount,
-            // ratings: productData?.ratings,
+
             stock: productData?.stock,
             name: productData?.name,
             price: productData?.price,
@@ -320,12 +318,7 @@ const EditProductById = () => {
             subCategory: productData?.subCategory,
             mrp: productData?.mrp,
             warrantyPeriod: productData?.warrantyPeriod,
-            // specification: productData?.specification,
-            // featured: productData?.featured,
-            // best_seller: productData?.best_seller,
-            // shortDescription: productData?.shortDescription,
-            // costPrice: productData?.costPrice,
-            // returnPolicy: productData?.returnPolicy
+
         })
     }, [productData])
 
@@ -533,6 +526,51 @@ const EditProductById = () => {
         return null;
     };
 
+    async function getAllBrands() {
+        try {
+            console.log(token, "jsakdfjkladsj")
+            const instance = useAxios(token);
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/getAllBrands`
+            );
+            if (res.data) {
+                setAllBrands(res.data.brands)
+                setLoading(false);
+            }
+        } catch (e) {
+            setLoading(false);
+            console.log(e)
+            // ErrorDispaly(e);
+        }
+    }
+
+    async function getAllCategories() {
+        try {
+            console.log(token, "jsakdfjkladsj")
+            const instance = useAxios(token);
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/getAllCategories`
+            );
+            if (res.data) {
+                setAllCategories(res.data.categories)
+                setLoading(false);
+            }
+        } catch (e) {
+            setLoading(false);
+            console.log(e)
+            // ErrorDispaly(e);
+        }
+    }
+
+
+    useEffect(() => {
+        getAllBrands();
+        getAllCategories();
+    }, [token]);
+
+
 
     return (
         <div>
@@ -569,7 +607,7 @@ const EditProductById = () => {
                                     // validate={validateProductName}
                                     />
 
-                                    <InputField
+                                    {/* <InputField
                                         label="Brand"
                                         type="text"
                                         value={product?.brand}
@@ -578,12 +616,36 @@ const EditProductById = () => {
                                             setFormErrors({ ...formErrors, brand: validateBrand(value) });
                                         }}
                                         validate={validateBrand}
-                                    />
+                                    /> */}
+
+                                    <p>Selected Brand:<span className="text-blue-600 font-semibold text-lg ml-2">{product.brand}</span></p>
+
+                                    <FormControl variant="standard" sx={{ mb: 4, width: "100%" }}>
+                                        <InputLabel id="brand-select-label">Choose different brand</InputLabel>
+                                        <Select
+                                            labelId="brand-select-label"
+                                            id="brand-select"
+                                            // value={product?.brand}
+                                            // value={brandValue}
+                                            onChange={handleBrandChange}
+                                            label="Brand"
+                                        // sx={{ w: '100%' }}
+                                        >
+                                            {/* <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem> */}
+                                            {allBrands?.map((brand) => (
+                                                <MenuItem key={brand._id} value={brand.brandName}>
+                                                    {brand.brandName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
 
 
 
 
-                                    <InputField
+                                    {/* <InputField
                                         label="Category"
                                         type="text"
                                         value={product?.category}
@@ -592,7 +654,27 @@ const EditProductById = () => {
                                             setFormErrors({ ...formErrors, category: validateCategory(value) });
                                         }}
                                         validate={validateCategory}
-                                    />
+                                    /> */}
+
+                                    <p>Selected Category:<span className="text-blue-600 font-semibold text-lg ml-2">{product.category}</span></p>
+
+                                    <FormControl variant="standard" sx={{ mb: 4, width: "100%" }}>
+                                        <InputLabel id="category-select-label">Choose different category</InputLabel>
+                                        <Select
+                                            labelId="category-select-label"
+                                            id="category-select"
+                                            onChange={handleCategoryChange}
+                                            label="Category"
+
+                                        >
+
+                                            {allCategories?.map((category) => (
+                                                <MenuItem key={category._id} value={category.categoryName}>
+                                                    {category.categoryName}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
 
                                     <InputField
                                         label="Sub Category"

@@ -1,6 +1,7 @@
 import {
     Box,
     Card,
+    CircularProgress,
     Grid,
     IconButton,
     LinearProgress,
@@ -20,18 +21,19 @@ import { toast } from "react-toastify";
 // import { location, newResponse, Pagination, response, User } from "src/@types";
 // import { AdminCustomers } from "../../../componets/user/adminCustomer";
 // import AdminsideNav from "../../../componets/admin/adminDasboardnav";
-import ConfirmBox from "../../components/admin/shared/ConfirmDialog";
+import ConfirmBox from "../../../components/admin/shared/ConfirmDialog";
 // import DashBoardLayout from "src/Layout/DasboardsLayout";
 // import { useFetch } from "src/lib/hooks/useFetch";
-import { useAxios } from "../../utils/axios";
-import { tableStyles } from "../../components/admin/shared/ConfirmDialog";
-import Sidebar from "../../components/sidebar/Sidebar";
-import AdminNavbar from "../../components/navbar/AdminNavbar";
+import { useAxios } from "../../../utils/axios";
+import { tableStyles } from "../../../components/admin/shared/ConfirmDialog";
+import Sidebar from "../../../components/sidebar/Sidebar";
+import AdminNavbar from "../../../components/navbar/AdminNavbar";
 import { FaArrowDown, FaCartArrowDown } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
-import CreateBannerModel from "../../components/admin/modals/CreateBannerModel";
+import CreateBannerModel from "../../../components/admin/modals/CreateBannerModel";
 import { useCookies } from "react-cookie";
 import { Token } from "@mui/icons-material";
+import InputField from "../../../components/InputField";
 // import CustomPagination from "src/componets/customPagination";
 // import { ErrorDispaly } from "../property";
 
@@ -59,16 +61,16 @@ export const Button = ({
 const userTypes = ["All", "Premium"];
 
 // give main area a max widht
-const InventoryManagement = () => {
+const BrandManagement = () => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState("");
-    const [isBannerAdded, SetIsBannerAdded] = useState(false);
     const [deleteId, setDeleteId] = useState("");
 
-    const [allBanners, setAllBanners] = useState([]);
+    // const [allBanners, setAllBanners] = useState([]);
+    const [allBrands, setAllBrands] = useState([]);
     const [pagination, setPagination] = useState(
         null
     );
@@ -76,6 +78,11 @@ const InventoryManagement = () => {
         page: 0,
         pageSize: 50,
     });
+
+    const [brand, setBrand] = useState("")
+    const [formErrors, setFormErrors] = useState({});
+
+    // if (category) console.log(category, "sdfljk")
 
     // const router = useRouter();
 
@@ -88,18 +95,18 @@ const InventoryManagement = () => {
 
 
 
-    if (allBanners) console.log(allBanners, "dsflkjkf")
+    // if (allCategories) console.log(allCategories, "dsflkjkf")
 
-    async function getAllBanners() {
+    async function getAllBrands() {
         try {
             console.log(token, "jsakdfjkladsj")
             const instance = useAxios(token);
             setLoading(true);
             const res = await instance.get(
-                `/admin/getAllBanners`
+                `/admin/getAllBrands`
             );
             if (res.data) {
-                setAllBanners(res.data.allBanner)
+                setAllBrands(res.data.brands)
                 setLoading(false);
             }
         } catch (e) {
@@ -110,28 +117,28 @@ const InventoryManagement = () => {
     }
 
     useEffect(() => {
-        getAllBanners();
+        getAllBrands();
     }, [token]);
 
 
 
-    useEffect(() => {
-        if (isBannerAdded === true) {
-            getAllBanners()
-        }
-    }, [isBannerAdded])
+    // useEffect(() => {
+    //     if (isCategoryAdded === true) {
+    //         getAllCategories()
+    //     }
+    // }, [isCategoryAdded])
 
 
-    const deleteBanner = async () => {
+    const deleteBrand = async () => {
         const instance = useAxios(token);
         setDeleteLoading(true);
         try {
-            const res = await instance.delete("/admin/banner/" + deleteId);
+            const res = await instance.delete("/admin/brand/" + deleteId);
             if (res.data) {
-                toast.success("Banner deleted successfully");
+                toast.success("Brand deleted successfully");
                 setDeleteOpen(false);
                 setDeleteLoading(false);
-                getAllBanners();
+                getAllBrands();
             }
         } catch (error) {
             console.log(error)
@@ -144,31 +151,31 @@ const InventoryManagement = () => {
 
 
     const all_customer_columns = [
-        {
-            flex: 0.55,
-            minWidth: 350,
+        // {
+        //     flex: 0.55,
+        //     minWidth: 350,
 
-            field: "bannerImages",
-            headerName: "Banner Images",
-            align: "left",
-            headerAlign: "left",
-            disableColumnMenu: true,
-            renderCell: ({ row }) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center', justifyContent: 'center', width: "100%" }}>
-                    {row.bannerImages.map((curELem) => (
-                        <Box sx={{ width: "100px", height: "100px" }}>
-                            <img src={curELem} alt="banner" className="object-cover w-full h-full" />
-                        </Box>
-                    ))}
-                </Box>
-            ),
-        },
+        //     field: "bannerImages",
+        //     headerName: "Banner Images",
+        //     align: "left",
+        //     headerAlign: "left",
+        //     disableColumnMenu: true,
+        //     renderCell: ({ row }) => (
+        //         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center', justifyContent: 'center', width: "100%" }}>
+        //             {row.bannerImages.map((curELem) => (
+        //                 <Box sx={{ width: "100px", height: "100px" }}>
+        //                     <img src={curELem} alt="banner" className="object-cover w-full h-full" />
+        //                 </Box>
+        //             ))}
+        //         </Box>
+        //     ),
+        // },
         {
             minWidth: 150,
 
             flex: 0.25,
-            field: "category",
-            headerName: "Category",
+            field: "brandName",
+            headerName: "Brand",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -217,6 +224,34 @@ const InventoryManagement = () => {
         },
     ];
 
+    const validateCategoryName = (value) => {
+        // Allow letters and hyphens, but not spaces or other symbols
+        const regex = /^[a-zA-Z\-]+$/;
+        return regex.test(value) ? null : 'Invalid characters in brand name';
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const instance = useAxios(token);
+            setLoading(true);
+            const res = await instance.post(
+                `/admin/brand/new`,
+                { brandName: brand }
+            );
+            if (res.data && res.data.success === true) {
+                toast.success(res.data.message)
+                getAllBrands()
+                setLoading(false);
+            }
+        } catch (e) {
+            // setLoading(false);
+            console.log(e)
+            // ErrorDispaly(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <div>
             <div className='flex h-screen overflow-hidden'>
@@ -225,25 +260,24 @@ const InventoryManagement = () => {
                     {/* <main> */}
                     <div className='bg-gray-50'>
                         <AdminNavbar />
-                        <div className="flex justify-end mt-8 mb-6 px-4">
-                            <div className=" text-sm px-3">
-                                <button
-                                    // onClick={() => router.push("/admin/customers/add")}
-                                    className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
-                                >
-                                    <span>
-                                        <TbEdit />
-                                    </span>
-                                    {/* <span>Add a new Affiliated Partner</span> */}
-                                    <CreateBannerModel
-                                        buttonText="Create Banner"
-                                        modalTitle="Add a New Banner "
-                                        SetIsBannerAdded={SetIsBannerAdded}
-                                    // onSubmit={projectSubmit}
-                                    />
-                                </button>
+                        <div className=" mt-8 mb-6 px-4">
+                            <p className="text-start mb-4 text-lg font-semibold">Create Brand</p>
+                            <div className="w-[400px]">
+                                <InputField
+                                    label="Enter Brand Name"
+                                    type="text"
+                                    value={brand}
+                                    onChange={(e) => {
+                                        setBrand(e);
+                                        setFormErrors({ ...formErrors, brand: validateCategoryName(e) });
+                                    }}
+                                    // onChange={(e) => setCategory(e)}
+                                    validate={validateCategoryName}
+                                />
+                                {loading ? <CircularProgress /> : Object.values(formErrors).some((error) => Boolean(error)) ? null : <button onClick={handleSubmit} className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  ">Create Brand</button>}
                             </div>
                         </div>
+
                         <div className="flex justify-between items-center mt-8 mb-6 px-4">
 
 
@@ -252,7 +286,7 @@ const InventoryManagement = () => {
                                 <Grid item xs={12}>
                                     <Card sx={{ borderRadius: 2 }}>
                                         <DataGrid
-                                            rows={allBanners || []}
+                                            rows={allBrands || []}
                                             columns={all_customer_columns}
                                             getRowId={(row) => row._id}
                                             autoHeight
@@ -291,11 +325,11 @@ const InventoryManagement = () => {
                             {/* {users && <AdminCustomers users={users} />} */}
 
                             <ConfirmBox
-                                title="Banner"
-                                name="banner"
+                                title="Brand"
+                                name="brand"
                                 open={deleteOpen}
                                 closeDialog={() => setDeleteOpen(false)}
-                                toDoFunction={deleteBanner}
+                                toDoFunction={deleteBrand}
                                 loading={deleteLoading}
                                 sx={{ pb: 4, border: "2px solid red" }}
                             />
@@ -309,4 +343,4 @@ const InventoryManagement = () => {
     );
 };
 
-export default InventoryManagement;
+export default BrandManagement;

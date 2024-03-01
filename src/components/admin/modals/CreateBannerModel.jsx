@@ -274,7 +274,7 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
                 //  "&:hover": {
                 //     backgroundColor: '#db8e57'
                 // },
-            }} className="px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200" onClick={handleOpen}>{buttonText}</Button>
+            }} className="px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg flex space-x-2 items-center transition transform active:scale-95 duration-200" onClick={handleOpen}>{buttonText}</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
