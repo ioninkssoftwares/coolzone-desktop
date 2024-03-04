@@ -42,8 +42,8 @@ import AdminLogin from './pages/admin/AdminLogin';
 import Admin404 from './pages/admin/Admin404';
 import ShippingPage from './pages/ShippingPage';
 import InvoicePage from './pages/InvoicePage';
-import CategoryManagement from './pages/admin/inventory/categoryManagement';
 import BrandManagement from './pages/admin/inventory/BrandManagement';
+import CategoryManagement from './pages/admin/inventory/CategoriesManagement';
 
 const router = createBrowserRouter([
   {

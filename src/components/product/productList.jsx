@@ -744,9 +744,24 @@ const ProductList = () => {
                                                 <Loader />
                                             ) : searchedData?.products?.map((product) => (
                                                 // ) : filterData?.map((product) => (
-                                                <div style={{ border: "2px solid GRAY" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
-                                                    <p className="text-md font-semibold text-black mb-4">{product.category}</p>
-                                                    <div className='flex items-center justify-between'>
+                                                <div style={{ border: "2px solid #E2E2E2" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
+                                                    {/* <p className="text-md font-semibold text-black mb-4">{product.category}</p> */}
+                                                    <div className="flex items-center justify-between mb-4">
+                                                        <p className="text-sm font-semibold text-primary-blue ">
+                                                            {/* {category && category.length > 13 ? `${category.slice(0, 13).toUpperCase()}...` : category.toUpperCase()} */}
+                                                            {product.category.length > 15
+                                                                ? product.category.slice(0, 12).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') + '...'
+                                                                : product.category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+
+                                                        </p>
+                                                        <div onClick={() => handleWishlist(product._id)} className="  p-2 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
+                                                            <BsFillHeartFill className="text-sm text-white" />
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    {/* <div className='flex items-center justify-between'>
                                                         <h1 className="text-xl font-semibold text-primary-blue my-4">{product.name.length > 15 ? product.name.slice(0, 15) + '...' : product.name}</h1>
                                                         <div
                                                             onClick={() => handleWishlist(product._id)}
@@ -754,7 +769,7 @@ const ProductList = () => {
                                                         >
                                                             <BsFillHeartFill className="text-sm text-white" />
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
                                                     <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[200px] h-[150px]">
                                                         <img
@@ -763,6 +778,7 @@ const ProductList = () => {
                                                             className="h-full w-full object-contain object-center lg:h-full lg:w-full"
                                                         />
                                                     </div>
+                                                    <p className="text-start text-sm font-semibold my-4">  {product.name.length > 21 ? product.name.slice(0, 18) + '...' : product.name}</p>
                                                     <div onClick={() => handleCart(product)} className="flex cursor-pointer items-center justify-between">
                                                         <p className="text-xl font-semibold">₹{product.price}</p>
                                                         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>

@@ -101,7 +101,7 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
           />
         </div>
       </div>
-      <p className="text-start text-xs font-semibold my-4">  {name.length > 23 ? name.slice(0, 20) + '...' : name}</p>
+      <p className="text-start text-sm font-semibold my-4">  {name.length > 21 ? name.slice(0, 18) + '...' : name}</p>
       <div className="  flex items-center justify-between">
         <p className="text-xl font-semibold">₹{price}</p>
         <p onClick={handleCart} className="w-[40px] h-[40px] cursor-pointer rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>
