@@ -35,6 +35,29 @@ import { FiUsers } from "react-icons/fi";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+// import * as XLSX from 'xlsx';
+import ExcelJS from "exceljs";
+import { CiExport } from "react-icons/ci";
+
+
+const toDataURL = (url) => {
+    const promise = new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            var reader = new FileReader();
+            reader.readAsDataURL(xhr.response);
+            reader.onloadend = function () {
+                resolve({ base64Url: reader.result });
+            };
+        };
+        xhr.open("GET", url);
+        xhr.responseType = "blob";
+        xhr.send();
+    });
+
+    return promise;
+};
+
 
 
 export const Button = ({
@@ -350,6 +373,155 @@ const ProductManagement = () => {
         },
     ];
 
+
+    const exportExcelFile = () => {
+        const workbook = new ExcelJS.Workbook();
+        const sheet = workbook.addWorksheet("My Sheet");
+        sheet.properties.defaultRowHeight = 80;
+
+        sheet.getRow(1).border = {
+            top: { style: "thick", color: { argb: "FFFF0000" } },
+            left: { style: "thick", color: { argb: "000000FF" } },
+            bottom: { style: "thick", color: { argb: "F08080" } },
+            right: { style: "thick", color: { argb: "FF00FF00" } },
+        };
+
+        sheet.getRow(1).fill = {
+            type: "pattern",
+            pattern: "darkVertical",
+            fgColor: { argb: "#04a7ff" },
+        };
+
+        sheet.getRow(1).font = {
+            name: "Comic Sans MS",
+            family: 4,
+            size: 16,
+            bold: true,
+        };
+
+        sheet.columns = [
+            {
+                header: "Id",
+                key: "_id",
+                width: 10,
+            },
+            { header: "Name", key: "name", width: 45 },
+            {
+                header: "Brand",
+                key: "brand",
+                width: 20,
+            },
+            {
+                header: "Category",
+                key: "category",
+                width: 20,
+            },
+            {
+                header: "Sub Category",
+                key: "subCategory",
+                width: 20,
+            },
+            {
+                header: "Price",
+                key: "price",
+                width: 15,
+            },
+            {
+                header: "MRP",
+                key: "mrp",
+                width: 15,
+            },
+            {
+                header: "Stock",
+                key: "stock",
+                width: 15,
+            },
+            {
+                header: "Warranty Period",
+                key: "warrantyPeriod",
+                width: 15,
+            },
+            // {
+            //     header: "Description",
+            //     key: "description",
+            //     width: 10,
+            // },
+            // {
+            //     header: "Photo",
+            //     key: "thumbnail",
+            //     width: 30,
+            // },
+        ];
+
+        const promise = Promise.all(
+            allProducts?.map(async (product, index) => {
+                const rowNumber = index + 1;
+                sheet.addRow({
+                    _id: product?._id,
+                    name: product?.name,
+                    brand: product?.brand,
+                    category: product?.category,
+                    subCategory: product?.subCategory,
+                    price: product?.price,
+                    mrp: product?.mrp,
+                    stock: product?.stock,
+                    warrantyPeriod: product?.warrantyPeriod,
+
+                });
+                // Function to inser the images to
+
+                // console.log(product?.thumbnail);
+                // const result = await toDataURL(product?.thumbnail);
+                // const splitted = product?.thumbnail.split(".");
+                // const extName = splitted[splitted.length - 1];
+
+                // const imageId2 = workbook.addImage({
+                //   base64: result.base64Url,
+                //   extension: extName,
+                // });
+
+                // sheet.addImage(imageId2, {
+                //   tl: { col: 6, row: rowNumber },
+                //   ext: { width: 100, height: 100 },
+                // });
+            })
+        );
+
+        promise.then(() => {
+
+            //FUnction to style the particular cell
+
+            //   const priceCol = sheet.getColumn(5);
+
+            // iterate over all current cells in this column
+            //   priceCol.eachCell((cell) => {
+            //     const cellValue = sheet.getCell(cell?.address).value;
+            //     // add a condition to set styling
+            //     if (cellValue > 50 && cellValue < 1000) {
+            //       sheet.getCell(cell?.address).fill = {
+            //         type: "pattern",
+            //         pattern: "solid",
+            //         fgColor: { argb: "FF0000" },
+            //       };
+            //     }
+            //   });
+
+            workbook.xlsx.writeBuffer().then(function (data) {
+                const blob = new Blob([data], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                });
+                const url = window.URL.createObjectURL(blob);
+                const anchor = document.createElement("a");
+                anchor.href = url;
+                anchor.download = "download.xlsx";
+                anchor.click();
+                window.URL.revokeObjectURL(url);
+            });
+        });
+    };
+
+
+
     return (
         <div>
             <div className='flex h-screen overflow-hidden'>
@@ -372,15 +544,24 @@ const ProductManagement = () => {
                                     <span>Product</span>
                                 </button>
                             </div> */}
-                            <div className=" text-sm px-3">
+                            <div className=" text-sm px-3 flex gap-4">
                                 <button
                                     onClick={() => navigate("/admin/addProduct")}
                                     className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
                                 >
                                     <span>
-                                        <TbEdit />
+                                        <TbEdit className="w-6 h-6" />
                                     </span>
                                     <span>Add Product</span>
+                                </button>
+                                <button
+                                    onClick={exportExcelFile}
+                                    className=" px-3 text-white font-medium justify-center w-full bg-primary-blue rounded-lg py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+                                >
+                                    <span>
+                                        <CiExport className="w-6 h-6 font-bold" />
+                                    </span>
+                                    <span>Export Products</span>
                                 </button>
                             </div>
                         </div>

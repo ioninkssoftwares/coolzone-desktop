@@ -18,6 +18,7 @@ import { useCookies } from 'react-cookie'
 import ReferralModal from '../components/admin/modals/ReferralModal'
 import { useAxios } from '../utils/axios'
 import { CircularProgress } from '@mui/material'
+
 // import ProductDetails from '../components/product/productDetails'
 
 const MyAccountPage = () => {
@@ -32,24 +33,24 @@ const MyAccountPage = () => {
 
     if (userDetails) console.log(userDetails, "lhkjhkj")
 
-
     const [backgroundColor, setBackgroundColor] = useState('');
 
     useEffect(() => {
-      const colors = ['#ff5733', '#33ff57', '#5733ff', '#ff33f9', '#f9ff33',      '#ff5733', // Dark orange
-      '#33ff57', // Dark green
-      '#5733ff', // Dark purple
-      '#ff33f9', // Dark pink
-      '#f9ff33', // Dark yellow
-      '#1a1a1a', // Dark gray
-      '#222222', // Charcoal
-      '#3d3d3d', // Dark gray
-      '#4c4c4c', // Dark gray
-    ];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      setBackgroundColor(randomColor);
+        const colors = ['#ff5733', '#33ff57', '#5733ff', '#ff33f9', '#f9ff33', '#ff5733', // Dark orange
+            '#33ff57', // Dark green
+            '#5733ff', // Dark purple
+            '#ff33f9', // Dark pink
+            '#f9ff33', // Dark yellow
+            '#1a1a1a', // Dark gray
+            '#222222', // Charcoal
+            '#3d3d3d', // Dark gray
+            '#4c4c4c', // Dark gray
+        ];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        setBackgroundColor(randomColor);
     }, []);
-  
+
+
 
     useEffect(() => {
         if (cookies.token === undefined) {
@@ -65,7 +66,6 @@ const MyAccountPage = () => {
             setToken(cookies.token);
         }
     }, [cookies]);
-
 
 
     const getUserDetails = async () => {
@@ -99,12 +99,14 @@ const MyAccountPage = () => {
         // Add any other cleanup code here
     };
 
+
+
     return (
         <div>
             <Navbar />
             <div className=" mx-auto px-5 md:px-10 my-4 ">
                 <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit '>My Account</p>
-                {loading ? <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "100px 0" }}><CircularProgress /> </div> : <div  className='flex flex-col md:flex-row gap-10'>
+                {loading ? <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "100px 0" }}><CircularProgress /> </div> : <div className='flex flex-col md:flex-row gap-10'>
                     <div className='shadow-lg w-fit flex items-center justify-center flex-col py-4 px-20'>
                         <div style={{ backgroundColor }} className='w-24 h-24 rounded-full flex items-center justify-center'>
                             <span className='text-white text-4xl '>G</span>
