@@ -74,7 +74,8 @@ export default function FlyoutCategory({
     })
 
     const navigateToProducts = (brand) => {
-        navigate(`/products?flyoutOnlyCategory=${encodeURIComponent(brand)}`);
+        const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-');
+        navigate(`/products?flyoutOnlyCategory=${encodeURIComponent(formattedBrand)}`);
     };
 
     return (
