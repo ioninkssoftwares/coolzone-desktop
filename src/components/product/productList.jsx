@@ -740,21 +740,21 @@ const ProductList = () => {
                                     <div className="  px-4 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
                                         <h2 className="text-3xl font-semibold tracking-tight text-primary-blue">Products</h2>
 
-                                        <div className="mt-6 grid grid-cols-1 gap-x-2 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 xl:gap-x-8 ">
+                                        <div className="mt-4 grid grid-cols-1 gap-x-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 xl:gap-x-6 ">
                                             {productLoading ? (
                                                 <Loader />
                                             ) : searchedData?.products?.map((product) => (
                                                 // ) : filterData?.map((product) => (
                                                 <div style={{ border: "2px solid #E2E2E2" }} key={product._id} className="group p-4  relative max-w-sm grow  rounded-lg font-manrope">
                                                     {/* <p className="text-md font-semibold text-black mb-4">{product.category}</p> */}
-                                                    <div className="flex items-center justify-between mb-4">
-                                                        <p className="text-sm font-semibold text-primary-blue ">
-                                                            {/* {category && category.length > 13 ? `${category.slice(0, 13).toUpperCase()}...` : category.toUpperCase()} */}
+                                                    <div className="flex items-center justify-end mb-4">
+                                                        {/* <p className="text-sm font-semibold text-primary-blue ">
+                                       
                                                             {product.category.length > 15
                                                                 ? product.category.slice(0, 12).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') + '...'
                                                                 : product.category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
 
-                                                        </p>
+                                                        </p> */}
                                                         <div onClick={() => handleWishlist(product._id)} className="  p-2 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
                                                             <BsFillHeartFill className="text-sm text-white" />
                                                         </div>
@@ -772,15 +772,15 @@ const ProductList = () => {
                                                         </div>
                                                     </div> */}
 
-                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="cursor-pointer overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[170px] h-[120px]">
-                                                        {/* <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[200px] h-[150px]"> */}
+                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="cursor-pointer overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[90%] h-[120px]">
+                                                        {/* <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden 170 rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[200px] h-[150px]"> */}
                                                         <img
                                                             src={product?.productImages.length > 0 ? product.productImages[0] : null}
                                                             alt="product image"
                                                             className="h-full w-full object-contain object-center lg:h-full lg:w-full"
                                                         />
                                                     </div>
-                                                    <p className="text-start text-sm font-semibold my-4">  {product.name.length > 21 ? product.name.slice(0, 18) + '...' : product.name}</p>
+                                                    <p className="text-start text-sm font-semibold my-4">  {product.name.length > 19 ? product.name.slice(0, 16) + '...' : product.name}</p>
                                                     <div onClick={() => handleCart(product)} className="flex cursor-pointer items-center justify-between">
                                                         <p className="text-xl font-semibold">₹{product.price}</p>
                                                         <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>

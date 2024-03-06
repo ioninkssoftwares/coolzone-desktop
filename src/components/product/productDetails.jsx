@@ -27,7 +27,7 @@ const ProductDetails = () => {
     const [review, setReview] = useState("");
     const [value, setValue] = useState(4);
     const [selectedImage, setSelectedImage] = useState("");
-    const [allReviews, setAllReviews] = useState([]);
+    // const [allReviews, setAllReviews] = useState([]);
 
     const instance = useAxios(token);
 
@@ -166,6 +166,39 @@ const ProductDetails = () => {
     };
 
 
+    const allReviews = [
+        {
+            id: 1,
+            user: "Alice",
+            rating: 5,
+            comment: "Fantastic online shopping experience! The website is user-friendly, and the products arrived quickly and in perfect condition. Will definitely shop here again!",
+        },
+        {
+            id: 2,
+            user: "Bob",
+            rating: 4,
+            comment: "Great variety of products, and the prices are competitive. The checkout process was smooth, but it would be nice to have more payment options. Overall, a good shopping experience.",
+        },
+        // {
+        //     id: 3,
+        //     user: "Charlie",
+        //     rating: 3,
+        //     comment: "Average experience. The product quality was good, but the website could be more intuitive. I had some issues navigating through the categories. Decent service overall.",
+        // },
+        // {
+        //     id: 4,
+        //     user: "David",
+        //     rating: 5,
+        //     comment: "Impressive customer service! I had an issue with my order, and the support team resolved it quickly and efficiently. The products are high quality, and I'm a satisfied customer.",
+        // },
+        // {
+        //     id: 5,
+        //     user: "Eva",
+        //     rating: 2,
+        //     comment: "Disappointing experience. The delivery took longer than expected, and the product didn't match the description. Customer service was unhelpful. Won't be shopping here again.",
+        // },
+    ];
+
 
 
     return <>
@@ -229,7 +262,8 @@ const ProductDetails = () => {
                             <div className=" md:w-[70%] w-full lg:pl-10 lg:py-0 mt-0 lg:mt-0">
                                 <h2 className="text-sm title-font text-gray-500 tracking-widest">{product?.product.category}</h2>
                                 <h1 className="text-primary-blue text-2xl title-font font-medium my-8">{product?.product.name}</h1>
-                                <p className='my-4 text-xl font-semibold '>Stock: {product.product.stock} </p>
+                                <p className='my-4 text-xl font-semibold '>  {product?.product.stock <= 0 ? "Out of Stock" : "In Stock"} </p>
+                                <p className='my-4 text-xl font-semibold '>Brand: {product.product.brand} </p>
                                 <div className='flex gap-8'>
                                     <div className='flex flex-col gap-2'>
                                         <p className="text-primary-blue text-2xl title-font font-medium">CZ's</p>
@@ -282,6 +316,7 @@ const ProductDetails = () => {
                                         </a>
                                     </span>
                                 </div> */}
+
                                 {product?.product.category === "Ac" ? <>           <h2 className='mb-2'>Key Features</h2>
                                     <ul className='list-disc list-inside ml-8 mb-4'>
 
@@ -365,11 +400,11 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 </section>
-                {/* <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 "> */}
-                {/* <div className='border-2 border-gray-500 my-4 p-8 rounded-lg'> */}
-                {/* <p className='text-lg font-semibold'>Rating and Review</p> */}
+                <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
+                    <div className='border-2 border-gray-500 my-4 p-8 rounded-lg'>
+                        <p className='text-lg font-semibold'>Rating and Review</p>
 
-                {/* <div className='flex items-start justify-between gap-20 '>
+                        <div className='flex items-start justify-between gap-20 '>
                             <div className='basis-[40%]'>
                                 <p className='text-2xl font-semibold mt-4'>Customer Reviews</p>
                                 <p className='my-2 text-2xl'>Review this product</p>
@@ -381,7 +416,7 @@ const ProductDetails = () => {
                                             '& > legend': { mt: 2 },
                                         }}
                                     >
-                              
+
                                         <Rating
                                             name="simple-controlled"
                                             value={value}
@@ -460,12 +495,12 @@ const ProductDetails = () => {
                             </div>
 
 
-                        </div> */}
+                        </div>
 
-                {/* <div className='flex justify-center items-start flex-col gap-6 my-8'>
+                        <div className='flex justify-center items-start flex-col gap-6 my-8'>
                             {allReviews && allReviews.length > 0 ? allReviews.map((curElem) => {
                                 return <div >
-                                    <p className='font-semibold text-lg'>{curElem.name}</p>
+                                    <p className='font-semibold text-lg'>{curElem.user}</p>
                                     <div className='flex gap-6 items-center justify-start mt-2'>
                                         <Rating
                                             name="simple-controlled"
@@ -481,9 +516,9 @@ const ProductDetails = () => {
                                 </div>
 
                             }) : ""}
-                        </div> */}
-                {/* </div> */}
-                {/* </div> */}
+                        </div>
+                    </div>
+                </div>
 
                 <section className="pt-5 mb-5">
                     {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}

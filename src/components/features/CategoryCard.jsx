@@ -7,8 +7,9 @@ const CategoryCard = ({ categoryData }) => {
 
   const navigateToProducts = (categoryName) => {
     // Navigate to products page and set the search state with the category name
-    console.log(categoryName, "dsfjhdsjkhfk")
-    navigate(`/products?filterCategory=${encodeURIComponent(categoryName.toLowerCase())}`);
+    const formattedCategory = categoryName.toLowerCase().replace(/\s+/g, '-');
+    // console.log(categoryName, "dsfjhdsjkhfk")
+    navigate(`/products?filterCategory=${encodeURIComponent(formattedCategory)}`);
   }
   return (
     // <div key={categoryData.id} style={{ width: "255px", height: "250px" }} className=' rounded-lg bg-white font-semibold flex flex-col items-center p-4 hover:scale-105 '>

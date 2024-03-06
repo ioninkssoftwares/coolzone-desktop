@@ -93,16 +93,15 @@ const WishlistCard = ({ data, setRefreshItems }) => {
     return <>
 
         {data && data.length > 0 ? data.map((elem) => (
-            <div style={{ border: "2px solid GRAY" }} className=" p-4 min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
-                <div className="flex items-center justify-between">
-                    <p className="text-md font-semibold text-primary-blue mb-4">{elem.category}</p>
+            <div style={{ border: "2px solid #E2E2E2" }} className=" p-4 min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
+                <div className="flex items-center justify-end">
+                    {/* <p className="text-md font-semibold text-primary-blue mb-4">{elem.category}</p> */}
                     {/* <div className="  p-2.5 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer"><MdDelete /></div> */}
                     <div onClick={() => handleDelete(elem._id)} className=" p-2.5 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
                         <MdDelete className="text-sm text-white" />
                     </div>
 
                 </div>
-                <p className="text-center mt-4 font-bold text-xl">{elem.name.length > 15 ? elem.name.slice(0, 15) + '...' : elem.name}</p>
 
                 {/* <h1 className="text-xl font-semibold text-primary-blue my-4">{elem.name}</h1> */}
                 <div className="flex items-center justify-center">
@@ -115,6 +114,8 @@ const WishlistCard = ({ data, setRefreshItems }) => {
                         />
                     </div>
                 </div>
+                <p className="text-center mt-4 font-bold text-xl">{elem.name.length > 21 ? elem.name.slice(0, 18) + '...' : elem.name}</p>
+
                 <div onClick={() => handleCart(elem)} className="cursor-pointer flex items-center justify-between">
                     <p className="text-xl font-semibold">₹{elem.price}</p>
                     <p className="w-[40px] h-[40px] rounded-full bg-gray-300 flex items-center justify-center"><BsBagFill /></p>

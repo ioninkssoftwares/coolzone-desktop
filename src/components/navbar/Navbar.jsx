@@ -154,7 +154,7 @@ export default function Navbar() {
 
 
   const telivisionsSamples = [
-    ["BU LED TB", "/ifb"],
+    ["BU LED TV", "/ifb"],
     ["F&D", "/lg"],
     ["HYUNDAI ", "/samsung"],
     ["KEPCO", "/lloyd"],

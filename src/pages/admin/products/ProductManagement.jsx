@@ -386,11 +386,11 @@ const ProductManagement = () => {
             right: { style: "thick", color: { argb: "FF00FF00" } },
         };
 
-        sheet.getRow(1).fill = {
-            type: "pattern",
-            pattern: "darkVertical",
-            fgColor: { argb: "#04a7ff" },
-        };
+        // sheet.getRow(1).fill = {
+        //     type: "pattern",
+        //     pattern: "darkVertical",
+        //     // fgColor: { argb: "#04a7ff" },
+        // };
 
         sheet.getRow(1).font = {
             name: "Comic Sans MS",

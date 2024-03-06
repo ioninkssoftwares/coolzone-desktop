@@ -78,14 +78,14 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
 
   return (
     <div style={{ border: "2px solid #E2E2E2" }} className=" p-4 min-w-[200px] md:min-w-[215px] relative max-w-sm grow  rounded-lg font-manrope hover:scale-105">
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-sm font-semibold text-primary-blue ">
-          {/* {category && category.length > 13 ? `${category.slice(0, 13).toUpperCase()}...` : category.toUpperCase()} */}
+      <div className="flex items-center justify-end mb-4">
+        {/* <p className="text-sm font-semibold text-primary-blue ">
+
           {category.length > 15
             ? category.slice(0, 12).split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') + '...'
             : category.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
 
-        </p>
+        </p> */}
         <div onClick={handleWishlist} className="  p-2 flex justify-center bg-primary-blue items-center rounded-full cursor-pointer">
           <BsFillHeartFill className="text-sm text-white" />
         </div>
