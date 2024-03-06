@@ -548,20 +548,20 @@ const ProductList = () => {
                     </Dialog>
                 </Transition.Root>
 
-                <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+                <main className="mx-auto px-4 sm:px-6 lg:px-8  my-3">
+                    <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 ">
                         <h1 className="text-md tracking-tight text-gray-500 md:block hidden">
                             {category
                                 ? `${category.charAt(0).toUpperCase()}${category.slice(1)}/${brand.charAt(0).toUpperCase()}${brand.slice(1)}${subCategory ? `/${subCategory}` : ''}`
                                 : ""}
                         </h1>
 
-                        <input
+                        {/* <input
                             type="text"
                             placeholder="Search by name..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                        />
+                        /> */}
 
                         <div className="flex items-center">
                             {/* <Menu as="div" className="relative inline-block text-left">
@@ -622,12 +622,13 @@ const ProductList = () => {
                         </div>
                     </div>
 
-                    <section aria-labelledby="products-heading" className=" pt-6">
+                    <section aria-labelledby="products-heading" className=" pt-6 ">
                         <h2 id="products-heading" className="sr-only">
                             Products
                         </h2>
 
-                        <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+                        <div className="flex  ">
+                            {/* <div style={{ border: "2px solid red" }} className="grid grid-cols-1 gap-y-10 lg:grid-cols-6"> */}
                             {/* Filters */}
                             <form className="hidden lg:block">
                                 <div className="flex">
@@ -733,18 +734,18 @@ const ProductList = () => {
                             </form>
 
                             {/* Product grid */}
-                            <div className="lg:col-span-3">
+                            <div className="lg:col-span-3 w-full ">
                                 {/* Your content */}
-                                <div className="bg-white">
-                                    <div className="mx-auto max-w-2xl px-4 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
+                                <div className="bg-white md:ml-5 ml-0 ">
+                                    <div className="  px-4 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
                                         <h2 className="text-3xl font-semibold tracking-tight text-primary-blue">Products</h2>
 
-                                        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                                        <div className="mt-6 grid grid-cols-1 gap-x-2 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 xl:gap-x-8 ">
                                             {productLoading ? (
                                                 <Loader />
                                             ) : searchedData?.products?.map((product) => (
                                                 // ) : filterData?.map((product) => (
-                                                <div style={{ border: "2px solid #E2E2E2" }} key={product._id} className="group p-4 min-w-[260px] md:min-w-[260px] relative max-w-sm grow  rounded-lg font-manrope">
+                                                <div style={{ border: "2px solid #E2E2E2" }} key={product._id} className="group p-4  relative max-w-sm grow  rounded-lg font-manrope">
                                                     {/* <p className="text-md font-semibold text-black mb-4">{product.category}</p> */}
                                                     <div className="flex items-center justify-between mb-4">
                                                         <p className="text-sm font-semibold text-primary-blue ">
@@ -771,7 +772,8 @@ const ProductList = () => {
                                                         </div>
                                                     </div> */}
 
-                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[200px] h-[150px]">
+                                                    <div onClick={() => navigate(`/product/${product._id}`)} className="cursor-pointer overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[170px] h-[120px]">
+                                                        {/* <div onClick={() => navigate(`/product/${product._id}`)} className="overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 relative mb-4 mx-auto w-[200px] h-[150px]"> */}
                                                         <img
                                                             src={product?.productImages.length > 0 ? product.productImages[0] : null}
                                                             alt="product image"

@@ -159,16 +159,16 @@ const Home = () => {
 
 
   const productSamples = [
-    { name: 'mobile', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
-    { name: 'tv', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
-    { name: 'laptop', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
-    { name: 'accessories', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp' },
-    { name: 'Photography', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png' },
-    { name: 'Gifts', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png' },
-    { name: 'books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
-    { name: 'Toys', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png' },
-    { name: 'gadgets', imageSrc: 'https://cdn.pixabay.com/photo/2018/03/06/08/31/drone-3202860_960_720.jpg' },
-    { name: 'Fridge', imageSrc: 'https://cdn.pixabay.com/photo/2017/06/19/18/03/refrigerator-2420417_960_720.png' },
+    { name: 'air conditioner', imageSrc: 'https://cdn.pixabay.com/photo/2021/09/08/07/22/condenser-unit-6605975_1280.jpg' },
+    { name: 'washing machine', imageSrc: 'https://cdn.pixabay.com/photo/2017/08/22/10/47/washing-machine-2668472_1280.jpg' },
+    { name: 'televisions', imageSrc: 'https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_1280.jpg' },
+    { name: 'refrigerator', imageSrc: 'https://cdn.pixabay.com/photo/2021/05/19/16/41/hitachi-multi-door-refrigerator-6266613_960_720.jpg' },
+    { name: 'audio devices', imageSrc: 'https://cdn.pixabay.com/photo/2016/02/25/01/40/audio-1221152_960_720.jpg' },
+    { name: 'laptop', imageSrc: 'https://cdn.pixabay.com/photo/2017/11/27/21/31/computer-2982270_1280.jpg' },
+    { name: 'coolers', imageSrc: 'https://media.istockphoto.com/id/1016471162/photo/electronic-room-tower-fan-and-humidifier-on-white-wall-background.jpg?s=2048x2048&w=is&k=20&c=sHXglQLTUkguYp5u48tj501B-thvbPpxKJUTZPn9a6U=' },
+    { name: 'geysers', imageSrc: 'https://media.istockphoto.com/id/623940856/photo/home-gas-water-heater-boiler-in-bathroom-for-hot-water.jpg?s=2048x2048&w=is&k=20&c=YwzPP8jnphx2NTUaxSe_nZR3I7J9Q-FosMSTdznPLow=' },
+    { name: 'microwave', imageSrc: 'https://media.istockphoto.com/id/148166172/photo/microwave-oven.jpg?s=2048x2048&w=is&k=20&c=cTKY3221xASozJQ6iu8Gpjoam_LstKhHgkXcyPwoPKI=' },
+    { name: 'air purifier', imageSrc: 'https://media.istockphoto.com/id/962215328/photo/air-purifier-in-bed-room-air-cleaner-removing-fine-dust-in-house.jpg?s=2048x2048&w=is&k=20&c=GQxYnto0oRmL4fhkMcnTINAyyh1QlBmt9sjFVdMDWtY=' },
   ];
 
 
