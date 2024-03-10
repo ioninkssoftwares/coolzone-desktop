@@ -224,10 +224,16 @@ const BrandManagement = () => {
         },
     ];
 
+    // const validateCategoryName = (value) => {
+    //     // Allow letters and hyphens, but not spaces or other symbols
+    //     const regex = /^[a-zA-Z\-]+$/;
+    //     return regex.test(value) ? null : 'Invalid characters in brand name';
+    // };
+
     const validateCategoryName = (value) => {
-        // Allow letters and hyphens, but not spaces or other symbols
-        const regex = /^[a-zA-Z\-]+$/;
-        return regex.test(value) ? null : 'Invalid characters in brand name';
+        // Allow letters, hyphens, and "&" symbol, but not spaces or other symbols
+        const regex = /^[a-zA-Z&\-]+$/;
+        return regex.test(value) ? null : 'Invalid characters in brand name (Accepts letters, hyphens, and "&")';
     };
 
     const handleSubmit = async () => {

@@ -219,6 +219,7 @@ const InventoryManagement = () => {
         },
     ];
 
+
     return (
         <div>
             <div className='flex h-screen overflow-hidden'>

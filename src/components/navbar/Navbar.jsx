@@ -42,6 +42,7 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
 
 
+
   useEffect(() => {
     if (cookies && cookies.token) {
       console.log(cookies.token, "dslfjadslk")
@@ -113,7 +114,7 @@ export default function Navbar() {
 
   const audioSamples = [
     ["BOAT", "/ifb"],
-    ["F&D", "/lg"],
+    // ["F&D", "/lg"],
     ["LG", "/samsung"],
     ["PHILIPS", "/samsung"],
     ["PROTRONICS", "/samsung"],
@@ -128,7 +129,7 @@ export default function Navbar() {
     ["GEYSERS", "/samsung"],
     ["WAHSING MACHINES", "/samsung"],
     ["AC", "/samsung"],
-    ["WATER-DISPENCERS-HOME", "/samsung"],
+    ["WATER DISPENCERS", "/samsung"],
     ["TV", "/samsung"],
     ["REFRIGERATOR", "/samsung"],
     ["CHEST FREEZERS", "/samsung"],
@@ -139,7 +140,7 @@ export default function Navbar() {
     ["STOVES ", "/lg"],
     ["MICROWAVE", "/samsung"],
     ["MIXER GRINDER", "/samsung"],
-    ["WATER PURIFIER-HOME", "/samsung"],
+    ["WATER PURIFIER", "/samsung"],
   ]
   const customerServiceSamples = [
     ["TRACK ORDER", "/ifb"],
@@ -154,8 +155,8 @@ export default function Navbar() {
 
 
   const telivisionsSamples = [
-    ["BU LED TV", "/ifb"],
-    ["F&D", "/lg"],
+    ["VU", "/ifb"],
+    // ["F&D", "/lg"],
     ["HYUNDAI ", "/samsung"],
     ["KEPCO", "/lloyd"],
     ["KODAK", "/lloyd"],
@@ -219,12 +220,16 @@ export default function Navbar() {
 
 
   const handleSearch = (e) => {
-    navigate(`/products?navbarSearch=${encodeURIComponent(e)}`);
+    const formattedSearch = e.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/products?navbarSearch=${encodeURIComponent(formattedSearch)}`);
+    setSearch("");
+
   }
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
-    navigate(`/products?navbarSearch=${encodeURIComponent(search)}`);
+    const formattedSearch = search.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/products?navbarSearch=${encodeURIComponent(formattedSearch)}`);
   }
 
   return (
@@ -307,10 +312,11 @@ export default function Navbar() {
 
 
                 {/* Display search results */}
-                <div className="absolute left-0 bg-white rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
+                <div
+                  className="absolute left-0 bg-white rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
                   {search.length > 0 && searchedData && searchedData.products.map((result) => (
-                    <div onClick={() => handleSearch(result.name)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100">
-                      {result.name}
+                    <div onClick={() => handleSearch(result.category)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100">
+                      {`${result.category}/${result.brand}/${result.name}`}
                     </div>
                   ))}
                 </div>

@@ -193,8 +193,8 @@ const Home = () => {
   // Navigation from home to products
 
   const navigateToProducts = (categoryName) => {
-    // Navigate to products page and set the search state with the category name
-    navigate(`/products?filterCategory=${encodeURIComponent(categoryName)}`);
+    const formattedCategory = categoryName.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/products?filterCategory=${encodeURIComponent(formattedCategory)}`);
   }
   return <>
     <Navbar />
@@ -288,7 +288,7 @@ const Home = () => {
               <span className='text-2xl font-bold text-white'>Audio Devices</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("audio")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+            <div onClick={() => navigateToProducts("audio-devices")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
                 src="https://cdn.pixabay.com/photo/2017/11/06/11/53/music-2923447_1280.png"
                 fill
@@ -297,7 +297,7 @@ const Home = () => {
               />
             </div>
           </div>
-          <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+          {/* <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
               <span className='text-2xl font-bold text-white'>Audio Devices</span>
@@ -311,7 +311,7 @@ const Home = () => {
                 className="w-full h-full object-fillr rounded-lg"
               />
             </div>
-          </div>
+          </div> */}
           <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
@@ -330,12 +330,12 @@ const Home = () => {
           <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
-              <span className='text-2xl font-bold text-white'>Smart Watch</span>
+              <span className='text-2xl font-bold text-white'>Geysers</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("watch")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+            <div onClick={() => navigateToProducts("geysers")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
-                src="https://cdn.pixabay.com/photo/2018/09/13/14/56/apple-watch-series-4-3674940_1280.png"
+                src="https://media.istockphoto.com/id/623940856/photo/home-gas-water-heater-boiler-in-bathroom-for-hot-water.jpg?s=2048x2048&w=is&k=20&c=YwzPP8jnphx2NTUaxSe_nZR3I7J9Q-FosMSTdznPLow="
                 fill
                 alt="home"
                 className="w-full h-full object-fillr rounded-lg"
@@ -345,12 +345,12 @@ const Home = () => {
           <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
-              <span className='text-2xl font-bold text-white'>Accesories</span>
+              <span className='text-2xl font-bold text-white'>Coolers</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+            <div onClick={() => navigateToProducts("coolers")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
-                src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
+                src="https://media.istockphoto.com/id/1016471162/photo/electronic-room-tower-fan-and-humidifier-on-white-wall-background.jpg?s=2048x2048&w=is&k=20&c=sHXglQLTUkguYp5u48tj501B-thvbPpxKJUTZPn9a6U="
                 fill
                 alt="home"
                 className="w-full h-full object-fillr rounded-lg"
@@ -360,12 +360,27 @@ const Home = () => {
           <div style={{ width: "215px", height: "280px" }} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
             <div className='flex flex-col items-center'>
               <span className='text-2xl font-bold text-white'>CZ Offers on </span>
-              <span className='text-2xl font-bold text-white'>Accesories</span>
+              <span className='text-2xl font-bold text-white'>Air Purifiers</span>
               <span className=' text-white'>Start @ ₹299.00 </span>
             </div>
-            <div onClick={() => navigateToProducts("accessories")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+            <div onClick={() => navigateToProducts("air-purifier")} className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
               <img
-                src="https://cdn.pixabay.com/photo/2013/07/12/19/25/usb-cable-154767_1280.png"
+                src="https://media.istockphoto.com/id/962215328/photo/air-purifier-in-bed-room-air-cleaner-removing-fine-dust-in-house.jpg?s=2048x2048&w=is&k=20&c=GQxYnto0oRmL4fhkMcnTINAyyh1QlBmt9sjFVdMDWtY="
+                fill
+                alt="home"
+                className="w-full h-full object-fillr rounded-lg"
+              />
+            </div>
+          </div>
+          <div style={{ width: "215px", height: "280px" }} onClick={() => navigateToProducts("televisions")} className=' rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold cursor-pointer hover:scale-105 flex flex-col items-center p-4 '>
+            <div className='flex flex-col items-center'>
+              <span className='text-2xl font-bold text-white'>CZ Offers on </span>
+              <span className='text-2xl font-bold text-white'>Televisons</span>
+              <span className=' text-white'>Start @ ₹299.00 </span>
+            </div>
+            <div className="relative cursor-pointer mt-8 w-[130px] h-[100px]">
+              <img
+                src="https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_1280.jpg"
                 fill
                 alt="home"
                 className="w-full h-full object-fillr rounded-lg"

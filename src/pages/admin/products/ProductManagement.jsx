@@ -379,12 +379,12 @@ const ProductManagement = () => {
         const sheet = workbook.addWorksheet("My Sheet");
         sheet.properties.defaultRowHeight = 80;
 
-        sheet.getRow(1).border = {
-            top: { style: "thick", color: { argb: "FFFF0000" } },
-            left: { style: "thick", color: { argb: "000000FF" } },
-            bottom: { style: "thick", color: { argb: "F08080" } },
-            right: { style: "thick", color: { argb: "FF00FF00" } },
-        };
+        // sheet.getRow(1).border = {
+        //     top: { style: "thick", color: { argb: "FFFF0000" } },
+        //     left: { style: "thick", color: { argb: "000000FF" } },
+        //     bottom: { style: "thick", color: { argb: "F08080" } },
+        //     right: { style: "thick", color: { argb: "FF00FF00" } },
+        // };
 
         // sheet.getRow(1).fill = {
         //     type: "pattern",

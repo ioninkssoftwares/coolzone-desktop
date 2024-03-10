@@ -8,7 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { CircularProgress, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { Chip, CircularProgress, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { Textarea } from '@mui/joy';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
@@ -35,6 +35,9 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
 
     const [bannerCategory, setBannerCategory] = useState("");
     const [filesToupload, setFilesToUpload] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
 
     if (bannerCategory) console.log(bannerCategory, "fdsljhfdsjdk")
 
@@ -177,6 +180,8 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
 
 
 
+
+
     // Validation Logics
 
 
@@ -263,8 +268,52 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
         return null;
     };
 
+    async function getAllCategories() {
+        try {
+            console.log(token, "jsakdfjkladsj")
+            const instance = useAxios(token);
+            setLoading(true);
+            const res = await instance.get(
+                `/admin/getAllCategories`
+            );
+            if (res.data) {
+                setAllCategories(res.data.categories)
+                setLoading(false);
+            }
+        } catch (e) {
+            setLoading(false);
+            console.log(e)
+            // ErrorDispaly(e);
+        }
+    }
 
 
+    useEffect(() => {
+        getAllCategories();
+    }, [token]);
+
+
+    const handleCategoryChange = (event) => {
+        const selectedCategory = event.target.value;
+
+        // Update the array of selected categories
+        setSelectedCategories((prevCategories) => [...prevCategories, selectedCategory]);
+
+        // Reset the Select component to default state
+        setSelectedCategory("Select");
+    };
+
+
+    const handleRemoveCategory = (index) => {
+        // Create a copy of the selectedCategories array
+        const updatedCategories = [...selectedCategories];
+
+        // Remove the selected category at the specified index
+        updatedCategories.splice(index, 1);
+
+        // Update the state with the modified array
+        setSelectedCategories(updatedCategories);
+    };
 
     return (
         <>
@@ -285,12 +334,12 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
                     <Typography id="modal-modal-title" variant="h5" component="h2">
                         {modalTitle}
                     </Typography>
-                    <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
+                    {/* <Typography sx={{ my: 1, color: "gray" }} id="modal-modal-title" variant="p" component="p">
                         Banner Information
-                    </Typography>
+                    </Typography> */}
                     <form>
 
-                        <InputField
+                        {/* <InputField
                             label="Description"
                             type="text"
                             value={bannerCategory}
@@ -298,7 +347,7 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
                                 setBannerCategory(e)
                             }
                             validate={validateCouponName}
-                        />
+                        /> */}
 
                         <div className="w-full px-7 ">
                             <div>
@@ -342,6 +391,31 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className='flex gap-4 items-center justify-center'>
+                                <Select
+                                    labelId="brand-select-label"
+                                    id="brand-select"
+                                    value={selectedCategory}
+                                    onChange={handleCategoryChange}
+                                    label="Category"
+                                >
+                                    <MenuItem value="Select" disabled>Select</MenuItem>
+                                    {allCategories?.map((category) => (
+                                        <MenuItem key={category._id} value={category.categoryName}>
+                                            {category.categoryName}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                <div className='flex gap-4 flex-wrap'>
+                                    {selectedCategories?.map((category, index) => (
+                                        <p className='cursor-pointer' key={index} onClick={() => handleRemoveCategory(index)}>
+                                            {index + 1}. {category}
+                                        </p>
+                                    ))}
+                                </div>
+
                             </div>
 
                         </div>

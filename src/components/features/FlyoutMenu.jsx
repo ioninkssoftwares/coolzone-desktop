@@ -81,7 +81,8 @@ export default function FlyoutMenu({
 
   const navigateToProducts = (category, brand) => {
     const formattedCategory = category.toLowerCase().replace(/\s+/g, '-');
-    const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-');
+    // const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-');
+    const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-').replace(/%26/g, '&');
     navigate(`/products?flyoutCategory=${encodeURIComponent(formattedCategory)}&flyoutBrand=${encodeURIComponent(formattedBrand)}`);
   };
 

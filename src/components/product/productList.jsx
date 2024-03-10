@@ -287,7 +287,7 @@ const ProductList = () => {
     const flyoutBrand = searchParams.get('flyoutBrand') || '';
     const flyoutOnlyCategory = searchParams.get('flyoutOnlyCategory') || '';
 
-
+    console.log(location, "dsfhhhjkhjkkhj")
     // if (featured) {
     //     console.log(featured, "sdjkfashafkd")
     // }
@@ -310,6 +310,7 @@ const ProductList = () => {
     useEffect(() => {
         // Update the state when the brand changes
         let flyoutBrandLowerCase = flyoutBrand.toLowerCase();
+        console.log(flyoutBrandLowerCase, "sdjfhkjsadd")
         let flyoutCategoryLowerCase = flyoutCategory.toLowerCase();
         if (flyoutBrandLowerCase.length > 0 && flyoutCategoryLowerCase.length > 0) {
             setCategory(flyoutCategoryLowerCase);
@@ -354,6 +355,18 @@ const ProductList = () => {
         setBestSeller(bestSellerParam)
     }, [featuredParam]);
 
+
+    const handleCategory = (category) => {
+        removeFilters()
+        setCategory(category)
+    }
+
+
+    useEffect(() => {
+        if (location.pathname === "/products" && location.search === "") {
+            removeFilters()
+        }
+    }, [location])
 
     return (
 
@@ -676,7 +689,8 @@ const ProductList = () => {
                                                 <h4 className="text-lg font-bold">Category</h4>
                                                 <select
                                                     value={category}
-                                                    onChange={(e) => setCategory(e.target.value)}
+                                                    // onChange={(e) => setCategory(e.target.value)}
+                                                    onChange={(e) => handleCategory(e.target.value)}
                                                     className="w-full p-2 border border-gray-300 rounded"
                                                 >
                                                     <option value="">ALL</option>
