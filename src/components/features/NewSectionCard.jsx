@@ -14,25 +14,30 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 // import generateSlug from "../slug/generateSlug";
 
-const NewSectionCard = ({ name, imageSrc }) => {
+const NewSectionCard = (c) => {
+    console.log(c, "cdsfadf")
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [cookies, setCookies] = useCookies(["token"]);
     const [token, setToken] = useState("");
-    console.log(imageSrc, name, "imageSrc")
-
+    // console.log(imageSrc, name, "imageSrc")
+    const navigateToProducts = (category) => {
+        const formattedCategory = category.toLowerCase().replace(/\s+/g, '-');
+        console.log(formattedCategory, "formattedCategory")
+        navigate(`/products?filterCategory=${encodeURIComponent(formattedCategory)}`);
+    };
     return (
 
-        <div className="p-8 w-[500px] flex items-center justify-around bg-gradient-to-b from-blue-100 to-blue-500 gap-4">
+        <div onClick={() => navigateToProducts(c?.category)} className="p-8 w-[500px] flex items-center justify-around bg-gradient-to-b from-blue-100 to-blue-500 gap-4  cursor-pointer">
             <div className="">
-                <p className="text-lg font-semibold">{name}</p>
+                <p className="text-lg font-semibold">PORTABLE {c?.category.toUpperCase()} COLLECTION</p>
             </div>
             <div>
                 <div
                     //  onClick={() => navigate(`/product/${_id}`)}
-                    className=" cursor-pointer relative  w-[200px] h-[75px] ">
+                    className=" relative  w-[200px] h-[75px] ">
                     <img
-                        src={imageSrc ? imageSrc : "https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png"}
+                        src={c?.bannerImage ? c.bannerImage : "https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png"}
                         fill
                         alt="home"
                         className="w-full h-full object-contain rounded-lg "

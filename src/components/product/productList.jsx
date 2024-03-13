@@ -287,7 +287,7 @@ const ProductList = () => {
     const flyoutBrand = searchParams.get('flyoutBrand') || '';
     const flyoutOnlyCategory = searchParams.get('flyoutOnlyCategory') || '';
 
-    console.log(location, "dsfhhhjkhjkkhj")
+    console.log(location.pathname, "dsfhhhjkhjkkhj")
     // if (featured) {
     //     console.log(featured, "sdjkfashafkd")
     // }
@@ -337,9 +337,11 @@ const ProductList = () => {
     }, [filterCategory]);
 
     useEffect(() => {
+        // setCategory("")
         // Update the search state when the categoryParam changes
         if (navbarSearch.length > 0) {
             setCategory("")
+            // location.search = ""
             setSearch(navbarSearch)
         }
         // setSearch(navbarSearch)
@@ -358,7 +360,9 @@ const ProductList = () => {
 
     const handleCategory = (category) => {
         removeFilters()
-        setCategory(category)
+        location.search = ""
+        setCategory(category);
+
     }
 
 
@@ -645,7 +649,7 @@ const ProductList = () => {
                             {/* Filters */}
                             <form className="hidden lg:block">
                                 <div className="flex">
-                                    <aside className="min-w-80 shadow-md p-8 flex flex-col justify-start space-y-4">
+                                    <aside className=" shadow-md p-8 flex flex-col justify-start space-y-4">
                                         <div className='flex items-center justify-between'>
                                             <h2 className="text-lg font-medium text-gray-900">Filters</h2>
                                             {/* <span onClick={removeFilters}><MdDeleteForever className='text-2xl cursor-pointer' /></span> */}
@@ -692,6 +696,7 @@ const ProductList = () => {
                                                     // onChange={(e) => setCategory(e.target.value)}
                                                     onChange={(e) => handleCategory(e.target.value)}
                                                     className="w-full p-2 border border-gray-300 rounded"
+                                                    style={{ width: '190px' }}
                                                 >
                                                     <option value="">ALL</option>
                                                     {loadingCategories === false && categoriesData?.categories.map((category) => (

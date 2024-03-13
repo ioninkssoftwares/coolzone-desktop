@@ -598,12 +598,18 @@ const EditProductById = () => {
                             <div className="basis-[70%] flex gap-10">
                                 <div className="basis-[45%] p-10">
 
-
+                                    <InputLabel htmlFor="product-name" shrink={!!product.name}>
+                                        Product Name
+                                    </InputLabel>
                                     <InputField
-                                        label="Product Name"
+                                        // label="Product Name"
+                                        id="product-name"
                                         type="text"
                                         value={product?.name}
                                         onChange={(e) => setProduct({ ...product, name: e })}
+                                        InputLabelProps={{
+                                            shrink: !!product?.name
+                                        }}
                                     // validate={validateProductName}
                                     />
 
@@ -676,8 +682,12 @@ const EditProductById = () => {
                                         </Select>
                                     </FormControl>
 
+                                    <InputLabel htmlFor="subCategory" shrink={!!product.subCategory}>
+                                        Sub Category
+                                    </InputLabel>
                                     <InputField
-                                        label="Sub Category"
+                                        // label="Sub Category"
+                                        id="subCategory"
                                         type="text"
                                         value={product?.subCategory}
                                         onChange={(e) => setProduct({ ...product, subCategory: e })}
@@ -706,33 +716,42 @@ const EditProductById = () => {
                                         </Select>
                                     </FormControl> */}
 
-                                    <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
-
-                                        <InputField label="Price"
-                                            type="number"
-                                            value={product.price}
-                                            // onChange={(e) => setProduct({ ...product, price: e })}
-                                            onChange={(value) => {
-                                                setProduct({ ...product, price: value });
-                                                setFormErrors({ ...formErrors, price: validateSellingPrice(value) });
-                                            }}
-                                            validate={validateSellingPrice} />
-
+                                    <Box sx={{ display: "flex", gap: 2 }}>
+                                        <Box sx={{ display: "flex", flexDirection: "column", }}>
+                                            <InputLabel htmlFor="price" shrink={!!product.price}>
+                                                Price
+                                            </InputLabel>
+                                            <InputField
+                                                //  label="Price"
+                                                id="price"
+                                                type="number"
+                                                value={product.price}
+                                                // onChange={(e) => setProduct({ ...product, price: e })}
+                                                onChange={(value) => {
+                                                    setProduct({ ...product, price: value });
+                                                    setFormErrors({ ...formErrors, price: validateSellingPrice(value) });
+                                                }}
+                                                validate={validateSellingPrice} />
+                                        </Box>
                                         {/* <InputField label="Cost Price" type="number" value={product.costPrice} onChange={(e) => setProduct({ ...product, costPrice: e })} validate={validateCostPrice} /> */}
+                                        <Box sx={{ display: "flex", flexDirection: "column", }}>
+                                            <InputLabel htmlFor="stock" shrink={!!product.stock}>
+                                                Stock
+                                            </InputLabel>
+                                            <InputField
+                                                // label="Stock"
+                                                id="stock"
+                                                type="number"
+                                                value={product.stock}
+                                                // onChange={(e) => setProduct({ ...product, stock: e })}
+                                                onChange={(value) => {
+                                                    setProduct({ ...product, stock: value });
+                                                    setFormErrors({ ...formErrors, stock: validateQuantity(value) });
+                                                }}
+                                                validate={validateQuantity} />
 
 
-                                        <InputField
-                                            label="Stock"
-                                            type="number"
-                                            value={product.stock}
-                                            // onChange={(e) => setProduct({ ...product, stock: e })}
-                                            onChange={(value) => {
-                                                setProduct({ ...product, stock: value });
-                                                setFormErrors({ ...formErrors, stock: validateQuantity(value) });
-                                            }}
-                                            validate={validateQuantity} />
-
-
+                                        </Box>
                                     </Box>
                                     {/* <InputField
                                         label="Brand"
@@ -864,28 +883,39 @@ const EditProductById = () => {
                                     <Textarea sx={{ padding: 0, borderRadius: 1 }} value={product?.specification} onChange={(event) => setProduct({ ...product, specification: event.target.value })} placeholder="Your text goes here" minRows={5} />
 
 
-                                    <Box sx={{ display: "flex", marginTop: 2, gap: 2 }}>
+                                    <Box sx={{ display: "flex", marginTop: 4, gap: 2 }}>
+                                        <Box sx={{ display: "flex", flexDirection: "column", }}>
+                                            <InputLabel htmlFor="mrp" shrink={!!product.rp}>
+                                                MRP
+                                            </InputLabel>
+                                            <InputField
+                                                // label=" Mrp"
+                                                id="mrp"
+                                                type="number"
+                                                value={product.mrp}
+                                                // onChange={(e) => setProduct({ ...product, price: e })} 
+                                                onChange={(value) => {
+                                                    setProduct({ ...product, mrp: value })
+                                                    setFormErrors({ ...formErrors, mrp: validateSellingPrice(value) });
+                                                }}
+                                                validate={validateSellingPrice} />
+                                        </Box>
 
-                                        <InputField
-                                            label=" Mrp"
-                                            type="number"
-                                            value={product.mrp}
-                                            // onChange={(e) => setProduct({ ...product, price: e })} 
-                                            onChange={(value) => {
-                                                setProduct({ ...product, mrp: value })
-                                                setFormErrors({ ...formErrors, mrp: validateSellingPrice(value) });
-                                            }}
-                                            validate={validateSellingPrice} />
-
-
-                                        <InputField label="Warranty Period"
-                                            type="text"
-                                            value={product.warrantyPeriod}
-                                            // onChange={(e) => setProduct({ ...product, stock: e })} 
-                                            onChange={(value) => {
-                                                setProduct({ ...product, warrantyPeriod: value })
-                                            }}
-                                        />
+                                        <Box sx={{ display: "flex", flexDirection: "column", }}>
+                                            <InputLabel htmlFor="warrantyPeriod" shrink={!!product.warrantyPeriod}>
+                                                Warranty Period
+                                            </InputLabel>
+                                            <InputField
+                                                // label="Warranty Period"
+                                                id="warrantyPeriod"
+                                                type="text"
+                                                value={product.warrantyPeriod}
+                                                // onChange={(e) => setProduct({ ...product, stock: e })} 
+                                                onChange={(value) => {
+                                                    setProduct({ ...product, warrantyPeriod: value })
+                                                }}
+                                            />
+                                        </Box>
 
 
                                     </Box>

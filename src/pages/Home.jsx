@@ -39,6 +39,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [bannersData, setBannersData] = useState([]);
+  const [mainBanner, setMainBanner] = useState([]);
+  const [productBanner, setProductBanner] = useState([]);
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [fasionBanner, setFasionBanner] = useState({})
@@ -50,40 +52,62 @@ const Home = () => {
 
   const isPending = useSelector(selectProductListStatus);
 
-  if (homeProducts) {
-    console.log(homeProducts, "cxvvxxv")
+  if (mainBanner) {
+    console.log(mainBanner, productBanner, "cxvvxxv")
   }
 
 
 
   // useEffect(() => {
   //   // setBannersData(data.banners);
-  //   if (banners.banners && banners.banners.length > 0) {
-  //     setBannersData(banners.banners)
+  //   if (banners.allBanner && banners.allBanner.length > 0) {
+  //     setBannersData(banners.allBanner[0]?.bannerImages)
   //     // console.log(banners.banners,"dfjdk")
+  //   }
+
+  // }, [banners])
+
+  useEffect(() => {
+    // Assuming data is the response you get from your API
+    if (banners.allBanner && banners.allBanner.length > 0) {
+      const mainBannerData = [];
+      const productBannerData = [];
+
+      banners.allBanner.forEach((banner) => {
+        if (banner.subCategory === 'mainbanner') {
+          mainBannerData.push(...banner.bannerImages);
+        } else if (banner.subCategory === 'productbanner') {
+          productBannerData.push(...banner.bannerImages);
+        }
+      });
+
+      setMainBanner(mainBannerData);
+      setProductBanner(productBannerData);
+    }
+  }, [banners]);
+
+
+  if (bannersData) {
+    console.log(bannersData, "cxvvxxv")
+  }
+
+  // useEffect(() => {
+  //   const filterBanner = () => {
+  //     const fashionBanners = banners?.allBanner?.filter(banner => banner.category === "fashion");
+  //     // const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
+  //     //   const categoryKey = curBanner.category;
+  //     //   acc[categoryKey] = curBanner;
+  //     //   return acc;
+  //     // }, {});
+  //     console.log(fashionBanners, "fjdfkj")
+  //     // setFasionBanner(fashionBannerObject.Fasion)
+  //     setFasionBanner(fashionBanners)
 
   //   }
 
-  // }, [banners.banners])
+  //   filterBanner()
 
-
-  useEffect(() => {
-    const filterBanner = () => {
-      const fashionBanners = banners?.allBanner?.filter(banner => banner.category === "fashion");
-      // const fashionBannerObject = fashionBanners.reduce((acc, curBanner) => {
-      //   const categoryKey = curBanner.category;
-      //   acc[categoryKey] = curBanner;
-      //   return acc;
-      // }, {});
-      console.log(fashionBanners, "fjdfkj")
-      // setFasionBanner(fashionBannerObject.Fasion)
-      setFasionBanner(fashionBanners)
-
-    }
-
-    filterBanner()
-
-  }, [banners])
+  // }, [banners])
 
 
 
@@ -200,7 +224,7 @@ const Home = () => {
     <Navbar />
     <div className='hide-scrollbar overflow-y-hidden'>
       <section>
-        <CorouselSlider bannerCategory={fasionBanner} />
+        <CorouselSlider bannerCategory={mainBanner} />
       </section>
 
       {/* New Section */}
@@ -229,7 +253,7 @@ const Home = () => {
           </div>
           {homeProducts && (
             <div id="newSection" className="flex  overflow-x-auto  space-x-6 overflow-y-hidden hide-scrollbar">
-              <CardCarousel id="newSection" data={newSectionSamples} Card={NewSectionCard} />
+              <CardCarousel id="newSection" data={productBanner} Card={NewSectionCard} />
             </div>
           )}
         </div>

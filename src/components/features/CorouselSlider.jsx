@@ -1,21 +1,36 @@
 import React from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import { useNavigate } from 'react-router-dom';
 
 const CorouselSlider = ({ bannerCategory }) => {
-    // console.log(bannerCategory[0]?.bannerImages, "asdasdasds")
-    if (!bannerCategory || !bannerCategory[0] || !bannerCategory[0].bannerImages || bannerCategory[0].bannerImages.length === 0) {
+    const navigate = useNavigate();
+    console.log(bannerCategory, "asdasdasds")
+    // bannerData
+    if (!bannerCategory || bannerCategory.length === 0) {
         // If bannerCategory is falsy, doesn't have the first index, or bannerImages array is empty, handle appropriately.
         return <div>Loading banner images...</div>;
     }
 
+    // const navigateToProducts = (category) => {
+    //     const formattedCategory = category.toLowerCase().replace(/\s+/g, '-');
+    //     console.log(formattedCategory, "formattedCategory")
+    //     navigate(`/products?filterCategory=${encodeURIComponent(formattedCategory)}`);
+    // };
+    const navigateToProducts = (category) => {
+        console.log(category, "jlfdskjhfdkh");
+        // const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-');
+        const formattedCategory = category.trim().toLowerCase().replace(/\s+/g, '-');
+        console.log(formattedCategory, "jlfdskjhfdkh");
+        navigate(`/products?flyoutOnlyCategory=${encodeURIComponent(formattedCategory)}`);
+    };
+
     return (
         <Carousel interval={2000} autoPlay infiniteLoop showThumbs={false} >
-            {bannerCategory[0]?.bannerImages.map((curElem, index) => {
+            {bannerCategory.map((curElem, index) => {
                 return (
-                    <div key={index} className='relative h-full w-full'>
-                        {/* <div style={{ border: "2px solid red" }} key={index} className='relative sm:h-64 md:h-80 lg:h-96 xl:h-112'> */}
-                        <img className='w-full h-full object-contain' src={curElem} alt="Image 1" />
+                    <div key={index} onClick={() => navigateToProducts(curElem.category)} className='relative h-full w-full cursor-pointer'>
+                        <img className='w-full h-full object-contain ' src={curElem.bannerImage} alt="Image 1" />
                     </div>
                 );
 

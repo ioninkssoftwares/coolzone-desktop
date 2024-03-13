@@ -39,7 +39,17 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
 
-    if (bannerCategory) console.log(bannerCategory, "fdsljhfdsjdk")
+    const [selectedOption, setSelectedOption] = useState('');
+
+
+    const handleSelectChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+
+    if (selectedOption) console.log(selectedOption, "fdslsdsjhfdsjdk")
+
+
+    if (selectedCategories) console.log(selectedCategories, "fdsljhfdsjdk")
 
     const handleOpen = () => {
         setOpen(true);
@@ -54,10 +64,14 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
         setLoading(true)
         var BannerFormData = new FormData();
         for (let i of filesToupload) {
-            BannerFormData.append('bannerImages', i);
+            BannerFormData.append('bannerImage', i);
         }
 
-        BannerFormData.append('category', bannerCategory);
+        // BannerFormData.append('categories', selectedCategories);
+        selectedCategories.forEach(category => {
+            BannerFormData.append('categories', category);
+        });
+        BannerFormData.append('subCategory', selectedOption);
         try {
 
             const res = await instance.post("/admin/banner/new", BannerFormData);
@@ -393,7 +407,7 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
                                 </div>
                             </div>
 
-                            <div className='flex gap-4 items-center justify-center'>
+                            <div className='flex gap-4 items-center justify-center my-4'>
                                 <Select
                                     labelId="brand-select-label"
                                     id="brand-select"
@@ -418,6 +432,18 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
 
                             </div>
 
+                            <div className='flex items-center justify-center gap-4'>
+                                <label htmlFor="bannerType">Select Banner Type: </label>
+                                <select id="bannerType" value={selectedOption} onChange={handleSelectChange}>
+                                    <option value="">Select...</option>
+                                    <option value="mainbanner">Main Banner</option>
+                                    <option value="productbanner">Product Banner</option>
+                                </select>
+
+                                {/* <p>You selected: {selectedOption}</p> */}
+                                {/* You can use the selectedOption state wherever you need it in your component */}
+                            </div>
+
                         </div>
 
 
@@ -427,7 +453,7 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
 
                         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4, mt: 3 }}>
 
-                            {loading ? <CircularProgress /> : <Button
+                            {loading ? <CircularProgress /> : selectedCategories.length >= 2 ? <Button
                                 variant="contained"
                                 onClick={handleSubmit}
                                 sx={{
@@ -441,7 +467,7 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
                                 className="bg-[#04a7ff] text-white"
                             >
                                 Add
-                            </Button>}
+                            </Button> : <p>Please select at least 2 images and categories</p>}
 
                         </Box>
 

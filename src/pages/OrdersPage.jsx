@@ -11,7 +11,7 @@ import { scrollLeft, scrollRight } from './Home'
 import { useAxios } from '../utils/axios'
 import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'
-import { CircularProgress } from '@mui/material'
+import { CircularProgress, IconButton, Tooltip } from '@mui/material'
 
 // import ProductDetails from '../components/product/productDetails'
 
@@ -89,7 +89,12 @@ const OrdersPage = () => {
                         <div key={index} className='mt-8'>
                             <div className='flex justify-between'>
                                 <p className=' text-xl font-bold'>Order #{order._id}</p>
-                                <FaFileInvoice onClick={() => navigateToOrder(order)} className='text-2xl cursor-pointer' />
+
+                                <Tooltip title="Download Invoice">
+                                    <IconButton>
+                                        <FaFileInvoice onClick={() => navigateToOrder(order)} className='text-2xl cursor-pointer' />
+                                    </IconButton>
+                                </Tooltip>
                             </div>
                             <div className='flex justify-between'>
                                 <p className='font-semibold mb-3'>Date of Purchase: {formatDate(new Date(order.createdAt))}</p>

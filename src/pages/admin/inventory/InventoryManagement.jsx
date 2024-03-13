@@ -159,7 +159,7 @@ const InventoryManagement = () => {
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center', justifyContent: 'center', width: "100%" }}>
                     {row.bannerImages.map((curELem) => (
                         <Box sx={{ width: "100px", height: "100px" }}>
-                            <img src={curELem} alt="banner" className="object-cover w-full h-full" />
+                            <img src={curELem?.bannerImage} alt="banner" className="object-cover w-full h-full" />
                         </Box>
                     ))}
                 </Box>
@@ -169,8 +169,8 @@ const InventoryManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
-            field: "category",
-            headerName: "Category",
+            field: "subCategory",
+            headerName: "Sub Category",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,

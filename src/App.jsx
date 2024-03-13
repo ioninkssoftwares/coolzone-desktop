@@ -224,7 +224,7 @@ function App() {
     <>
       <div className='App'>
         <RouterProvider router={router} />
-        <ToastContainer autoClose={300} />
+        <ToastContainer autoClose={300} position="top-left" />
       </div>
     </>
   )

@@ -8,7 +8,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
 }
 
-export default function FlyoutCategory({
+export default function FlyoutCustomerService({
     menuTitle = "Hover Popover",
     linksArray = [
         // [[title: string, href: string], ...]
@@ -131,7 +131,7 @@ export default function FlyoutCategory({
                       {title}
                     </p> */}
                                         <p className={classNames("px-4", LINK_STYLES)}
-                                            onClick={() => navigateToProducts(brand)}
+                                        // onClick={() => navigateToProducts(brand)}
                                         // onClick={() => {
                                         //   if (menuTitle === "KITCHEN APPLIANCE") {
                                         //     navigateToProductsCategory(brand);

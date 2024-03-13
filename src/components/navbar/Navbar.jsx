@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import { useSearchProductsQuery } from '../../redux/api/productApi';
 import FlyoutMenu from '../features/FlyoutMenu';
 import FlyoutCategory from '../features/FlyoutCategory';
+import FlyoutCustomerService from '../features/FlyoutCustomerService';
 
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -127,10 +128,10 @@ export default function Navbar() {
     ["COOLERS", "/lg"],
     ["VACUUM CLEANER", "/samsung"],
     ["GEYSERS", "/samsung"],
-    ["WAHSING MACHINES", "/samsung"],
-    ["AC", "/samsung"],
+    ["WASHING MACHINE", "/samsung"],
+    ["AIR CONDITIONER", "/samsung"],
     ["WATER DISPENCERS", "/samsung"],
-    ["TV", "/samsung"],
+    ["TELEVISIONS", "/samsung"],
     ["REFRIGERATOR", "/samsung"],
     ["CHEST FREEZERS", "/samsung"],
 
@@ -157,7 +158,7 @@ export default function Navbar() {
   const telivisionsSamples = [
     ["VU", "/ifb"],
     // ["F&D", "/lg"],
-    ["HYUNDAI ", "/samsung"],
+    ["HYUNDAI", "/samsung"],
     ["KEPCO", "/lloyd"],
     ["KODAK", "/lloyd"],
     ["LG", "/lloyd"],
@@ -374,7 +375,7 @@ export default function Navbar() {
             <FlyoutMenu menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} /> */}
             <FlyoutCategory menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
             <FlyoutCategory menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
-            <FlyoutCategory menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
+            <FlyoutCustomerService menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
           </div>
           {/* </section> */}
           {/* </div> */}
