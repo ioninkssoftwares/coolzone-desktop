@@ -113,6 +113,9 @@ const ProductList = () => {
         console.log(totalItems, "sdjhfjdksafh")
     }
 
+    const { cartItems, loading: cartLoading } = useSelector((state) => state.cartReducer)
+
+
 
 
     useEffect(() => {
@@ -258,6 +261,15 @@ const ProductList = () => {
     const handleCart = (cartProduct) => {
         // e.preventDefault();
         console.log(cartProduct, "dfs")
+
+        const isProductInCart = cartItems.some(item => item.productId === cartProduct._id);
+
+        // If the product is already in the cart, show a toast message and return
+        if (isProductInCart) {
+            toast.error("Product is already present in the cart");
+            return;
+        }
+
         if (cartProduct.stock < 1) return toast.error("Out of Stock")
 
         const newItem = {
@@ -295,7 +307,7 @@ const ProductList = () => {
     useEffect(() => {
         // Scroll to the top when the component mounts
         window.scrollTo(0, 0);
-    }, [filterCategory, navbarSearch]);
+    }, [filterCategory, navbarSearch, flyoutBrand, flyoutCategory, flyoutOnlyCategory]);
 
 
     // useEffect(() => {
@@ -325,6 +337,7 @@ const ProductList = () => {
             setBrand("")
             console.log(flyoutOnlyCategoryParam, "FlyoutOnlyCategory")
             setCategory(flyoutOnlyCategoryParam);
+
         }
     }, [flyoutOnlyCategory]);
 
@@ -542,7 +555,7 @@ const ProductList = () => {
 
 
 
-                                            {(category || search) && (
+                                            {/* {(category || search) && (
                                                 <div className="flex items-center flex-col justify-center mx-20">
                                                     <h4 className="text-lg font-bold">Sub Categories</h4>
                                                     <select
@@ -556,7 +569,29 @@ const ProductList = () => {
                                                         ))}
                                                     </select>
                                                 </div>
+                                            )} */}
+
+                                            {(category || search) && (
+                                                <div className="flex items-center flex-col justify-center mx-20">
+                                                    <h4 className="text-lg font-bold">Sub Categories</h4>
+                                                    <select
+                                                        value={subCategory}
+                                                        onChange={(e) => setSubCategory(e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded"
+                                                    >
+                                                        <option value="">ALL</option>
+                                                        {productLoading === false && searchedData?.products && (
+                                                            // Create a set of unique sub-categories
+                                                            [...new Set(searchedData.products.map((curElem) => curElem.subCategory))].map((uniqueSubCategory) => (
+                                                                <option key={uniqueSubCategory} value={uniqueSubCategory}>
+                                                                    {uniqueSubCategory}
+                                                                </option>
+                                                            ))
+                                                        )}
+                                                    </select>
+                                                </div>
                                             )}
+
                                         </div>
                                     </form>
                                 </Dialog.Panel>
@@ -581,53 +616,7 @@ const ProductList = () => {
                         /> */}
 
                         <div className="flex items-center">
-                            {/* <Menu as="div" className="relative inline-block text-left">
-                                <div>
-                                    <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                                        Sort
-                                        <AiOutlineDown
-                                            className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                                            aria-hidden="true"
-                                        />
-                                    </Menu.Button>
-                                </div>
 
-                                <Transition
-                                    as={Fragment}
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-100"
-                                    leave="transition ease-in duration-75"
-                                    leaveFrom="transform opacity-100 scale-100"
-                                    leaveTo="transform opacity-0 scale-95"
-                                >
-                                    <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                        <div className="py-1">
-                                            {sortOptions.map((option) => (
-                                                <Menu.Item key={option.name}>
-                                                    {({ active }) => (
-                                                        <a
-                                                            href={option.href}
-                                                            className={classNames(
-                                                                option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                                                                active ? 'bg-gray-100' : '',
-                                                                'block px-4 py-2 text-sm'
-                                                            )}
-                                                        >
-                                                            {option.name}
-                                                        </a>
-                                                    )}
-                                                </Menu.Item>
-                                            ))}
-                                        </div>
-                                    </Menu.Items>
-                                </Transition>
-                            </Menu> */}
-
-                            {/* <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                                <span className="sr-only">View grid</span>
-                                <HiOutlineSquaresPlus className="h-5 w-5" aria-hidden="true" />
-                            </button> */}
                             <button
                                 type="button"
                                 className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
@@ -699,9 +688,17 @@ const ProductList = () => {
                                                     style={{ width: '190px' }}
                                                 >
                                                     <option value="">ALL</option>
-                                                    {loadingCategories === false && categoriesData?.categories.map((category) => (
+                                                    {/* {loadingCategories === false && categoriesData?.categories.map((category) => (
                                                         <option key={category} value={category}>{category.toUpperCase()}</option>
-                                                    ))}
+                                                    ))} */}
+                                                    {loadingCategories === false && categoriesData?.categories && (
+                                                        // Create a set of unique categories
+                                                        [...new Set(categoriesData.categories)].map((uniqueCategory) => (
+                                                            <option key={uniqueCategory} value={uniqueCategory}>
+                                                                {uniqueCategory.toUpperCase()}
+                                                            </option>
+                                                        ))
+                                                    )}
                                                 </select>
                                             </div>
 
@@ -740,9 +737,18 @@ const ProductList = () => {
                                                         className="w-full p-2 border border-gray-300 rounded"
                                                     >
                                                         <option value="">ALL</option>
-                                                        {searchedData?.products.map((curElem) => (
+                                                        {/* {searchedData?.products.map((curElem) => (
                                                             <option key={curElem.subCategory} value={curElem.subCategory}>{curElem.subCategory}</option>
-                                                        ))}
+                                                        ))} */}
+
+                                                        {productLoading === false && searchedData?.products && (
+                                                            // Create a set of unique sub-categories
+                                                            [...new Set(searchedData.products.map((curElem) => curElem.subCategory))].map((uniqueSubCategory) => (
+                                                                <option key={uniqueSubCategory} value={uniqueSubCategory}>
+                                                                    {uniqueSubCategory}
+                                                                </option>
+                                                            ))
+                                                        )}
                                                     </select>
                                                 </div>
                                             )}

@@ -31,6 +31,9 @@ const ProductDetails = () => {
 
     const instance = useAxios(token);
 
+    const { cartItems, loading: cartLoading } = useSelector((state) => state.cartReducer)
+
+
 
     if (product) {
         console.log(product, "filsjkfkl")
@@ -68,6 +71,15 @@ const ProductDetails = () => {
     const handleCart = () => {
         // e.preventDefault();
         console.log("click")
+
+        const isProductInCart = cartItems.some(item => item.productId === product?.product._id);
+
+        // If the product is already in the cart, show a toast message and return
+        if (isProductInCart) {
+            toast.error("Product is already present in the cart");
+            return;
+        }
+
         if (product.product.stock < 1) return toast.error("Out of Stock")
 
         const newItem = {

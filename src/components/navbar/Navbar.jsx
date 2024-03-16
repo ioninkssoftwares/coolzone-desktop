@@ -11,7 +11,7 @@ import ProductSelect from '../features/ProductSelect';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllProductsAsync, fetchProductsByNavbarAsync } from '../product/productSlice';
-import { Badge } from '@mui/material';
+import { Badge, CircularProgress } from '@mui/material';
 import { AddShoppingCart } from '@mui/icons-material';
 import { cartItemsLength, fetchItemsByUserIdAsync, selectItems } from '../cart/cartSlice';
 import { useCookies } from 'react-cookie';
@@ -120,8 +120,8 @@ export default function Navbar() {
     ["PHILIPS", "/samsung"],
     ["PROTRONICS", "/samsung"],
     ["SAMSUNG", "/samsung"],
-    ["SUPER", "/samsung"],
-    ["TREAMES", "/samsung"],
+    // ["SUPER", "/samsung"],
+    // ["TREAMES", "/samsung"],
   ]
   const homeAppliancesSamples = [
     ["AIR PURIFIER", "/ifb"],
@@ -202,7 +202,7 @@ export default function Navbar() {
     isError: productIsError,
     error: productError } = useSearchProductsQuery({ search });
 
-  console.log(searchedData, "hfasdjkhfds")
+  console.log(productLoading, "hfasdjkhfds")
 
 
   // Todo-localStorageUsed
@@ -299,18 +299,22 @@ export default function Navbar() {
                     <div className="relative w-full">
                       <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="Search with category..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="w-full p-2 pl-8 border border-primary-blue rounded-r-full rounded-l-full focus:outline-none focus:border-blue-500"
                       />
+                      {productLoading && (
+                        <div className="absolute top-0 right-20 w-5 h-full ">
+                          <CircularProgress className="ml-3 mr-5 w-fit " />
+                        </div>
+                      )}
                       <button className='absolute top-0 right-0 w-10 h-full flex items-center rounded-r-full bg-primary-blue'>
                         <AiOutlineSearch className='ml-3 mr-5 text-white' />
                       </button>
                     </div>
                   </form>
                 </div>
-
 
                 {/* Display search results */}
                 <div

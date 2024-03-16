@@ -44,6 +44,7 @@ import ShippingPage from './pages/ShippingPage';
 import InvoicePage from './pages/InvoicePage';
 import BrandManagement from './pages/admin/inventory/BrandManagement';
 import CategoryManagement from './pages/admin/inventory/CategoriesManagement';
+import OtpAuthentication from './pages/otpAuthentication';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage></LoginPage>,
+  },
+  {
+    path: '/otp/login',
+    element: <OtpAuthentication></OtpAuthentication>,
   },
   {
     path: '/signup',

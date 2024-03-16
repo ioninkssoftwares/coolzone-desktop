@@ -6,7 +6,7 @@ import { BsBagFill, BsFillHeartFill } from "react-icons/bs";
 import { HiLocationMarker } from "react-icons/hi";
 import PropertyCost from "./ProductCost";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/reducer/cartReducer";
 import { toast } from "react-toastify";
 import { useAxios } from "../../utils/axios";
@@ -23,17 +23,14 @@ const WishlistCard = ({ data, setRefreshItems }) => {
     const [cookies, setCookies] = useCookies(["token"]);
     const [token, setToken] = useState("");
 
+
     const instance = useAxios(token)
     // console.log(props,"cproj")
     const imageSource = "https://images.unsplash.com/photo-1590212151175-e58edd96185b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80";
-    //   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
 
 
-    // const slug = generateSlug(toggle, name:undefined, BHKconfig, propertyType, availableFor, location.name, _id);
+    const { cartItems, loading: cartLoading } = useSelector((state) => state.cartReducer)
 
-    // if(slug){
-    //   console.log(slug,"slug")
-    // }
 
     useEffect(() => {
         if (cookies && cookies.token) {
@@ -48,6 +45,14 @@ const WishlistCard = ({ data, setRefreshItems }) => {
 
     const handleCart = (product) => {
         // e.preventDefault();
+
+        const isProductInCart = cartItems.some(item => item.productId === product._id);
+
+        // If the product is already in the cart, show a toast message and return
+        if (isProductInCart) {
+            toast.error("Product is already present in the cart");
+            return;
+        }
 
         if (product.stock < 1) return toast.error("Out of Stock")
 

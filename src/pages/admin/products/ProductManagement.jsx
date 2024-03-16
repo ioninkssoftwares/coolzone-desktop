@@ -272,6 +272,26 @@ const ProductManagement = () => {
             minWidth: 150,
 
             flex: 0.25,
+            field: "subCategory",
+            headerName: "Sub Category",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 150,
+
+            flex: 0.25,
+            field: "brand",
+            headerName: "Brand",
+            align: "left",
+            headerAlign: "left",
+            disableColumnMenu: true,
+        },
+        {
+            minWidth: 150,
+
+            flex: 0.25,
             field: "price",
             headerName: "Selling Price",
             align: "left",

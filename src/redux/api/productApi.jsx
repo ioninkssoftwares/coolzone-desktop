@@ -45,6 +45,12 @@ export const productsAPI = createApi({
                 return base
             },
             providesTags: ["products"],
+            async onQueryStarted(queryArg, { dispatch, getState, requestId }) {
+                dispatch({ type: 'productSearch/loading', payload: true }); // Dispatch action to set loading state to true
+            },
+            async onQueryFulfilled(queryArg, { dispatch, getState, requestId }) {
+                dispatch({ type: 'productSearch/loading', payload: false }); // Dispatch action to set loading state to false
+            },
 
         }),
         newProduct: builder.mutation({

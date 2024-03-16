@@ -1,17 +1,19 @@
 import React from 'react'
 import { GrYoutube, GrFacebookOption, GrTwitter, GrInstagram } from 'react-icons/gr';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+  const navigate = useNavigate();
 
   const productSamples = [
-    { name: 'Smartphones', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
-    { name: 'TV & Audio', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png' },
-    { name: 'Laptops & PCs', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png' },
-    { name: 'Gadgets', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp' },
-    { name: 'Photo & Video', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png' },
-    { name: 'Gifts', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png' },
-    { name: 'Books', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png' },
-    { name: 'Toys', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png' },
+    { name: 'AIR CONDITIONER', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg', href: "" },
+    { name: 'MICROWAVE', imageSrc: 'https://cdn.pixabay.com/photo/2014/04/03/10/32/tv-310801_1280.png', href: "" },
+    { name: 'TELEVISIONS', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png', href: "" },
+    { name: 'GEYSERS', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp', href: "" },
+    { name: 'AIR PURIFIER', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png', href: "" },
+    { name: 'LAPTOP', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png', href: "" },
+    { name: 'COOLERS', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png', href: "" },
+    { name: 'AUDIO DEVICES', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png', href: "" },
   ];
   const usefulLinks = [
     { name: 'About', imageSrc: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg' },
@@ -33,6 +35,13 @@ const Footer = () => {
 
   ];
 
+  const navigateToProducts = (categoryName) => {
+    // Navigate to products page and set the search state with the category name
+    const formattedCategory = categoryName.toLowerCase().replace(/\s+/g, '-');
+    // console.log(categoryName, "dsfjhdsjkhfk")
+    navigate(`/products?flyoutOnlyCategory=${encodeURIComponent(formattedCategory)}`);
+  }
+
 
   return (
     <div>
@@ -45,7 +54,7 @@ const Footer = () => {
           </p>
 
           <div className="flex flex-col pl-2 space-y-4">
-            {productSamples.map((curElem) => (<p>{curElem.name}</p>)
+            {productSamples.map((curElem) => (<p onClick={() => navigateToProducts(curElem.name)} className='cursor-pointer'>{curElem.name}</p>)
             )}
           </div>
 

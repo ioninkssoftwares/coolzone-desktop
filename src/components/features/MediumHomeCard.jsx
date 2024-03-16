@@ -6,7 +6,7 @@ import { BsBagFill, BsFillHeartFill } from "react-icons/bs";
 import { HiLocationMarker } from "react-icons/hi";
 import PropertyCost from "./ProductCost";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/reducer/cartReducer";
 import { toast } from "react-toastify";
 import { useAxios } from "../../utils/axios";
@@ -19,6 +19,9 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
   const dispatch = useDispatch();
   const [cookies, setCookies] = useCookies(["token"]);
   const [token, setToken] = useState("");
+
+  const { cartItems, loading: cartLoading } = useSelector((state) => state.cartReducer)
+
 
   //   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
 
@@ -42,6 +45,16 @@ const MediumHouseCard = ({ productImages, category, price, title, _id, name, sto
 
   const handleCart = () => {
     // e.preventDefault();
+
+    const isProductInCart = cartItems.some(item => item.productId === _id);
+
+    // If the product is already in the cart, show a toast message and return
+    if (isProductInCart) {
+      toast.error("Product is already present in the cart");
+      return;
+    }
+
+
     if (stock < 1) return toast.error("Out of Stock")
     const newItem = {
       productId: _id,
