@@ -12,6 +12,8 @@ import { useAxios } from '../utils/axios'
 import { FaFileInvoice } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'
 import { CircularProgress, IconButton, Tooltip } from '@mui/material'
+import { toast } from 'react-toastify'
+import { useCookies } from 'react-cookie'
 
 // import ProductDetails from '../components/product/productDetails'
 
@@ -22,39 +24,77 @@ const OrdersPage = () => {
     const isPending = useSelector(selectProductListStatus);
     const [loading, setLoading] = useState(false);
     const [myOrders, setMyOrders] = useState([]);
+    const [token, setToken] = useState("");
     const userId = localStorage.getItem("userId");
     const navigate = useNavigate()
+    const [cookies, setCookies] = useCookies(["token"]);
+    const [userDetails, setUserDetails] = useState({});
 
-    // Todo-localStorageUsed
-    if (!userId) {
-        // userId is undefined or null, handle this case accordingly
-        console.log("UserId is not available");
-    } else {
-        const getMyOrders = async () => {
-            const instance = useAxios();
-            setLoading(true);
-            try {
-                setLoading(true);
-                const res = await instance.get(`/orders/my?id=${userId}`);
-                if (res.data) {
-                    setLoading(false);
-                    setMyOrders(res.data.orders);
-                }
-            } catch (error) {
-                setLoading(false);
-                console.log(error);
+
+
+
+    useEffect(() => {
+        if (cookies.token === undefined) {
+            toast.error("Please Login")
+            navigate('/otp/login')
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            console.log(cookies.token, "dslfjadslk")
+            setToken(cookies.token);
+        }
+    }, [cookies]);
+
+
+
+
+    const getUserDetails = async () => {
+        const instance = useAxios(token)
+        try {
+            setLoading(true)
+            const res = await instance.get("/me")
+            if (res.data) {
+                setUserDetails(res.data.user)
+                setLoading(false)
             }
-        };
 
-        useEffect(() => {
-            getMyOrders();
-        }, []); // Removed userId from the dependency array since it's not used inside useEffect
-
-        // Rest of your component logic goes here
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
     }
 
+    useEffect(() => {
+        getUserDetails()
+    }, [token])
 
-    // Wanrranty Calculte Function
+    if (userDetails) console.log(userDetails._id, "dfhdsjhfjkdshkjfsdkdsfhkjdfsk")
+
+    const getMyOrders = async () => {
+        const instance = useAxios(token)
+        setLoading(true);
+        try {
+            setLoading(true);
+            const res = await instance.get(`/orders/my?id=${userDetails._id}`);
+            if (res.data) {
+                setLoading(false);
+                setMyOrders(res.data.orders);
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getMyOrders();
+    }, [userDetails]);
+
+
+
 
     function calculateWarrantyEndDate(orderDate) {
         // Create a new Date object from the order date string
@@ -82,10 +122,12 @@ const OrdersPage = () => {
     return (
         <div>
             <Navbar />
-            {myOrders && myOrders.length < 1 ? <div className='flex w-screen h-screen items-center justify-center'><CircularProgress /></div> : (<section className="max-w-7xl mx-auto px-5 md:px-10 mt-8">
+            <section className="max-w-7xl mx-auto px-5 md:px-10 mt-8">
                 <p style={{ margin: "0 auto" }} className='font-semibold text-4xl w-fit'>Orders Section</p>
                 <div>
-                    {myOrders.map((order, index) => (
+                    {myOrders && myOrders.length < 1 ? <div className=" w-screen h-screen flex items-center justify-center bg-white  ">
+                        <CircularProgress />
+                    </div> : myOrders.map((order, index) => (
                         <div key={index} className='mt-8'>
                             <div className='flex justify-between'>
                                 <p className=' text-xl font-bold'>Order #{order._id}</p>
@@ -133,7 +175,7 @@ const OrdersPage = () => {
                         </div>
                     ))}
                 </div>
-            </section>)}
+            </section>
             <Footer />
         </div>
 

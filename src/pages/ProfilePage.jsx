@@ -44,7 +44,7 @@ const ProfilePage = () => {
         name: '',
         lastName: '',
         DOB: '',
-        contactNumber: 0,
+        mobileNo: 0,
         gender: ""
     });
 
@@ -93,7 +93,7 @@ const ProfilePage = () => {
     useEffect(() => {
         if (userDetails && Object.keys(userDetails).length > 0) {
             // Pick only the relevant fields from userDetails
-            const { email, name, lastName, DOB, contactNumber } = userDetails;
+            const { email, name, lastName, DOB, mobileNo } = userDetails;
 
             // Update userData state
             setUserData({
@@ -101,7 +101,7 @@ const ProfilePage = () => {
                 name: name || '',
                 lastName: lastName || '',
                 DOB: DOB || '',
-                contactNumber: contactNumber || '',
+                mobileNo: mobileNo || '',
                 // gender: gender || '',
             });
         }
@@ -229,13 +229,16 @@ const ProfilePage = () => {
                                         label="Contact Number"
                                         type="number"
                                         required
-                                        value={userData?.contactNumber}
-
-                                        onChange={(value) => {
-                                            setUserData({ ...userData, contactNumber: value });
-                                            setFormErrors({ ...formErrors, contactNumber: validateFirstName(value) });
+                                        value={userData?.mobileNo}
+                                        InputProps={{
+                                            readOnly: true,
                                         }}
-                                        validate={validateMobileNumber}
+
+                                    // onChange={(value) => {
+                                    //     setUserData({ ...userData, mobileNo: value });
+                                    //     setFormErrors({ ...formErrors, mobileNo: validateMobileNumber(value) });
+                                    // }}
+                                    // validate={validateMobileNumber}
 
                                     />
 

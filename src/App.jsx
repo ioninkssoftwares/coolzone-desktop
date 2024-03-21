@@ -44,7 +44,8 @@ import ShippingPage from './pages/ShippingPage';
 import InvoicePage from './pages/InvoicePage';
 import BrandManagement from './pages/admin/inventory/BrandManagement';
 import CategoryManagement from './pages/admin/inventory/CategoriesManagement';
-import OtpAuthentication from './pages/otpAuthentication';
+import OtpAuthentication from './pages/OtpAuthentication';
+
 
 const router = createBrowserRouter([
   {
@@ -89,18 +90,18 @@ const router = createBrowserRouter([
       <MembershipPage />
     ),
   },
-  {
-    path: '/login',
-    element: <LoginPage></LoginPage>,
-  },
+  // {
+  //   path: '/login',
+  //   element: <LoginPage></LoginPage>,
+  // },
   {
     path: '/otp/login',
     element: <OtpAuthentication></OtpAuthentication>,
   },
-  {
-    path: '/signup',
-    element: <SignupPage></SignupPage>,
-  },
+  // {
+  //   path: '/signup',
+  //   element: <SignupPage></SignupPage>,
+  // },
   {
     path: '/wishlist',
     element: <WishListPage></WishListPage>,

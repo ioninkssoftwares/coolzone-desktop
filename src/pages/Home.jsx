@@ -188,7 +188,7 @@ const Home = () => {
     { name: 'televisions', imageSrc: 'https://cdn.pixabay.com/photo/2015/02/07/20/58/tv-627876_1280.jpg' },
     { name: 'refrigerator', imageSrc: 'https://cdn.pixabay.com/photo/2021/05/19/16/41/hitachi-multi-door-refrigerator-6266613_960_720.jpg' },
     { name: 'audio devices', imageSrc: 'https://cdn.pixabay.com/photo/2016/02/25/01/40/audio-1221152_960_720.jpg' },
-    { name: 'laptop', imageSrc: 'https://cdn.pixabay.com/photo/2017/11/27/21/31/computer-2982270_1280.jpg' },
+    { name: 'furnitures', imageSrc: 'https://cdn.pixabay.com/photo/2016/11/21/12/59/couch-1845270_1280.jpg' },
     { name: 'coolers', imageSrc: 'https://media.istockphoto.com/id/1016471162/photo/electronic-room-tower-fan-and-humidifier-on-white-wall-background.jpg?s=2048x2048&w=is&k=20&c=sHXglQLTUkguYp5u48tj501B-thvbPpxKJUTZPn9a6U=' },
     { name: 'geysers', imageSrc: 'https://media.istockphoto.com/id/623940856/photo/home-gas-water-heater-boiler-in-bathroom-for-hot-water.jpg?s=2048x2048&w=is&k=20&c=YwzPP8jnphx2NTUaxSe_nZR3I7J9Q-FosMSTdznPLow=' },
     { name: 'microwave', imageSrc: 'https://media.istockphoto.com/id/148166172/photo/microwave-oven.jpg?s=2048x2048&w=is&k=20&c=cTKY3221xASozJQ6iu8Gpjoam_LstKhHgkXcyPwoPKI=' },

@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { useRouter } from "next/router";
 // import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 // import CircularSpinner from 'src/componets/circularLoader';
 // import { ErrorDispaly } from './admin/property';
-import { useNavigation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAxios } from '../utils/axios';
 import { CircularProgress } from '@mui/material';
 
@@ -54,8 +54,9 @@ const TermsAndConditions = () => {
 
 const OtpAuthentication = () => {
     // const router = useRouter();
-    const router = useNavigation()
+    const router = useNavigate()
     const instance = useAxios();
+    const [cookies, setCookies] = useCookies(["token"]);
     const [registerFormData, setRegisterFormData] = useState({
         name: '',
         email: '',
@@ -68,7 +69,6 @@ const OtpAuthentication = () => {
     const [otpValue, setOtpValue] = useState('');
     const [loginValue, setLoginValue] = useState('');
     const [loginOtp, setLoginOtp] = useState('');
-    const [cookies, setCookies] = useCookies(["jwtToken"]);
     const [isLoading, setIsLoading] = useState(true);
     const [isVerifyLoading, setIsVerifyLoading] = useState(true);
     const [registerLoading, setRegisterLoading] = useState(true);
@@ -85,6 +85,12 @@ const OtpAuthentication = () => {
         setShowLogin(false);
     };
 
+    useEffect(() => {
+        if (cookies && cookies.token) {
+            router("/")
+        }
+    }, [cookies]);
+
 
     // For Login
     const handleLoginSubmit = async () => {
@@ -94,9 +100,9 @@ const OtpAuthentication = () => {
         try {
             // setLoading(true);
             const mobileNo = {
-                mobileNumber: loginValue,
+                mobileNo: loginValue,
             };
-            const res = await instance.post("/user/otpLogin", mobileNo);
+            const res = await instance.post("/otpLogin", mobileNo);
             if (res.data) {
                 toast.success("Otp send Successfully");
                 setShowLoginVerify(true)
@@ -114,33 +120,31 @@ const OtpAuthentication = () => {
             }
 
             console.log(error);
+            setIsLoading(true)
+            toast.error("Multiple time login, wait for some time")
+            router("/")
         }
 
 
     };
     const handleOtpLoginSubmit = async () => {
         setIsVerifyLoading(false)
-        event.preventDefault();
         console.log(loginValue, "login value");
 
         try {
             // setLoading(true);
             const data = {
-                mobileNumber: loginValue,
+                mobileNo: loginValue,
                 otp: loginOtp,
             };
-            const res = await instance.post("/user/verifyLoginOTP", data);
+            const res = await instance.post("/verifyLoginOtp", data);
             if (res.data) {
-                console.log(res.data.data._id, "redd")
-                setCookies("jwtToken", res.data.token);
-                setIsVerifyLoading(false)
+                setCookies("token", res.data.token);
                 localStorage.setItem("isAdmin", false);
-                localStorage.setItem("userId", res.data.data._id);
+                localStorage.setItem("userId", res.data.user._id);
+                localStorage.setItem("token", res.data.token);
                 router("/")
-                // setShowTerms(true);
                 toast.success("Otp fetch Successfully");
-
-
                 //   setLoading(false);
             }
         } catch (e) {
@@ -169,11 +173,10 @@ const OtpAuthentication = () => {
 
     const handleRegisterSubmit = async () => {
         setRegisterLoading(false)
-        event.preventDefault();
         try {
             // setLoading(true);
             const mobileNo = {
-                mobileNumber: registerFormData.mobileNumber,
+                mobileNo: registerFormData.mobileNumber,
             };
             const res = await instance.post("/otpRegister", mobileNo);
             if (res.data) {
@@ -188,6 +191,7 @@ const OtpAuthentication = () => {
                 const errorMessage = error.response.data.message || "User Already Registered, Try Login ";
                 toast.error(errorMessage);
                 setRegisterLoading(true)
+                router("/otp/login")
             } else {
                 toast.error("An error occurred. Please try again later.");
             }
@@ -205,16 +209,21 @@ const OtpAuthentication = () => {
             const data = {
                 name: registerFormData.name,
                 email: registerFormData.email,
-                mobileNumber: registerFormData.mobileNumber,
+                mobileNo: registerFormData.mobileNumber,
                 otp: otpValue,
             };
-            const res = await instance.post("/user/verifySignupOTP", data);
+            const res = await instance.post("/verifyOtpRegister", data);
             if (res.data) {
-                console.log(res.data.data._id, "reddhh")
-                setCookies("jwtToken", res.data.token);
-                setRegisterVerify(false)
+                // console.log(res.data.data._id, "reddhh")
+                // setCookies("jwtToken", res.data.token);
+                // setRegisterVerify(false)
+                // localStorage.setItem("isAdmin", false);
+                // localStorage.setItem("userId", res.data.data._id);
+                console.log(res.data, "res.data")
+                setCookies("token", res.data.token);
                 localStorage.setItem("isAdmin", false);
-                localStorage.setItem("userId", res.data.data._id);
+                localStorage.setItem("userId", res.data.user._id);
+                localStorage.setItem("token", res.data.token);
                 router("/")
                 toast.success("Otp fetch Successfully");
 
@@ -252,11 +261,11 @@ const OtpAuthentication = () => {
             {/* <h1 className="text-2xl font-bold mb-6">Login</h1> */}
 
 
-            {isLoading ? <div className=" w-full flex items-center justify-center bg-white  rounded px-20 pt-8 pb-12 mb-4 ">
+            {isLoading ? <div className=" w-screen h-screen flex items-center justify-center bg-white ">
 
 
                 <form onSubmit={handleLoginSubmit}>
-                    <div className="mb-3  mt-8 ">
+                    <div className="mb-3   ">
                         <label className="block text-gray-400 md:text-lg  font-bold mb-2" htmlFor="otp">
                             Enter your mobile number to get started.
                         </label>
@@ -277,7 +286,7 @@ const OtpAuthentication = () => {
                     </div>
 
                     <div className="">
-                        <label className="flex align-middle text-gray-400 md:text-lg font-bold mb-2 ">
+                        <label className="flex gap-2 justify-center items-center text-gray-400 md:text-lg font-bold mb-2 ">
                             <input
                                 type="checkbox"
                                 className="mr-2 leading-tight"
@@ -291,7 +300,7 @@ const OtpAuthentication = () => {
                     <div className="  flex items-center justify-center">
                         <button
                             disabled={!termsChecked}
-                            className=" w-full  bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+                            className=" w-full  bg-primary-blue hover:bg-blue-600 text-white font-bold py-4 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
                             type="submit"
                         >
                             Get Otp
@@ -300,17 +309,17 @@ const OtpAuthentication = () => {
                     <div className='px-14 flex justify-center mt-6'>
                         <p className='md:text-md '>If not registered click <span onClick={handleRegisterClick} style={{ color: "blue", fontSize: "20px", fontWeight: "bold", marginLeft: "7px" }}>Sign Up</span></p>
                     </div>
-                </form>      </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
+                </form>      </div> : <div className=" w-screen h-screen flex items-center justify-center bg-white  ">
                 <CircularProgress />
             </div>}
 
         </> : <>
-            {isVerifyLoading ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
-                <h1 className="text-2xl font-bold mb-6">Login</h1>
+            {isVerifyLoading ? <div className=" w-screen h-screen flex items-center justify-center bg-white shadow-md rounded ">
+                {/* <h1 className="text-2xl font-bold mb-6">Login</h1> */}
 
                 <form onSubmit={handleOtpLoginSubmit}>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="otp">
+                        <label cla ssName="block text-gray-700 text-sm font-bold mb-2" htmlFor="otp">
                             Enter Otp
                         </label>
                         <div style={{ height: "50px", margin: "0 0" }}
@@ -336,13 +345,13 @@ const OtpAuthentication = () => {
                         </button>
                     </div>
                 </form>
-            </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
+            </div> : <div className="w-screen h-screen flex items-center justify-center bg-white ">
                 <CircularProgress />
             </div>}
 
         </> : !showVerify ? <>
             {registerLoading ? <div>
-                <div className=" w-full flex items-center justify-center bg-white  px-8 pt-6 pb-8 mb-4 ">
+                <div className=" w-screen h-screen flex items-center justify-center bg-white  ">
                     {/* <div className="min-h-screen flex items-center justify-center bg-gray-100">
                     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md"> */}
                     {/* <div className='flex space-x-4 justify-center mb-2'>
@@ -387,7 +396,7 @@ const OtpAuthentication = () => {
                                 />
                             </div>
                         </div>
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                                 Password
                             </label>
@@ -404,8 +413,8 @@ const OtpAuthentication = () => {
                                     required
                                 />
                             </div>
-                        </div>
-                        <div className="mb-4">
+                        </div> */}
+                        <div className="mb-4 ">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mobileNumber">
                                 Mobile Number
                             </label>
@@ -453,14 +462,14 @@ const OtpAuthentication = () => {
                         </div>
                     </form>
                 </div>
-            </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
+            </div> : <div className="w-screen h-screen flex items-center justify-center bg-white ">
                 <CircularProgress />
             </div>}
 
 
         </> : <>
-            {registerVerify ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
-                <h1 className="text-2xl font-bold mb-6">Verify Mobile No.</h1>
+            {registerVerify ? <div className=" w-screen h-screen flex items-center justify-center bg-white shadow-md rounded ">
+                {/* <h1 className="text-2xl font-bold mb-6">Verify Mobile No.</h1> */}
                 <form onSubmit={handleOtpSubmit}>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="otp">
@@ -489,7 +498,7 @@ const OtpAuthentication = () => {
                         </button>
                     </div>
                 </form>
-            </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
+            </div> : <div className="w-screen h-screen flex items-center justify-center bg-white ">
                 <CircularProgress />
             </div>}
 

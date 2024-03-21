@@ -218,8 +218,9 @@ const ShippingPage = () => {
 
                         </div>
                     </>
-                    )) : <div className="flex items-center justify-center">
-                        <CircularProgress /></div>}
+                    )) : <div className="flex flex-col items-center justify-center">
+                        <CircularProgress />
+                    </div>}
 
                     <div className="flex justify-end">
                         <button onClick={handleSubmit} className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md  uppercase px-6"

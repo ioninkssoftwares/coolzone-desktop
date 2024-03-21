@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { GrDeliver } from "react-icons/gr";
 import CardCarousel from '../features/CardCarousel';
@@ -27,9 +27,20 @@ const ProductDetails = () => {
     const [review, setReview] = useState("");
     const [value, setValue] = useState(4);
     const [selectedImage, setSelectedImage] = useState("");
+    const [reviewAdded, setReviewAdded] = useState(false);
     // const [allReviews, setAllReviews] = useState([]);
 
     const instance = useAxios(token);
+
+    const reviewsRef = useRef(null);
+
+    const scrollToReviews = () => {
+        if (reviewsRef.current) {
+            reviewsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    if (review) console.log(review, value, "dfhdjhf")
 
     const { cartItems, loading: cartLoading } = useSelector((state) => state.cartReducer)
 
@@ -56,6 +67,13 @@ const ProductDetails = () => {
     useEffect(() => {
         dispatch(fetchProductByIdAsync(params.id))
     }, [dispatch, params.id])
+
+    useEffect(() => {
+        if (reviewAdded) {
+            dispatch(fetchProductByIdAsync(params.id))
+            setReview("");
+        }
+    }, [reviewAdded])
 
 
 
@@ -123,38 +141,25 @@ const ProductDetails = () => {
 
         try {
             const newReview = {
-                productId: params.id,
                 comment: review,
                 rating: value
             }
-            const response = await instance.put('/review', newReview);
+            const response = await instance.post(`/${params.id}/reviews`, newReview);
             // return { data: response.data };
             // dispatch(fetchItemsByUserIdAsync(token))
             // setLoading(false)
             toast("Your review has been added")
+            setReviewAdded(true)
+            setReview("")
 
             console.log(response, "fdlshjs")
         } catch (error) {
             console.error('Error in login:', error);
-            throw error;
+            setReview("")
+            toast.error(error.response.data.message);
+
         }
     }
-
-    const getAllrevies = async () => {
-
-        try {
-            const response = await instance.get(`/reviews?id=${params.id}`);
-            setAllReviews(response.data.reviews)
-            console.log(response, "xczvxcvczx")
-        } catch (error) {
-            console.error('Error in login:', error);
-            throw error;
-        }
-    }
-
-    useEffect(() => {
-        getAllrevies();
-    }, [])
 
 
 
@@ -283,7 +288,7 @@ const ProductDetails = () => {
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <p className="text-gray-500 text-2xl title-font font-medium">MRP</p>
-                                        <p className="text-gray-500 text-2xl title-font font-medium">₹{product?.product.mrp}</p>
+                                        <p className="text-gray-500 text-2xl title-font font-medium line-through">₹{product?.product.mrp}</p>
                                     </div>
                                 </div>
 
@@ -291,43 +296,17 @@ const ProductDetails = () => {
 
 
                                 {/* Reviews section */}
-                                {/* <div className="flex mb-4">
-                                    <span className="flex items-center">
-                                        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                        </svg>
-                                        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                        </svg>
-                                        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                        </svg>
-                                        <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                        </svg>
-                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                                        </svg>
-                                        <span className="text-gray-600 ml-3">{product?.product?.ratings} Reviews</span>
+                                <div onClick={scrollToReviews} className="my-4 flex cursor-pointer items-center justify-start">
+                                    <span className='flex'>
+                                        {[...Array(5)].map((_, index) => (
+                                            <svg key={index} fill={index < product.product.rating ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                            </svg>
+                                        ))}
                                     </span>
-                                    <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
-                                        <a className="text-gray-500">
-                                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-                                            </svg>
-                                        </a>
-                                        <a className="ml-2 text-gray-500">
-                                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-                                            </svg>
-                                        </a><span>(Start Rating)</span>
-                                        <a className="ml-2 text-gray-500">
-                                            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-5 h-5" viewBox="0 0 24 24">
-                                                <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-                                            </svg>
-                                        </a>
-                                    </span>
-                                </div> */}
+
+                                    <span className="text-gray-600 ml-3">{product?.product?.numReviews} Reviews</span>
+                                </div>
 
                                 {product?.product.category === "Ac" ? <>           <h2 className='mb-2'>Key Features</h2>
                                     <ul className='list-disc list-inside ml-8 mb-4'>
@@ -413,41 +392,46 @@ const ProductDetails = () => {
                     </div>
                 </section>
                 <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
-                    <div className='border-2 border-gray-500 my-4 p-8 rounded-lg'>
+                    <div ref={reviewsRef} className='border-2 border-gray-500 my-4 p-8 rounded-lg'>
                         <p className='text-lg font-semibold'>Rating and Review</p>
 
                         <div className='flex items-start justify-between gap-20 '>
-                            <div className='basis-[40%]'>
-                                <p className='text-2xl font-semibold mt-4'>Customer Reviews</p>
-                                <p className='my-2 text-2xl'>Review this product</p>
-                                <p className='my-2'>Share your thoughts with other customers</p>
-                                <div className='flex items-center justify-center'>
-                                    <input onChange={(e) => setReview(e.target.value)} type="text" className='my-4 rounded-lg' placeholder='Write a product review' />
-                                    <Box
-                                        sx={{
-                                            '& > legend': { mt: 2 },
-                                        }}
-                                    >
-
-                                        <Rating
-                                            name="simple-controlled"
-                                            value={value}
+                            <div className='w-full flex items-center justify-around'>
+                                <div>
+                                    <p className='text-2xl font-semibold mt-4'>Customer Reviews</p>
+                                    {/* <p className='my-2 text-2xl'>Review this product</p> */}
+                                </div>
+                                <div>
+                                    <p className='my-2'>Share your thoughts with other customers</p>
+                                    <div className='flex items-center justify-center'>
+                                        <input onChange={(e) => setReview(e.target.value)} value={review} type="text" className='my-4 rounded-lg' placeholder='Write a product review' />
+                                        <Box
                                             sx={{
-                                                color: "#04a7ff",
-                                                marginLeft: "20px"
+                                                '& > legend': { mt: 2 },
                                             }}
-                                            onChange={(event, newValue) => {
-                                                setValue(newValue);
-                                            }}
-                                        />
+                                        >
 
-                                    </Box>
-                                    <button onClick={addReviews} className='rounded-lg ml-4 px-8 py-2 bg-primary-blue text-white'>Submit</button>
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={value}
+                                                sx={{
+                                                    color: "#04a7ff",
+                                                    marginLeft: "20px"
+                                                }}
+                                                onChange={(event, newValue) => {
+                                                    setValue(newValue);
+                                                }}
+                                            />
+
+                                        </Box>
+                                        <button onClick={addReviews} className='rounded-lg ml-4 px-8 py-2 bg-primary-blue text-white'>Submit</button>
+                                    </div>
+
                                 </div>
 
                             </div>
 
-                            <div className='basis-[40%]'>
+                            {/* <div className='basis-[40%]'>
 
                                 <div className="flex items-center mb-2">
                                     <svg className="w-4 h-4 text-primary-blue mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
@@ -504,15 +488,41 @@ const ProductDetails = () => {
                                     <span className="text-sm font-medium text-gray-500 dark:text-gray-400">1%</span>
                                 </div>
 
-                            </div>
+                            </div> */}
+
+                            {/* <div className='basis-[40%]'>
+                           
+                                <div className="flex items-center mb-2">
+                                    {[...Array(5)].map((_, index) => (
+                                        <svg key={index} className={`w-4 h-4 text-${index < product.product.rating ? 'primary-blue' : 'gray-300'} mr-1`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                    ))}
+                                    <p className="ml-2 text-sm font-medium text-gray-900 dark:text-white">{product.product.rating} out of 5</p>
+                                </div>
+                   
+                                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{product.product.numReviews} global ratings</p>
+
+                         
+                                {[...Array(5)].map((_, index) => (
+                                    <div key={index} className="flex items-center mt-4">
+                                        <a href="#" className="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline">{5 - index} star</a>
+                                        <div className=" border-2 border-red-600 w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                                            <div className="h-5 bg-primary-blue rounded" style={{ width: `${product.product.rating === index + 1 ? '100' : '0'}%` }}></div>
+                                        </div>
+                                        <span className="text-sm border-2 border-red-600 font-medium text-gray-500 dark:text-gray-400">{product.product.reviews.filter(review => review.rating === (5 - index)).length}%</span>
+                                    </div>
+                                ))}
+                            </div> */}
+
 
 
                         </div>
 
                         <div className='flex justify-center items-start flex-col gap-6 my-8'>
-                            {allReviews && allReviews.length > 0 ? allReviews.map((curElem) => {
-                                return <div >
-                                    <p className='font-semibold text-lg'>{curElem.user}</p>
+                            {product?.product?.reviews && product?.product?.reviews.length > 0 ? product?.product?.reviews.map((curElem) => {
+                                return <div key={curElem._id} >
+                                    <p className='font-semibold text-lg'>{curElem.name}</p>
                                     <div className='flex gap-6 items-center justify-start mt-2'>
                                         <Rating
                                             name="simple-controlled"

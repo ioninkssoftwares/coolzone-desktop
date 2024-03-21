@@ -354,7 +354,7 @@ export default function Navbar() {
 
                 {userId ? (<div onClick={handleLogout} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <CiLogout className='w-full h-full cursor-pointer hover:text-primary-blue' />
-                </div>) : (<div onClick={() => navigate("/login")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
+                </div>) : (<div onClick={() => navigate("/otp/login")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <FiLogOut className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div>)}
 

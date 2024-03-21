@@ -11,7 +11,7 @@ const Footer = () => {
     { name: 'TELEVISIONS', imageSrc: 'https://i.dummyjson.com/data/products/6/thumbnail.png', href: "" },
     { name: 'GEYSERS', imageSrc: 'https://i.dummyjson.com/data/products/27/thumbnail.webp', href: "" },
     { name: 'AIR PURIFIER', imageSrc: 'https://cdn.pixabay.com/photo/2015/08/02/10/29/camera-871052_1280.png', href: "" },
-    { name: 'LAPTOP', imageSrc: 'https://cdn.pixabay.com/photo/2013/07/12/15/40/present-150291_1280.png', href: "" },
+    { name: 'FURNITURES', imageSrc: 'https://cdn.pixabay.com/photo/2016/11/21/12/59/couch-1845270_1280.jpg', href: "" },
     { name: 'COOLERS', imageSrc: 'https://cdn.pixabay.com/photo/2017/01/31/00/09/books-2022464_1280.png', href: "" },
     { name: 'AUDIO DEVICES', imageSrc: 'https://cdn.pixabay.com/photo/2012/04/13/21/32/rocking-horse-33719_1280.png', href: "" },
   ];

@@ -5,6 +5,7 @@ import {
     Grid,
     IconButton,
     LinearProgress,
+    TextField,
     Tooltip,
     Typography,
 } from "@mui/material";
@@ -151,12 +152,32 @@ const ProductManagement = () => {
     );
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
-        pageSize: 50,
+        pageSize: 100,
     });
     const [name, setName] = useState("");
     const [selected, setSelected] = useState("All");
     const [cookies, setCookies] = useCookies(["adminToken"]);
     const navigate = useNavigate();
+
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredRows, setFilteredRows] = useState([]);
+
+    const handleSearchQueryChange = (event) => {
+        setSearchQuery(event.target.value);
+        filterRows(event.target.value);
+    };
+
+    const filterRows = (query) => {
+        const filtered = allProducts.filter((row) => {
+            const { name, category, subCategory, brand, stock } = row;
+            const searchFields = [name, category, subCategory, brand, stock.toString()];
+            return searchFields.some((field) =>
+                field.toLowerCase().includes(query.toLowerCase())
+            );
+        });
+        setFilteredRows(filtered);
+    };
 
     // async function getAllUsers() {
     //     let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
@@ -298,16 +319,6 @@ const ProductManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        // {
-        //     minWidth: 150,
-
-        //     flex: 0.25,
-        //     field: "costPrice",
-        //     headerName: "Cost",
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        // },
         {
             minWidth: 150,
 
@@ -318,36 +329,6 @@ const ProductManagement = () => {
             headerAlign: "left",
             disableColumnMenu: true,
         },
-        // {
-        //     minWidth: 120,
-
-        //     field: "discount",
-        //     headerName: "Discount",
-        //     flex: 0.2,
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        // },
-        // {
-        //     minWidth: 120,
-
-        //     field: "totalValue",
-        //     headerName: "Total Value",
-        //     flex: 0.2,
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        // },
-        // {
-        //     minWidth: 120,
-
-        //     field: "status",
-        //     headerName: "Status",
-        //     flex: 0.2,
-        //     align: "left",
-        //     headerAlign: "left",
-        //     disableColumnMenu: true,
-        // },
         {
             minWidth: 150,
 
@@ -617,29 +598,28 @@ const ProductManagement = () => {
                                 <p className="text-2xl ">Inventory Items</p>
                             </div>
 
-                            {/* <div className="flex space-x-[12px]">
+
+                            <div className="flex space-x-[12px]">
                                 <div className="flex items-center bg-white p-2 rounded-lg space-x-3">
                                     <AiOutlineSearch className="text-xl" />
                                     <input
                                         type="text"
                                         name=""
                                         id=""
-                                        value={name}
-                                        onChange={(e) => {
-                                            setName(e.target.value);
-                                        }}
+                                        value={searchQuery}
+                                        onChange={handleSearchQueryChange}
                                         placeholder="search"
                                         className="outline-none"
                                     />
                                 </div>
-                            </div> */}
+                            </div>
                         </div>
 
                         <Grid container spacing={6} sx={{ pb: 38, px: 4 }}>
                             <Grid item xs={12}>
                                 <Card sx={{ borderRadius: 2 }}>
                                     <DataGrid
-                                        rows={allProducts || []}
+                                        rows={searchQuery ? filteredRows : allProducts}
                                         columns={all_customer_columns}
                                         getRowId={(row) => row._id}
                                         autoHeight
@@ -648,27 +628,12 @@ const ProductManagement = () => {
                                         }}
                                         loading={loading}
                                         getRowHeight={() => "auto"}
-
                                         pagination
                                         paginationModel={paginationModel}
-                                        pageSizeOptions={[25, 50, 75, 100]}
+                                        pageSizeOptions={[25, 50, 500, 1000]}
                                         rowCount={pagination?.totalUsers}
                                         paginationMode="server"
                                         onPaginationModelChange={setPaginationModel}
-
-
-                                        // pagination
-                                        // rowsPerPageOptions={[5, 10, 25]}
-                                        // rowCount={pagination?.totalUsers || 0}
-                                        // page={pageState.page - 1}
-                                        // pageSize={pageState.pageSize}
-                                        // paginationMode="server"
-                                        // onPageChange={(newPage: number) => {
-                                        //   setPageState((old) => ({ ...old, page: newPage + 1 }));
-                                        // }}
-                                        // onPageSizeChange={(newPageSize: number) =>
-                                        //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
-                                        // }
                                         sx={tableStyles}
                                     />
                                 </Card>

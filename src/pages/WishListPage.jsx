@@ -34,7 +34,7 @@ const WishListPage = () => {
     useEffect(() => {
         if (cookies.token === undefined) {
             toast.error("Please Login")
-            navigate('/login')
+            navigate('/otp/login')
         }
     }, [])
 
