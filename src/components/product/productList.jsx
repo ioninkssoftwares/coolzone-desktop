@@ -293,6 +293,10 @@ const ProductList = () => {
     const searchParams = new URLSearchParams(location.search);
     const filterCategory = searchParams.get('filterCategory') || '';
     const navbarSearch = searchParams.get('navbarSearch') || '';
+
+    const navbarCategorySearch = searchParams.get('navbarCategorySearch') || '';
+    const navbarBrandSearch = searchParams.get('navbarBrandSearch') || '';
+
     const featuredParam = searchParams.get('featured') || '';
     const bestSellerParam = searchParams.get('bestSeller') || '';
     const flyoutCategory = searchParams.get('flyoutCategory') || '';
@@ -307,7 +311,7 @@ const ProductList = () => {
     useEffect(() => {
         // Scroll to the top when the component mounts
         window.scrollTo(0, 0);
-    }, [filterCategory, navbarSearch, flyoutBrand, flyoutCategory, flyoutOnlyCategory]);
+    }, [filterCategory, navbarSearch, flyoutBrand, flyoutCategory, flyoutOnlyCategory, navbarBrandSearch, navbarCategorySearch]);
 
 
     // useEffect(() => {
@@ -359,6 +363,15 @@ const ProductList = () => {
         }
         // setSearch(navbarSearch)
     }, [navbarSearch]);
+
+    useEffect(() => {
+
+        if (navbarBrandSearch.length > 0 && navbarCategorySearch.length > 0) {
+            setCategory(navbarCategorySearch);
+            setBrand(navbarBrandSearch);
+
+        }
+    }, [navbarBrandSearch, navbarCategorySearch]);
 
     useEffect(() => {
         // Update the search state when the categoryParam changes

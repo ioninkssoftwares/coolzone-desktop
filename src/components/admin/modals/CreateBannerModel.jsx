@@ -46,11 +46,6 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
         setSelectedOption(event.target.value);
     };
 
-    if (selectedOption) console.log(selectedOption, "fdslsdsjhfdsjdk")
-
-
-    if (selectedCategories) console.log(selectedCategories, "fdsljhfdsjdk")
-
     const handleOpen = () => {
         setOpen(true);
     };
@@ -59,10 +54,12 @@ const CreateBannerModel = ({ buttonText, modalTitle, SetIsBannerAdded }) => {
         setOpen(false);
     };
 
+
     const handleSubmit = async () => {
 
         setLoading(true)
         var BannerFormData = new FormData();
+
         for (let i of filesToupload) {
             BannerFormData.append('bannerImage', i);
         }

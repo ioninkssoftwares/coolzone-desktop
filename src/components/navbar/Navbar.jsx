@@ -22,6 +22,7 @@ import { useSearchProductsQuery } from '../../redux/api/productApi';
 import FlyoutMenu from '../features/FlyoutMenu';
 import FlyoutCategory from '../features/FlyoutCategory';
 import FlyoutCustomerService from '../features/FlyoutCustomerService';
+import MegaMenu from '../features/megamenu/MegaMenu';
 
 // import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -157,7 +158,6 @@ export default function Navbar() {
 
   const telivisionsSamples = [
     ["VU", "/ifb"],
-    // ["F&D", "/lg"],
     ["HYUNDAI", "/samsung"],
     ["KEPCO", "/lloyd"],
     ["KODAK", "/lloyd"],
@@ -219,10 +219,23 @@ export default function Navbar() {
     // Add any other cleanup code here
   };
 
+  //   const navigateToProducts = (category, brand) => {
+  //     const formattedCategory = category.toLowerCase().replace(/\s+/g, '-');
+  //     // const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-');
+  //     const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-').replace(/%26/g, '&');
+  //     navigate(`/products?flyoutCategory=${encodeURIComponent(formattedCategory)}&flyoutBrand=${encodeURIComponent(formattedBrand)}`);
+  // };
+
 
   const handleSearch = (e) => {
-    const formattedSearch = e.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/products?navbarSearch=${encodeURIComponent(formattedSearch)}`);
+
+    // const formattedSearch = e.toLowerCase().replace(/\s+/g, '-');
+
+    const formattedCategory = e.category.toLowerCase().replace(/\s+/g, '-');
+    // const formattedBrand = brand.toLowerCase().replace(/\s+/g, '-');
+    const formattedBrand = e.brand.toLowerCase().replace(/\s+/g, '-').replace(/%26/g, '&');
+    console.log(e.brand, "rrrrrrrr");
+    navigate(`/products?navbarCategorySearch=${encodeURIComponent(formattedCategory)}&navbarBrandSearch=${encodeURIComponent(formattedBrand)}`);
     setSearch("");
 
   }
@@ -232,6 +245,68 @@ export default function Navbar() {
     const formattedSearch = search.toLowerCase().replace(/\s+/g, '-');
     navigate(`/products?navbarSearch=${encodeURIComponent(formattedSearch)}`);
   }
+
+
+  const categories = [
+    {
+      name: 'AIR CONDITIONER',
+      brands: [
+        'Daikin', 'HITACHI', 'IFB', 'LG', 'LIVPURE', 'Lloyd', 'TCL', 'VOLTAS', 'Whirlpool'
+      ]
+    },
+    {
+      name: 'WASHING MACHINE',
+      brands: [
+        'IFB', 'LG', 'SAMSUNG', 'Lloyd', 'TCL', 'VOLTAS', 'Whirlpool'
+      ]
+    },
+    {
+      name: 'TELEVISIONS',
+      brands: [
+        'VU', 'HYUNDAI', 'KEPCO', 'KODAK', 'LG', 'LLOYD', 'MI', 'MICROMAX', 'PHILIPS', 'SAMSUNG', 'SANSUI', 'TCL'
+      ]
+    },
+    {
+      name: 'FURNITURES',
+      brands: [
+        'DAMRO', 'PEPS', 'PIYESTRA'
+      ]
+    },
+    {
+      name: 'REFRIGERATOR',
+      brands: [
+        'IFB', 'LG', 'SAMSUNG', 'VOLTAS', 'WHIRLPOOL', 'LLOYD'
+      ]
+    },
+
+    {
+      name: 'AUDIO DEVICES',
+      brands: [
+        'BOAT', 'LG', 'PHILIPS', 'PROTRONICS', 'SAMSUNG'
+      ]
+    },
+    {
+      name: 'HOME APPLIANCES',
+      brands: [
+        'AIR PURIFIER', 'COOLERS', 'VACUUM CLEANER', 'GEYSERS', 'WASHING MACHINE', 'AIR CONDITIONER', 'WATER DISPENCERS', 'TELEVISIONS', 'REFRIGERATOR', 'CHEST FREEZERS'
+      ]
+    },
+    {
+      name: 'KITCHEN APPLIANCES',
+      brands: [
+        'DISH WASHER', 'STOVES', 'MICROWAVE', 'MIXER GRINDER', 'WATER PURIFIER'
+      ]
+    },
+    {
+      name: 'CUSTOMER SERVICE',
+      brands: [
+        'TRACK ORDER', 'SUPPORT', 'RETURN & EXCHANGE', 'REPAIR SERVICES', 'RAISE SERVICE REQUEST'
+      ]
+    },
+
+  ];
+
+
 
   return (
     <Disclosure as="nav" className="bg-white sticky top-0 z-50 ">
@@ -320,7 +395,7 @@ export default function Navbar() {
                 <div
                   className="absolute left-0 bg-white rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
                   {search.length > 0 && searchedData && searchedData.products.map((result) => (
-                    <div onClick={() => handleSearch(result.category)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100">
+                    <div onClick={() => handleSearch(result)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100 ">
                       {`${result.category}/${result.brand}/${result.name}`}
                     </div>
                   ))}
@@ -367,19 +442,20 @@ export default function Navbar() {
           </div>
           {/* Category Section */}
           {/* <section className='w-full md:flex items-center justify-center bg-primary-blue hidden'> */}
-          <div className='md:flex hidden  bg-primary-blue gap-1 px-2 '>
+          {/* <div className='md:flex hidden  bg-primary-blue gap-1 px-2 '>
             <FlyoutMenu menuTitle='AIR CONDITIONER' linksArray={airConditionerSamples} />
             <FlyoutMenu menuTitle='WASHING MACHINE' linksArray={washingMachineSamples} />
             <FlyoutMenu menuTitle='TELEVISIONS' linksArray={telivisionsSamples} />
             <FlyoutMenu menuTitle='FURNITURES' linksArray={furnitureSamples} />
             <FlyoutMenu menuTitle='REFRIGERATOR' linksArray={refrigerationSamples} />
             <FlyoutMenu menuTitle='AUDIO DEVICES' linksArray={audioSamples} />
-            {/* <FlyoutMenu menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
-            <FlyoutMenu menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
-            <FlyoutMenu menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} /> */}
             <FlyoutCategory menuTitle='HOME APPLIANCES' linksArray={homeAppliancesSamples} />
             <FlyoutCategory menuTitle='KITCHEN APPLIANCE' linksArray={kitchenApplianceSamples} />
             <FlyoutCustomerService menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
+          </div> */}
+
+          <div className='md:flex hidden  bg-primary-blue w-full justify-center '>
+            <MegaMenu categories={categories} />
           </div>
           {/* </section> */}
           {/* </div> */}

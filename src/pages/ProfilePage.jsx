@@ -23,6 +23,7 @@ import { toast } from 'react-toastify'
 import { useAxios } from '../utils/axios'
 import { useCookies } from 'react-cookie'
 import InputField from '../components/InputField'
+import MegaMenu from '../components/features/megamenu/MegaMenu'
 // import ProductDetails from '../components/product/productDetails'
 
 const ProfilePage = () => {
@@ -160,6 +161,7 @@ const ProfilePage = () => {
     };
 
 
+
     return (
         <div>
             <Navbar />
@@ -181,6 +183,8 @@ const ProfilePage = () => {
 
                                         validate={validateFirstName}
                                     /> */}
+
+
                                     <InputField
                                         label="First Name"
                                         type="text"
@@ -258,6 +262,8 @@ const ProfilePage = () => {
                                             readOnly: true,
                                         }}
                                     />
+
+
 
                                 </div>
 
