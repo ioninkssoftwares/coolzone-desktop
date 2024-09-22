@@ -15,108 +15,226 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 
 const ShippingPage = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [cookies, setCookies] = useCookies(["token"]);
-    const [token, setToken] = useState("");
-    const [savedAddress, setSavedAddress] = useState([]);
-    const [selectedAddress, setSelectedAddress] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [cookies, setCookies] = useCookies(["token"]);
+  const [token, setToken] = useState("");
+  const [savedAddress, setSavedAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState({});
 
-    if (selectedAddress) console.log(selectedAddress, "asdfjsakjfhdsaj")
+  const instance = useAxios(token);
 
+  if (token) console.log(token, "asdfjsakjfhdsaj");
 
-    const { cartItems, total } = useSelector(
-        (state) => state.cartReducer
-    );
+  if (userDetails) console.log(userDetails, "asdfjsakjfhdsajgfdgdgd");
 
+  const { cartItems, total } = useSelector((state) => state.cartReducer);
 
-    useEffect(() => {
-        if (cookies && cookies.token) {
-            console.log(cookies.token, "dslfjadslk")
-            setToken(cookies.token);
-        }
-    }, [cookies]);
+  useEffect(() => {
+    if (cookies && cookies.token) {
+      console.log(cookies.token, "dslfjadslk");
+      setToken(cookies.token);
+    }
+  }, [cookies]);
 
+  const [shippingInfo, setShippingInfo] = useState({
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pinCode: "",
+  });
 
-    const [shippingInfo, setShippingInfo] = useState({
-        address: "",
-        city: "",
-        state: "",
-        country: "",
-        pinCode: "",
-    });
+  const changeHandler = (e) => {
+    setShippingInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
-    const changeHandler = (e) => {
-        setShippingInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    };
+  const getUserDetails = async () => {
+    try {
+      setLoading(true);
+      const res = await instance.get("/me");
+      if (res.data) {
+        setUserDetails(res.data.user);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
-    const handleSubmit = async (e) => {
-        // e.preventDefault();
-        if (selectedAddress) {
-            const paymentAddress = {
-                address: selectedAddress?.address,
-                city: selectedAddress?.city,
-                country: selectedAddress?.country,
-                state: selectedAddress?.state,
-                pinCode: selectedAddress?.pinCode,
-            };
-            console.log(paymentAddress, "sdahkasdj");
-            dispatch(saveShippingInfo(paymentAddress));
-            // toast.success("Order placed successfully");
-            navigate("/checkout");
-        } else {
+  // useEffect(() => {
+  //     getUserDetails()
+  // }, [token])
+  // const handleSubmit = async (e) => {
+  //     // e.preventDefault();
+  //     if (selectedAddress) {
+  //         const paymentAddress = {
+  //             address: selectedAddress?.address,
+  //             city: selectedAddress?.city,
+  //             country: selectedAddress?.country,
+  //             state: selectedAddress?.state,
+  //             pinCode: selectedAddress?.pinCode,
+  //         };
+  //         console.log(paymentAddress, "sdahkasdj");
+  //         dispatch(saveShippingInfo(paymentAddress));
+  //       else {
 
-            console.error("Please select an address before proceeding.");
-        }
-    };
+  //         console.error("Please select an address before proceeding.");
+  //     }
 
-    useEffect(() => {
-        if (cartItems.length <= 0) {
-            toast.error("Cart is empty")
-            navigate("/cart");
-        }
-    }, [cartItems]);
+  //     try {
+  //         const { data } = await instance.post(
+  //             `${server}/api/v1/payment/create`,
+  //             {
+  //                 amount: total,
+  //             },
+  //             {
+  //                 headers: {
+  //                     "Content-Type": "application/json",
+  //                 },
+  //             }
+  //         );
 
+  //         navigate("/checkout", {
+  //             state: data.clientSecret,
+  //         });
+  //     } catch (error) {
+  //         console.log(error);
+  //         toast.error("Something went wrong");
+  //     }
 
-    const getUserAddress = async (event) => {
-        const instance = useAxios(token)
-        try {
-            const response = await instance.get("/me/getMyAddress")
-            setSavedAddress(response.data.addresses)
-        } catch (error) {
-            console.log(error)
-        }
-    };
+  // }
+  // };
 
-    useEffect(() => {
-        getUserAddress()
-    }, [token])
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault(); // Uncomment this to prevent default form submission behavior
 
+  //     if (selectedAddress) {
+  //       const paymentAddress = {
+  //         address: selectedAddress?.address,
+  //         city: selectedAddress?.city,
+  //         country: selectedAddress?.country,
+  //         state: selectedAddress?.state,
+  //         pinCode: selectedAddress?.pinCode,
+  //       };
+  //       console.log(paymentAddress, "sdahkasdj");
+  //       dispatch(saveShippingInfo(paymentAddress));
 
-    const handleCheckbox = (curElem) => {
+  //       try {
+  //         const { data } = await instance.post(
+  //           `${import.meta.env.VITE_REACT_APP_BASE_URL}/payment/process`,
+  //           {
+  //             amount: total,
+  //           },
+  //           {
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //           }
+  //         );
 
-        // Update the state to the selected address
-        setSelectedAddress(curElem);
-        // Your other logic here...
-    };
+  //         navigate("/checkout", {
+  //           state: data.clientSecret,
+  //         });
+  //       } catch (error) {
+  //         console.log(error);
+  //         toast.error("Something went wrong");
+  //       }
+  //     } else {
+  //       console.error("Please select an address before proceeding.");
+  //     }
+  //   };
 
-    useEffect(() => {
-        // Scroll to the top when the component mounts
-        window.scrollTo(0, 0);
-    }, [savedAddress]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    if (selectedAddress) {
+      const paymentAddress = {
+        name: userDetails.name, // Add customer's name
+        address: selectedAddress.address,
+        city: selectedAddress.city,
+        country: selectedAddress.country,
+        state: selectedAddress.state,
+        pinCode: selectedAddress.pinCode,
+      };
 
+      dispatch(saveShippingInfo(paymentAddress));
 
+      try {
+        const { data } = await instance.post(
+          `${import.meta.env.VITE_REACT_APP_BASE_URL}/payment/process`,
+          {
+            amount: total,
+            shippingInfo: paymentAddress, // Pass the shipping information
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-    {/* <EditCalendarOutlinedIcon onClick={() => handleEditAddress(curElem)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */ }
-    {/* <DeleteOutlineOutlinedIcon onClick={() => handleDeleteAddress(curElem._id)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */ }
+        navigate("/checkout", {
+          state: data.clientSecret,
+        });
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+      }
+    } else {
+      console.error("Please select an address before proceeding.");
+    }
+  };
 
-    return (
-        <div>
-            <Navbar />
-            <section>
-                <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
-                    {/* <div>
+  useEffect(() => {
+    if (cartItems.length <= 0) {
+      toast.error("Cart is empty");
+      navigate("/cart");
+    }
+  }, [cartItems]);
+
+  const getUserAddress = async () => {
+    // const instance = useAxios(token);
+    try {
+      const response = await instance.get("/me/getMyAddress");
+      setSavedAddress(response.data.addresses);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserAddress();
+    getUserDetails();
+  }, [token]);
+
+  const handleCheckbox = (curElem) => {
+    // Update the state to the selected address
+    setSelectedAddress(curElem);
+    // Your other logic here...
+  };
+
+  useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+  }, [savedAddress]);
+
+  {
+    /* <EditCalendarOutlinedIcon onClick={() => handleEditAddress(curElem)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */
+  }
+  {
+    /* <DeleteOutlineOutlinedIcon onClick={() => handleDeleteAddress(curElem._id)} sx={{ cursor: 'pointer', '&:hover': { color: 'blue' } }} /> */
+  }
+
+  return (
+    <div>
+      <Navbar />
+      <section>
+        <div className="max-w-7xl mx-auto px-5 md:px-10 my-4 ">
+          {/* <div>
                         <div className="flex justify-end">
                             <button onClick={() => navigate("/cart")}>
                                 <BiArrowBack className="text-2xl" />
@@ -182,58 +300,72 @@ const ShippingPage = () => {
                                 type="submit">Pay Now</button>
                         </form>
                     </div> */}
-                    <div className="flex items-center justify-end my-8">
-                        <p className="font-semibold text-lg">Add new address, <span onClick={() => navigate("/address")} className="text-blue-800 cursor-pointer">Click here</span></p>
+          <div className="flex items-center justify-end my-8">
+            <p className="font-semibold text-lg">
+              Add new address,{" "}
+              <span
+                onClick={() => navigate("/address")}
+                className="text-blue-800 cursor-pointer"
+              >
+                Click here
+              </span>
+            </p>
+          </div>
+
+          {savedAddress && savedAddress.length > 0 ? (
+            savedAddress.map((curElem) => (
+              <>
+                <div className="my-4 border-b-2 border-gray-400 pb-4">
+                  <div className="flex gap-2">
+                    <HomeOutlinedIcon />
+                    <p>Home</p>
+                  </div>
+                  <div className="flex justify-between my-2">
+                    <div className="basis-[90%] flex flex-col">
+                      <p>{curElem.address}</p>
+                      <p>
+                        {curElem.city}, {curElem.state}, {curElem.country},{" "}
+                        {curElem.pinCode}
+                      </p>
+                      {/* <p>Phone Number- {curElem.phoneNo} </p> */}
                     </div>
-
-                    {savedAddress && savedAddress.length > 0 ? savedAddress.map((curElem) => (<>
-                        <div className='my-4 border-b-2 border-gray-400 pb-4'>
-                            <div className='flex gap-2'>
-                                <HomeOutlinedIcon />
-                                <p>Home</p>
-                            </div>
-                            <div className='flex justify-between my-2'>
-                                <div className='basis-[90%] flex flex-col'>
-                                    <p>{curElem.address}</p>
-                                    <p>{curElem.city}, {curElem.state}, {curElem.country}, {curElem.pinCode}</p>
-                                    {/* <p>Phone Number- {curElem.phoneNo} </p> */}
-                                </div>
-                                <div className='basis-[5%] flex gap-4'>
-
-                                    <FormGroup>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    onChange={() => handleCheckbox(curElem)}
-                                                    checked={selectedAddress === curElem}
-                                                />
-                                            }
-                                        // label="Male"
-                                        />
-                                    </FormGroup>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-
-                        </div>
-                    </>
-                    )) : <div className="flex flex-col items-center justify-center">
-                        <CircularProgress />
-                    </div>}
-
-                    <div className="flex justify-end">
-                        <button onClick={handleSubmit} className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md  uppercase px-6"
-                            disabled={!selectedAddress}
-
-                        >Pay Now</button>
+                    <div className="basis-[5%] flex gap-4">
+                      <FormGroup>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              onChange={() => handleCheckbox(curElem)}
+                              checked={selectedAddress === curElem}
+                            />
+                          }
+                          // label="Male"
+                        />
+                      </FormGroup>
                     </div>
-
+                  </div>
                 </div>
+                <div></div>
+              </>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center">
+              <CircularProgress />
+            </div>
+          )}
 
-            </section>
-            <Footer />
+          <div className="flex justify-end">
+            <button
+              onClick={handleSubmit}
+              className="bg-primary-blue font-semibold hover:bg-indigo-600 py-3 text-sm text-white rounded-md  uppercase px-6"
+              disabled={!selectedAddress}
+            >
+              Pay Now
+            </button>
+          </div>
         </div>
-    )
+      </section>
+      <Footer />
+    </div>
+  );
 }
 export default ShippingPage

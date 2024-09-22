@@ -313,7 +313,10 @@ export default function Navbar() {
       {({ open }) => (
         <>
           {/* <div className="sticky top-5 z-50"> */}
-          <div style={{ boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }} className="mx-auto shadow max-w-[100%] px-2 sm:px-6 lg:px-8 -mt-4 ">
+          <div
+            style={{ boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" }}
+            className="mx-auto shadow max-w-[100%] px-2 sm:px-6 lg:px-8 -mt-4 "
+          >
             <div className="relative flex h-16 items-center justify-between mt-4">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -321,7 +324,6 @@ export default function Navbar() {
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   {open ? (
-
                     <RxCross2 className="block h-6 w-6" />
                   ) : (
                     <GiHamburgerMenu className="block h-6 w-6" />
@@ -329,7 +331,10 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex md:flex-1 ml-20 md:ml-0 items-center justify-center sm:items-stretch sm:justify-start">
-                <div onClick={() => navigate("/")} className="flex cursor-pointer flex-shrink-0 items-center md:w-[150px] md:h-[50px] w-[60px] h-[50px]">
+                <div
+                  onClick={() => navigate("/")}
+                  className="flex cursor-pointer flex-shrink-0 items-center md:w-[150px] md:h-[50px] w-[60px] h-[50px]"
+                >
                   {/* <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
@@ -343,7 +348,6 @@ export default function Navbar() {
                     alt="Coolzone"
                   />
                 </div>
-
               </div>
 
               {/* Default SearchBar */}
@@ -370,7 +374,11 @@ export default function Navbar() {
 
               <div className="relative">
                 <div className="flex md:w-[700px] md:mr-[50px] mr-0 w-[200px] ml-[50px] md:ml-0 relative">
-                  <form onSubmit={handleSearchSubmit} className='flex ' style={{ width: "85%", height: "100%" }}>
+                  <form
+                    onSubmit={handleSearchSubmit}
+                    className="flex "
+                    style={{ width: "85%", height: "100%" }}
+                  >
                     <div className="relative w-full">
                       <input
                         type="text"
@@ -384,61 +392,107 @@ export default function Navbar() {
                           <CircularProgress className="ml-3 mr-5 w-fit " />
                         </div>
                       )}
-                      <button className='absolute top-0 right-0 w-10 h-full flex items-center rounded-r-full bg-primary-blue'>
-                        <AiOutlineSearch className='ml-3 mr-5 text-white' />
+                      <button className="absolute top-0 right-0 w-10 h-full flex items-center rounded-r-full bg-primary-blue">
+                        <AiOutlineSearch className="ml-3 mr-5 text-white" />
                       </button>
                     </div>
                   </form>
                 </div>
 
                 {/* Display search results */}
-                <div
-                  className="absolute left-0 bg-white rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
-                  {search.length > 0 && searchedData && searchedData.products.map((result) => (
-                    <div onClick={() => handleSearch(result)} key={result._id} className="px-4 py-2 cursor-pointer hover:bg-blue-100 ">
-                      {`${result.category}/${result.brand}/${result.name}`}
-                    </div>
-                  ))}
+                <div className="absolute left-0 bg-white rounded-md w-[80%] z-20 max-h-60 overflow-y-auto">
+                  {search.length > 0 &&
+                    searchedData &&
+                    searchedData.products.map((result) => (
+                      <div
+                        onClick={() => handleSearch(result)}
+                        key={result._id}
+                        className="px-4 py-2 cursor-pointer hover:bg-blue-100 "
+                      >
+                        {`${result.category}/${result.brand}/${result.name}`}
+                      </div>
+                    ))}
                 </div>
               </div>
 
               <div className="absolute inset-y-0 space-x-8 right-0 md:flex hidden items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <div onClick={() => navigate("/myAccount")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <BiSolidUser className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                <div
+                  onClick={() => navigate("/myAccount")}
+                  style={{ width: "28px", height: "28px", borderRadius: "50%" }}
+                >
+                  <BiSolidUser className="w-full h-full cursor-pointer hover:text-primary-blue" />
                 </div>
-                <div style={{ width: "28px", height: "28px", borderRadius: "50%", marginRight: "25px" }}>
-                  <p onClick={handleProducts} className='w-full h-full cursor-pointer font-bold text-sm hover:text-primary-blue ' > Products</p>
+                <div
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    marginRight: "25px",
+                  }}
+                >
+                  <p
+                    onClick={handleProducts}
+                    className="w-full h-full cursor-pointer font-bold text-sm hover:text-primary-blue "
+                  >
+                    {" "}
+                    Products
+                  </p>
                 </div>
-                <div onClick={() => navigate("/wishlist")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <BsFillHeartFill className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                <div
+                  onClick={() => navigate("/wishlist")}
+                  style={{ width: "28px", height: "28px", borderRadius: "50%" }}
+                >
+                  <BsFillHeartFill className="w-full h-full cursor-pointer hover:text-primary-blue" />
                 </div>
                 {/* <div onClick={() => navigate("/cart")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
                   <FaShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                 </div> */}
-                <div className='cursor-pointer' onClick={() => navigate("/cart")} >
+                <div
+                  className="cursor-pointer"
+                  onClick={() => navigate("/cart")}
+                >
                   {/* <Badge color="error">
                     <AddShoppingCart className='w-full h-full cursor-pointer hover:text-primary-blue' />
                   </Badge> */}
-                  <Badge badgeContent={cartItems && cartItems.length} color="error">
+                  <Badge
+                    badgeContent={cartItems && cartItems.length}
+                    color="error"
+                  >
                     <AddShoppingCart />
                   </Badge>
                 </div>
-                <div onClick={() => navigate("/orders")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <AiOutlineOrderedList className='w-full h-full cursor-pointer hover:text-primary-blue' />
+                <div
+                  onClick={() => navigate("/orders")}
+                  style={{ width: "28px", height: "28px", borderRadius: "50%" }}
+                >
+                  <AiOutlineOrderedList className="w-full h-full cursor-pointer hover:text-primary-blue" />
                 </div>
 
-                {userId ? (<div onClick={handleLogout} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <CiLogout className='w-full h-full cursor-pointer hover:text-primary-blue' />
-                </div>) : (<div onClick={() => navigate("/otp/login")} style={{ width: "28px", height: "28px", borderRadius: "50%" }}>
-                  <FiLogOut className='w-full h-full cursor-pointer hover:text-primary-blue' />
-                </div>)}
-
+                {userId ? (
+                  <div
+                    onClick={handleLogout}
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <CiLogout className="w-full h-full cursor-pointer hover:text-primary-blue" />
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => navigate("/login")}
+                    style={{
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <FiLogOut className="w-full h-full cursor-pointer hover:text-primary-blue" />
+                  </div>
+                )}
               </div>
             </div>
-
-
-
-
           </div>
           {/* Category Section */}
           {/* <section className='w-full md:flex items-center justify-center bg-primary-blue hidden'> */}
@@ -454,7 +508,7 @@ export default function Navbar() {
             <FlyoutCustomerService menuTitle='CUSTOMER SERVICE' linksArray={customerServiceSamples} />
           </div> */}
 
-          <div className='md:flex hidden  bg-primary-blue w-full justify-center '>
+          <div className="md:flex hidden  bg-primary-blue w-full justify-center ">
             <MegaMenu categories={categories} />
           </div>
           {/* </section> */}
@@ -467,12 +521,26 @@ export default function Navbar() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  onClick={item.name === 'Products' ? handleProducts : item.name === "Cart" ? handleCart : item.name === "MyAccount" ? handleProfile : item.name === "Favourite" ? handleFavourite : item.name === "Orders" ? handleOrders : null}
+                  onClick={
+                    item.name === "Products"
+                      ? handleProducts
+                      : item.name === "Cart"
+                      ? handleCart
+                      : item.name === "MyAccount"
+                      ? handleProfile
+                      : item.name === "Favourite"
+                      ? handleFavourite
+                      : item.name === "Orders"
+                      ? handleOrders
+                      : null
+                  }
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -482,5 +550,5 @@ export default function Navbar() {
         </>
       )}
     </Disclosure>
-  )
+  );
 }

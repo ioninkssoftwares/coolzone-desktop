@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { selectLoggedInUser, createUserAsync } from './authSlice';
+import { selectLoggedInUser, } from './authSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
@@ -12,7 +12,7 @@ import { useAxios } from '../../utils/axios';
 
 export default function Signup() {
   const navigate = useNavigate()
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const instance = useAxios();
   const [cookies, setCookies] = useCookies(["token"]);
   const user = useSelector(selectLoggedInUser);
@@ -33,17 +33,17 @@ export default function Signup() {
   }, [cookies]);
 
 
-  // useEffect(() => {
-  //   if (user?.success) {
-  //     console.log(user, "hjfdsfsj")
-  //     setCookies("token", user.token);
-  //     localStorage.setItem("isAdmin", false);
-  //     localStorage.setItem("userId", user.user._id);
-  //     localStorage.setItem("token", user.token);
-  //     toast(" User Signup Successful")
-  //     navigate("/")
-  //   }
-  // }, [user])
+  useEffect(() => {
+    if (user?.success) {
+      console.log(user, "hjfdsfsj");
+      setCookies("token", user.token);
+      localStorage.setItem("isAdmin", false);
+      localStorage.setItem("userId", user.user._id);
+      localStorage.setItem("token", user.token);
+      toast(" User Signup Successful");
+      navigate("/");
+    }
+  }, [user]);
 
 
 

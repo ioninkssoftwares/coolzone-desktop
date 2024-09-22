@@ -53,8 +53,9 @@ const Cart = () => {
 
   useEffect(() => {
     if (cookies.token === undefined) {
-      toast.error("Please Login")
-      navigate('/otp/login')
+      toast.error("Please Login");
+      // navigate('/otp/login')
+      navigate("/login");
     }
   }, [])
 

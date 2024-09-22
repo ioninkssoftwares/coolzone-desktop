@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import {  Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddressPage from './pages/AddressPage';
@@ -26,11 +26,7 @@ import AddProductByAdmin from './pages/admin/products/AddProductByAdmin';
 import ProductManagement from './pages/admin/products/ProductManagement';
 // import EditProductDetails from './pages/admin/products/EditProductDetails';
 // import CouponManagement from './pages/admin/coupon/PartnerCouponManagement';
-import { useCookies } from 'react-cookie';
-import { useSelector } from 'react-redux';
-import ProtectedRoute from './components/ProtectedRoute';
-import { selectCurrentUserDetails, selectLoggedInUser, userLoading } from './components/auth/authSlice';
-import NotFound from './pages/NotFount';
+
 import AnalyticsAndReports from './pages/admin/analytics/AnalyticsAndReports';
 import CreateCoupon from './pages/admin/coupon/CreateCoupon';
 import PartnerCouponManagement from './pages/admin/coupon/PartnerCouponManagement';
@@ -50,96 +46,82 @@ import OtpAuthentication from './pages/OtpAuthentication';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Home></Home>
-    ),
+    element: <Home></Home>,
   },
   {
     path: "/products",
-    element: (
-      <Products />
-    ),
+    element: <Products />,
   },
   {
     path: "/product/:id",
-    element: (
-      <ProductDetailsPage />
-    ),
+    element: <ProductDetailsPage />,
   },
   {
     path: "/cart",
-    element: (
-      <CartPage />
-    ),
+    element: <CartPage />,
   },
   {
     path: "/shipping",
-    element: (
-      <ShippingPage />
-    ),
+    element: <ShippingPage />,
   },
   {
     path: "/checkout",
-    element: (
-      <Checkout />
-    ),
+    element: <Checkout />,
   },
   {
     path: "/membership",
-    element: (
-      <MembershipPage />
-    ),
+    element: <MembershipPage />,
   },
-  // {
-  //   path: '/login',
-  //   element: <LoginPage></LoginPage>,
-  // },
   {
-    path: '/otp/login',
+    path: "/login",
+    element: <LoginPage></LoginPage>,
+  },
+  {
+    path: "/otp/login",
     element: <OtpAuthentication></OtpAuthentication>,
   },
-  // {
-  //   path: '/signup',
-  //   element: <SignupPage></SignupPage>,
-  // },
   {
-    path: '/wishlist',
+    path: "/signup",
+    element: <SignupPage></SignupPage>,
+  },
+  {
+    path: "/wishlist",
     element: <WishListPage></WishListPage>,
   },
   {
-    path: '/orders',
+    path: "/orders",
     element: <OrdersPage></OrdersPage>,
   },
   {
-    path: '/orders/:orderId',
+    path: "/orders/:orderId",
     element: <InvoicePage></InvoicePage>,
   },
   {
-    path: '/myAccount',
+    path: "/myAccount",
     element: <MyAccountPage></MyAccountPage>,
   },
   {
-    path: '/profile',
+    path: "/profile",
     element: <ProfilePage></ProfilePage>,
   },
   {
-    path: '/address',
+    path: "/address",
     element: <AddressPage></AddressPage>,
   },
   {
-    path: '/coupon',
+    path: "/coupon",
     element: <CouponPage></CouponPage>,
   },
   {
-    path: '/ordersTracking',
+    path: "/ordersTracking",
     element: <OrdersTrackingPage></OrdersTrackingPage>,
   },
   {
-    path: '/admin/login',
+    path: "/admin/login",
     element: <AdminLogin></AdminLogin>,
   },
   {
-    path: '/admin',
+    path: "/admin",
     element: <AdminDashboard></AdminDashboard>,
   },
   {
@@ -149,7 +131,12 @@ const router = createBrowserRouter([
       <Routes>
         {/* Add specific admin routes here */}
         {/* If no admin routes match, show the NotFound component */}
-        <Route path="*" element={<Admin404 tittle={"Go to Admin Dashboard"} source={"/admin"} />} />
+        <Route
+          path="*"
+          element={
+            <Admin404 tittle={"Go to Admin Dashboard"} source={"/admin"} />
+          }
+        />
       </Routes>
     ),
   },
@@ -158,40 +145,40 @@ const router = createBrowserRouter([
   //   element: <ProductForm></ProductForm>,
   // },
   {
-    path: '/admin/orders',
+    path: "/admin/orders",
     element: <AdminOrdersPage></AdminOrdersPage>,
   },
 
   {
-    path: '/admin/order/:id',
+    path: "/admin/order/:id",
     element: <EditOrderById></EditOrderById>,
   },
   {
-    path: '/admin/userManagement',
+    path: "/admin/userManagement",
     element: <UserManagement></UserManagement>,
   },
   {
-    path: '/admin/editCustomer',
+    path: "/admin/editCustomer",
     element: <EditCustomer></EditCustomer>,
   },
   {
-    path: '/admin/membership',
+    path: "/admin/membership",
     element: <MembershipManagement></MembershipManagement>,
   },
   {
-    path: '/admin/editMembershipPlans',
+    path: "/admin/editMembershipPlans",
     element: <EditMembershipPlans></EditMembershipPlans>,
   },
   {
-    path: '/admin/inventory',
+    path: "/admin/inventory",
     element: <InventoryManagement></InventoryManagement>,
   },
   {
-    path: '/admin/categoryManagement',
+    path: "/admin/categoryManagement",
     element: <CategoryManagement></CategoryManagement>,
   },
   {
-    path: '/admin/brandManagement',
+    path: "/admin/brandManagement",
     element: <BrandManagement></BrandManagement>,
   },
   // {
@@ -199,28 +186,28 @@ const router = createBrowserRouter([
   //   element: <PaymentMan,
   // },
   {
-    path: '/admin/productManagement',
+    path: "/admin/productManagement",
     element: <ProductManagement></ProductManagement>,
   },
   {
-    path: '/admin/addProduct',
+    path: "/admin/addProduct",
     element: <AddProductByAdmin></AddProductByAdmin>,
   },
   {
-    path: '/admin/editProductDetails/:id',
+    path: "/admin/editProductDetails/:id",
     element: <EditProductById></EditProductById>,
   },
 
   {
-    path: '/admin/partnerCoupon',
+    path: "/admin/partnerCoupon",
     element: <PartnerCouponManagement></PartnerCouponManagement>,
   },
   {
-    path: '/admin/createCoupon',
+    path: "/admin/createCoupon",
     element: <CreateCoupon></CreateCoupon>,
   },
   {
-    path: '/admin/siteSettings',
+    path: "/admin/siteSettings",
     element: <AnalyticsAndReports></AnalyticsAndReports>,
   },
 ]);
